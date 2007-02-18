@@ -7,7 +7,7 @@ from zope.app.pagetemplate import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
 from Products.Five import BrowserView
-from plone.app.views.interfaces import IFolderContentsView
+from plone.app.content.browser.interfaces import IFolderContentsView
 
 from Products.ATContentTypes.interface import IATTopic
 
