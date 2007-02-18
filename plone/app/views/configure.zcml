@@ -1,0 +1,28 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:five="http://namespaces.zope.org/five">
+
+    <browser:page
+        for="*"
+        class=".foldercontents.FolderContentsView"
+        name="folder_contents_new"
+        template="folder_contents_new.pt"
+        permission="zope.Public" />
+    
+    <browser:viewletManager
+        name="foldercontents_viewletmanager"
+        provides=".interfaces.IFolderContentsViewletManager"
+        permission="zope.Public" />
+        
+    <browser:viewlet
+        name="foldercontents_viewlet"
+        for="*"
+        manager=".interfaces.IFolderContentsViewletManager"
+        class=".foldercontents.FolderContentsViewlet"
+        permission="zope.Public" />
+
+
+</configure>    
+
+        <!-- class="foldercontents/FolderContentsViewlet" -->
