@@ -1,3 +1,4 @@
+<div id="folderlisting-main-viewlet">
   <form name="folderContentsForm"
         method="post"
         action="folder_object"
@@ -35,11 +36,8 @@
     </p>
 
     <metal:listing define-macro="folder_listing"
-                   tal:define="contentFilter contentFilter|python:{'path':'/'};
-                               use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
+                   tal:define="use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
                                use_view_action site_properties/typesUseViewActionInListings|python:();
-                               query_path python:path('contentFilter/path|nothing') or request.get('path',None);
-                               preSorted python:query_path or ((contentFilter and contentFilter.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent') or (not contentFilter and request.get('sort_on', 'getObjPositionInParent')!='getObjPositionInParent'));
                                isOrderable view/isOrderable;
                                nosortclass python:view.test(isOrderable, 'nosort', '');
                                canModifyFolderContent view/isEditable;">
@@ -94,43 +92,30 @@
         
     <!-- <div metal:use-macro="context/batch_macros/macros/navigation" /> -->
 
-      <table id="sortable"
-             class="listing"
+      <table class="listing"
              summary="Content listing"
              i18n:attributes="summary summary_content_listing;">
         <thead>
-          <metal:block tal:condition="view/batch|not:standalone|nothing">
-            <tr>
-              <th class="nosort">
-                  <input class="noborder"
-                         type="checkbox"
-                         src="select_all_icon.gif"
-                         name="selectButton"
-                         title="Select all items"
-                         onClick="toggleSelect(this,'paths:list');"
-                         tal:attributes="src string:${view/portal_url}/select_all_icon.gif"
-                         alt="Select all items"
-                         i18n:attributes="title label_select_all_items; alt label_select_all_items;"
-              />
-              </th>
-              <th tal:attributes="class python:nosortclass"
-                  >&nbsp;<tal:title i18n:translate="listingheader_title"
-                  >Title</tal:title>&nbsp;</th>
-              <th tal:attributes="class python:nosortclass"
-                  >&nbsp;<tal:size i18n:translate="listingheader_size"
-                  >Size</tal:size>&nbsp;</th>
-              <th tal:attributes="class python:nosortclass"
-                  >&nbsp;<tal:modified i18n:translate="listingheader_modified"
-                  >Modified</tal:modified>&nbsp;</th>
-              <th tal:attributes="class python:nosortclass"
-                  >&nbsp;<tal:state i18n:translate="listingheader_status"
-                  >State</tal:state>&nbsp;</th>
-              <th class="nosort"
-                  tal:condition="python:isOrderable and canModifyFolderContent and not preSorted"
-                  >&nbsp;<tal:order i18n:translate="listingheader_order"
-                  >Order</tal:order>&nbsp;</th>
-            </tr>
-          </metal:block>
+          <tr>
+            <th class="nosort">&nbsp;</th>
+            <th tal:attributes="class python:nosortclass"
+                id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
+                >Title</tal:title>&nbsp;</th>
+            <th tal:attributes="class python:nosortclass"
+                id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
+                >Size</tal:size>&nbsp;</th>
+            <th tal:attributes="class python:nosortclass"
+                id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
+                >Modified</tal:modified>&nbsp;</th>
+            <th tal:attributes="class python:nosortclass"
+                id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
+                >State</tal:state>&nbsp;</th>
+            <th class="nosort" tal:condition="python:isOrderable and canModifyFolderContent">
+              &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
+          </tr>
+          <tr>
+            <th colspan="6">select: <a href="#" id="foldercontents-selectall">all</a></th>
+          </tr>
         </thead>
 
         <metal:block tal:condition="view/batch|not:standalone|nothing">
@@ -157,7 +142,7 @@
                               value="#"
                               tal:attributes="value   item/path;
                                               id      string:cb_${item/id};
-                                              checked python:view.test(request.get('ids_checked', False), 'checked', None);
+                                              checked item/checked;
                                               alt     string:Select ${item/title_or_id};
                                               title   string:Select ${item/title_or_id}" />
                   <input type="hidden" name="obj_paths:list" value="#"
@@ -204,19 +189,19 @@
                 </td>
                 <td tal:define="pps python:modules['Products.PythonScripts.standard'];
                                 quoted_item_id python:pps.url_quote(item['id'])"
-                    tal:condition="python:isOrderable and canModifyFolderContent and not preSorted">
+                    tal:condition="python:isOrderable and canModifyFolderContent">
                   <a href=""
                      title="Move item up"
                      i18n:attributes="title title_move_item_up;"
-                     tal:attributes="href string:${context/absolute_url}/folder_position?position=up&amp;id=$quoted_item_id&amp;template_id=${template_id}">
-                     <img tal:replace="structure arrowUp" />
+                     tal:attributes="href string:${context/absolute_url}/folder_position?position=up&amp;id=$quoted_item_id">
+                    <span class="arrowDownAlternative">&#9659;</span>
                   </a>
                   &nbsp;
                   <a href=""
                      title="Move item down"
                      i18n:attributes="title title_move_item_down;"
-                     tal:attributes="href string:${context/absolute_url}/folder_position?position=down&amp;id=$quoted_item_id&amp;template_id=${template_id}">
-                     <img tal:replace="structure arrowDown" />
+                     tal:attributes="href string:${context/absolute_url}/folder_position?position=down&amp;id=$quoted_item_id">
+                    <span class="arrowDownAlternative">&#9661;</span>
                   </a>
                 </td>
                </tr>
@@ -249,3 +234,4 @@
     </tal:buttons>
     </metal:buttons>
   </form>
+</div>

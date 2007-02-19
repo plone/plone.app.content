@@ -10,19 +10,18 @@
         template="folder_contents_new.pt"
         permission="zope.Public" />
     
-    <browser:viewletManager
-        name="foldercontents_viewletmanager"
-        provides=".interfaces.IFolderContentsViewletManager"
-        permission="zope.Public" />
-        
-    <browser:viewlet
-        name="foldercontents_viewlet"
-        for="*"
-        manager=".interfaces.IFolderContentsViewletManager"
-        class=".foldercontents.FolderContentsViewlet"
-        permission="zope.Public" />
 
+    <browser:page
+         for="*"
+         class=".foldercontents.FolderContentsKSSView"
+         attribute="selectall"
+         name="foldercontents-selectall"
+         permission="zope2.View" />
 
+    <browser:page
+         for="*"
+         class=".foldercontents.FolderContentsKSSView"
+         attribute="sort_on"
+         name="foldercontents_sorton"
+         permission="zope2.View" />
 </configure>    
-
-        <!-- class="foldercontents/FolderContentsViewlet" -->

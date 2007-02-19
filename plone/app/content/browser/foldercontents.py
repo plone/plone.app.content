@@ -2,7 +2,6 @@ from Acquisition import Explicit, aq_parent, aq_inner
 
 from zope.component import getMultiAdapter
 from zope.interface import implements, providedBy
-from zope.viewlet.viewlet import ViewletBase
 from zope.app.pagetemplate import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 
@@ -43,13 +42,45 @@ class FolderContentsView(BrowserView):
         types =  self.context.sortObjects(self.context.allowedContentTypes())
         return [ ctype for ctype in types if ctype.getId() not in NOT_ADDABLE_TYPES ]
 
+    def contents_table(self):
+        table = FolderContentsTable(self.context, self.request)
+        return table.render()
 
-class FolderContentsViewlet(ViewletBase):
+
+from kss.core import KSSView
+
+class FolderContentsKSSView(KSSView):
+    def selectall(self):
+        table = FolderContentsTable(self.context, self.request)
+        table.selectcurrentbatch=True
+        return self.replaceTable(table)
+
+    def sort_on(self, sort_on):
+        table = FolderContentsTable(self.context, self.request, contentFilter={'sort_on':sort_on})
+        table.selectcurrentbatch=True
+        return self.replaceTable(table)
+
+    def replaceTable(self, table):
+        core = self.getCommandSet('core')
+        core.replaceInnerHTML('#folderlisting-main-viewlet', table.render())
+        return self.render()
+
+class FolderContentsTable(object):
     """    
     """                
+    # options
+    selectcurrentbatch = False
+
+    def __init__(self, context, request, contentFilter={}):
+        self.context = context
+        self.request = request
+        requestContentFilter = self.request.get("contentFilter", {})
+        requestContentFilter.update(contentFilter)
+        self.contentFilter = requestContentFilter
+
     render = ViewPageTemplateFile("foldercontents_viewlet.pt")
     
-    def title(self):        
+    def title(self):
         """
         """
         return "Change me!"
@@ -107,11 +138,12 @@ class FolderContentsViewlet(ViewletBase):
         else:     
             contentsMethod = self.context.getFolderContents
         
-        contentFilter = self.request.get("contentFilter", None)
         b_size = self.request.get("b_size", 100)
 
+        selected = self.selectcurrentbatch
+
         results = list()        
-        for obj in contentsMethod(contentFilter, batch=True, b_size=b_size):
+        for obj in contentsMethod(self.contentFilter, batch=True, b_size=b_size):
            url = obj.getURL()
            path = obj.getPath or "/".join(obj.getPhysicalPath())           
            icon = plone_view.getIcon(obj);
@@ -129,24 +161,24 @@ class FolderContentsViewlet(ViewletBase):
                view_url = url
                                 
            results.append(dict(
-                            url = url,
-                            id  = obj.getId,
-                            path = path,
-                            title_or_id = obj.pretty_title_or_id(),
-                            description = obj.Description,
-                            obj_type = obj_type,
-                            size = obj.getObjSize,
-                            modified = obj.ModificationDate,
-                            icon = icon.html_tag(),
-                            type_class = type_class,
-                            wf_state = review_state,
-                            state_title = wtool.getTitleForStateOnType(review_state, obj_type),
-                            state_class = state_class,
-                            is_browser_default = len(browser_default[1]) == 1 and obj.id == browser_default[1][0],
-                            folderish = obj.is_folderish,
-                            relative_url = relative_url,
-                            view_url = view_url,
-                            
+               url = url,
+               id  = obj.getId,
+               path = path,
+               title_or_id = obj.pretty_title_or_id(),
+               description = obj.Description,
+               obj_type = obj_type,
+               size = obj.getObjSize,
+               modified = obj.ModificationDate,
+               icon = icon.html_tag(),
+               type_class = type_class,
+               wf_state = review_state,
+               state_title = wtool.getTitleForStateOnType(review_state, obj_type),
+               state_class = state_class,
+               is_browser_default = len(browser_default[1]) == 1 and obj.id == browser_default[1][0],
+               folderish = obj.is_folderish,
+               relative_url = relative_url,
+               view_url = view_url,
+               checked = selected and 'checked' or None,
            ))
         return results
 

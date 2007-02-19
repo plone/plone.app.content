@@ -26,8 +26,7 @@
                      full_view full_view|request/full_view|python:True;">
 
 
-    <div id="foo" 
-         tal:content="structure provider:foldercontents_viewletmanager"></div>
+    <div tal:replace="structure view/contents_table"></div>
     
     </metal:contentsmacro>
     </metal:main-macro>
