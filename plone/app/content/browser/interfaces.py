@@ -9,10 +9,6 @@ class IFolderContentsView(Interface):
         """A simple replacement of python's test.
         """
         
-    def isChecked():
-        """Decides weather an item is checked or not.
-        """
-    
     def getAllowedTypes():
         """Returns allowed types for context.
         """

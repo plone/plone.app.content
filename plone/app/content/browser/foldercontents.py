@@ -4,7 +4,7 @@ from zope.component import getMultiAdapter
 from zope.interface import implements, providedBy
 from zope.app.pagetemplate import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-
+from Products.PythonScripts import standard
 from Products.Five import BrowserView
 from plone.app.content.browser.interfaces import IFolderContentsView
 
@@ -32,11 +32,6 @@ class FolderContentsView(BrowserView):
             return b
         return c
         
-    def isChecked(self):
-        """
-        """
-        return "checked"
-            
     def getAllowedTypes(self):
         """
         """
@@ -44,6 +39,31 @@ class FolderContentsView(BrowserView):
         types =  self.context.sortObjects(self.context.allowedContentTypes())
         return [ ctype for ctype in types if ctype.getId() not in NOT_ADDABLE_TYPES ]
 
+    @property
+    def num_types(self):
+        """
+        """
+        return len(self.getAllowedTypes())
+
+    @property
+    def exactly_one_type_addable(self):
+        """
+        """
+        return self.num_types == 1    
+        
+    @property
+    def show_select_add_item(self):
+        """
+        """
+        return self.num_types > 1
+
+    @property    
+    def id_of_addable_content_type(self):
+        """        
+        """
+        content_types = self.getAllowedTypes()
+        return content_types[0].getId()
+                            
     def contents_table(self):
         table = FolderContentsTable(self.context, self.request)
         return table.render()
@@ -81,7 +101,25 @@ class FolderContentsTable(object):
         self.contentFilter = requestContentFilter
 
     render = ViewPageTemplateFile("foldercontents_viewlet.pt")
-    
+        
+    def get_icon(self):
+        """
+        """
+        return getattr(self.context, self.context.getIcon(1)).tag(alt = self.context.portal_type)
+
+    def show_sort_column(self):
+        """
+        """
+        return self.orderable and self.editable
+
+    def get_nosort_class(self):
+        """
+        """
+        if self.orderable:
+            return "nosort"
+        else:
+            return ""
+
     def title(self):
         """
         """
@@ -170,7 +208,12 @@ class FolderContentsTable(object):
         selected = self.selectcurrentbatch
 
         results = list()        
-        for obj in contentsMethod(self.contentFilter, batch=True, b_size=b_size):
+        for i, obj in enumerate(contentsMethod(self.contentFilter, batch=True, b_size=b_size)):
+           if i % 2 == 0:
+               table_row_class = "draggable even"
+           else:
+               table_row_class = "draggable odd"
+           
            url = obj.getURL()
            path = obj.getPath or "/".join(obj.getPhysicalPath())           
            icon = plone_view.getIcon(obj);
@@ -179,6 +222,7 @@ class FolderContentsTable(object):
            state_class = 'state-' + putils.normalizeString(review_state)
            relative_url = obj.getURL(relative=True)
            obj_type = obj.portal_type
+           modified = plone_view.toLocalizedTime(obj.ModificationDate, long_format=1)
            
            if obj_type in use_view_action:
                view_url = url + '/view'
@@ -190,12 +234,13 @@ class FolderContentsTable(object):
            results.append(dict(
                url = url,
                id  = obj.getId,
+               quoted_id = standard.url_quote(obj.getId),
                path = path,
                title_or_id = obj.pretty_title_or_id(),
                description = obj.Description,
                obj_type = obj_type,
                size = obj.getObjSize,
-               modified = obj.ModificationDate,
+               modified = modified,
                icon = icon.html_tag(),
                type_class = type_class,
                wf_state = review_state,
@@ -206,13 +251,16 @@ class FolderContentsTable(object):
                relative_url = relative_url,
                view_url = view_url,
                checked = selected and 'checked' or None,
+               table_row_class = table_row_class,
+               is_expired = self.context.isExpired(obj),
            ))
         return results
 
            #hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
            #item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
-        
-    def isOrderable(self):
+
+    @property
+    def orderable(self):
         """
         """        
         return IOrderedContainer.providedBy(self.context)
@@ -224,22 +272,19 @@ class FolderContentsTable(object):
             return b
         return c
 
-    def isEditable(self):        
+    @property
+    def editable(self):
         """
         """
         context_state = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
         return context_state.is_editable()
-        
-    def portal_url(self):
-        """
-        """
-        utool = getToolByName(self.context, "portal_url")
-        return utool.getPortalObject().absolute_url()
-        
         
     def portal(self):
         """
         """    
         utool = getToolByName(self.context, "portal_url")
         return utool.getPortalObject()
-    
+        
+        
+# pps python:modules['Products.PythonScripts.standard'];
+#                                 quoted_item_id python:pps.url_quote(item['id'])"        

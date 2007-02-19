@@ -8,7 +8,7 @@
         Document actions (print, sendto etc)
     </div> -->
     <h1>
-      <tal:block replace="structure python:getattr(context, context.getIcon(1)).tag(alt=context.portal_type)"/>
+      <tal:block replace="structure view/get_icon" />
       <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
     </h1>
 
@@ -27,7 +27,6 @@
         Description
     </p>
 
-
     <p class="discreet"
        tal:condition="not: view/batch"
        i18n:translate="description_no_visible_items_add_paste">
@@ -36,56 +35,8 @@
     </p>
 
     <metal:listing define-macro="folder_listing"
-                   tal:define="use_folder_contents site_properties/typesLinkToFolderContentsInFC|nothing;
-                               use_view_action site_properties/typesUseViewActionInListings|python:();
-                               isOrderable view/isOrderable;
-                               nosortclass python:view.test(isOrderable, 'nosort', '');
-                               canModifyFolderContent view/isEditable;">
-      <div tal:condition="standalone|nothing">
-      <metal:add_button define-macro="add_button"
-                        tal:define="num_types python:len(contentTypes);">
-        <!-- Add Item pulldown -->
-        <div tal:attributes="id python:view.test(path('full_view|string:Not Set'), 'traditional-add-item-pulldown',None)">
-            <label for="select_add_item">
-              <span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
-            </label>
-
-            <select id="select_add_item"
-                    name="type_name"
-                    tabindex=""
-                    tal:condition="python: num_types > 1"
-                    tal:attributes="tabindex tabindex/next|nothing">
-
-              <option value="Select" i18n:translate="label_select">Select</option>
-              <metal:types tal:repeat="ctype contentTypes">
-                <option value="Document"
-                        tal:define="Id ctype/getId"
-                        tal:attributes="value ctype/getId"
-                        tal:content="ctype/Title"
-                        i18n:translate="">Document</option>
-              </metal:types>
-            </select>
-
-            <input type="hidden"
-                   name="type_name"
-                   value="Content Type Id"
-                   tal:condition="python: num_types==1"
-                   tal:attributes="value python:contentTypes[0].getId()" />
-
-            <input class="standalone"
-                   type="submit"
-                   name="folder_factories:method"
-                   value="Add New Item"
-                   tabindex=""
-                   tal:define="ttype python: num_types==1 and context.utranslate(contentTypes[0].Title())"
-                   tal:condition="python: num_types"
-                   tal:attributes="tabindex tabindex/next|nothing;
-                                   value python:ttype and context.utranslate('Add ${type}', {'type': ttype}) or
-                                                          context.utranslate('label_add_new_item', default='Add New Item')" />
-        </div>
-      </metal:add_button>
-      </div>
-
+                   tal:define="nosortclass view/get_nosort_class">
+                               
     <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
     <!-- Navigation -->
@@ -98,19 +49,20 @@
         <thead>
           <tr>
             <th class="nosort">&nbsp;</th>
-            <th tal:attributes="class python:nosortclass"
+            <th tal:attributes="class nosortclass"
                 id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
                 >Title</tal:title>&nbsp;</th>
-            <th tal:attributes="class python:nosortclass"
+            <th tal:attributes="class nosortclass"
                 id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
                 >Size</tal:size>&nbsp;</th>
-            <th tal:attributes="class python:nosortclass"
+            <th tal:attributes="class nosortclass"
                 id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
                 >Modified</tal:modified>&nbsp;</th>
-            <th tal:attributes="class python:nosortclass"
+            <th tal:attributes="class nosortclass"
                 id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
                 >State</tal:state>&nbsp;</th>
-            <th class="nosort" tal:condition="python:isOrderable and canModifyFolderContent">
+            <th class="nosort" 
+                tal:condition="view/show_sort_column">
               &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
           </tr>
           <tr>
@@ -119,15 +71,9 @@
         </thead>
 
         <metal:block tal:condition="view/batch|not:standalone|nothing">
-        <tbody tal:define="portal view/portal;
-                           arrowUp nocall:portal/arrowUp.gif;
-                           arrowUp python:arrowUp.tag(alt='Move Up');
-                           arrowDown nocall:portal/arrowDown.gif;
-                           arrowDown python:arrowDown.tag(alt='Move Down');
-                           ">
+        <tbody tal:define="portal view/portal">
             <tal:items tal:repeat="item view/batch">
-                <tr tal:define="oddrow repeat/item/odd;"
-                    tal:attributes="class python:view.test(oddrow, 'draggable even', 'draggable odd');
+                <tr tal:attributes="class item/table_row_class;
                                     id string:folder-contents-item-${item/id};" >
 
                    <tal:comment replace="nothing">
@@ -155,7 +101,7 @@
                         <a href="#" tal:attributes="href  item/view_url;
                                                   title string: ${item/obj_type}: ${item/description};
                                                   class item/state_class;">
-                            <strong tal:omit-tag="python:not item['is_browser_default']">
+                            <strong tal:omit-tag="not: item/is_browser_default">
                             <label tal:content="item/title_or_id"
                                    tal:attributes="for string:cb_${item/id}">
                               Item Title
@@ -165,18 +111,17 @@
                     </span>
 
                     <span class="state-expired"
-                          tal:condition="python:portal.isExpired(item)"
+                          tal:condition="item/is_expired"
                           i18n:translate="time_expired">expired</span>
                 </td>
 
                 <td>
                   <span tal:condition="not: item/size"> &nbsp; </span>
-                  <span tal:condition="python:item['size']>0"
+                  <span tal:condition="item/size"
                         tal:content="item/size"
                         tal:attributes="class item/state_class"> size </span>
                 </td>
-                <td tal:define="plone_view context/@@plone"
-                    tal:content="python:plone_view.toLocalizedTime(item['modified'], long_format=1)"
+                <td tal:content="item/modified"
                     tal:attributes="class item/state_class">
                     08/19/2001 03:01 AM
                 </td>
@@ -187,20 +132,18 @@
                           tal:attributes="class item/state_class" />
                     <span tal:condition="not: item/state_title">&nbsp;</span>
                 </td>
-                <td tal:define="pps python:modules['Products.PythonScripts.standard'];
-                                quoted_item_id python:pps.url_quote(item['id'])"
-                    tal:condition="python:isOrderable and canModifyFolderContent">
+                <td tal:condition="view/show_sort_column">
                   <a href=""
                      title="Move item up"
                      i18n:attributes="title title_move_item_up;"
-                     tal:attributes="href string:${context/absolute_url}/folder_position?position=up&amp;id=$quoted_item_id">
+                     tal:attributes="href string:${context/absolute_url}/folder_position?position=up&amp;id=${item/quoted_id}">
                     <span class="arrowDownAlternative">&#9659;</span>
                   </a>
                   &nbsp;
                   <a href=""
                      title="Move item down"
                      i18n:attributes="title title_move_item_down;"
-                     tal:attributes="href string:${context/absolute_url}/folder_position?position=down&amp;id=$quoted_item_id">
+                     tal:attributes="href string:${context/absolute_url}/folder_position?position=down&amp;id=${item/quoted_id}">
                     <span class="arrowDownAlternative">&#9661;</span>
                   </a>
                 </td>

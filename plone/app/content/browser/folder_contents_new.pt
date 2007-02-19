@@ -16,15 +16,15 @@
       <tal:protect tal:condition="python: not checkPermission('List folder contents', here)" tal:replace="here/raiseUnauthorized" />
     <metal:main-macro define-macro="main">
     <metal:contentsmacro define-macro="contents"
-         tal:define="standalone python:1;
-                     contentTypes view/getAllowedTypes;
+         tal:define="contentTypes view/getAllowedTypes;
+                     num_types view/num_types;
+                     show_select_add_item view/show_select_add_item;
                      contentFilter contentFilter|request/contentFilter|nothing;
                      b_size b_size|request/b_size|python:100;
                      view_title view_title|request/view_title|string:;
                      contentsMethod python:view.test(here.portal_type=='Topic', here.queryCatalog, here.getFolderContents);
                      batch batch|python:contentsMethod(contentFilter,batch=True, b_size=b_size);
                      full_view full_view|request/full_view|python:True;">
-
 
     <div tal:replace="structure view/contents_table"></div>
     
