@@ -79,7 +79,6 @@ class FolderContentsKSSView(KSSView):
 
     def sort_on(self, sort_on):
         table = FolderContentsTable(self.context, self.request, contentFilter={'sort_on':sort_on})
-        table.selectcurrentbatch=True
         return self.replaceTable(table)
 
     def replaceTable(self, table):
@@ -126,6 +125,15 @@ class FolderContentsTable(object):
         return "Change me!"
         # view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)        
 
+
+
+    def setbuttonclass(self, button):
+        if button['id'] == 'paste':
+            button['cssclass'] = 'standalone'
+        else:
+            button['cssclass'] = 'context'
+        return button
+
     def folder_buttons(self):
         context_state = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
         buttons = []
@@ -133,20 +141,19 @@ class FolderContentsTable(object):
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
-        if self.batch and not self.context.cb_dataValid():
-            return buttons
-        elif not self.batch:
-            return button_actions['paste']
+        if not len(self.batch):
+            if self.context.cb_dataValid():
+                for button in button_actions:
+                    if button['id'] == 'paste':
+                        return [self.setbuttonclass(button)]
+            else:
+                return []
 
         for button in button_actions:
             # Make proper classes for our buttons
-            if button['id'] == 'paste':
-                button['cssclass'] = 'standalone'
-            else:
-                button['cssclass'] = 'context'
 
             if button['id'] != 'paste' or self.context.cb_dataValid():
-                buttons.append(button)
+                buttons.append(self.setbuttonclass(button))
         return buttons
 
 
@@ -184,6 +191,12 @@ class FolderContentsTable(object):
 
         except Unauthorized:
             return None        
+
+    def selected(self, brain):
+        if self.selectcurrentbatch:
+            return True
+        return False
+
             
     @property
     def batch(self):
@@ -205,55 +218,56 @@ class FolderContentsTable(object):
         
         b_size = self.request.get("b_size", 100)
 
-        selected = self.selectcurrentbatch
-
-        results = list()        
+        results = list()
         for i, obj in enumerate(contentsMethod(self.contentFilter, batch=True, b_size=b_size)):
-           if i % 2 == 0:
-               table_row_class = "draggable even"
-           else:
-               table_row_class = "draggable odd"
-           
-           url = obj.getURL()
-           path = obj.getPath or "/".join(obj.getPhysicalPath())           
-           icon = plone_view.getIcon(obj);
-           type_class = 'contenttype-' + putils.normalizeString(obj.portal_type)
-           review_state = obj.review_state or wtool.getInfoFor(obj, 'review_state', '')
-           state_class = 'state-' + putils.normalizeString(review_state)
-           relative_url = obj.getURL(relative=True)
-           obj_type = obj.portal_type
-           modified = plone_view.toLocalizedTime(obj.ModificationDate, long_format=1)
-           
-           if obj_type in use_view_action:
-               view_url = url + '/view'
-           elif obj.is_folderish:
-               view_url = url + "/folder_contents"              
-           else:
-               view_url = url
-                                
-           results.append(dict(
-               url = url,
-               id  = obj.getId,
-               quoted_id = standard.url_quote(obj.getId),
-               path = path,
-               title_or_id = obj.pretty_title_or_id(),
-               description = obj.Description,
-               obj_type = obj_type,
-               size = obj.getObjSize,
-               modified = modified,
-               icon = icon.html_tag(),
-               type_class = type_class,
-               wf_state = review_state,
-               state_title = wtool.getTitleForStateOnType(review_state, obj_type),
-               state_class = state_class,
-               is_browser_default = len(browser_default[1]) == 1 and obj.id == browser_default[1][0],
-               folderish = obj.is_folderish,
-               relative_url = relative_url,
-               view_url = view_url,
-               checked = selected and 'checked' or None,
-               table_row_class = table_row_class,
-               is_expired = self.context.isExpired(obj),
-           ))
+            if i % 2 == 0:
+                table_row_class = "draggable even"
+            else:
+                table_row_class = "draggable odd"
+
+            if self.selected(obj):
+                table_row_class += ' selected'
+            
+            url = obj.getURL()
+            path = obj.getPath or "/".join(obj.getPhysicalPath())
+            icon = plone_view.getIcon(obj);
+            type_class = 'contenttype-' + putils.normalizeString(obj.portal_type)
+            review_state = obj.review_state or wtool.getInfoFor(obj, 'review_state', '')
+            state_class = 'state-' + putils.normalizeString(review_state)
+            relative_url = obj.getURL(relative=True)
+            obj_type = obj.portal_type
+            modified = plone_view.toLocalizedTime(obj.ModificationDate, long_format=1)
+            
+            if obj_type in use_view_action:
+                view_url = url + '/view'
+            elif obj.is_folderish:
+                view_url = url + "/folder_contents"              
+            else:
+                view_url = url
+                                 
+            results.append(dict(
+                url = url,
+                id  = obj.getId,
+                quoted_id = standard.url_quote(obj.getId),
+                path = path,
+                title_or_id = obj.pretty_title_or_id(),
+                description = obj.Description,
+                obj_type = obj_type,
+                size = obj.getObjSize,
+                modified = modified,
+                icon = icon.html_tag(),
+                type_class = type_class,
+                wf_state = review_state,
+                state_title = wtool.getTitleForStateOnType(review_state, obj_type),
+                state_class = state_class,
+                is_browser_default = len(browser_default[1]) == 1 and obj.id == browser_default[1][0],
+                folderish = obj.is_folderish,
+                relative_url = relative_url,
+                view_url = view_url,
+                checked = self.selected(obj) and 'checked' or None,
+                table_row_class = table_row_class,
+                is_expired = self.context.isExpired(obj),
+            ))
         return results
 
            #hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');

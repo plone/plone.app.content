@@ -62,6 +62,7 @@
                 id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
                 >State</tal:state>&nbsp;</th>
             <th class="nosort" 
+                id="foldercontents-order-column"
                 tal:condition="view/show_sort_column">
               &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
           </tr>
