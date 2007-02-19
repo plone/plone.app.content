@@ -16,6 +16,8 @@ from AccessControl import Unauthorized
 
 from OFS.interfaces import IOrderedContainer
 
+import urllib
+
 NOT_ADDABLE_TYPES = ('Favorite',)
 
 class FolderContentsView(BrowserView):
@@ -86,6 +88,30 @@ class FolderContentsTable(object):
         return "Change me!"
         # view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)        
 
+    def folder_buttons(self):
+        context_state = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
+        buttons = []
+        button_actions = context_state.actions()['folder_buttons']
+
+        # Do not show buttons if there is no data, unless there is data to be
+        # pasted
+        if self.batch and not self.context.cb_dataValid():
+            return buttons
+        elif not self.batch:
+            return button_actions['paste']
+
+        for button in button_actions:
+            # Make proper classes for our buttons
+            if button['id'] == 'paste':
+                button['cssclass'] = 'standalone'
+            else:
+                button['cssclass'] = 'context'
+
+            if button['id'] != 'paste' or self.context.cb_dataValid():
+                buttons.append(button)
+        return buttons
+
+
     def parent_url(self):
         """
         """
@@ -121,10 +147,11 @@ class FolderContentsTable(object):
         except Unauthorized:
             return None        
             
+    @property
     def batch(self):
         """
         """
-        putils = getToolByName(self.context, 'plone_utils')        
+        putils = getToolByName(self.context, 'plone_utils')
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
         wtool = getToolByName(self.context, "portal_workflow")
         portal_properties = getToolByName(self.context, 'portal_properties')
@@ -135,7 +162,7 @@ class FolderContentsTable(object):
                 
         if IATTopic.providedBy(self.context):
             contentsMethod = self.context.queryCatalog
-        else:     
+        else:
             contentsMethod = self.context.getFolderContents
         
         b_size = self.request.get("b_size", 100)

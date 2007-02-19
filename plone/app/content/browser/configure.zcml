@@ -6,7 +6,7 @@
     <browser:page
         for="*"
         class=".foldercontents.FolderContentsView"
-        name="folder_contents_new"
+        name="folder_contents"
         template="folder_contents_new.pt"
         permission="zope.Public" />
     
