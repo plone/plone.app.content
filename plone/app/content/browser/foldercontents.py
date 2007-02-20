@@ -18,7 +18,110 @@ from OFS.interfaces import IOrderedContainer
 
 import urllib
 
+from Products.CMFPlone import Batch
+
 NOT_ADDABLE_TYPES = ('Favorite',)
+
+class CatalogBatch(object):
+    def __init__(self, catalogresults, baseurl, pagesize=5, pagenumber=1):
+        self.catalogresults = catalogresults
+        self.baseurl = baseurl
+        self.pagesize = pagesize
+        self.pagenumber = pagenumber
+
+    def __len__(self):
+        return len(self.catalogresults)#self.catalogresults.actual_result_count
+
+    def page_url(self, pagenumber):
+        return self.baseurl + '?' + urllib.urlencode({'pagenumber': pagenumber})
+
+    @property
+    def size(self):
+        return len(self)
+
+    @property
+    def multiple_pages(self):
+        return bool(self.size / self.pagesize)
+
+    @property
+    def previous(self):
+        return self.pagenumber > 1
+
+    @property
+    def previous_url(self):
+        return self.page_url(self.pagenumber - 1)
+
+    @property
+    def next_url(self):
+        return self.page_url(self.pagenumber + 1)
+
+    @property
+    def next(self):
+        return (self.pagenumber * self.pagesize) < self.size
+
+    @property
+    def next_item_count(self):
+        nextitems = self.size - (self.pagenumber * self.pagesize)
+        if nextitems > self.pagesize:
+            return self.pagesize
+        return nextitems
+
+    def __iter__(self):
+        start = (self.pagenumber-1) * self.pagesize
+        end = start + self.pagesize
+        return self.catalogresults[start:end].__iter__()
+
+    @property
+    def navlist(self):
+        start = self.pagenumber - 4
+        if start < 1:
+            start = 1
+        end = start + 10
+        if end > self.lastpage:
+            end = self.lastpage
+
+        return range(start, end+1)
+
+    @property
+    def show_link_to_first(self):
+        return 1 not in self.navlist
+
+    @property
+    def show_link_to_last(self):
+        return self.lastpage not in self.navlist
+
+    @property
+    def second_page_not_in_navlist(self):
+        return 2 not in self.navlist
+
+    @property
+    def first_page_url(self):
+        return self.page_url(1)
+
+    @property
+    def last_page_url(self):
+        return self.page_url(self.lastpage)
+
+    @property
+    def lastpage(self):
+        pages = self.size / self.pagesize
+        if self.size % self.pagesize:
+            pages += 1
+        return pages
+
+    @property
+    def prevurls(self):
+        pages = self.navlist[:self.navlist.index(self.pagenumber)]
+        return self.page_urls(pages)
+
+    def page_urls(self, pages):
+        return [{'name': i, 'url': self.page_url(i)} for i in pages]
+
+    @property
+    def nexturls(self):
+        pages = self.navlist[self.navlist.index(self.pagenumber)+1:]
+        return self.page_urls(pages)
+
 
 class FolderContentsView(BrowserView):
     """
@@ -219,7 +322,7 @@ class FolderContentsTable(object):
         b_size = self.request.get("b_size", 100)
 
         results = list()
-        for i, obj in enumerate(contentsMethod(self.contentFilter, batch=True, b_size=b_size)):
+        for i, obj in enumerate(contentsMethod(self.contentFilter)):
             if i % 2 == 0:
                 table_row_class = "draggable even"
             else:
@@ -268,7 +371,8 @@ class FolderContentsTable(object):
                 table_row_class = table_row_class,
                 is_expired = self.context.isExpired(obj),
             ))
-        return results
+        return CatalogBatch(results, baseurl=self.request.get('URL'),
+                            pagenumber=int(self.request.get('pagenumber', 1)))
 
            #hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
            #item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);

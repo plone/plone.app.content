@@ -71,7 +71,7 @@
           </tr>
         </thead>
 
-        <metal:block tal:condition="view/batch|not:standalone|nothing">
+        <metal:block tal:condition="view/batch">
         <tbody tal:define="portal view/portal">
             <tal:items tal:repeat="item view/batch">
                 <tr tal:attributes="class item/table_row_class;
@@ -151,10 +151,107 @@
                </tr>
             </tal:items>
         </tbody>
-        </metal:block>
-        </table>
+      </metal:block>
+      </table>
         <!-- Navigation -->
-        <!-- <div metal:use-macro="context/batch_macros/macros/navigation" /> -->
+      <div class="listingBar"
+           metal:define-macro="navigation"
+           tal:define="batch view/batch"
+           tal:condition="batch/multiple_pages">
+          <span class="previous"
+            tal:condition="batch/previous">
+              <a href=""
+                 tal:attributes="href batch/previous_url">
+                 &laquo;
+                 <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
+                     Previous
+                     <span i18n:name="number" tal:omit-tag="" tal:content="batch/pagesize">n</span>
+                     items
+                 </span>
+              </a>
+          </span>
+
+          <span class="next"
+                tal:condition="batch/next">
+              <a href=""
+                 tal:attributes="href batch/next_url">
+                 <span i18n:translate="batch_next_x_items" tal:omit-tag="">
+                     Next
+                     <span i18n:name="number" tal:omit-tag="" tal:content="batch/next_item_count">n</span>
+                     items
+                 </span>
+                 &raquo;
+              </a>
+          </span>
+
+          <!-- Link to first -->
+          <span tal:condition="batch/show_link_to_first">
+              <a href=""
+                 tal:attributes="href batch/first_page_url">1</a>
+              <span tal:condition="batch/second_page_not_in_navlist"
+                    tal:omit-tag="">
+                 ...
+              </span>
+          </span>
+
+          <!-- Pagelist with quantum leap links to previous pages for quick navigation -->
+          <!--
+          <span tal:repeat="linklist python:batch.navurls(request.form, batch.leapback)"
+                tal:condition="batch/leapback"
+                tal:omit-tag="" >
+              <a href=""
+                 tal:define="page python:linklist[0];
+                             query python:linklist[1];"
+                 tal:content="page"
+                 tal:attributes="href python: '%s?%s' % (url,query)" >
+              </a>
+              ...
+          </span>
+          -->
+
+          <!-- Pagelist with links to previous pages for quick navigation -->
+          <span tal:repeat="link batch/prevurls"
+                tal:omit-tag="" >
+              <a href="" tal:content="link/name" tal:attributes="href link/url" >
+              </a>
+          </span>
+
+          <!-- Current page -->
+          <span tal:condition="batch/navlist"
+                tal:omit-tag="">
+              [<span tal:content="batch/pagenumber">Current page number</span>]
+          </span>
+
+          <!-- Pagelist with links to next pages for quick navigation -->
+          <span tal:repeat="link batch/nexturls"
+                tal:omit-tag="" >
+              <a href="" tal:content="link/name" tal:attributes="href link/url" >
+              </a>
+          </span>
+
+          <!-- Pagelist with quantum leap links to next pages for quick navigation -->
+          <!--
+          <span tal:repeat="linklist python:batch.navurls(request.form, batch.leapforward)"
+                tal:condition="batch/leapforward"
+                tal:omit-tag="" >
+              ...
+              <a href=""
+                 tal:define="page python:linklist[0];
+                             query python:linklist[1];"
+                 tal:content="page"
+                 tal:attributes="href python: '%s?%s' % (url,query)" >
+              </a>
+          </span>
+          -->
+
+          <!-- Link to last -->
+          <span tal:condition="batch/show_link_to_last">
+              <a href=""
+                 tal:attributes="href batch/last_page_url"
+                 tal:content="batch/lastpage">3457</a>
+          </span>
+
+      </div>
     </metal:listing>
 
 
