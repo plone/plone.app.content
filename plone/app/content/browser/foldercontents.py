@@ -196,21 +196,10 @@ class FolderContentsView(BrowserView):
         return table.render()
 
 
-
 from kss.core import KSSView
 
 class FolderContentsKSSView(KSSView):
-    def selectitems_on_screen(self):
-        table = FolderContentsTable(self.context, self.request)
-        table.selectcurrentbatch=True
-        return self.replaceTable(table)
-
-    def selectall(self):
-        table = FolderContentsTable(self.context, self.request)
-        table.selectall = True
-        return self.replaceTable(table)
-
-    def clearselection(self):
+    def select(self):
         table = FolderContentsTable(self.context, self.request)
         return self.replaceTable(table)
 
@@ -252,6 +241,12 @@ class FolderContentsTable(object):
         requestContentFilter.update(contentFilter)
         self.contentFilter = requestContentFilter
 
+        selection = request.get('select')
+        if selection == 'screen':
+            self.selectcurrentbatch=True
+        elif selection == 'all':
+            self.selectall = True
+
     render = ViewPageTemplateFile("foldercontents_viewlet.pt")
         
     def get_icon(self):
@@ -278,7 +273,17 @@ class FolderContentsTable(object):
         return "Change me!"
         # view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)        
 
+    @property
+    def selectall_url(self):
+        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s&select=all'%self.request.get('pagenumber', '1')
 
+    @property
+    def selectscreen_url(self):
+        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s&select=screen'%self.request.get('pagenumber', '1')
+
+    @property
+    def selectnone_url(self):
+        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s'%self.request.get('pagenumber', '1')
 
     def setbuttonclass(self, button):
         if button['id'] == 'paste':
@@ -421,11 +426,10 @@ class FolderContentsTable(object):
                 table_row_class = table_row_class,
                 is_expired = self.context.isExpired(obj),
             ))
-        return CatalogBatch(results, baseurl=self.request.get('URL'),
-                            pagenumber=int(self.request.get('pagenumber', 1)))
-
-           #hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
-           #item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
+        return CatalogBatch(
+            results,
+            baseurl=self.context.absolute_url()+'/@@folder_contents',
+            pagenumber=int(self.request.get('pagenumber', 1)))
 
     @property
     def orderable(self):

@@ -73,21 +73,21 @@
               &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
           </tr>
           <tr tal:condition="not:view/selectcurrentbatch">
-            <th colspan="6">select: <a href="#" id="foldercontents-selectall">all</a></th>
+            <th colspan="6" class="nosort">select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">all</a></th>
           </tr>
           <tr tal:condition="view/show_select_all_items">
-            <th colspan="6">
+            <th colspan="6" class="nosort">
               All <tal:block replace="view/batch/items_on_page"/> items on this
               page are selected. 
-              <a href="#" id="foldercontents-selectall-completebatch">Select
+              <a tal:attributes="href view/selectall_url" id="foldercontents-selectall-completebatch">Select
                  all <tal:block replace="view/batch/size"/> items in this
                  folder.</a>
               </th>
           </tr>
           <tr tal:condition="view/selectall">
-            <th colspan="6">
+            <th colspan="6" class="nosort">
               All <tal:block replace="view/batch/size"/> items in this folder
-              are selected. <a href="#" id="foldercontents-clearselection">Clear
+              are selected. <a tal:attributes="href view/selectnone_url" id="foldercontents-clearselection">Clear
                 selection</a>
             </th>
           </tr>

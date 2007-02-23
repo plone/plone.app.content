@@ -10,14 +10,6 @@
         template="folder_contents_new.pt"
         permission="zope.Public" />
     
-
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsKSSView"
-         attribute="selectitems_on_screen"
-         name="foldercontents_selectitems_on_screen"
-         permission="zope2.View" />
-
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
@@ -28,14 +20,8 @@
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
-         attribute="selectall"
-         name="foldercontents_selectall"
+         attribute="select"
+         name="foldercontents_select"
          permission="zope2.View" />
 
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsKSSView"
-         attribute="clearselection"
-         name="foldercontents_clearselection"
-         permission="zope2.View" />
 </configure>    
