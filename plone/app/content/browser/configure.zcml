@@ -14,8 +14,8 @@
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
-         attribute="selectall"
-         name="foldercontents-selectall"
+         attribute="selectitems_on_screen"
+         name="foldercontents_selectitems_on_screen"
          permission="zope2.View" />
 
     <browser:page
@@ -23,5 +23,19 @@
          class=".foldercontents.FolderContentsKSSView"
          attribute="sort_on"
          name="foldercontents_sorton"
+         permission="zope2.View" />
+
+    <browser:page
+         for="*"
+         class=".foldercontents.FolderContentsKSSView"
+         attribute="selectall"
+         name="foldercontents_selectall"
+         permission="zope2.View" />
+
+    <browser:page
+         for="*"
+         class=".foldercontents.FolderContentsKSSView"
+         attribute="clearselection"
+         name="foldercontents_clearselection"
          permission="zope2.View" />
 </configure>    

@@ -29,8 +29,14 @@ class CatalogBatch(object):
         self.pagesize = pagesize
         self.pagenumber = pagenumber
 
+    def items_not_on_page(self):
+        items_on_page = list(self)
+        return [item for item in self.catalogresults if item not in
+                items_on_page]
+
+
     def __len__(self):
-        return len(self.catalogresults)#self.catalogresults.actual_result_count
+        return len(self.catalogresults)
 
     def page_url(self, pagenumber):
         return self.baseurl + '?' + urllib.urlencode({'pagenumber': pagenumber})
@@ -110,6 +116,10 @@ class CatalogBatch(object):
         return pages
 
     @property
+    def islastpage(self):
+        return self.lastpage == self.pagenumber
+
+    @property
     def prevurls(self):
         pages = self.navlist[:self.navlist.index(self.pagenumber)]
         return self.page_urls(pages)
@@ -122,6 +132,20 @@ class CatalogBatch(object):
         pages = self.navlist[self.navlist.index(self.pagenumber)+1:]
         return self.page_urls(pages)
 
+    @property
+    def last_page_not_in_navlist(self):
+        return self.lastpage not in self.navlist
+
+    @property
+    def items_on_page(self):
+        if self.islastpage:
+            remainder = self.size % self.pagenumber
+            if remainder == 0:
+                return self.pagesize
+            else:
+                return remainder
+        else:
+            return self.pagesize
 
 class FolderContentsView(BrowserView):
     """
@@ -172,12 +196,22 @@ class FolderContentsView(BrowserView):
         return table.render()
 
 
+
 from kss.core import KSSView
 
 class FolderContentsKSSView(KSSView):
-    def selectall(self):
+    def selectitems_on_screen(self):
         table = FolderContentsTable(self.context, self.request)
         table.selectcurrentbatch=True
+        return self.replaceTable(table)
+
+    def selectall(self):
+        table = FolderContentsTable(self.context, self.request)
+        table.selectall = True
+        return self.replaceTable(table)
+
+    def clearselection(self):
+        table = FolderContentsTable(self.context, self.request)
         return self.replaceTable(table)
 
     def sort_on(self, sort_on):
@@ -194,6 +228,22 @@ class FolderContentsTable(object):
     """                
     # options
     selectcurrentbatch = False
+    _select_all = False
+
+    def _get_select_all(self):
+        return self._select_all
+
+    def _set_select_all(self, value):
+        self._select_all = bool(value)
+        if self._select_all:
+            self.selectcurrentbatch = True
+
+    selectall = property(_get_select_all, _set_select_all)
+
+    @property
+    def show_select_all_items(self):
+        return self.selectcurrentbatch and not self.selectall
+
 
     def __init__(self, context, request, contentFilter={}):
         self.context = context

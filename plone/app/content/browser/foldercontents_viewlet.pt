@@ -4,6 +4,12 @@
         action="folder_object"
         tal:attributes="action context/absolute_url">
 
+    <tal:block condition="view/selectall">
+      <input type="hidden" name="paths:list"
+             tal:repeat="item view/batch/items_not_on_page"
+             tal:attributes="value item/path"/>
+    </tal:block>
+
     <!-- <div metal:use-macro="context/document_actions/macros/document_actions">
         Document actions (print, sendto etc)
     </div> -->
@@ -66,8 +72,24 @@
                 tal:condition="view/show_sort_column">
               &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
           </tr>
-          <tr>
+          <tr tal:condition="not:view/selectcurrentbatch">
             <th colspan="6">select: <a href="#" id="foldercontents-selectall">all</a></th>
+          </tr>
+          <tr tal:condition="view/show_select_all_items">
+            <th colspan="6">
+              All <tal:block replace="view/batch/items_on_page"/> items on this
+              page are selected. 
+              <a href="#" id="foldercontents-selectall-completebatch">Select
+                 all <tal:block replace="view/batch/size"/> items in this
+                 folder.</a>
+              </th>
+          </tr>
+          <tr tal:condition="view/selectall">
+            <th colspan="6">
+              All <tal:block replace="view/batch/size"/> items in this folder
+              are selected. <a href="#" id="foldercontents-clearselection">Clear
+                selection</a>
+            </th>
           </tr>
         </thead>
 
@@ -246,6 +268,10 @@
 
           <!-- Link to last -->
           <span tal:condition="batch/show_link_to_last">
+              <span tal:condition="batch/last_page_not_in_navlist"
+                    tal:omit-tag="">
+                 ...
+              </span>
               <a href=""
                  tal:attributes="href batch/last_page_url"
                  tal:content="batch/lastpage">3457</a>
