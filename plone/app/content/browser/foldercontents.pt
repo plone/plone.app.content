@@ -13,8 +13,32 @@
   <body>
 
     <div metal:fill-slot="main">
-      <tal:protect tal:condition="python: not checkPermission('List folder contents', here)" tal:replace="here/raiseUnauthorized" />
-      <div tal:replace="structure view/contents_table"></div>
+      <h1>
+        <tal:block replace="structure view/icon" />
+        <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
+      </h1>
+
+      <a href=""
+         class="link-parent"
+         tal:define="parent_url view/parent_url"
+         tal:condition="parent_url"
+         tal:attributes="href string:${parent_url}/folder_contents"
+         i18n:translate="go_to_parent_url">
+          Up one level
+      </a>
+
+      <p class="documentDescription"
+         tal:content="context/Description"
+         tal:condition="context/Description">
+          Description
+      </p>
+
+      <form name="folderContentsForm"
+            method="post"
+            action="folder_object"
+            tal:attributes="action context/absolute_url">
+        <div tal:replace="structure view/contents_table"></div>
+      </form>
     </div>
 
 

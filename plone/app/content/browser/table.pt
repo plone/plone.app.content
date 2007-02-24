@@ -20,6 +20,7 @@
                              
   <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
+    <div tal:replace="structure view/batching"/>
     <table class="listing"
            summary="Content listing"
            i18n:attributes="summary summary_content_listing;">
@@ -65,7 +66,7 @@
       </thead>
 
       <metal:block tal:condition="view/batch">
-      <tbody tal:define="portal view/portal">
+      <tbody>
           <tal:items tal:repeat="item view/batch">
               <tr tal:attributes="class item/table_row_class;
                                   id string:folder-contents-item-${item/id};" >
@@ -145,6 +146,16 @@
           </tal:items>
       </tbody>
     </metal:block>
-    </table>
+  </table>
+  <div tal:replace="structure view/batching"/>
+  <tal:buttons tal:repeat="button view/buttons">
+    <input class="context"
+           type="submit"
+           name=""
+           value=""
+           tabindex=""
+           i18n:attributes="value"
+           tal:attributes="value button/title; name button/url; class button/cssclass" />
+  </tal:buttons>
   </metal:listing>
 </div>

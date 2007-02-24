@@ -34,4 +34,12 @@
          name="foldercontents_select"
          permission="cmf.ListFolderContents" />
 
+    <!-- Review list -->
+    <browser:page
+        for="*"
+        class=".reviewlist.FullReviewListView"
+        name="full_review_list"
+        template="full_review_list.pt"
+        permission="cmf.ReviewPortalContent" />
+
 </configure>    
