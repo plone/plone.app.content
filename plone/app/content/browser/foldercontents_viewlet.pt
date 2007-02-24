@@ -209,7 +209,7 @@
           <!-- Link to first -->
           <span tal:condition="batch/show_link_to_first">
               <a href=""
-                 tal:attributes="href batch/first_page_url">1</a>
+                 tal:attributes="href string:${view/url}/firstpage">1</a>
               <span tal:condition="batch/second_page_not_in_navlist"
                     tal:omit-tag="">
                  ...

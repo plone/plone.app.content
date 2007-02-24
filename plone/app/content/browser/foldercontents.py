@@ -23,47 +23,60 @@ from Products.CMFPlone import Batch
 NOT_ADDABLE_TYPES = ('Favorite',)
 
 class CatalogBatch(object):
-    def __init__(self, catalogresults, baseurl, pagesize=5, pagenumber=1):
-        self.catalogresults = catalogresults
-        self.baseurl = baseurl
+    def __init__(self, items, pagesize=5, pagenumber=1, navlistsize=5):
+        self.items = items
         self.pagesize = pagesize
         self.pagenumber = pagenumber
-
-    def items_not_on_page(self):
-        items_on_page = list(self)
-        return [item for item in self.catalogresults if item not in
-                items_on_page]
-
+        self.navlistsize = navlistsize
 
     def __len__(self):
         return len(self.catalogresults)
 
-    def page_url(self, pagenumber):
-        return self.baseurl + '?' + urllib.urlencode({'pagenumber': pagenumber})
+    def __iter__(self):
+        start = (self.pagenumber-1) * self.pagesize
+        end = start + self.pagesize
+        return self.catalogresults[start:end].__iter__()
 
     @property
     def size(self):
         return len(self)
 
     @property
+    def firstpage(self):
+        return 1
+
+    @property
+    def lastpage(self):
+        pages = self.size / self.pagesize
+        if self.size % self.pagesize:
+            pages += 1
+        return pages
+
+
+    def items_not_on_page(self):
+        items_on_page = list(self)
+        return [item for item in self.catalogresults if item not in
+                items_on_page]
+
+    @property
     def multiple_pages(self):
         return bool(self.size / self.pagesize)
 
     @property
-    def previous(self):
+    def has_next(self):
+        return (self.pagenumber * self.pagesize) < self.size
+
+    @property
+    def has_previous(self):
         return self.pagenumber > 1
 
     @property
-    def previous_url(self):
-        return self.page_url(self.pagenumber - 1)
+    def previouspage(self):
+        return self.pagenumber - 1
 
     @property
-    def next_url(self):
-        return self.page_url(self.pagenumber + 1)
-
-    @property
-    def next(self):
-        return (self.pagenumber * self.pagesize) < self.size
+    def nextpage(self):
+        return self.pagenumber + 1
 
     @property
     def next_item_count(self):
@@ -71,11 +84,6 @@ class CatalogBatch(object):
         if nextitems > self.pagesize:
             return self.pagesize
         return nextitems
-
-    def __iter__(self):
-        start = (self.pagenumber-1) * self.pagesize
-        end = start + self.pagesize
-        return self.catalogresults[start:end].__iter__()
 
     @property
     def navlist(self):
@@ -101,36 +109,16 @@ class CatalogBatch(object):
         return 2 not in self.navlist
 
     @property
-    def first_page_url(self):
-        return self.page_url(1)
-
-    @property
-    def last_page_url(self):
-        return self.page_url(self.lastpage)
-
-    @property
-    def lastpage(self):
-        pages = self.size / self.pagesize
-        if self.size % self.pagesize:
-            pages += 1
-        return pages
-
-    @property
     def islastpage(self):
         return self.lastpage == self.pagenumber
 
     @property
-    def prevurls(self):
-        pages = self.navlist[:self.navlist.index(self.pagenumber)]
-        return self.page_urls(pages)
-
-    def page_urls(self, pages):
-        return [{'name': i, 'url': self.page_url(i)} for i in pages]
+    def previous_pages(self):
+        return self.navlist[:self.navlist.index(self.pagenumber)]
 
     @property
-    def nexturls(self):
-        pages = self.navlist[self.navlist.index(self.pagenumber)+1:]
-        return self.page_urls(pages)
+    def next_pages(self):
+        return self.navlist[self.navlist.index(self.pagenumber)+1:]
 
     @property
     def last_page_not_in_navlist(self):
