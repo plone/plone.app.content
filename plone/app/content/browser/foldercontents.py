@@ -91,7 +91,7 @@ class FolderContentsKSSView(KSSView):
 
     def replaceTable(self, table):
         core = self.getCommandSet('core')
-        core.replaceInnerHTML('#folderlisting-main-viewlet', table.render())
+        core.replaceInnerHTML('#folderlisting-main-table', table.render())
         return self.render()
 
 class FolderContentsTable(object):
