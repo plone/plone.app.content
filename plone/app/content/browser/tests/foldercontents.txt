@@ -1,0 +1,32 @@
+Folder contents
+===============
+
+  >>> browser = self.browser
+
+Viewing the folder contents
+---------------------------
+
+A user should first login before being able to access the folder contents view.
+ 
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> 'Please log in' in browser.contents
+  True
+
+Log in and try again.
+
+  >>> self.loginAsManager()
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> 'Please log in' not in browser.contents
+  True
+
+Create a few pages so that we have some content to play with.
+
+  >>> add_document = browser.getLink(id='Document')
+  >>> add_document.click()
+  >>> browser.getControl('Title').value = 'Testing'
+  >>> browser.getControl('Body Text').value = 'Some content'
+  >>> browser.getControl(name='form_submit').click()
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> 'Testing' in browser.contents
+  True
