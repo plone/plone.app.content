@@ -3,6 +3,16 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:five="http://namespaces.zope.org/five">
 
+
+    <!-- Adding view -->
+    <browser:view
+        for="Products.CMFCore.interfaces.IFolderish"
+        name="+"
+        class=".adding.CMFAdding"
+        permission="cmf.AddPortalContent"
+        />
+
+    <!-- Folder contents -->
     <browser:page
         for="*"
         class=".foldercontents.FolderContentsView"

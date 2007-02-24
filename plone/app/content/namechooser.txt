@@ -1,0 +1,129 @@
+========================
+Normalizing name chooser
+========================
+
+plone.app.content provides a namechooser for IFolderish objects that can
+pick a normalized name based on the object's id, title, portal type or class, 
+and can provide uniqueness.
+
+Let's create some dummy content.
+
+    >>> from plone.app.content import container, item
+    >>> from zope.interface import implements, Interface
+    >>> from zope.schema.fieldproperty import FieldProperty
+    >>> from zope import schema
+    
+    >>> class IMyContainer(Interface):
+    ...     title = schema.TextLine(title=u"My title")
+    ...     description = schema.TextLine(title=u"My other title")
+
+    >>> class MyContainer(container.Container):
+    ...     implements(IMyContainer)
+    ...     portal_type = "My container"
+    ...     title = FieldProperty(IMyContainer['title'])
+    ...     description = FieldProperty(IMyContainer['description'])
+
+    >>> class IMyType(Interface):
+    ...     title = schema.TextLine(title=u"My title")
+    ...     description = schema.TextLine(title=u"My other title")
+    
+    >>> class MyType(item.Item):
+    ...     implements(IMyType)
+    ...     portal_type = "My portal type"
+    ...     title = FieldProperty(IMyType['title'])
+    ...     description = FieldProperty(IMyType['description'])
+
+    >>> container = MyContainer("my-container")
+
+Then wire up the name chooser (this is normally done in this package's
+configure.zcml file).
+
+    >>> from zope.component import adapts, provideAdapter, provideUtility
+    >>> from Products.CMFCore.interfaces import IFolderish
+    >>> from plone.app.content.namechooser import NormalizingNameChooser
+    >>> provideAdapter(adapts=(IFolderish,), factory=NormalizingNameChooser)
+
+We also need to wire up some adapters from plone.i18n that are used to
+normalise URLs.
+
+    >>> from zope.publisher.interfaces.http import IHTTPRequest
+    >>> from plone.i18n.normalizer import urlnormalizer
+    >>> from plone.i18n.normalizer.adapters import UserPreferredURLNormalizer
+    >>> provideUtility(component=urlnormalizer)
+    >>> provideAdapter(factory=UserPreferredURLNormalizer, adapts=(IHTTPRequest,))
+
+Choosing names based on id
+---------------------------
+
+By default, the namechooser will choose a name based on the id attribute of
+an object, if it has one.
+
+    >>> from zope.app.container.interfaces import INameChooser
+    >>> chooser = INameChooser(container)
+
+    >>> item = MyType("my-item")
+    >>> item.id
+    'my-item'
+    
+    >>> name = chooser.chooseName(None, item)
+    >>> name
+    'my-item'
+    >>> chooser.checkName(name, object)
+    True
+
+If we add it to the container and try again, we'll get a name that's made
+unique.
+
+    >>> container[name] = item
+
+    >>> item = MyType("my-item") # a distinct object, but with the same id
+    >>> name = chooser.chooseName(None, item)
+    >>> name
+    'my-item-1'
+    >>> chooser.checkName(name, object)
+    True
+
+The unqiqueness applies also if we pass a name in, in which case it will not
+be obtained from the id (or portal type or class or title)
+
+    >>> item.id = "another-id"
+    >>> chooser.chooseName("my-item", item)
+    'my-item-1'
+
+Choosing names based on type
+----------------------------
+
+If we did not have an id, the namechooser would use the portal_type, falling
+back on the class name.
+
+    >>> delattr(item, 'id')
+    >>> chooser.chooseName(None, item)
+    'my-portal-type'
+    
+    >>> delattr(MyType, 'portal_type')
+    >>> chooser.chooseName(None, item)
+    'mytype'
+
+Title-based name chooser
+------------------------
+
+An object can also gain a name based on its title. To do so, the object
+must implement or be adaptable to INameFromTitle.
+
+    >>> from plone.app.content.interfaces import INameFromTitle
+    
+    >>> class TitleAdapter(object):
+    ...     implements(INameFromTitle)
+    ...     adapts(IMyType)
+    ...     def __init__(self, context):
+    ...         self.context = context
+    ...     @property
+    ...     def title(self):
+    ...         return self.context.title
+    >>> provideAdapter(TitleAdapter)
+    
+
+    >>> item = MyType("some-id")
+    >>> item.title = u"My funky item"
+    >>> chooser.chooseName(None, item)
+    'my-funky-item'

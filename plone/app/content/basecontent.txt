@@ -1,0 +1,99 @@
+=============
+Basic content
+=============
+
+plone.app.content provides some helper base classes for content. Here are
+some simple examples of using them.
+
+    >>> from plone.app.content import container, item
+
+Let us define two fictional types, a folderish one and a non-folderish one.
+We should define factories for these types as well. Factories can be 
+referenced from CMF FTI's, and also from <browser:addMenuItem /> directives.
+With an appropriate add view (e.g. using formlib's AddForm) this will be
+available from Plone's "add item" menu. Factories are registered as named
+utilities.
+
+Note that we need to define a portal_type to keep CMF happy.
+
+    >>> from zope.interface import implements, Interface
+    >>> from zope.schema.fieldproperty import FieldProperty
+    >>> from zope import schema
+    >>> from zope.component.factory import Factory
+
+First, a container:
+
+    >>> class IMyContainer(Interface):
+    ...     title = schema.TextLine(title=u"My title")
+    ...     description = schema.TextLine(title=u"My other title")
+
+    >>> class MyContainer(container.Container):
+    ...     implements(IMyContainer)
+    ...     portal_type = "My container"
+    ...     title = FieldProperty(IMyContainer['title'])
+    ...     description = FieldProperty(IMyContainer['description'])
+
+    >>> containerFactory = Factory(MyContainer, title=u"A sample container")
+
+Then, an item:
+
+    >>> class IMyType(Interface):
+    ...     title = schema.TextLine(title=u"My title")
+    ...     description = schema.TextLine(title=u"My other title")
+    
+    >>> class MyType(item.Item):
+    ...     implements(IMyType)
+    ...     portal_type = "My type"
+    ...     title = FieldProperty(IMyType['title'])
+    ...     description = FieldProperty(IMyType['description'])
+
+    >>> itemFactory = Factory(MyType, title=u"A non-folderish item")
+
+We can now create the items.
+
+    >>> container = containerFactory("my-container")
+    >>> container.id
+    'my-container'
+    
+    
+    >>> item = itemFactory("my-item")
+    >>> item.id
+    'my-item'
+    
+Note that both the container type and the item type are contentish. This is
+important, because CMF provides event handlers that automatically index 
+objects that are IContentish.
+
+    >>> from Products.CMFCore.interfaces import IContentish
+    >>> IContentish.providedBy(container)
+    True
+    >>> IContentish.providedBy(item)
+    True
+    
+Only the container is folderish, though:
+    
+    >>> from Products.CMFCore.interfaces import IFolderish
+    >>> bool(container.isPrincipiaFolderish)
+    True
+    >>> IFolderish.providedBy(container)
+    True
+    >>> bool(item.isPrincipiaFolderish)
+    False
+    >>> IFolderish.providedBy(item)
+    False
+    
+We can use the more natural Zope3-style container API, or the traditional
+ObjectManager one.
+
+    >>> container['my-item'] = item
+    >>> 'my-item' in container
+    True
+    >>> 'my-item' in container.objectIds()
+    True
+    >>> del container['my-item']
+    >>> 'my-item' in container
+    False
+    >>> container._setObject('my-item', item)
+    'my-item'
+    >>> 'my-item' in container
+    True
