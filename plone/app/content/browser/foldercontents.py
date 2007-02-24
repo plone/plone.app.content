@@ -17,123 +17,10 @@ from AccessControl import Unauthorized
 from OFS.interfaces import IOrderedContainer
 
 import urllib
-
-from Products.CMFPlone import Batch
+from plone.app.content.batching import Batch
+from kss.core import KSSView
 
 NOT_ADDABLE_TYPES = ('Favorite',)
-
-class CatalogBatch(object):
-    def __init__(self, items, pagesize=5, pagenumber=1, navlistsize=5):
-        self.items = items
-        self.pagesize = pagesize
-        self.pagenumber = pagenumber
-        self.navlistsize = navlistsize
-
-    def __len__(self):
-        return len(self.catalogresults)
-
-    def __iter__(self):
-        start = (self.pagenumber-1) * self.pagesize
-        end = start + self.pagesize
-        return self.catalogresults[start:end].__iter__()
-
-    @property
-    def size(self):
-        return len(self)
-
-    @property
-    def firstpage(self):
-        return 1
-
-    @property
-    def lastpage(self):
-        pages = self.size / self.pagesize
-        if self.size % self.pagesize:
-            pages += 1
-        return pages
-
-
-    def items_not_on_page(self):
-        items_on_page = list(self)
-        return [item for item in self.catalogresults if item not in
-                items_on_page]
-
-    @property
-    def multiple_pages(self):
-        return bool(self.size / self.pagesize)
-
-    @property
-    def has_next(self):
-        return (self.pagenumber * self.pagesize) < self.size
-
-    @property
-    def has_previous(self):
-        return self.pagenumber > 1
-
-    @property
-    def previouspage(self):
-        return self.pagenumber - 1
-
-    @property
-    def nextpage(self):
-        return self.pagenumber + 1
-
-    @property
-    def next_item_count(self):
-        nextitems = self.size - (self.pagenumber * self.pagesize)
-        if nextitems > self.pagesize:
-            return self.pagesize
-        return nextitems
-
-    @property
-    def navlist(self):
-        start = self.pagenumber - 4
-        if start < 1:
-            start = 1
-        end = start + 10
-        if end > self.lastpage:
-            end = self.lastpage
-
-        return range(start, end+1)
-
-    @property
-    def show_link_to_first(self):
-        return 1 not in self.navlist
-
-    @property
-    def show_link_to_last(self):
-        return self.lastpage not in self.navlist
-
-    @property
-    def second_page_not_in_navlist(self):
-        return 2 not in self.navlist
-
-    @property
-    def islastpage(self):
-        return self.lastpage == self.pagenumber
-
-    @property
-    def previous_pages(self):
-        return self.navlist[:self.navlist.index(self.pagenumber)]
-
-    @property
-    def next_pages(self):
-        return self.navlist[self.navlist.index(self.pagenumber)+1:]
-
-    @property
-    def last_page_not_in_navlist(self):
-        return self.lastpage not in self.navlist
-
-    @property
-    def items_on_page(self):
-        if self.islastpage:
-            remainder = self.size % self.pagenumber
-            if remainder == 0:
-                return self.pagesize
-            else:
-                return remainder
-        else:
-            return self.pagesize
 
 class FolderContentsView(BrowserView):
     """
@@ -152,7 +39,8 @@ class FolderContentsView(BrowserView):
         """
         # taken from plone_sripts/getAddableTypes 
         types =  self.context.sortObjects(self.context.allowedContentTypes())
-        return [ ctype for ctype in types if ctype.getId() not in NOT_ADDABLE_TYPES ]
+        return [ctype for ctype in types if ctype.getId() not in
+                NOT_ADDABLE_TYPES]
 
     @property
     def num_types(self):
@@ -184,7 +72,6 @@ class FolderContentsView(BrowserView):
         return table.render()
 
 
-from kss.core import KSSView
 
 class FolderContentsKSSView(KSSView):
     def select(self):
@@ -192,7 +79,8 @@ class FolderContentsKSSView(KSSView):
         return self.replaceTable(table)
 
     def sort_on(self, sort_on):
-        table = FolderContentsTable(self.context, self.request, contentFilter={'sort_on':sort_on})
+        table = FolderContentsTable(self.context, self.request,
+                                    contentFilter={'sort_on':sort_on})
         return self.replaceTable(table)
 
     def replaceTable(self, table):
@@ -201,8 +89,29 @@ class FolderContentsKSSView(KSSView):
         return self.render()
 
 class FolderContentsTable(object):
-    """    
+    """   
+    The foldercontents table renders the table and its actions.
     """                
+
+    def __init__(self, context, request, contentFilter={}):
+        self.context = context
+        self.request = request
+        requestContentFilter = self.request.get("contentFilter", {})
+        requestContentFilter.update(contentFilter)
+        self.contentFilter = requestContentFilter
+
+        selection = request.get('select')
+        if selection == 'screen':
+            self.selectcurrentbatch=True
+        elif selection == 'all':
+            self.selectall = True
+
+    @property
+    def url(self):
+        return self.context.absolute_url()+'/@@folder_contents'
+
+    render = ViewPageTemplateFile("foldercontents_table.pt")
+
     # options
     selectcurrentbatch = False
     _select_all = False
@@ -222,21 +131,6 @@ class FolderContentsTable(object):
         return self.selectcurrentbatch and not self.selectall
 
 
-    def __init__(self, context, request, contentFilter={}):
-        self.context = context
-        self.request = request
-        requestContentFilter = self.request.get("contentFilter", {})
-        requestContentFilter.update(contentFilter)
-        self.contentFilter = requestContentFilter
-
-        selection = request.get('select')
-        if selection == 'screen':
-            self.selectcurrentbatch=True
-        elif selection == 'all':
-            self.selectall = True
-
-    render = ViewPageTemplateFile("foldercontents_viewlet.pt")
-        
     def get_icon(self):
         """
         """
@@ -258,20 +152,21 @@ class FolderContentsTable(object):
     def title(self):
         """
         """
-        return "Change me!"
-        # view_title and here.utranslate(view_title) or putils.pretty_title_or_id(here)        
+        return self.context.pretty_title_or_id()
 
     @property
     def selectall_url(self):
-        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s&select=all'%self.request.get('pagenumber', '1')
+        return self.selectnone_url+'&select=all'
 
     @property
     def selectscreen_url(self):
-        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s&select=screen'%self.request.get('pagenumber', '1')
+        return self.selectnone_url+'&select=screen'
 
     @property
     def selectnone_url(self):
-        return self.context.absolute_url()+'/@@folder_contents?pagenumber=%s'%self.request.get('pagenumber', '1')
+        url = self.context.absolute_url()
+        pagenumber = self.request.get('pagenumber', '1')
+        return url+'/@@folder_contents?pagenumber=%s'%pagenumber
 
     def setbuttonclass(self, button):
         if button['id'] == 'paste':
@@ -281,7 +176,8 @@ class FolderContentsTable(object):
         return button
 
     def folder_buttons(self):
-        context_state = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
         buttons = []
         button_actions = context_state.actions()['folder_buttons']
 
@@ -297,7 +193,6 @@ class FolderContentsTable(object):
 
         for button in button_actions:
             # Make proper classes for our buttons
-
             if button['id'] != 'paste' or self.context.cb_dataValid():
                 buttons.append(self.setbuttonclass(button))
         return buttons
@@ -377,12 +272,19 @@ class FolderContentsTable(object):
             url = obj.getURL()
             path = obj.getPath or "/".join(obj.getPhysicalPath())
             icon = plone_view.getIcon(obj);
-            type_class = 'contenttype-' + putils.normalizeString(obj.portal_type)
-            review_state = obj.review_state or wtool.getInfoFor(obj, 'review_state', '')
+            
+            type_class = 'contenttype-' + putils.normalizeString(
+                obj.portal_type)
+
+            review_state = obj.review_state or wtool.getInfoFor(
+                obj, 'review_state', '')
+
             state_class = 'state-' + putils.normalizeString(review_state)
             relative_url = obj.getURL(relative=True)
             obj_type = obj.portal_type
-            modified = plone_view.toLocalizedTime(obj.ModificationDate, long_format=1)
+
+            modified = plone_view.toLocalizedTime(
+                obj.ModificationDate, long_format=1)
             
             if obj_type in use_view_action:
                 view_url = url + '/view'
@@ -390,6 +292,9 @@ class FolderContentsTable(object):
                 view_url = url + "/folder_contents"              
             else:
                 view_url = url
+
+            is_browser_default = len(browser_default[1]) == 1 and (
+                obj.id == browser_default[1][0])
                                  
             results.append(dict(
                 url = url,
@@ -404,9 +309,10 @@ class FolderContentsTable(object):
                 icon = icon.html_tag(),
                 type_class = type_class,
                 wf_state = review_state,
-                state_title = wtool.getTitleForStateOnType(review_state, obj_type),
+                state_title = wtool.getTitleForStateOnType(review_state,
+                                                           obj_type),
                 state_class = state_class,
-                is_browser_default = len(browser_default[1]) == 1 and obj.id == browser_default[1][0],
+                is_browser_default = is_browser_default,
                 folderish = obj.is_folderish,
                 relative_url = relative_url,
                 view_url = view_url,
@@ -414,10 +320,8 @@ class FolderContentsTable(object):
                 table_row_class = table_row_class,
                 is_expired = self.context.isExpired(obj),
             ))
-        return CatalogBatch(
-            results,
-            baseurl=self.context.absolute_url()+'/@@folder_contents',
-            pagenumber=int(self.request.get('pagenumber', 1)))
+        return Batch(
+            results, pagenumber=int(self.request.get('pagenumber', 1)))
 
     @property
     def orderable(self):
@@ -436,7 +340,8 @@ class FolderContentsTable(object):
     def editable(self):
         """
         """
-        context_state = getMultiAdapter((self.context, self.request), name=u'plone_context_state')
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
         return context_state.is_editable()
         
     def portal(self):
@@ -444,7 +349,3 @@ class FolderContentsTable(object):
         """    
         utool = getToolByName(self.context, "portal_url")
         return utool.getPortalObject()
-        
-        
-# pps python:modules['Products.PythonScripts.standard'];
-#                                 quoted_item_id python:pps.url_quote(item['id'])"        

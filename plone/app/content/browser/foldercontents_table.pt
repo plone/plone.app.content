@@ -181,9 +181,9 @@
            tal:define="batch view/batch"
            tal:condition="batch/multiple_pages">
           <span class="previous"
-            tal:condition="batch/previous">
+            tal:condition="batch/has_previous">
               <a href=""
-                 tal:attributes="href batch/previous_url">
+                 tal:attributes="href string:${view/url}?pagenumber=${batch/previouspage}">
                  &laquo;
                  <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
                      Previous
@@ -194,9 +194,9 @@
           </span>
 
           <span class="next"
-                tal:condition="batch/next">
+                tal:condition="batch/has_next">
               <a href=""
-                 tal:attributes="href batch/next_url">
+                 tal:attributes="href string:${view/url}?pagenumber=${batch/nextpage}">
                  <span i18n:translate="batch_next_x_items" tal:omit-tag="">
                      Next
                      <span i18n:name="number" tal:omit-tag="" tal:content="batch/next_item_count">n</span>
@@ -232,10 +232,10 @@
           -->
 
           <!-- Pagelist with links to previous pages for quick navigation -->
-          <span tal:repeat="link batch/prevurls"
+          <span tal:repeat="pagenumber batch/previous_pages"
                 tal:omit-tag="" >
-              <a href="" tal:content="link/name" tal:attributes="href link/url" >
-              </a>
+            <a href="" tal:content="pagenumber" 
+               tal:attributes="href string:${view/url}?pagenumber=$pagenumber"/>
           </span>
 
           <!-- Current page -->
@@ -245,10 +245,10 @@
           </span>
 
           <!-- Pagelist with links to next pages for quick navigation -->
-          <span tal:repeat="link batch/nexturls"
+          <span tal:repeat="pagenumber batch/next_pages"
                 tal:omit-tag="" >
-              <a href="" tal:content="link/name" tal:attributes="href link/url" >
-              </a>
+            <a href="" tal:content="pagenumber" 
+               tal:attributes="href string:${view/url}?pagenumber=$pagenumber"/>
           </span>
 
           <!-- Pagelist with quantum leap links to next pages for quick navigation -->
@@ -268,12 +268,12 @@
 
           <!-- Link to last -->
           <span tal:condition="batch/show_link_to_last">
-              <span tal:condition="batch/last_page_not_in_navlist"
+              <span tal:condition="batch/before_last_page_not_in_navlist"
                     tal:omit-tag="">
                  ...
               </span>
               <a href=""
-                 tal:attributes="href batch/last_page_url"
+                 tal:attributes="href string:${view/url}?pagenumber=${batch/lastpage}"
                  tal:content="batch/lastpage">3457</a>
           </span>
 

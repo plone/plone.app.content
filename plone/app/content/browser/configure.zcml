@@ -17,21 +17,21 @@
         for="*"
         class=".foldercontents.FolderContentsView"
         name="folder_contents"
-        template="folder_contents_new.pt"
-        permission="zope.Public" />
+        template="foldercontents.pt"
+        permission="cmf.ListFolderContents" />
     
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
          attribute="sort_on"
          name="foldercontents_sorton"
-         permission="zope2.View" />
+         permission="cmf.ListFolderContents" />
 
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
          attribute="select"
          name="foldercontents_select"
-         permission="zope2.View" />
+         permission="cmf.ListFolderContents" />
 
 </configure>    
