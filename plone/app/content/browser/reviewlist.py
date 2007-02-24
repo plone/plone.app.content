@@ -10,7 +10,7 @@ class FullReviewListView(BrowserView):
         return self.context.my_worklist()
 
     def url(self):
-        return self.context.absolute_url()+'/@@full_review_list'
+        return self.context.absolute_url()+'/full_review_list'
 
     def review_table(self):
         table = ReviewListTable(self.context, self.request)
@@ -25,7 +25,7 @@ class ReviewListTable(object):
         self.context = context
         self.request = request
 
-        url = self.context.absolute_url()+'/@@full_review_list'
+        url = self.context.absolute_url()+'/full_review_list'
         self.table = Table(context, request, url, self.items,
                            buttons=self.buttons)
 

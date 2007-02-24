@@ -81,3 +81,7 @@ class Table(object):
         if self.selectcurrentbatch:
             return True
         return False
+
+    @property
+    def viewname(self):
+        return self.url.split('?')[0].split('/')[-1]

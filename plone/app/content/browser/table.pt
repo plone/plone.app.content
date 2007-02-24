@@ -1,4 +1,5 @@
 <div id="folderlisting-main-table">
+  <input type="hidden" name="orig_template" tal:attributes="value view/viewname"/>
   <tal:block condition="view/selectall">
     <input type="hidden" name="paths:list"
            tal:repeat="item view/batch/items_not_on_page"
@@ -22,6 +23,7 @@
 
     <div tal:replace="structure view/batching"/>
     <table class="listing"
+           id="listing-table"
            summary="Content listing"
            i18n:attributes="summary summary_content_listing;">
       <thead>
