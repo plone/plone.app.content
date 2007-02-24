@@ -1,4 +1,9 @@
+from zope import interface
+from plone.app.content.interfaces import IBatch
+
 class Batch(object):
+    interface.implements(IBatch)
+
     def __init__(self, items, pagesize=5, pagenumber=1, navlistsize=5):
         self.items = items
         self.pagesize = pagesize

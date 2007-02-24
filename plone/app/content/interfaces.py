@@ -8,3 +8,6 @@ class INameFromTitle(Interface):
     title = schema.TextLine(title=u"Title",
                             description=u"A title, which will be converted to a name",
                             required=True)
+
+class IBatch(Interface):
+    """A batch splits up a large number of items over multiple pages"""
