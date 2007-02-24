@@ -25,8 +25,9 @@ class ReviewListTable(object):
         self.context = context
         self.request = request
 
-        url = self.context.absolute_url()+'/full_review_list'
-        self.table = Table(context, request, url, self.items,
+        url = self.context.absolute_url()
+        view_url = url + '/full_review_list'
+        self.table = Table(request, url, view_url, self.items,
                            buttons=self.buttons)
 
     def render(self):

@@ -8,12 +8,14 @@ class Table(object):
     It is meant to be subclassed to provide methods for getting specific table info.
     """                
 
-    def __init__(self, context, request, url, items, show_sort_column=False,
+    def __init__(self, request, base_url, view_url, items, show_sort_column=False,
                  buttons=[]):
-        self.context = context
         self.request = request
+        self.context = None # Need for view pagetemplate
 
-        self.url = url
+        self.base_url = base_url
+        self.view_url = view_url
+        self.url = view_url
         self.items = items
         self.show_sort_column = show_sort_column
         self.buttons = buttons
@@ -28,8 +30,9 @@ class Table(object):
     def set_checked(self, item):
         selected = self.selected(item)
         item['checked'] = selected and 'checked' or None
+        item['table_row_class'] = item.get('table_row_class', '')
         if selected:
-            item['table_row_class'] = item['table_row_class'] + ' selected'
+            item['table_row_class'] += ' selected'
 
     @property
     def batch(self):
@@ -75,7 +78,7 @@ class Table(object):
     @property
     def selectnone_url(self):
         pagenumber = self.request.get('pagenumber', '1')
-        return self.url+'?pagenumber=%s'%pagenumber
+        return self.view_url+'?pagenumber=%s'%pagenumber
 
     def selected(self, item):
         if self.selectcurrentbatch:
@@ -84,4 +87,4 @@ class Table(object):
 
     @property
     def viewname(self):
-        return self.url.split('?')[0].split('/')[-1]
+        return self.view_url.split('?')[0].split('/')[-1]

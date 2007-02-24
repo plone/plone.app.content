@@ -104,8 +104,9 @@ class FolderContentsTable(object):
         self.request = request
         self.contentFilter = contentFilter
 
-        url = self.context.absolute_url()+'/@@folder_contents'
-        self.table = Table(context, request, url, self.items,
+        url = self.context.absolute_url()
+        view_url = url + '/@@folder_contents'
+        self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
                            buttons=self.buttons)
 
