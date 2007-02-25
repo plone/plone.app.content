@@ -1,4 +1,5 @@
 <div id="folderlisting-main-table">
+  <input type="hidden" name="pagenumber" tal:attributes="value view/batch/pagenumber"/>
   <input type="hidden" name="orig_template" tal:attributes="value view/viewname"/>
   <tal:block condition="view/selectall">
     <input type="hidden" name="paths:list"

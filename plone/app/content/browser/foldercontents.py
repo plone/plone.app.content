@@ -31,8 +31,6 @@ class FolderContentsView(BrowserView):
         table = FolderContentsTable(self.context, self.request)
         return table.render()
 
-
-
     def title(self):
         """
         """
@@ -80,7 +78,8 @@ class FolderContentsView(BrowserView):
 
 
 class FolderContentsKSSView(KSSView):
-    def select(self):
+    def select(self, pagenumber='1'):
+        self.request.set('pagenumber', pagenumber)
         table = FolderContentsTable(self.context, self.request)
         return self.replaceTable(table)
 
