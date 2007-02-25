@@ -23,15 +23,8 @@
     <browser:page
          for="*"
          class=".foldercontents.FolderContentsKSSView"
-         attribute="sort_on"
-         name="foldercontents_sorton"
-         permission="cmf.ListFolderContents" />
-
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsKSSView"
-         attribute="select"
-         name="foldercontents_select"
+         attribute="update_table"
+         name="foldercontents_update_table"
          permission="cmf.ListFolderContents" />
 
     <!-- Review list -->

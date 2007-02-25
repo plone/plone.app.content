@@ -78,20 +78,14 @@ class FolderContentsView(BrowserView):
 
 
 class FolderContentsKSSView(KSSView):
-    def select(self, pagenumber='1', sort_on='getObjPositionInParent'):
+    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent'):
         self.request.set('sort_on', sort_on)
         self.request.set('pagenumber', pagenumber)
         table = FolderContentsTable(self.context, self.request,
                                     contentFilter={'sort_on':sort_on})
-        return self.replaceTable(table)
+        return self.replace_table(table)
 
-    def sort_on(self, sort_on):
-        self.request.set('sort_on', sort_on)
-        table = FolderContentsTable(self.context, self.request,
-                                    contentFilter={'sort_on':sort_on})
-        return self.replaceTable(table)
-
-    def replaceTable(self, table):
+    def replace_table(self, table):
         core = self.getCommandSet('core')
         core.replaceInnerHTML('#folderlisting-main-table', table.render())
         return self.render()
