@@ -16,17 +16,64 @@ Log in and try again.
 
   >>> self.loginAsManager()
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> 'Please log in' not in browser.contents
-  True
+  >>> 'Please log in' in browser.contents
+  False
+
+First clearout all portlets so that the rest of the test is easier.
+
+  >>> browser.open('http://nohost/plone/@@manage-portlets')
+  >>> browser.getLink(url='@@delete-portlet?name=recent').click()
+  >>> browser.getLink(url='@@delete-portlet?name=navigation').click()
+
+Because we have no content there should not be any batching.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> browser.getLink('Next 5 items')
+  Traceback (most recent call last):
+  ...
+  LinkNotFoundError
 
 Create a few pages so that we have some content to play with.
 
-  >>> add_document = browser.getLink(id='Document')
-  >>> add_document.click()
-  >>> browser.getControl('Title').value = 'Testing'
-  >>> browser.getControl('Body Text').value = 'Some content'
-  >>> browser.getControl(name='form_submit').click()
+TODO: Do this behind the scenes to speed things up
+
+  >>> for i in range(14):
+  ...     add_document = browser.getLink(id='Document')
+  ...     add_document.click()
+  ...     browser.getControl('Title').value = 'Testing %d' % i
+  ...     browser.getControl('Body Text').value = 'Some content'
+  ...     browser.getControl(name='form_submit').click()
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
   >>> 'Testing' in browser.contents
   True
+
+Now that we have a lot of pages we should also have some batching.
+
+  >>> open('/tmp/output', 'w').write(browser.contents)
+  >>> browser.getLink('Next 5 items')
+  <Link ...>
+
+One of the later pages should not be in our current screen.
+
+  >>> 'Testing 3' in browser.contents
+  False
+
+Now when we go to the second screen it should show up.
+
+  >>> browser.getLink('2').click()
+  >>> 'Testing 3' in browser.contents
+  True
+
+We should also have at most four pages of batched items. So at page four there
+should be no way to go further.
+
+  >>> browser.getLink('4').click()
+  >>> 'Next 5 items' in browser.contents
+  False
+
+
+- previous
+- ordering
+- buttons
+- selection (select all etc.)
