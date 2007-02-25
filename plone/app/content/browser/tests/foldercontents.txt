@@ -19,7 +19,7 @@ Log in and try again.
   >>> 'Please log in' in browser.contents
   False
 
-First clearout all portlets so that the rest of the test is easier.
+First clearout all portlets so that the rest of the test is easier to write.
 
   >>> browser.open('http://nohost/plone/@@manage-portlets')
   >>> browser.getLink(url='@@delete-portlet?name=recent').click()
@@ -35,22 +35,15 @@ Because we have no content there should not be any batching.
 
 Create a few pages so that we have some content to play with.
 
-TODO: Do this behind the scenes to speed things up
-
-  >>> for i in range(14):
-  ...     add_document = browser.getLink(id='Document')
-  ...     add_document.click()
-  ...     browser.getControl('Title').value = 'Testing %d' % i
-  ...     browser.getControl('Body Text').value = 'Some content'
-  ...     browser.getControl(name='form_submit').click()
+  >>> self.createDocuments()
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> open('/tmp/output', 'w').write(browser.contents)
   >>> 'Testing' in browser.contents
   True
 
 Now that we have a lot of pages we should also have some batching.
 
-  >>> open('/tmp/output', 'w').write(browser.contents)
   >>> browser.getLink('Next 5 items')
   <Link ...>
 
@@ -69,11 +62,56 @@ We should also have at most four pages of batched items. So at page four there
 should be no way to go further.
 
   >>> browser.getLink('4').click()
-  >>> 'Next 5 items' in browser.contents
-  False
+  >>> browser.getLink('Next 5 items')
+  Traceback (most recent call last):
+  ...
+  LinkNotFoundError
 
+The batching navigation also should allow us to go back to previous pages.
 
-- previous
-- ordering
-- buttons
-- selection (select all etc.)
+  >>> browser.getLink('Previous 5 items')
+  <Link ...>
+
+When we are at the first page this link should not be shown.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> browser.getLink('Previous 5 items')
+  Traceback (most recent call last):
+  ...
+  LinkNotFoundError
+
+Selection
+---------
+
+The folder contents view supports quite elaborate selection techniques. You can
+select items individually or group wise. We will now demonstrate how the group
+wise selection works.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+
+First we can select all items on screen.
+
+  >>> browser.getLink(id='foldercontents-selectall').click()
+
+This will show a message that only the items on the screen are selected.
+
+  >>> self.textOnPage('All 5 items on this page are selected', browser.contents) 
+  True
+
+We now have a way to select all items in the batch.
+
+  >>> browser.getLink(id='foldercontents-selectall-completebatch').click()
+
+This should have selected everything.
+
+  >>> self.textOnPage('All \d* items in this folder are selected', browser.contents)
+  True
+
+We can also clear the selection, this will deselect everything.
+
+  >>> browser.getLink(id='foldercontents-clearselection').click()
+  
+Now we are back to square one and we can select all items on the screen again.
+
+  >>> browser.getLink(id='foldercontents-selectall')
+  <Link ...>
