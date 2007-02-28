@@ -33,7 +33,7 @@ class Batch(object):
             pages += 1
         return pages
 
-
+    @property
     def items_not_on_page(self):
         items_on_page = list(self)
         return [item for item in self.items if item not in

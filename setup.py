@@ -11,10 +11,14 @@ plone.app.content contains various views for Plone, such as
 folder_contents, as well as general content infrastructure, such as
 base classes and name choosers.
 """,
-      classifiers=[], # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+          "Framework :: Plone",
+          "License :: OSI Approved :: GNU General Public License (GPL)",
+          "Programming Language :: Python",
+      ],
       keywords='plone content views viewlet',
-      author='Jeroen Vloothuis, Kai Diefenbach',
-      author_email='kai.diefenbach@iqpp.de',
+      author='Jeroen Vloothuis',
+      author_email='jeroen.vloothuis@xs4all.nl',
       url='http://svn.plone.org/svn/plone/plone.app.content',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
