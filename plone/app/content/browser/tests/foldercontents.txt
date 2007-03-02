@@ -28,7 +28,7 @@ First clearout all portlets so that the rest of the test is easier to write.
 Because we have no content there should not be any batching.
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> browser.getLink('Next 5 items')
+  >>> browser.getLink('Next 20 items')
   Traceback (most recent call last):
   ...
   LinkNotFoundError
@@ -44,38 +44,38 @@ Create a few pages so that we have some content to play with.
 
 Now that we have a lot of pages we should also have some batching.
 
-  >>> browser.getLink('Next 5 items')
+  >>> browser.getLink('Next 20 items')
   <Link ...>
 
 One of the later pages should not be in our current screen.
 
-  >>> 'Testing 3' in browser.contents
+  >>> 'Testing 20' in browser.contents
   False
 
 Now when we go to the second screen it should show up.
 
   >>> browser.getLink('2').click()
-  >>> 'Testing 3' in browser.contents
+  >>> 'Testing 20' in browser.contents
   True
 
 We should also have at most four pages of batched items. So at page four there
 should be no way to go further.
 
   >>> browser.getLink('4').click()
-  >>> browser.getLink('Next 5 items')
+  >>> browser.getLink('Next 20 items')
   Traceback (most recent call last):
   ...
   LinkNotFoundError
 
 The batching navigation also should allow us to go back to previous pages.
 
-  >>> browser.getLink('Previous 5 items')
+  >>> browser.getLink('Previous 20 items')
   <Link ...>
 
 When we are at the first page this link should not be shown.
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> browser.getLink('Previous 5 items')
+  >>> browser.getLink('Previous 20 items')
   Traceback (most recent call last):
   ...
   LinkNotFoundError
@@ -95,7 +95,7 @@ First we can select all items on screen.
 
 This will show a message that only the items on the screen are selected.
 
-  >>> self.textOnPage('All 5 items on this page are selected', browser.contents) 
+  >>> self.textOnPage('All 20 items on this page are selected', browser.contents) 
   True
 
 We now have a way to select all items in the batch.
