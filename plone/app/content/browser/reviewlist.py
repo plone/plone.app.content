@@ -1,6 +1,11 @@
-from Products.Five import BrowserView
 from zope.component import getMultiAdapter
-from Products.CMFCore.utils import getToolByName
+from zope.component import getUtility
+
+from Products.Five import BrowserView
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
+from Products.CMFPlone.interfaces import IPloneTool
 from plone.app.content.browser.tableview import Table
 import urllib
 
@@ -35,11 +40,11 @@ class ReviewListTable(object):
 
     @property
     def items(self):
-        putils = getToolByName(self.context, 'plone_utils')
-        url_tool = getToolByName(self.context, 'portal_url')
+        putils = getUtility(IPloneTool)
+        url_tool = getUtility(IURLTool)
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
-        wtool = getToolByName(self.context, "portal_workflow")
-        portal_properties = getToolByName(self.context, 'portal_properties')
+        wtool = getUtility(IConfigurableWorkflowTool)
+        portal_properties = getUtility(IPropertiesTool)
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())

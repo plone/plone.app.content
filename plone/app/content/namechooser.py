@@ -1,5 +1,6 @@
 from zope.interface import implements
 from zope.component import getUtility
+from zope.component import queryUtility
 
 from zope.app.container.interfaces import INameChooser
 
@@ -8,7 +9,7 @@ from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.i18n.normalizer.interfaces import IURLNormalizer
 
 from Acquisition import aq_inner, aq_parent, aq_base
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import IPropertiesTool
 
 ATTEMPTS = 1000
 
@@ -85,7 +86,7 @@ class NormalizingNameChooser(object):
     def _getCharset(self, object):
         """Returns the site default charset, or utf-8.
         """
-        properties = getToolByName(aq_inner(object), 'portal_properties', None)
+        properties = queryUtility(IPropertiesTool)
         if properties is not None:
             site_properties = getattr(properties, 'site_properties', None)
             if site_properties is not None:

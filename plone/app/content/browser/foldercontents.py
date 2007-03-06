@@ -1,20 +1,21 @@
-from Acquisition import Explicit, aq_parent, aq_inner
-
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.interface import implements, providedBy
 from zope.app.pagetemplate import ViewPageTemplateFile
-from Products.CMFCore.utils import getToolByName
-from Products.Five import BrowserView
-from plone.app.content.browser.interfaces import IFolderContentsView
 
-from Products.ATContentTypes.interface import IATTopic
-
-from ZODB.POSException import ConflictError
-from Products.CMFCore.utils import getToolByName
 from AccessControl import Unauthorized
-
+from Acquisition import Explicit, aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
+from Products.ATContentTypes.interface import IATTopic
+from Products.CMFCore.interfaces import IConfigurableWorkflowTool
+from Products.CMFCore.interfaces import IMembershipTool
+from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.interfaces import IURLTool
+from Products.CMFPlone.interfaces import IPloneTool
+from Products.Five import BrowserView
+from ZODB.POSException import ConflictError
 
+from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table
 from kss.core import KSSView
 
@@ -44,9 +45,9 @@ class FolderContentsView(BrowserView):
     def parent_url(self):
         """
         """
-        portal_url = getToolByName(self.context, 'portal_url')
-        plone_utils = getToolByName(self.context, 'plone_utils')
-        portal_membership = getToolByName(self.context, 'portal_membership')
+        portal_url = getUtility(IURLTool)
+        plone_utils = getUtility(IPloneTool)
+        portal_membership = getUtility(IMembershipTool)
 
         obj = self.context
 
@@ -113,10 +114,10 @@ class FolderContentsTable(object):
     def items(self):
         """
         """
-        putils = getToolByName(self.context, 'plone_utils')
+        putils = getUtility(IPloneTool)
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
-        wtool = getToolByName(self.context, "portal_workflow")
-        portal_properties = getToolByName(self.context, 'portal_properties')
+        wtool = getUtility(IConfigurableWorkflowTool)
+        portal_properties = getUtility(IPropertiesTool)
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
