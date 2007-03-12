@@ -40,7 +40,9 @@ class FolderContentsView(BrowserView):
     def icon(self):
         """
         """
-        return getattr(self.context, self.context.getIcon(1)).tag(alt = self.context.portal_type)
+        ploneview = getMultiAdapter((self.context, self.request), name="plone")
+        icon = ploneview.getIcon(self.context)
+        return icon.html_tag()
 
     def parent_url(self):
         """
