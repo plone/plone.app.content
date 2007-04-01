@@ -1,7 +1,9 @@
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
+from Acquisition import aq_inner
 from Products.Five import BrowserView
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
@@ -113,10 +115,9 @@ class ReviewListTable(object):
         return False
 
     def buttons(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
         buttons = []
-        button_actions = context_state.actions()['folder_buttons']
+        actions_tool = getUtility(IActionsTool)
+        button_actions = actions_tool.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted

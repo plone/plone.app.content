@@ -1,19 +1,18 @@
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.interface import implements, providedBy
-from zope.app.pagetemplate import ViewPageTemplateFile
+from zope.interface import implements
 
 from AccessControl import Unauthorized
-from Acquisition import Explicit, aq_parent, aq_inner
+from Acquisition import aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
 from Products.ATContentTypes.interface import IATTopic
+from Products.CMFCore.interfaces import IActionsTool
 from Products.CMFCore.interfaces import IConfigurableWorkflowTool
 from Products.CMFCore.interfaces import IMembershipTool
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFCore.interfaces import IURLTool
 from Products.CMFPlone.interfaces import IPloneTool
 from Products.Five import BrowserView
-from ZODB.POSException import ConflictError
 
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table
@@ -207,10 +206,9 @@ class FolderContentsTable(object):
 
     @property
     def buttons(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
         buttons = []
-        button_actions = context_state.actions()['folder_buttons']
+        actions_tool = getUtility(IActionsTool)
+        button_actions = actions_tool.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
