@@ -11,7 +11,8 @@
 
 <body>
   <div metal:fill-slot="main">
-    <h1 i18n:translate="heading_full_review_list">Full review list:</h1>
+    <h1 class="documentFirstHeading"
+        i18n:translate="heading_full_review_list">Full review list:</h1>
 
     <form name="worklistForm"
             method="post"
