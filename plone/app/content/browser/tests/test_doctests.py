@@ -24,9 +24,9 @@ class FolderTestCase(FunctionalTestCase):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('root', 'secret', ['Manager'], [])
 
-    def createDocuments(self):
+    def createDocuments(self, amount):
         self.setRoles(['Manager',])
-        for i in range(1, 65):
+        for i in range(1, amount):
             self.portal.invokeFactory(id='testing-%d' % i, type_name='Document')
             document = getattr(self.portal, 'testing-%d' % i)
             document.setTitle('Testing %d' % i)

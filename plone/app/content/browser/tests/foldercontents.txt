@@ -35,7 +35,7 @@ Because we have no content there should not be any batching.
 
 Create a few pages so that we have some content to play with.
 
-  >>> self.createDocuments()
+  >>> self.createDocuments(65)
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
   >>> open('/tmp/output', 'w').write(browser.contents)
@@ -114,4 +114,32 @@ We can also clear the selection, this will deselect everything.
 Now we are back to square one and we can select all items on the screen again.
 
   >>> browser.getLink(id='foldercontents-selectall')
+  <Link ...>
+
+The steps described go a bit different for when we only have a few items. First
+we clean up all items by removing everything.
+
+  >>> browser.getLink(id='foldercontents-selectall').click()
+  >>> browser.getLink(id='foldercontents-selectall-completebatch').click()
+  >>> browser.getControl(name='folder_delete:method').click()
+
+Now we will add some documents again.
+
+  >>> self.createDocuments(3)
+
+When we press the select all button it should no longer offer us to select the
+whole batch because we are showing everything already.
+
+  >>> browser.getLink(id='foldercontents-selectall').click()
+  >>> self.textOnPage('All 3 items in this folder are selected',
+  ...                 browser.contents) 
+  True
+  >>> browser.getLink(id='foldercontents-selectall-completebatch')
+  Traceback (most recent call last):
+  ...
+  LookupError: ...
+
+Instead we should now be able to clear the selection.
+
+  >>> browser.getLink(id='foldercontents-clearselection')
   <Link ...>

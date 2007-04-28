@@ -83,6 +83,16 @@ You can also check specifically if the whole batch has been selected.
   >>> table.selectall
   True
 
+When you select all items on the screen and there are no further pages it will
+set both the whole `selectcurrentbatch` and `selectall` properties.
+
+  >>> small_numnber_of_items = [{'id': i} for i in range(3)]
+  >>> table = Table({'select': 'screen'}, base_url, view_url, items=small_numnber_of_items)
+  >>> table.selectcurrentbatch
+  True
+  >>> table.selectall
+  True
+
 
 Sort column
 -----------
