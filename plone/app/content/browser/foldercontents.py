@@ -1,17 +1,11 @@
 from zope.component import getMultiAdapter
-from zope.component import getUtility
 from zope.interface import implements
 
 from AccessControl import Unauthorized
 from Acquisition import aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
 from Products.ATContentTypes.interface import IATTopic
-from Products.CMFCore.interfaces import IActionsTool
-from Products.CMFCore.interfaces import IConfigurableWorkflowTool
-from Products.CMFCore.interfaces import IMembershipTool
-from Products.CMFCore.interfaces import IPropertiesTool
-from Products.CMFCore.interfaces import IURLTool
-from Products.CMFPlone.interfaces import IPloneTool
+from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 
 from plone.app.content.browser.interfaces import IFolderContentsView
@@ -46,9 +40,9 @@ class FolderContentsView(BrowserView):
     def parent_url(self):
         """
         """
-        portal_url = getUtility(IURLTool)
-        plone_utils = getUtility(IPloneTool)
-        portal_membership = getUtility(IMembershipTool)
+        portal_url = getToolByName(self.context, 'portal_url')
+        plone_utils = getToolByName(self.context, 'plone_utils')
+        portal_membership = getToolByName(self.context, 'portal_membership')
 
         obj = self.context
 
@@ -115,10 +109,10 @@ class FolderContentsTable(object):
     def items(self):
         """
         """
-        putils = getUtility(IPloneTool)
+        plone_utils = getToolByName(self.context, 'plone_utils')
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
-        wtool = getUtility(IConfigurableWorkflowTool)
-        portal_properties = getUtility(IPropertiesTool)
+        portal_workflow = getToolByName(self.context, 'portal_workflow')
+        portal_properties = getToolByName(self.context, 'portal_properties')
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
@@ -140,11 +134,11 @@ class FolderContentsTable(object):
             path = obj.getPath or "/".join(obj.getPhysicalPath())
             icon = plone_view.getIcon(obj);
             
-            type_class = 'contenttype-' + putils.normalizeString(
+            type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
             review_state = obj.review_state
-            state_class = 'state-' + putils.normalizeString(review_state)
+            state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = obj.getURL(relative=True)
             obj_type = obj.portal_type
 
@@ -174,7 +168,7 @@ class FolderContentsTable(object):
                 icon = icon.html_tag(),
                 type_class = type_class,
                 wf_state = review_state,
-                state_title = wtool.getTitleForStateOnType(review_state,
+                state_title = portal_workflow.getTitleForStateOnType(review_state,
                                                            obj_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
@@ -207,8 +201,8 @@ class FolderContentsTable(object):
     @property
     def buttons(self):
         buttons = []
-        actions_tool = getUtility(IActionsTool)
-        button_actions = actions_tool.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
+        portal_actions = getToolByName(self.context, 'portal_actions')
+        button_actions = portal_actions.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
