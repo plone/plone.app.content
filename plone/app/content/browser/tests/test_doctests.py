@@ -8,7 +8,7 @@ from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
 import re
 
-setupPloneSite()
+setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.NORMALIZE_WHITESPACE)
