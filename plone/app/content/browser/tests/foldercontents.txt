@@ -131,13 +131,13 @@ When we press the select all button it should no longer offer us to select the
 whole batch because we are showing everything already.
 
   >>> browser.getLink(id='foldercontents-selectall').click()
-  >>> self.textOnPage('All 3 items in this folder are selected',
+  >>> self.textOnPage('All 2 items in this folder are selected',
   ...                 browser.contents) 
   True
   >>> browser.getLink(id='foldercontents-selectall-completebatch')
   Traceback (most recent call last):
   ...
-  LookupError: ...
+  LinkNotFoundError
 
 Instead we should now be able to clear the selection.
 
