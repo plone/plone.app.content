@@ -138,14 +138,14 @@
                    title="Move item up"
                    i18n:attributes="title title_move_item_up;"
                    tal:attributes="href string:${view/base_url}/folder_position?position=up&amp;id=${item/quoted_id}">
-                  <span class="arrowDownAlternative">&#9659;</span>
+                  &#9650;
                 </a>
                 &nbsp;
                 <a href=""
                    title="Move item down"
                    i18n:attributes="title title_move_item_down;"
                    tal:attributes="href string:${view/base_url}/folder_position?position=down&amp;id=${item/quoted_id}">
-                  <span class="arrowDownAlternative">&#9661;</span>
+                  &#9660;
                 </a>
               </td>
              </tr>
