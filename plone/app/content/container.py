@@ -4,6 +4,7 @@ from zope.app.container.contained import Contained
 
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
+from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 class OFSContainer(object):
@@ -37,10 +38,7 @@ class OFSContainer(object):
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
-        name = str(name) # Zope 2 doesn't like unicode names
-        # TODO there should be a check here if 'name' contains
-        # non-ASCII unicode data. In this case I think we should just
-        # raise an error.
+        name = name.encode('ascii') # may raise if there's a bugus id
         self._setObject(name, obj)
 
     def __delitem__(self, name):
@@ -55,7 +53,22 @@ class OFSContainer(object):
     def __len__(self):
         return len(self.objectIds())
         
-class Container(OFSContainer, PortalContent, PortalFolderBase, DefaultDublinCoreImpl, Contained):
+# Notes on this insane mixing of classes:
+# 
+#  - OFSContainer gives us Zope3-like container operations, and we want that
+#       to take priority so it comes first
+#  - CMFCatalogAware gives us catalog functionality. So does PortalContent,
+#       but PortalFolderBase overrides indexObject() and friends to do 
+#       nothing.
+#  - PortalFolderBase gives folder-like behaviour. It needs to come before
+#       PortalContent, otherwise objectIds() and friends don't work
+#  - PortalContent gives us SearchableText and WebDAV
+#  - DublinCoreImpl gives us DC fields
+#  - Contained gives us Zope3-like containment
+# 
+# ... I WANT AN ADAPTER!
+        
+class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent, DefaultDublinCoreImpl, Contained):
     """A base class mixing in CMFish, contentish, containerish, containedish,
     dublincoreish behaviour.
     """
