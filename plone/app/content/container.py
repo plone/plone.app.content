@@ -2,13 +2,11 @@ from zope.interface import implements
 from zope.app.container.interfaces import IContainer
 from zope.app.container.contained import Contained
 
-from OFS.ObjectManager import ObjectManager
-
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
-class OFSContainer(ObjectManager):
+class OFSContainer(object):
     """A folder that's also a container.
     
     Borrowed in part from megrok.five.
