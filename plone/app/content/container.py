@@ -14,6 +14,8 @@ class OFSContainer(object):
     
     implements(IContainer)
     
+    isPrincipiaFolderish = 1
+    
     def __init__(self, id=None):
         if id is not None:
             self.id = id
