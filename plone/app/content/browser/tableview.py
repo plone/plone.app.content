@@ -1,5 +1,6 @@
 from zope.app.pagetemplate import ViewPageTemplateFile
 from plone.app.content.batching import Batch
+from plone.memoize import instance
 
 class Table(object):
     """   
@@ -37,6 +38,7 @@ class Table(object):
             item['table_row_class'] += ' selected'
 
     @property
+    @instance.memoize
     def batch(self):
         b = Batch(self.items,
                   pagesize=self.pagesize,
