@@ -31,44 +31,46 @@
            summary="Content listing"
            i18n:attributes="summary summary_content_listing;">
       <thead>
-        <tr tal:condition="not:view/selectcurrentbatch">
-          <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
-        </tr>
-        <tr tal:condition="view/show_select_all_items">
-          <th colspan="6" class="nosort">
-            All <tal:block replace="view/batch/items_on_page"/> items on this
-            page are selected. 
-            <a tal:attributes="href view/selectall_url" id="foldercontents-selectall-completebatch">Select
-               all <tal:block replace="view/batch/size"/> items in this
-               folder.</a>
+	<tal:block condition="view/items">
+          <tr tal:condition="not:view/selectcurrentbatch">
+            <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
+          </tr>
+          <tr tal:condition="view/show_select_all_items">
+            <th colspan="6" class="nosort">
+              All <tal:block replace="view/batch/items_on_page"/> items on this
+              page are selected. 
+              <a tal:attributes="href view/selectall_url" id="foldercontents-selectall-completebatch">Select
+		all <tal:block replace="view/batch/size"/> items in this
+		folder.</a>
             </th>
-        </tr>
-        <tr tal:condition="view/selectall">
-          <th colspan="6" class="nosort">
-            All <tal:block replace="view/batch/size"/> items in this folder
-            are selected. <a tal:attributes="href view/selectnone_url" id="foldercontents-clearselection">Clear
-              selection</a>
-          </th>
-        </tr>
-        <tr>
-          <th class="nosort">&nbsp;</th>
-          <th tal:attributes="class nosortclass"
-              id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
-              >Title</tal:title>&nbsp;</th>
-          <th tal:attributes="class nosortclass"
-              id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
-              >Size</tal:size>&nbsp;</th>
-          <th tal:attributes="class nosortclass"
-              id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
-              >Modified</tal:modified>&nbsp;</th>
-          <th tal:attributes="class nosortclass"
-              id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
-              >State</tal:state>&nbsp;</th>
-          <th class="nosort" 
-              id="foldercontents-order-column"
-              tal:condition="view/show_sort_column">
-            &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
-        </tr>
+          </tr>
+          <tr tal:condition="view/selectall">
+            <th colspan="6" class="nosort">
+              All <tal:block replace="view/batch/size"/> items in this folder
+              are selected. <a tal:attributes="href view/selectnone_url" id="foldercontents-clearselection">Clear
+		selection</a>
+            </th>
+          </tr>
+	</tal:block>
+          <tr>
+            <th class="nosort">&nbsp;</th>
+            <th tal:attributes="class nosortclass"
+		id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
+                >Title</tal:title>&nbsp;</th>
+            <th tal:attributes="class nosortclass"
+		id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
+                >Size</tal:size>&nbsp;</th>
+            <th tal:attributes="class nosortclass"
+		id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
+                >Modified</tal:modified>&nbsp;</th>
+            <th tal:attributes="class nosortclass"
+		id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
+                >State</tal:state>&nbsp;</th>
+            <th class="nosort" 
+		id="foldercontents-order-column"
+		tal:condition="view/show_sort_column">
+              &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
+          </tr>
       </thead>
 
       <metal:block tal:condition="view/batch">
