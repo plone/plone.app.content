@@ -95,8 +95,9 @@ First we can select all items on screen.
 
 This will show a message that only the items on the screen are selected.
 
-  >>> self.textOnPage('All 20 items on this page are selected', browser.contents) 
-  True
+  >>> print browser.contents
+  <BLANKLINE>
+  ... All 20 items on this page are selected...
 
 We now have a way to select all items in the batch.
 
@@ -104,8 +105,9 @@ We now have a way to select all items in the batch.
 
 This should have selected everything.
 
-  >>> self.textOnPage('All \d* items in this folder are selected', browser.contents)
-  True
+  >>> print browser.contents
+  <BLANKLINE>
+  ... All ... items in this folder are selected. ...
 
 We can also clear the selection, this will deselect everything.
 
@@ -131,9 +133,10 @@ When we press the select all button it should no longer offer us to select the
 whole batch because we are showing everything already.
 
   >>> browser.getLink(id='foldercontents-selectall').click()
-  >>> self.textOnPage('All 2 items in this folder are selected',
-  ...                 browser.contents) 
-  True
+  >>> print browser.contents
+  <BLANKLINE>
+  ... All ... items in this folder are selected...
+
   >>> browser.getLink(id='foldercontents-selectall-completebatch')
   Traceback (most recent call last):
   ...

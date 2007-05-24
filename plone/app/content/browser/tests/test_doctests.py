@@ -2,11 +2,8 @@ from zope.testing import doctest
 from unittest import TestSuite
 
 from Testing.ZopeTestCase import FunctionalDocFileSuite
-from Products.PloneTestCase.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-import re
 
 setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
@@ -31,10 +28,6 @@ class FolderTestCase(FunctionalTestCase):
             document = getattr(self.portal, 'testing-%d' % i)
             document.setTitle('Testing %d' % i)
             document.reindexObject()
-
-    def textOnPage(self, text, page):
-        regex = re.compile(text.replace(' ', '\s*'))
-        return bool(regex.search(page))
 
     def loginAsManager(self):
         """points the browser to the login screen and logs in as user root with Manager role."""
