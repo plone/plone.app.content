@@ -32,7 +32,7 @@ First, a container:
     ...     title = u""
     ...     description = u""
 
-    >>> containerFactory = Factory(MyContainer, title=u"A sample container")
+    >>> containerFactory = Factory(MyContainer)
 
 Then, an item:
 
@@ -46,18 +46,20 @@ Then, an item:
     ...     title = u""
     ...     description = u""
 
-    >>> itemFactory = Factory(MyType, title=u"A non-folderish item")
+    >>> itemFactory = Factory(MyType)
 
 We can now create the items.
 
     >>> container = containerFactory("my-container")
     >>> container.id
     'my-container'
+    >>> container.title = "A sample container"
     
     
     >>> item = itemFactory("my-item")
     >>> item.id
     'my-item'
+    >>> item.title = "A non-folderish item"
     
 Note that both the container type and the item type are contentish. This is
 important, because CMF provides event handlers that automatically index 
@@ -96,3 +98,40 @@ ObjectManager one.
     'my-item'
     >>> 'my-item' in container
     True
+    
+Both pieces of content should have been cataloged.
+
+    >>> self.portal._setObject('my-container', container)
+    'my-container'
+    
+    >>> container = self.portal['my-container']
+    >>> item = container['my-item']
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> catalog = getToolByName(self.portal, 'portal_catalog')
+    >>> [b.Title for b in catalog(getId = 'my-container')]
+    ['A sample container']
+    >>> [b.Title for b in catalog(getId = 'my-item')]
+    ['A non-folderish item']
+    
+If we modify an object and trigger a modified event, it should be updated.
+
+    >>> from zope.lifecycleevent import ObjectModifiedEvent
+    >>> from zope.event import notify
+    
+    >>> container.title = "Updated title"
+    >>> item.title = "Also updated title"
+    
+    >>> [b.Title for b in catalog(getId = 'my-container')]
+    ['A sample container']
+    >>> [b.Title for b in catalog(getId = 'my-item')]
+    ['A non-folderish item']
+    
+
+    >>> notify(ObjectModifiedEvent(container))
+    >>> notify(ObjectModifiedEvent(item))
+
+    >>> [b.Title for b in catalog(getId = 'my-container')]
+    ['Updated title']
+    >>> [b.Title for b in catalog(getId = 'my-item')]
+    ['Also updated title']

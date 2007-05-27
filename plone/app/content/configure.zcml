@@ -11,5 +11,13 @@
       factory=".namechooser.NormalizingNameChooser"
       provides="zope.app.container.interfaces.INameChooser"
       />
+      
+    <!-- Re-index content when it's modified -->
+    <subscriber
+        for=".interfaces.IReindexOnModify
+             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".catalog.reindexOnModify"
+        />
+        
     
 </configure>

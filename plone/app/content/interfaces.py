@@ -9,6 +9,11 @@ class INameFromTitle(Interface):
                             description=u"A title, which will be converted to a name",
                             required=True)
 
+class IReindexOnModify(Interface):
+    """Marker interface which makes sure an object gets reindexed when
+    it's modified.
+    """
+
 class IBatch(Interface):
     """A batch splits up a large number of items over multiple pages"""
 

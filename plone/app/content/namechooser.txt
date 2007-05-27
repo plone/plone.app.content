@@ -10,7 +10,6 @@ Let's create some dummy content.
 
     >>> from plone.app.content import container, item
     >>> from zope.interface import implements, Interface
-    >>> from zope.schema.fieldproperty import FieldProperty
     >>> from zope import schema
     
     >>> class IMyContainer(Interface):
@@ -20,8 +19,8 @@ Let's create some dummy content.
     >>> class MyContainer(container.Container):
     ...     implements(IMyContainer)
     ...     portal_type = "My container"
-    ...     title = FieldProperty(IMyContainer['title'])
-    ...     description = FieldProperty(IMyContainer['description'])
+    ...     title = IMyContainer['title']
+    ...     description = IMyContainer['description']
 
     >>> class IMyType(Interface):
     ...     title = schema.TextLine(title=u"My title")
@@ -30,8 +29,8 @@ Let's create some dummy content.
     >>> class MyType(item.Item):
     ...     implements(IMyType)
     ...     portal_type = "My portal type"
-    ...     title = FieldProperty(IMyType['title'])
-    ...     description = FieldProperty(IMyType['description'])
+    ...     title = IMyType['title']
+    ...     description = IMyType['description']
 
     >>> container = MyContainer("my-container")
 

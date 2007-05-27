@@ -7,6 +7,8 @@ from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
+from plone.app.content.interfaces import IReindexOnModify
+
 class OFSContainer(object):
     """A folder that's also a container.
     
@@ -73,6 +75,12 @@ class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent, 
     dublincoreish behaviour.
     """
     
-    def __init__(self, id=None):
+    implements(IReindexOnModify)
+    
+    def __init__(self, id=None, **kwargs):
+        OFSContainer.__init__(self, id, **kwargs)
+        PortalFolderBase.__init__(self, id, **kwargs)
+        DefaultDublinCoreImpl.__init__(self, **kwargs)
+        
         if id is not None:
             self.id = id
