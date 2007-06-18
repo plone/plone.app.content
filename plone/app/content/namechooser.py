@@ -92,4 +92,3 @@ class NormalizingNameChooser(object):
             if site_properties is not None:
                 return site_properties.getProperty('default_charset', 'utf-8')
         return 'utf-8'
-        

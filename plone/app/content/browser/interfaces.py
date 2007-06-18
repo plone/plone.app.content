@@ -20,4 +20,3 @@ class IFolderContentsView(Interface):
 class IFolderContentsViewletManager(IViewletManager):
     """A viewlet manager for folder contents
     """
-    
