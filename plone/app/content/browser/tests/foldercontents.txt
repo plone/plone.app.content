@@ -23,6 +23,7 @@ First clearout all portlets so that the rest of the test is easier to write.
 
   >>> browser.open('http://nohost/plone/@@manage-portlets')
   >>> browser.getLink(url='@@delete-portlet?name=recent').click()
+  >>> browser.open('http://nohost/plone/@@manage-portlets')
   >>> browser.getLink(url='@@delete-portlet?name=navigation').click()
 
 Because we have no content there should not be any batching.
@@ -38,7 +39,6 @@ Create a few pages so that we have some content to play with.
   >>> self.createDocuments(65)
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> open('/tmp/output', 'w').write(browser.contents)
   >>> 'Testing' in browser.contents
   True
 

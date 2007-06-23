@@ -27,6 +27,7 @@ class FolderTestCase(FunctionalTestCase):
             self.portal.invokeFactory(id='testing-%d' % i, type_name='Document')
             document = getattr(self.portal, 'testing-%d' % i)
             document.setTitle('Testing %d' % i)
+            document.setExcludeFromNav(True)
             document.reindexObject()
 
     def loginAsManager(self):
