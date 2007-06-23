@@ -30,6 +30,15 @@ class FolderTestCase(FunctionalTestCase):
             document.setExcludeFromNav(True)
             document.reindexObject()
 
+    def createFolder(self):
+        self.setRoles(['Manager',])
+        self.portal.invokeFactory(id='new-folder', type_name='Folder')
+        folder = getattr(self.portal, 'new-folder')
+        folder.setTitle('New Folder')
+        folder.setExcludeFromNav(True)
+        folder.reindexObject()
+        
+
     def loginAsManager(self):
         """points the browser to the login screen and logs in as user root with Manager role."""
         self.browser.open('http://nohost/plone/')

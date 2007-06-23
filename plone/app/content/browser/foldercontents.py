@@ -12,6 +12,8 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table
 from kss.core import KSSView
 
+from Products.CMFPlone.interfaces import IPloneSiteRoot
+
 import urllib
 
 NOT_ADDABLE_TYPES = ('Favorite',)
@@ -49,8 +51,9 @@ class FolderContentsView(BrowserView):
         checkPermission = portal_membership.checkPermission
 
         # Abort if we are at the root of the portal
-        if obj is portal_url.getPortalObject():
+        if IPloneSiteRoot.providedBy(self.context):
             return None
+        
 
         # Get the parent. If we can't get it (unauthorized), use the portal
         parent = aq_parent(aq_inner(obj))
