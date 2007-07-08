@@ -22,8 +22,6 @@ Log in and try again.
 First clearout all portlets so that the rest of the test is easier to write.
 
   >>> browser.open('http://nohost/plone/@@manage-portlets')
-  >>> browser.getLink(url='@@delete-portlet?name=recent').click()
-  >>> browser.open('http://nohost/plone/@@manage-portlets')
   >>> browser.getLink(url='@@delete-portlet?name=navigation').click()
 
 Because we have no content there should not be any batching.
