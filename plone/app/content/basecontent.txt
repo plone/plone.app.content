@@ -55,6 +55,12 @@ We can now create the items.
     'my-container'
     >>> container.title = "A sample container"
     
+We need to add it to an object manager for acquisition to do its magic.
+
+    >>> newid = self.portal._setObject(container.id, container)
+    >>> container = getattr(self.portal, newid)
+    
+We will add the item directly to the container later.
     
     >>> item = itemFactory("my-item")
     >>> item.id
@@ -101,9 +107,6 @@ ObjectManager one.
     
 Both pieces of content should have been cataloged.
 
-    >>> self.portal._setObject('my-container', container)
-    'my-container'
-    
     >>> container = self.portal['my-container']
     >>> item = container['my-item']
 
