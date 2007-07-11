@@ -115,7 +115,7 @@ class FolderFactoriesView(BrowserView):
                                 })
 
         # Sort the addable content types based on their translated title
-        results = [(translate(ctype['title'], context=addContext), ctype) for ctype in results]
+        results = [(translate(ctype['title'], context=request), ctype) for ctype in results]
         results.sort()
         results = [ctype[-1] for ctype in results]
 
