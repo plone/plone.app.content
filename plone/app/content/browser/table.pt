@@ -135,7 +135,7 @@
                         tal:attributes="class item/state_class" />
                   <span tal:condition="not: item/state_title">&nbsp;</span>
               </td>
-              <td tal:condition="view/show_sort_column">
+              <td tal:condition="view/show_sort_column" class="draggable">
                 <a href=""
                    title="Move item up"
                    i18n:attributes="title title_move_item_up;"

@@ -129,7 +129,7 @@ class FolderContentsTable(object):
         
         results = []
         for i, obj in enumerate(contentsMethod(self.contentFilter)):
-            if i % 2 == 0:
+            if (i + 1) % 2 == 0:
                 table_row_class = "draggable even"
             else:
                 table_row_class = "draggable odd"
