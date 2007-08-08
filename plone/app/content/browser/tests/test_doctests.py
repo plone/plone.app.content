@@ -8,6 +8,7 @@ from Products.PloneTestCase.PloneTestCase import setupPloneSite
 setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
+               doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.NORMALIZE_WHITESPACE)
 
 class FolderTestCase(FunctionalTestCase):
@@ -30,10 +31,10 @@ class FolderTestCase(FunctionalTestCase):
             document.setExcludeFromNav(True)
             document.reindexObject()
 
-    def createFolder(self):
+    def createFolder(self, id='new-folder'):
         self.setRoles(['Manager',])
-        self.portal.invokeFactory(id='new-folder', type_name='Folder')
-        folder = getattr(self.portal, 'new-folder')
+        self.portal.invokeFactory(id=id, type_name='Folder')
+        folder = getattr(self.portal, id)
         folder.setTitle('New Folder')
         folder.setExcludeFromNav(True)
         folder.reindexObject()

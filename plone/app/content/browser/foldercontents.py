@@ -8,6 +8,7 @@ from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 
+from plone.memoize import instance
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table
 from kss.core import KSSView
@@ -75,7 +76,6 @@ class FolderContentsView(BrowserView):
         except Unauthorized:
             return None        
 
-
 class FolderContentsKSSView(KSSView):
     def update_table(self, pagenumber='1', sort_on='getObjPositionInParent'):
         self.request.set('sort_on', sort_on)
@@ -109,6 +109,7 @@ class FolderContentsTable(object):
         return self.table.render()
 
     @property
+    @instance.memoize
     def items(self):
         """
         """
@@ -126,7 +127,7 @@ class FolderContentsTable(object):
         else:
             contentsMethod = self.context.getFolderContents
         
-        results = list()
+        results = []
         for i, obj in enumerate(contentsMethod(self.contentFilter)):
             if i % 2 == 0:
                 table_row_class = "draggable even"
@@ -209,7 +210,7 @@ class FolderContentsTable(object):
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
-        if False:#not len(self.batch):
+        if not len(self.items):
             if self.context.cb_dataValid():
                 for button in button_actions:
                     if button['id'] == 'paste':

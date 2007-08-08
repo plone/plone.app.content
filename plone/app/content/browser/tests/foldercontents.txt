@@ -19,6 +19,87 @@ Log in and try again.
   >>> 'Please log in' in browser.contents
   False
 
+
+Buttons
+-------
+
+With the folder contents view it is possible to copy, paste etc. a lot
+of content objects at once.
+
+An empty folder should only contain the paste button.
+
+  >>> self.createFolder('empty-folder')
+  >>> browser.open('http://nohost/plone/empty-folder/@@folder_contents')
+
+  >>> browser.getControl('Copy')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Copy'
+
+  >>> browser.getControl('Cut')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Cut'
+
+  >>> browser.getControl('Rename')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Rename'
+
+  >>> browser.getControl('Delete')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Delete'
+
+  >>> browser.getControl('Change State')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Change State'
+
+The paste button should not be there yet either. We only want to see
+that when we have something copied.
+
+  >>> browser.getControl('Paste')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Paste'
+
+When we look at a folder with content in it we should see more
+options.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+
+  >>> button = browser.getControl('Copy')
+  >>> button = browser.getControl('Cut')
+  >>> button = browser.getControl('Rename')
+  >>> button = browser.getControl('Delete')
+  >>> button = browser.getControl('Change State')
+
+Still the paste button should not be available.
+
+  >>> browser.getControl('Paste')
+  Traceback (most recent call last):
+  ...
+  LookupError: label 'Paste'
+
+Now we shall copy something so we can paste it.
+
+  >>> objects = browser.getControl(name='paths:list')
+  >>> objects.value = objects.options[0:1]
+  >>> browser.getControl('Copy').click()
+
+Because we have copied something the paste button should show up.
+
+  >>> button = browser.getControl('Paste')
+
+It should also show up in our empty folder.
+
+  >>> browser.open('http://nohost/plone/empty-folder/@@folder_contents')
+  >>> button = browser.getControl('Paste')
+
+Batching
+--------
+
 First clearout all portlets so that the rest of the test is easier to write.
 
   >>> browser.open('http://nohost/plone/@@manage-portlets')
@@ -187,5 +268,6 @@ In the site root we should not be able to go up any further.
   Traceback (most recent call last):
   ...
   LinkNotFoundError
+
 
 
