@@ -1,4 +1,5 @@
-<div id="folderlisting-main-table">
+<div id="folderlisting-main-table"
+     i18n:domain="plone">
   <input type="hidden" name="sort_on"
          tal:attributes="value request/sort_on|string:getObjPositionInParent"
          />
