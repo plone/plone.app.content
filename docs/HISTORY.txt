@@ -1,0 +1,8 @@
+Changelog for plone.app.content
+
+    (name of developer listed in brackets)
+
+plone.app.content - 1.0 Unreleased
+
+    - Fixed missing i18n markup on the folder contents view.
+      [hannosch]

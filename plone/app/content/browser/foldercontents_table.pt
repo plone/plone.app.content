@@ -1,4 +1,5 @@
-<div id="folderlisting-main-table">
+<div id="folderlisting-main-table"
+     i18n:domain="plone">
   <tal:block condition="view/selectall">
     <input type="hidden" name="paths:list"
            tal:repeat="item view/batch/items_not_on_page"
@@ -25,22 +26,48 @@
            i18n:attributes="summary summary_content_listing;">
       <thead>
         <tr tal:condition="not:view/selectcurrentbatch">
-          <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
+          <th colspan="6" class="nosort"
+              i18n:translate="label_select_all">
+            Select:
+            <a tal:attributes="href view/selectscreen_url"
+               id="foldercontents-selectall"
+               i18n:name="label_link_all"
+               i18n:translate="label_all">
+              All
+            </a>
+          </th>
         </tr>
         <tr tal:condition="view/show_select_all_items">
-          <th colspan="6" class="nosort">
-            All <tal:block replace="view/batch/items_on_page"/> items on this
-            page are selected. 
-            <a tal:attributes="href view/selectall_url" id="foldercontents-selectall-completebatch">Select
-               all <tal:block replace="view/batch/size"/> items in this
-               folder.</a>
-            </th>
+          <th colspan="6" class="nosort"
+              i18n:translate="label_all_items_on_page_selected">
+            All
+            <tal:block replace="view/batch/items_on_page"
+                       i18n:name="number" />
+            items on this page are selected. 
+            <a tal:attributes="href view/selectall_url"
+               id="foldercontents-selectall-completebatch"
+               i18n:name="link_select_items"
+               i18n:translate="label_select_all_items_folder">
+              Select all
+              <tal:block replace="view/batch/size"
+                         i18n:name="number" />
+              items in this folder.
+            </a>
+          </th>
         </tr>
         <tr tal:condition="view/selectall">
-          <th colspan="6" class="nosort">
-            All <tal:block replace="view/batch/size"/> items in this folder
-            are selected. <a tal:attributes="href view/selectnone_url" id="foldercontents-clearselection">Clear
-              selection</a>
+          <th colspan="6" class="nosort"
+              i18n:translate="label_all_items_in_folder_selected">
+            All
+            <tal:block replace="view/batch/size"
+                       i18n:name="number" />
+            items in this folder are selected.
+            <a tal:attributes="href view/selectnone_url"
+               id="foldercontents-clearselection"
+               i18n:name="link_clear_selection"
+                i18n:translate="label_clear_selection">
+              Clear selection
+            </a>
           </th>
         </tr>
         <tr>
