@@ -97,7 +97,11 @@
                                             title   string:Select ${item/title_or_id}" />
                 <input type="hidden" name="selected_obj_paths:list" value="#"
                        tal:attributes="value item/relative_url" />
-
+		<label tal:content="item/title_or_id"
+		       tal:attributes="for string:cb_${item/id}" 
+		       style="display: none">
+		  Item Title
+		</label>
               </td>
               <td>
                   <span tal:attributes="class item/type_class">
@@ -105,12 +109,8 @@
                       <a href="#" tal:attributes="href  item/view_url;
                                                 title string: ${item/obj_type}: ${item/description};
                                                 class item/state_class;">
-                          <strong tal:omit-tag="not: item/is_browser_default">
-                          <label tal:content="item/title_or_id"
-                                 tal:attributes="for string:cb_${item/id}">
-                            Item Title
-                          </label>
-                          </strong>
+			<strong tal:omit-tag="not: item/is_browser_default"
+				tal:content="item/title_or_id"/>
                       </a>
                   </span>
 
