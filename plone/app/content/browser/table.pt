@@ -100,7 +100,7 @@
                        tal:attributes="value item/relative_url" />
                 <label tal:content="item/title_or_id"
                        tal:attributes="for string:cb_${item/id}" 
-                       style="display: none">
+                       class="hiddenStructure">
                   Item Title
                 </label>
               </td>
