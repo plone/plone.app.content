@@ -30,9 +30,9 @@
     <table class="listing"
            id="listing-table"
            summary="Content listing"
-           i18n:attributes="summary summary_content_listing;">
+           i18n:attributes="summary summary_content_listing;"
+	   tal:condition="view/items">
       <thead>
-	<tal:block condition="view/items">
           <tr tal:condition="not:view/selectcurrentbatch">
             <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
           </tr>
@@ -52,7 +52,7 @@
 		selection</a>
             </th>
           </tr>
-	</tal:block>
+
           <tr>
             <th class="nosort">&nbsp;</th>
             <th tal:attributes="class nosortclass"

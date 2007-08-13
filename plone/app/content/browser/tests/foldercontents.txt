@@ -19,7 +19,6 @@ Log in and try again.
   >>> 'Please log in' in browser.contents
   False
 
-
 Buttons
 -------
 
@@ -96,6 +95,24 @@ It should also show up in our empty folder.
 
   >>> browser.open('http://nohost/plone/empty-folder/@@folder_contents')
   >>> button = browser.getControl('Paste')
+
+
+Table headers
+-------------
+
+When viewing the folder contents we should not see them when there are
+no items in it.
+
+  >>> browser.open('http://nohost/plone/empty-folder/@@folder_contents')
+  >>> 'foldercontents-title-column' in browser.contents
+  False
+
+The headers should be shown when we go to a non empty folder.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> 'foldercontents-title-column' in browser.contents
+  True
+
 
 Batching
 --------
