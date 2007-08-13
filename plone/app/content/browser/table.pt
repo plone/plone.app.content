@@ -31,7 +31,7 @@
            id="listing-table"
            summary="Content listing"
            i18n:attributes="summary summary_content_listing;"
-	   tal:condition="view/items">
+           tal:condition="view/items">
       <thead>
           <tr tal:condition="not:view/selectcurrentbatch">
             <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
@@ -40,36 +40,37 @@
             <th colspan="6" class="nosort">
               All <tal:block replace="view/batch/items_on_page"/> items on this
               page are selected. 
-              <a tal:attributes="href view/selectall_url" id="foldercontents-selectall-completebatch">Select
-		all <tal:block replace="view/batch/size"/> items in this
-		folder.</a>
+              <a tal:attributes="href view/selectall_url" 
+                 id="foldercontents-selectall-completebatch">Select all 
+                 <tal:block replace="view/batch/size"/> items in this folder.</a>
             </th>
           </tr>
           <tr tal:condition="view/selectall">
             <th colspan="6" class="nosort">
               All <tal:block replace="view/batch/size"/> items in this folder
-              are selected. <a tal:attributes="href view/selectnone_url" id="foldercontents-clearselection">Clear
-		selection</a>
+              are selected. 
+              <a tal:attributes="href view/selectnone_url" 
+                 id="foldercontents-clearselection">Clear selection</a>
             </th>
           </tr>
 
           <tr>
             <th class="nosort">&nbsp;</th>
             <th tal:attributes="class nosortclass"
-		id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
+                id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
                 >Title</tal:title>&nbsp;</th>
             <th tal:attributes="class nosortclass"
-		id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
+                id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
                 >Size</tal:size>&nbsp;</th>
             <th tal:attributes="class nosortclass"
-		id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
+                id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
                 >Modified</tal:modified>&nbsp;</th>
             <th tal:attributes="class nosortclass"
-		id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
+                id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
                 >State</tal:state>&nbsp;</th>
             <th class="nosort" 
-		id="foldercontents-order-column"
-		tal:condition="view/show_sort_column">
+                id="foldercontents-order-column"
+                tal:condition="view/show_sort_column">
               &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
           </tr>
       </thead>
@@ -97,11 +98,11 @@
                                             title   string:Select ${item/title_or_id}" />
                 <input type="hidden" name="selected_obj_paths:list" value="#"
                        tal:attributes="value item/relative_url" />
-		<label tal:content="item/title_or_id"
-		       tal:attributes="for string:cb_${item/id}" 
-		       style="display: none">
-		  Item Title
-		</label>
+                <label tal:content="item/title_or_id"
+                       tal:attributes="for string:cb_${item/id}" 
+                       style="display: none">
+                  Item Title
+                </label>
               </td>
               <td>
                   <span tal:attributes="class item/type_class">
@@ -109,8 +110,8 @@
                       <a href="#" tal:attributes="href  item/view_url;
                                                 title string: ${item/obj_type}: ${item/description};
                                                 class item/state_class;">
-			<strong tal:omit-tag="not: item/is_browser_default"
-				tal:content="item/title_or_id"/>
+                        <strong tal:omit-tag="not: item/is_browser_default"
+                            tal:content="item/title_or_id"/>
                       </a>
                   </span>
 
