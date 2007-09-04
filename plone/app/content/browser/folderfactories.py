@@ -75,16 +75,17 @@ class FolderFactoriesView(BrowserView):
         # is an FTI in portal_types to begin with. Alas, FTI-less content
         # is pretty much a no-go in CMF.
         
-        addviews = {}
+        # XXX: This was different to the logic in plone.app.contentmenu.menu.FactoriesSubMenuItem.action!
+        # addviews = {}
         addingview = queryMultiAdapter((addContext, request), name='+')
-        if addingview is not None:
-            for name, item in getAdapters((addingview, request), AddMenu):
-                if item.extra:
-                    factory_name = item.extra.get('factory')
-                    if factory_name:
-                        factory = queryUtility(IFactory, factory_name)
-                        if factory and checkFactory(addContext, None, factory):
-                            addviews[factory_name] = '%s/+/%s' % (baseUrl, item.action,)
+        # if addingview is not None:
+        #     for name, item in getAdapters((addingview, request), AddMenu):
+        #         if item.extra:
+        #             factory_name = item.extra.get('factory')
+        #             if factory_name:
+        #                 factory = queryUtility(IFactory, factory_name)
+        #                 if factory and checkFactory(addContext, None, factory):
+        #                     addviews[factory_name] = '%s/+/%s' % (baseUrl, item.action,)
         
         # XXX: Would be easier, but the add menu is not actually registered,
         # and this would depend on zope 3 security checks :-(
@@ -100,7 +101,11 @@ class FolderFactoriesView(BrowserView):
                 cssId = idnormalizer.normalize(typeId)
                 cssClass = 'contenttype-%s' % cssId
                 factory = t.factory
-                url = addviews.get(factory, '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),))
+                if addingview is not None and \
+                   queryMultiAdapter((addingview, self.request), name=factory) is not None:
+                    url = '%s/+/%s' % (baseUrl, factory,)
+                else:
+                    url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
                 icon = t.getIcon()
                 if icon:
                     icon = '%s/%s' % (portal_url, icon)
