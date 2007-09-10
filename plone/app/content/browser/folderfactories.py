@@ -74,26 +74,7 @@ class FolderFactoriesView(BrowserView):
         # factory have the same name, and it still only applies where there
         # is an FTI in portal_types to begin with. Alas, FTI-less content
         # is pretty much a no-go in CMF.
-        
-        # XXX: This was different to the logic in plone.app.contentmenu.menu.FactoriesSubMenuItem.action!
-        # addviews = {}
         addingview = queryMultiAdapter((addContext, request), name='+')
-        # if addingview is not None:
-        #     for name, item in getAdapters((addingview, request), AddMenu):
-        #         if item.extra:
-        #             factory_name = item.extra.get('factory')
-        #             if factory_name:
-        #                 factory = queryUtility(IFactory, factory_name)
-        #                 if factory and checkFactory(addContext, None, factory):
-        #                     addviews[factory_name] = '%s/+/%s' % (baseUrl, item.action,)
-        
-        # XXX: Would be easier, but the add menu is not actually registered,
-        # and this would depend on zope 3 security checks :-(
-        # if addingview is not None:
-        #     for item in addingview.addingInfo():
-        #         factory = item['extra']['factory']
-        #         addviews[factory] = '%s/+/%s' % (addContext.absolute_url(), item['action'],)
-
         idnormalizer = queryUtility(IIDNormalizer)
         for t in allowedTypes:
             typeId = t.getId()
