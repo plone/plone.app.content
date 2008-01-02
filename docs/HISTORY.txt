@@ -2,7 +2,15 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
-plone.app.content - 1.0 Unreleased
+plone.app.content - 1.0.5
+
+    - Fixed the 'id' attribute of CMFAdding class. By default, it is an
+      empty string, which confuses absolute_url() and causes the <base />
+      tag to be set incorrectly. This in turn confuses KSS, and probably
+      other things.
+      [optilude]
+
+plone.app.content - 1.0
 
     - Fixed missing i18n markup on the folder contents view.
       [hannosch]

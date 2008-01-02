@@ -5,6 +5,10 @@ class CMFAdding(ContentAdding):
     """An adding view with a less silly next-url
     """
     
+    # We need to do this to get proper traversal URLs - otherwise, the
+    # <base /> tag is messed up.
+    id = '+'
+    
     def add(self, content):
         content = super(CMFAdding, self).add(content)
         
