@@ -21,7 +21,7 @@ base classes and name choosers.
       url='http://svn.plone.org/svn/plone/plone.app.content',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['plone.app'],
+      namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
