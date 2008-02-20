@@ -2,6 +2,13 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
+plone.app.content - 1.0.6 - UNRELEASED
+
+    - Update the folder_factories view to add the FTI id to the output of 
+      of addable_types. This makes it possible for callers to manipulate its
+      results.
+      [wichert]
+
 plone.app.content - 1.0.5
 
     - Fixed the 'id' attribute of CMFAdding class. By default, it is an
