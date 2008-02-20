@@ -91,7 +91,8 @@ class FolderFactoriesView(BrowserView):
                 if icon:
                     icon = '%s/%s' % (portal_url, icon)
 
-                results.append({ 'title'        : t.Title(),
+                results.append({ 'id'           : typeId,
+                                 'title'        : t.Title(),
                                  'description'  : t.Description(),
                                  'action'       : url,
                                  'selected'     : False,
