@@ -14,7 +14,10 @@ A user should first login before being able to access the folder contents view.
 
 Log in and try again.
 
-  >>> self.loginAsManager()
+  >>> from Products.PloneTestCase.setup import portal_owner
+  >>> from Products.PloneTestCase.setup import default_password
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (portal_owner, default_password))
   >>> browser.open('http://nohost/plone/@@folder_contents')
   >>> 'Please log in' in browser.contents
   False
