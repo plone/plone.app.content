@@ -77,7 +77,7 @@ class FolderContentsView(BrowserView):
             return None        
 
 class FolderContentsKSSView(KSSView):
-    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent'):
+    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent', show_all=False):
         self.request.set('sort_on', sort_on)
         self.request.set('pagenumber', pagenumber)
         table = FolderContentsTable(self.context, self.request,
@@ -100,7 +100,7 @@ class FolderContentsTable(object):
         self.contentFilter = contentFilter
 
         url = self.context.absolute_url()
-        view_url = url + '/@@folder_contents'
+        view_url = url + '/folder_contents'
         self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
                            buttons=self.buttons)

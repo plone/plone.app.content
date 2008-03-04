@@ -10,7 +10,7 @@ class Table(object):
     """                
 
     def __init__(self, request, base_url, view_url, items, show_sort_column=False,
-                 buttons=[]):
+                 buttons=[], pagesize=20):
         self.request = request
         self.context = None # Need for view pagetemplate
 
@@ -20,7 +20,9 @@ class Table(object):
         self.items = items
         self.show_sort_column = show_sort_column
         self.buttons = buttons
-        self.pagesize = 20
+        self.default_page_size = 20
+        self.pagesize = pagesize
+        self.show_all = request.get('show_all', '').lower() == 'true'
 
         selection = request.get('select')
         if selection == 'screen':
@@ -28,6 +30,7 @@ class Table(object):
         elif selection == 'all':
             self.selectall = True
 
+        self.pagenumber =  int(request.get('pagenumber', 1))
 
 
     def set_checked(self, item):
@@ -40,9 +43,12 @@ class Table(object):
     @property
     @instance.memoize
     def batch(self):
+        pagesize = self.pagesize
+        if self.show_all:
+            pagesize = len(self.items)
         b = Batch(self.items,
-                  pagesize=self.pagesize,
-                  pagenumber=int(self.request.get('pagenumber', 1)))
+                  pagesize=pagesize,
+                  pagenumber=self.pagenumber)
         map(self.set_checked, b)
         return b
 
@@ -58,7 +64,8 @@ class Table(object):
 
     def _set_select_currentbatch(self, value):
         self._selectcurrentbatch = value
-        if self._selectcurrentbatch and len(self.items) <= self.pagesize:
+        if self._selectcurrentbatch and self.show_all or (
+            len(self.items) <= self.pagesize):
             self.selectall = True
 
     selectcurrentbatch = property(_get_select_currentbatch,
@@ -93,8 +100,14 @@ class Table(object):
 
     @property
     def selectnone_url(self):
-        pagenumber = self.request.get('pagenumber', '1')
-        return self.view_url+'?pagenumber=%s'%pagenumber
+        base = self.view_url + '?pagenumber=%s' % (self.pagenumber)
+        if self.show_all:
+            base += '&show_all=true'
+        return base
+
+    @property
+    def show_all_url(self):
+        return self.view_url + '?show_all=true'
 
     def selected(self, item):
         if self.selectcurrentbatch:
