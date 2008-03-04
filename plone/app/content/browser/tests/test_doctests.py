@@ -5,7 +5,7 @@ from Testing.ZopeTestCase import FunctionalDocFileSuite
 from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
-setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
+setupPloneSite()
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
                doctest.REPORT_ONLY_FIRST_FAILURE |
