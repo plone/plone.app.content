@@ -100,7 +100,7 @@ class FolderContentsTable(object):
         self.contentFilter = contentFilter
 
         url = self.context.absolute_url()
-        view_url = url + '/folder_contents'
+        view_url = url + '/@@folder_contents'
         self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
                            buttons=self.buttons)
