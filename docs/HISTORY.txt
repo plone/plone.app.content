@@ -2,14 +2,18 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
-plone.app.content - 1.0.6 - UNRELEASED
+plone.app.content - 1.1.0
+
+    - Made it possible to show all the items in the folder contents at
+      once (no batching). This can be used to drag items across batch
+      boundaries and makes it easier to move an item from the end of
+      the folder to the beginning.
+      [jvloothuis]
 
     - Update the folder_factories view to add the FTI id to the output of 
       of addable_types. This makes it possible for callers to manipulate its
       results.
       [wichert]
-
-plone.app.content - 1.0.5
 
     - Fixed the 'id' attribute of CMFAdding class. By default, it is an
       empty string, which confuses absolute_url() and causes the <base />
