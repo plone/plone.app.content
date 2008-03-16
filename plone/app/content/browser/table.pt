@@ -158,16 +158,16 @@
         </tbody>
         <tfooter>
           <tr tal:condition="not:view/show_all">
-            <th colspan="6" class="nosort"
-                i18n:translate="label_show_all">
+            <th colspan="6" class="nosort">
               <a tal:attributes="href view/show_all_url"
+                 i18n:translate="label_show_all"
                  id="foldercontents-show-all">Show all items</a>
             </th>
           </tr>
           <tr tal:condition="view/show_all">
-            <th colspan="6" class="nosort"
-                i18n:translate="label_show_batched">
+            <th colspan="6" class="nosort">
               <a tal:attributes="href view/view_url"
+                 i18n:translate="label_show_batched"
                  id="foldercontents-show-batched">Show batched</a>
             </th>
           </tr>

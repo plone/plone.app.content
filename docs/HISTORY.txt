@@ -2,6 +2,11 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
+plone.app.content - 1.1.1
+
+    - Fixed i18n markup in table.pt.
+      [hannosch]
+
 plone.app.content - 1.1.0
 
     - Made it possible to show all the items in the folder contents at
