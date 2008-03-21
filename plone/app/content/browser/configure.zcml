@@ -34,6 +34,13 @@
         template="full_review_list.pt"
         permission="cmf.ReviewPortalContent" />
 
+    <browser:page
+         for="*"
+         class=".reviewlist.ReviewListKSSView"
+         attribute="update_table"
+         name="reviewlist_update_table"
+         permission="cmf.ReviewPortalContent" />
+
     <!-- Folder factories -->
     <browser:page
         for="*"

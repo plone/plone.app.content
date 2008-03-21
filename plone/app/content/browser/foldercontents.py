@@ -10,7 +10,7 @@ from Products.Five import BrowserView
 
 from plone.memoize import instance
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.content.browser.tableview import Table
+from plone.app.content.browser.tableview import Table, TableKSSView
 from kss.core import KSSView
 
 from Products.CMFPlone.interfaces import IPloneSiteRoot
@@ -75,19 +75,6 @@ class FolderContentsView(BrowserView):
 
         except Unauthorized:
             return None        
-
-class FolderContentsKSSView(KSSView):
-    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent', show_all=False):
-        self.request.set('sort_on', sort_on)
-        self.request.set('pagenumber', pagenumber)
-        table = FolderContentsTable(self.context, self.request,
-                                    contentFilter={'sort_on':sort_on})
-        return self.replace_table(table)
-
-    def replace_table(self, table):
-        core = self.getCommandSet('core')
-        core.replaceHTML('#folderlisting-main-table', table.render())
-        return self.render()
 
 class FolderContentsTable(object):
     """   
@@ -230,3 +217,7 @@ class FolderContentsTable(object):
         else:
             button['cssclass'] = 'context'
         return button
+
+class FolderContentsKSSView(TableKSSView):
+    table = FolderContentsTable
+

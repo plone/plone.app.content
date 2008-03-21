@@ -3,7 +3,7 @@ from zope.component import getMultiAdapter
 from Acquisition import aq_inner
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
-from plone.app.content.browser.tableview import Table
+from plone.app.content.browser.tableview import Table, TableKSSView
 import urllib
 
 class FullReviewListView(BrowserView):
@@ -23,7 +23,7 @@ class ReviewListTable(object):
     The review list table renders the table and its actions.
     """                
 
-    def __init__(self, context, request):
+    def __init__(self, context, request, **kwargs):
         self.context = context
         self.request = request
 
@@ -136,3 +136,6 @@ class ReviewListTable(object):
         else:
             button['cssclass'] = 'context'
         return button
+
+class ReviewListKSSView(TableKSSView):
+    table = ReviewListTable

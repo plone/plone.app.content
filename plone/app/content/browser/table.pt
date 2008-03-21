@@ -35,14 +35,14 @@
            tal:condition="view/items">
       <thead>
         <tr tal:condition="not:view/selectcurrentbatch">
-          <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
+          <th colspan="6" class="nosort">Select: <a tal:attributes="href view/selectscreen_url" id="foldercontents-selectall" class="update-selection">All</a></th>
         </tr>
         <tr tal:condition="view/show_select_all_items">
           <th colspan="6" class="nosort">
             All <tal:block replace="view/batch/items_on_page"/> items on this
             page are selected. 
             <a tal:attributes="href view/selectall_url" 
-               id="foldercontents-selectall-completebatch">Select all 
+               id="foldercontents-selectall-completebatch" class="update-selection">Select all 
             <tal:block replace="view/batch/size"/> items in this folder.</a>
           </th>
         </tr>
@@ -51,7 +51,7 @@
             All <tal:block replace="view/batch/size"/> items in this folder
             are selected. 
             <a tal:attributes="href view/selectnone_url" 
-               id="foldercontents-clearselection">Clear selection</a>
+               id="foldercontents-clearselection" class="update-selection">Clear selection</a>
           </th>
         </tr>
 
@@ -161,14 +161,14 @@
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/show_all_url"
                  i18n:translate="label_show_all"
-                 id="foldercontents-show-all">Show all items</a>
+                 id="foldercontents-show-all" class="update-selection">Show all items</a>
             </th>
           </tr>
           <tr tal:condition="view/show_all">
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/view_url"
                  i18n:translate="label_show_batched"
-                 id="foldercontents-show-batched">Show batched</a>
+                 id="foldercontents-show-batched" class="update-selection">Show batched</a>
             </th>
           </tr>
         </tfooter>
