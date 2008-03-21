@@ -302,6 +302,22 @@ create some new content.
 
   >>> browser.getLink(id='foldercontents-selectall').click()
   >>> browser.getControl(name='folder_delete:method').click()
+
+Putting only one page into the folder will not show the option to
+disable batching since there is no batching.
+
+  >>> self.createDocuments(1)
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> browser.getLink('Show all items')
+  Traceback (most recent call last):
+  ...
+  LinkNotFoundError
+
+Create some more pages to show the batch disabling feature.
+
+  >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> browser.getLink(id='foldercontents-selectall').click()
+  >>> browser.getControl(name='folder_delete:method').click()
   >>> self.createDocuments(60)
 
 Now we can show all the items in the folder if we want to.
@@ -312,7 +328,7 @@ Now we can show all the items in the folder if we want to.
 You can see all the items are now on the page.
 
   >>> browser.contents
-  '...Testing 1...Testing 11...Testing 59...'
+  '...Testing 1...Testing 11...Testing 60...'
 
 Selecting the current page should make the entire folder selected
 (since we see everything).

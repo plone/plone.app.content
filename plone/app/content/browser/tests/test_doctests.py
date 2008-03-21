@@ -24,7 +24,7 @@ class FolderTestCase(FunctionalTestCase):
 
     def createDocuments(self, amount):
         self.setRoles(['Manager',])
-        for i in range(1, amount):
+        for i in xrange(1, amount + 1):
             self.portal.invokeFactory(id='testing-%d' % i, type_name='Document')
             document = getattr(self.portal, 'testing-%d' % i)
             document.setTitle('Testing %d' % i)

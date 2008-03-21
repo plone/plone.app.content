@@ -156,7 +156,7 @@
             </tr>
           </tal:items>
         </tbody>
-        <tfooter>
+        <tfooter tal:condition="not:view/within_batch_size">
           <tr tal:condition="not:view/show_all">
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/show_all_url"
