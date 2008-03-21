@@ -2,6 +2,22 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
+plone.app.content - 1.1.2
+
+    - Improved the batch disabling action so that it only shows up
+      when there is a batch.
+      [jvloothuis]
+
+    - Made the reviewlist more powerful by making the folder contents
+      selection features available for it as well.
+      [jvloothuis]
+
+    - Changed the replacement command to actually replace the div, not
+      just its inner content. This fixes a problem with browsers like
+      Internet Explorer which did not apply the drag and drop script
+      after updating.
+      [jvloothuis]
+
 plone.app.content - 1.1.1
 
     - Fixed i18n markup in table.pt.
