@@ -2,7 +2,7 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
-plone.app.content - 1.1.2
+plone.app.content - 1.1.1
 
     - Improved the batch disabling action so that it only shows up
       when there is a batch.
@@ -17,8 +17,6 @@ plone.app.content - 1.1.2
       Internet Explorer which did not apply the drag and drop script
       after updating.
       [jvloothuis]
-
-plone.app.content - 1.1.1
 
     - Fixed i18n markup in table.pt.
       [hannosch]
