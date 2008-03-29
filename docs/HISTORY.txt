@@ -2,6 +2,11 @@ Changelog for plone.app.content
 
     (name of developer listed in brackets)
 
+plone.app.content - 1.1.2
+
+    - Added authenticator token for CSRF protection.
+      [witsch]
+
 plone.app.content - 1.1.1
 
     - Improved the batch disabling action so that it only shows up
