@@ -7,6 +7,9 @@ plone.app.content - 1.1.2
     - Added authenticator token for CSRF protection.
       [witsch]
 
+    - Fix invalid leading space in all 'Up to Site Setup' links.
+      [wichert]
+
 plone.app.content - 1.1.1
 
     - Improved the batch disabling action so that it only shows up
