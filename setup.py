@@ -1,15 +1,12 @@
 from setuptools import setup, find_packages
+import os
 
 version = '1.1.1'
 
 setup(name='plone.app.content',
       version=version,
       description="Content Views for Plone",
-      long_description="""\
-plone.app.content contains various views for Plone, such as 
-folder_contents, as well as general content infrastructure, such as
-base classes and name choosers.
-""",
+      long_description=open("README.txt").read(),
       classifiers=[
           "Framework :: Plone",
           "License :: OSI Approved :: GNU General Public License (GPL)",
