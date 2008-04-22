@@ -6,7 +6,8 @@ version = '1.1.1'
 setup(name='plone.app.content',
       version=version,
       description="Content Views for Plone",
-      long_description=open("README.txt").read(),
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
           "Framework :: Plone",
           "License :: OSI Approved :: GNU General Public License (GPL)",

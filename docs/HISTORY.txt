@@ -1,54 +1,61 @@
-Changelog for plone.app.content
+Changelog
+=========
 
-    (name of developer listed in brackets)
+1.1.2 - April 22, 2008
+----------------------
 
-plone.app.content - 1.1.2
+- Added authenticator token for CSRF protection.
+  [witsch]
 
-    - Added authenticator token for CSRF protection.
-      [witsch]
+- Fix invalid leading space in all 'Up to Site Setup' links.
+  [wichert]
 
-    - Fix invalid leading space in all 'Up to Site Setup' links.
-      [wichert]
 
-plone.app.content - 1.1.1
+1.1.1 - March 24, 2008
+----------------------
 
-    - Improved the batch disabling action so that it only shows up
-      when there is a batch.
-      [jvloothuis]
+- Improved the batch disabling action so that it only shows up
+  when there is a batch.
+  [jvloothuis]
 
-    - Made the reviewlist more powerful by making the folder contents
-      selection features available for it as well.
-      [jvloothuis]
+- Made the reviewlist more powerful by making the folder contents
+  selection features available for it as well.
+  [jvloothuis]
 
-    - Changed the replacement command to actually replace the div, not
-      just its inner content. This fixes a problem with browsers like
-      Internet Explorer which did not apply the drag and drop script
-      after updating.
-      [jvloothuis]
+- Changed the replacement command to actually replace the div, not
+  just its inner content. This fixes a problem with browsers like
+  Internet Explorer which did not apply the drag and drop script
+  after updating.
+  [jvloothuis]
 
-    - Fixed i18n markup in table.pt.
-      [hannosch]
+- Fixed i18n markup in table.pt.
+  [hannosch]
 
-plone.app.content - 1.1.0
 
-    - Made it possible to show all the items in the folder contents at
-      once (no batching). This can be used to drag items across batch
-      boundaries and makes it easier to move an item from the end of
-      the folder to the beginning.
-      [jvloothuis]
+1.1.0 - March 8, 2008
+---------------------
 
-    - Update the folder_factories view to add the FTI id to the output of 
-      of addable_types. This makes it possible for callers to manipulate its
-      results.
-      [wichert]
+- Made it possible to show all the items in the folder contents at
+  once (no batching). This can be used to drag items across batch
+  boundaries and makes it easier to move an item from the end of
+  the folder to the beginning.
+  [jvloothuis]
 
-    - Fixed the 'id' attribute of CMFAdding class. By default, it is an
-      empty string, which confuses absolute_url() and causes the <base />
-      tag to be set incorrectly. This in turn confuses KSS, and probably
-      other things.
-      [optilude]
+- Update the folder_factories view to add the FTI id to the output of 
+  of addable_types. This makes it possible for callers to manipulate its
+  results.
+  [wichert]
 
-plone.app.content - 1.0
+- Fixed the 'id' attribute of CMFAdding class. By default, it is an
+  empty string, which confuses absolute_url() and causes the <base />
+  tag to be set incorrectly. This in turn confuses KSS, and probably
+  other things.
+  [optilude]
 
-    - Fixed missing i18n markup on the folder contents view.
-      [hannosch]
+
+1.0 - August 16, 2007
+---------------------
+
+- Fixed missing i18n markup on the folder contents view.
+  [hannosch]
+
