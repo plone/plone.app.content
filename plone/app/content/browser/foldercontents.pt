@@ -16,9 +16,16 @@
       <div tal:replace="structure provider:plone.abovecontenttitle" />
 
       <h1 class="documentFirstHeading"> 
-          <metal:field use-macro="python:here.widget('title', mode='view')">
-          Title
-          </metal:field>
+          <tal:block condition="exists:here/widget">
+                  <metal:field use-macro="python:here.widget('title', mode='view')">
+                  Title
+                  </metal:field>
+              </h1>
+          </tal:block>
+          <tal:block condition="not:exists:here/widget">
+              <tal:block replace="structure view/icon" /> 
+              <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
+          </tal:block>
       </h1>
 
       <div tal:replace="structure provider:plone.belowcontenttitle" />
@@ -32,11 +39,19 @@
           Up one level
       </a>
 
-      <p class="documentDescription">
+      <p class="documentDescription" tal:block condition="exists:here/widget">
           <metal:field use-macro="python:here.widget('description', mode='view')">
-          Description
+              Description
           </metal:field>
       </p>
+
+      <tal:block condition="not:exists:here/widget">
+          <p class="documentDescription" 
+                     tal:content="context/Description" 
+                     tal:condition="context/Description"> 
+              Description
+          </p>
+      </tal:block>
 
       <form name="folderContentsForm"
             method="post"
