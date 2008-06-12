@@ -13,10 +13,15 @@
   <body>
 
     <div metal:fill-slot="main">
-      <h1 class="documentFirstHeading">
-        <tal:block replace="structure view/icon" />
-        <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
+      <div tal:replace="structure provider:plone.abovecontenttitle" />
+
+      <h1 class="documentFirstHeading"> 
+          <metal:field use-macro="python:here.widget('title', mode='view')">
+          Title
+          </metal:field>
       </h1>
+
+      <div tal:replace="structure provider:plone.belowcontenttitle" />
 
       <a href=""
          class="link-parent"
@@ -27,10 +32,10 @@
           Up one level
       </a>
 
-      <p class="documentDescription"
-         tal:content="context/Description"
-         tal:condition="context/Description">
+      <p class="documentDescription">
+          <metal:field use-macro="python:here.widget('description', mode='view')">
           Description
+          </metal:field>
       </p>
 
       <form name="folderContentsForm"
