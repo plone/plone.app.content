@@ -1,5 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
-      lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xml:lang="en" lang="en"
       i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master">
 
@@ -17,10 +20,9 @@
 
       <h1 class="documentFirstHeading"> 
           <tal:block condition="exists:here/widget">
-                  <metal:field use-macro="python:here.widget('title', mode='view')">
-                  Title
-                  </metal:field>
-              </h1>
+              <metal:field use-macro="python:here.widget('title', mode='view')">
+              Title
+              </metal:field>
           </tal:block>
           <tal:block condition="not:exists:here/widget">
               <tal:block replace="structure view/icon" /> 
@@ -39,7 +41,7 @@
           Up one level
       </a>
 
-      <p class="documentDescription" tal:block condition="exists:here/widget">
+      <p class="documentDescription" tal:condition="exists:here/widget">
           <metal:field use-macro="python:here.widget('description', mode='view')">
               Description
           </metal:field>
