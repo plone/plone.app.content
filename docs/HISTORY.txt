@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.3 - unreleased
-----------------
+1.3 - July 7th, 2008
+--------------------
 
 - Use the widget itself to render the title and description and include the
   usual viewlet managers around the title.
