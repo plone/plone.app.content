@@ -56,7 +56,7 @@ class ReviewListTable(object):
             
             url = obj.absolute_url()
             path = '/'.join(obj.getPhysicalPath())
-            icon = plone_view.getIcon(obj);
+            icon = plone_view.getIcon(obj)
             
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
