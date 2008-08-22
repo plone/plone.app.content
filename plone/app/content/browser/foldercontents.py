@@ -131,7 +131,7 @@ class FolderContentsTable(object):
             review_state = obj.review_state
             state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = obj.getURL(relative=True)
-            obj_type = obj.portal_type
+            obj_type = obj.Type
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)

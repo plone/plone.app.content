@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.4 - Unreleased
+----------------
+
+- Fixed content type name for items in folder_contents when you hover any.
+  Closes http://dev.plone.org/plone/ticket/8223
+  [spliter]
+
 1.3 - July 7th, 2008
 --------------------
 
