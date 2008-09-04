@@ -8,6 +8,10 @@ Changelog
   Closes http://dev.plone.org/plone/ticket/8223
   [spliter]
 
+- Fixed title and description for non AT content in folder_contents where
+  widget method was acquired from parent AT content.
+  [elro]
+
 1.3 - July 7th, 2008
 --------------------
 
