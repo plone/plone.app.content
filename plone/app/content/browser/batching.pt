@@ -1,5 +1,6 @@
 <!-- Navigation -->
 <div class="listingBar"
+     i18n:domain="plone"
      metal:define-macro="navigation"
      tal:define="batch view/batch"
      tal:condition="batch/multiple_pages">

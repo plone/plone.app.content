@@ -4,6 +4,10 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- Added missing i18n markup to batching.pt. This closes 
+  http://dev.plone.org/plone/ticket/8501
+  [dunlapm]
+
 - Fixed content type name for items in folder_contents when you hover any.
   Closes http://dev.plone.org/plone/ticket/8223
   [spliter]
