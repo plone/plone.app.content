@@ -17,7 +17,6 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 import urllib
 
-NOT_ADDABLE_TYPES = ('Favorite',)
 
 class FolderContentsView(BrowserView):
     """
