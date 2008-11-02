@@ -120,11 +120,6 @@ The headers should be shown when we go to a non empty folder.
 Batching
 --------
 
-First clearout all portlets so that the rest of the test is easier to write.
-
-  >>> browser.open('http://nohost/plone/@@manage-portlets')
-  >>> browser.getLink(url='@@delete-portlet?name=navigation').click()
-
 Because we have no content there should not be any batching.
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
