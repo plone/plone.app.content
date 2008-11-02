@@ -11,7 +11,6 @@ from Products.Five import BrowserView
 from plone.memoize import instance
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table, TableKSSView
-from kss.core import KSSView
 
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 

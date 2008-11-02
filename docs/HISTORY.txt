@@ -4,6 +4,9 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- Small cleanup and removed hard-dependency on KSS.
+  [hannosch]
+
 - Added missing i18n markup to batching.pt. This closes 
   http://dev.plone.org/plone/ticket/8501
   [dunlapm]

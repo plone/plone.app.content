@@ -1,7 +1,12 @@
 from zope.app.pagetemplate import ViewPageTemplateFile
 from plone.app.content.batching import Batch
 from plone.memoize import instance
-from kss.core import KSSView
+
+try:
+    from kss.core import KSSView
+except ImportError:
+    from Products.Five import BrowserView as KSSView
+
 
 class Table(object):
     """   
