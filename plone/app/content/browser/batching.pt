@@ -7,7 +7,7 @@
     <span class="previous"
       tal:condition="batch/has_previous">
         <a href=""
-           tal:attributes="href string:${view/url}?pagenumber=${batch/previouspage}&sort_on=${request/sort_on|string:getObjPositionInParent}">
+           tal:attributes="href string:${view/url}?pagenumber=${batch/previouspage}&amp;sort_on=${request/sort_on|string:getObjPositionInParent}">
            &laquo;
            <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
                Previous
@@ -20,7 +20,7 @@
     <span class="next"
           tal:condition="batch/has_next">
         <a href=""
-           tal:attributes="href string:${view/url}?pagenumber=${batch/nextpage}&sort_on=${request/sort_on|string:getObjPositionInParent}">
+           tal:attributes="href string:${view/url}?pagenumber=${batch/nextpage}&amp;sort_on=${request/sort_on|string:getObjPositionInParent}">
            <span i18n:translate="batch_next_x_items" tal:omit-tag="">
                Next
                <span i18n:name="number" tal:omit-tag="" tal:content="batch/next_item_count">n</span>
@@ -33,7 +33,7 @@
     <!-- Link to first -->
     <span tal:condition="batch/show_link_to_first">
         <a href=""
-           tal:attributes="href string:${view/url}?pagenumber=1&sort_on=${request/sort_on|string:getObjPositionInParent}">1</a>
+           tal:attributes="href string:${view/url}?pagenumber=1&amp;sort_on=${request/sort_on|string:getObjPositionInParent}">1</a>
         <span tal:condition="batch/second_page_not_in_navlist"
               tal:omit-tag="">
            ...
@@ -59,7 +59,7 @@
     <span tal:repeat="pagenumber batch/previous_pages"
           tal:omit-tag="" >
       <a href="" tal:content="pagenumber" 
-         tal:attributes="href string:${view/url}?pagenumber=$pagenumber&sort_on=${request/sort_on|string:getObjPositionInParent}"/>
+         tal:attributes="href string:${view/url}?pagenumber=$pagenumber&amp;sort_on=${request/sort_on|string:getObjPositionInParent}"/>
     </span>
 
     <!-- Current page -->
@@ -72,7 +72,7 @@
     <span tal:repeat="pagenumber batch/next_pages"
           tal:omit-tag="" >
       <a href="" tal:content="pagenumber" 
-         tal:attributes="href string:${view/url}?pagenumber=$pagenumber&sort_on=${request/sort_on|string:getObjPositionInParent}"/>
+         tal:attributes="href string:${view/url}?pagenumber=$pagenumber&amp;sort_on=${request/sort_on|string:getObjPositionInParent}"/>
     </span>
 
     <!-- Pagelist with quantum leap links to next pages for quick navigation -->
@@ -97,7 +97,7 @@
            ...
         </span>
         <a href=""
-           tal:attributes="href string:${view/url}?pagenumber=${batch/lastpage}&sort_on=${request/sort_on|string:getObjPositionInParent}"
+           tal:attributes="href string:${view/url}?pagenumber=${batch/lastpage}&amp;sort_on=${request/sort_on|string:getObjPositionInParent}"
            tal:content="batch/lastpage">3457</a>
     </span>
 </div>
