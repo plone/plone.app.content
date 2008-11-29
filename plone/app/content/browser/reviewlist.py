@@ -40,6 +40,8 @@ class ReviewListTable(object):
         plone_utils = getToolByName(self.context, 'plone_utils')
         portal_url = getToolByName(self.context, 'portal_url')
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_properties = getToolByName(self.context, 'portal_properties')
         site_properties = portal_properties.site_properties
@@ -101,7 +103,7 @@ class ReviewListTable(object):
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,
-                is_expired = self.context.isExpired(obj),
+                is_expired = context_state.is_expired(obj),
             ))
         return results
 

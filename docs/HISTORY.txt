@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0 - Unreleased
+----------------
+
+- Updated folder contents and review list to use the new is_expired method
+  from the context view, instead of a Python Script.
+  [hannosch]
+
 1.4 - Unreleased
 ----------------
 
