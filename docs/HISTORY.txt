@@ -4,6 +4,9 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- Made the tests less fragile in regard to browser errors.
+  [hannosch]
+
 - Fixed folder contents tests, which tried to remove a no longer existing
   portlet assignment.
   [hannosch]

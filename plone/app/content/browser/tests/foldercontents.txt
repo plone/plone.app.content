@@ -234,7 +234,7 @@ Now we will add some documents again.
 When we press the select all button it should no longer offer us to select the
 whole batch because we are showing everything already.
 
-  >>> browser.reload()
+  >>> browser.open('http://nohost/plone/@@folder_contents')
   >>> browser.getLink(id='foldercontents-selectall').click()
   >>> print browser.contents
   <BLANKLINE>

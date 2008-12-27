@@ -8,7 +8,6 @@ from Products.PloneTestCase.PloneTestCase import setupPloneSite
 setupPloneSite()
 
 OPTIONFLAGS = (doctest.ELLIPSIS |
-               doctest.REPORT_ONLY_FIRST_FAILURE |
                doctest.NORMALIZE_WHITESPACE)
 
 class FolderTestCase(FunctionalTestCase):
@@ -25,7 +24,7 @@ class FolderTestCase(FunctionalTestCase):
     def createDocuments(self, amount):
         self.setRoles(['Manager',])
         for i in xrange(1, amount + 1):
-            self.portal.invokeFactory(id='testing-%d' % i, type_name='Document')
+            self.portal.invokeFactory('Document', 'testing-%d' % i)
             document = getattr(self.portal, 'testing-%d' % i)
             document.setTitle('Testing %d' % i)
             document.setExcludeFromNav(True)
