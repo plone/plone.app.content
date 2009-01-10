@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Added package dependencies.
+  [hannosch]
+
 - Made the tests less fragile in regard to browser errors.
   [hannosch]
 
