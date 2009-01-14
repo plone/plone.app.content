@@ -4,6 +4,10 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Removed PortalContent.__init__ call including an id argument from Item, as
+  there's no base class which accepts this argument.
+  [hannosch]
+
 - Added package dependencies.
   [hannosch]
 

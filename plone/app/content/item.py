@@ -14,8 +14,6 @@ class Item(PortalContent, DefaultDublinCoreImpl, Contained):
     implements(IReindexOnModify)
     
     def __init__(self, id=None, **kwargs):
-        PortalContent.__init__(self, id, **kwargs)
         DefaultDublinCoreImpl.__init__(self, **kwargs)
-        
         if id is not None:
             self.id = id
