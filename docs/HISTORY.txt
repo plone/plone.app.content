@@ -4,6 +4,10 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- Translate the name of the content types in folder_contents. 
+  Fixes http://dev.plone.org/plone/ticket/8459 
+  [csenger]
+
 - Made the tests less fragile in regard to browser errors.
   [hannosch]
 

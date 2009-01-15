@@ -1,11 +1,13 @@
 from zope.component import getMultiAdapter
 from zope.interface import implements
+from zope.i18n import translate
 
 from AccessControl import Unauthorized
 from Acquisition import aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
 from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 
 from plone.memoize import instance
@@ -102,6 +104,7 @@ class FolderContentsTable(object):
         plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_properties = getToolByName(self.context, 'portal_properties')
+        portal_types = getToolByName(self.context, 'portal_types')
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
@@ -129,11 +132,16 @@ class FolderContentsTable(object):
             review_state = obj.review_state
             state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = obj.getURL(relative=True)
-            obj_type = obj.Type
+
+            type_title_msgid = portal_types[obj.portal_type].Title()
+            url_href_title = u'%s: %s' % (translate(type_title_msgid,
+                                                    context=self.request),
+                                          safe_unicode(obj.Description))
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)
-            
+
+            obj_type = obj.Type
             if obj_type in use_view_action:
                 view_url = url + '/view'
             elif obj.is_folderish:
@@ -146,11 +154,11 @@ class FolderContentsTable(object):
                                  
             results.append(dict(
                 url = url,
+                url_href_title = url_href_title,
                 id  = obj.getId,
                 quoted_id = urllib.quote_plus(obj.getId),
                 path = path,
                 title_or_id = obj.pretty_title_or_id(),
-                description = obj.Description,
                 obj_type = obj_type,
                 size = obj.getObjSize,
                 modified = modified,

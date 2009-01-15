@@ -114,7 +114,7 @@
                 <span tal:attributes="class item/type_class">
                   <img tal:replace="structure item/icon" />
                   <a href="#" tal:attributes="href  item/view_url;
-                                              title string:${item/obj_type}: ${item/description};
+                                              title item/url_href_title;
                                               class item/state_class;">
                     <strong tal:omit-tag="not: item/is_browser_default"
                             tal:content="item/title_or_id"/>
