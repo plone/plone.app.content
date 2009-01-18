@@ -11,12 +11,13 @@ from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
-from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
+
+from plone.app.content import PloneMessageFactory as _
 
 @memoize_diy_request(arg=0)
 def _allowedTypes(request, context):

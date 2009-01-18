@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Avoid imports from Products.CMFPlone.
+  [hannosch]
+
 - Removed PortalContent.__init__ call including an id argument from Item, as
   there's no base class which accepts this argument.
   [hannosch]

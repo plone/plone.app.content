@@ -6,13 +6,12 @@ from Acquisition import aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
 from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five import BrowserView
 
 from plone.memoize import instance
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.tableview import Table, TableKSSView
-
-from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 import urllib
 
@@ -50,7 +49,7 @@ class FolderContentsView(BrowserView):
         checkPermission = portal_membership.checkPermission
 
         # Abort if we are at the root of the portal
-        if IPloneSiteRoot.providedBy(self.context):
+        if ISiteRoot.providedBy(self.context):
             return None
         
 
