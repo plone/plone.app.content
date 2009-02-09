@@ -28,7 +28,7 @@
     <div class="visualClear" id="clear-space-before-navigation"><!-- --></div>
 
     <div tal:replace="structure view/batching" tal:condition="not:view/show_all"/>
-    <table class="listing"
+    <table class="listing select_all-folder_contents_get_paths"
            id="listing-table"
            summary="Content listing"
            i18n:attributes="summary summary_content_listing;"
