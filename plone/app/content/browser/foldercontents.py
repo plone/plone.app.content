@@ -2,7 +2,7 @@ from zope.component import getMultiAdapter
 from zope.interface import implements
 
 from AccessControl import Unauthorized
-from Acquisition import aq_parent, aq_inner
+from Acquisition import aq_parent, aq_inner, aq_base
 from OFS.interfaces import IOrderedContainer
 from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
@@ -72,6 +72,29 @@ class FolderContentsView(BrowserView):
 
         except Unauthorized:
             return None        
+
+    def get_paths(self, paths=None):
+        if paths is None:
+            return
+
+        current_paths = set(paths)
+        paths = []
+
+        if IATTopic.providedBy(self.context):
+            contentsMethod = self.context.queryCatalog
+        else:
+            contentsMethod = self.context.getFolderContents
+
+        for obj in contentsMethod():
+            if getattr(aq_base(obj), 'getPath', None) is not None:
+                path = obj.getPath()
+            else:
+                path = "/".join(obj.getPhysicalPath())
+            if path not in current_paths:
+                paths.append(path)
+
+        self.request.response.setHeader('content-type', 'text/plain')
+        return "\n".join(paths)
 
 class FolderContentsTable(object):
     """   

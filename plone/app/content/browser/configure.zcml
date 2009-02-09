@@ -18,12 +18,12 @@
         name="folder_contents"
         template="foldercontents.pt"
         permission="cmf.ListFolderContents" />
-    
+
     <browser:page
          for="*"
-         class=".foldercontents.FolderContentsKSSView"
-         attribute="update_table"
-         name="foldercontents_update_table"
+         class=".foldercontents.FolderContentsView"
+         attribute="get_paths"
+         name="folder_contents_get_paths"
          permission="cmf.ListFolderContents" />
 
     <!-- Review list -->
@@ -49,6 +49,5 @@
         template="folderfactories.pt"
         permission="cmf.AddPortalContent"
         />
-        
 
 </configure>

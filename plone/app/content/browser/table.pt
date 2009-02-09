@@ -35,9 +35,10 @@
            tal:condition="view/items">
       <thead>
         <tr tal:condition="not:view/selectcurrentbatch">
-          <th colspan="6" class="nosort"><span i18n:translate="label_select" tal:omit-tag="">Select:</span> <a i18n:translate="label_all" tal:attributes="href view/selectscreen_url" id="foldercontents-selectall" class="update-selection">All</a></th>
+          <th colspan="6" class="nosort"><span i18n:translate="label_select" tal:omit-tag="">Select:</span> <a i18n:translate="label_all" tal:attributes="href view/selectscreen_url" id="foldercontents-selectall" class="update-selection">All</a> <a tal:attributes="href view/selectnone_url" i18n:translate="label_none" id="foldercontents-select-none" class="update-selection">None</a></th>
         </tr>
-        <tr tal:condition="view/show_select_all_items">
+
+        <tr id="all_items_on_page_selected" style="display:none" tal:attributes="style python:not view.show_select_all_items and 'display:none' or None" >
           <th colspan="6" class="nosort">
             <span tal:omit-tag="" i18n:translate="tableheading_all_items_selected">
             All <tal:block replace="view/batch/items_on_page" i18n:name="count"/> items on this
@@ -49,7 +50,7 @@
             <tal:block replace="view/batch/size" i18n:name="count"/> items in this folder.</a>
           </th>
         </tr>
-        <tr tal:condition="view/selectall">
+        <tr id="all_items_in_folder_selected" style="display:none" tal:attributes="style python:not view.selectall and 'display:none' or None">
           <th colspan="6" class="nosort">
             <span tal:omit-tag="" i18n:translate="tableheading_all_items_selected">
             All <tal:block replace="view/batch/size" i18n:name="count"/> items in this folder
