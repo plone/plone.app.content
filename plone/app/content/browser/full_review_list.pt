@@ -18,8 +18,7 @@
             method="post"
             action="folder_object"
             tal:attributes="action context/absolute_url"
-            tal:condition="view/revlist"
-            class="kssattr-serveraction-reviewlist_update_table">
+            tal:condition="view/revlist">
       <div tal:replace="structure view/review_table"></div>
     </form>
 </div>

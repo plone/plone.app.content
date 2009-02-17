@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Moved folder_contents functionality from KSS to jQuery.
+  [robgietema]
+
 - Avoid imports from Products.CMFPlone.
   [hannosch]
 
