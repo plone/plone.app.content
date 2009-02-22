@@ -4,10 +4,16 @@ from zope.interface import implements
 from AccessControl import Unauthorized
 from Acquisition import aq_parent, aq_inner, aq_base
 from OFS.interfaces import IOrderedContainer
-from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.interfaces import ISiteRoot
 from Products.Five import BrowserView
+
+
+HAS_ATCT = True
+try:
+    from Products.ATContentTypes.interface import IATTopic
+except ImportError:
+    HAS_ATCT = False
 
 from plone.memoize import instance
 from plone.app.content.browser.interfaces import IFolderContentsView
@@ -80,7 +86,7 @@ class FolderContentsView(BrowserView):
         current_paths = set(paths)
         paths = []
 
-        if IATTopic.providedBy(self.context):
+        if HAS_ATCT and IATTopic.providedBy(self.context):
             contentsMethod = self.context.queryCatalog
         else:
             contentsMethod = self.context.getFolderContents

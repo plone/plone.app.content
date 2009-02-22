@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Made ATContentTypes dependency of the folder contents table optional.
+  [hannosch]
+
 - Removed last dependency on CMFPlone by using ISelectableConstrainTypes from
   the new plone.navigation package.
   [hannosch]
