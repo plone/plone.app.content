@@ -1,23 +1,17 @@
 from urllib import quote_plus
 
-from zope.component import getMultiAdapter, queryMultiAdapter, getAdapters, queryUtility
+from zope.component import getMultiAdapter, queryMultiAdapter, queryUtility
 
-from zope.component.interfaces import IFactory
 from zope.i18n import translate
-from zope.app.container.constraints import checkFactory
-from zope.app.publisher.interfaces.browser import AddMenu
 
 from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 
-from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
-
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-
 from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
+from plone.navigation.interfaces import ISelectableConstrainTypes
 
-from plone.app.content import PloneMessageFactory as _
 
 @memoize_diy_request(arg=0)
 def _allowedTypes(request, context):

@@ -4,6 +4,10 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Removed last dependency on CMFPlone by using ISelectableConstrainTypes from
+  the new plone.navigation package.
+  [hannosch]
+
 - Moved folder_contents functionality from KSS to jQuery.
   [robgietema]
 
