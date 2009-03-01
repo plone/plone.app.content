@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Adjust to singular category argument for the actions tool.
+  [hannosch]
+
 - Made ATContentTypes dependency of the folder contents table optional.
   [hannosch]
 
