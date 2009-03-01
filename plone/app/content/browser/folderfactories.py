@@ -20,7 +20,9 @@ def _allowedTypes(request, context):
 class FolderFactoriesView(BrowserView):
     """The folder_factories view - show addable types
     """
-    
+
+    exclude = ()
+
     def __call__(self):
         if 'form.button.Add' in self.request.form:
             url = self.request.form.get('url')
@@ -58,11 +60,7 @@ class FolderFactoriesView(BrowserView):
         
         addContext = self.add_context()
         baseUrl = addContext.absolute_url()
-        
         allowedTypes = _allowedTypes(request, addContext)
-        
-        # XXX: This is calling a pyscript (which we encourage people to customise TTW)
-        exclude = addContext.getNotAddableTypes()
 
         # If there is an add view available, use that instead of createObject
         # Note: that this depends on the convention that the add view and the
@@ -73,7 +71,7 @@ class FolderFactoriesView(BrowserView):
         idnormalizer = queryUtility(IIDNormalizer)
         for t in allowedTypes:
             typeId = t.getId()
-            if typeId not in exclude and (include is None or typeId in include):
+            if typeId not in self.exclude and (include is None or typeId in include):
                 cssId = idnormalizer.normalize(typeId)
                 cssClass = 'contenttype-%s' % cssId
                 factory = t.factory

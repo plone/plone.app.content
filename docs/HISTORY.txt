@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Removed the `getNotAddableTypes` PythonScript hook.
+  [hannosch]
+
 - Adjust to singular category argument for the actions tool.
   [hannosch]
 
