@@ -15,8 +15,8 @@ setup(name='plone.app.content',
       ],
       keywords='plone content views viewlet',
       author='Jeroen Vloothuis',
-      author_email='jeroen.vloothuis@xs4all.nl',
-      url='http://svn.plone.org/svn/plone/plone.app.content',
+      author_email='plone-developers@lists.sourceforge.net',
+      url='http://pypi.python.org/pypi/plone.app.content',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages = ['plone', 'plone.app'],
@@ -24,9 +24,5 @@ setup(name='plone.app.content',
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'plone.i18n',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
       )
