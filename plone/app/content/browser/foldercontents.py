@@ -25,39 +25,41 @@ class FolderContentsView(BrowserView):
     implements(IFolderContentsView)
     
     def contents_table(self):
-        table = FolderContentsTable(self.context, self.request)
+        table = FolderContentsTable(aq_inner(self.context), self.request)
         return table.render()
 
     def title(self):
         """
         """
-        return self.context.pretty_title_or_id()
+        return aq_inner(self.context).pretty_title_or_id()
 
     def icon(self):
         """
         """
-        ploneview = getMultiAdapter((self.context, self.request), name="plone")
-        icon = ploneview.getIcon(self.context)
+        context = aq_inner(self.context)
+        ploneview = getMultiAdapter((context, self.request), name="plone")
+        icon = ploneview.getIcon(context)
         return icon.html_tag()
 
     def parent_url(self):
         """
         """
-        portal_url = getToolByName(self.context, 'portal_url')
-        plone_utils = getToolByName(self.context, 'plone_utils')
-        portal_membership = getToolByName(self.context, 'portal_membership')
+        context = aq_inner(self.context)
+        portal_url = getToolByName(context, 'portal_url')
+        plone_utils = getToolByName(context, 'plone_utils')
+        portal_membership = getToolByName(context, 'portal_membership')
 
-        obj = self.context
+        obj = context
 
         checkPermission = portal_membership.checkPermission
 
         # Abort if we are at the root of the portal
-        if IPloneSiteRoot.providedBy(self.context):
+        if IPloneSiteRoot.providedBy(context):
             return None
         
 
         # Get the parent. If we can't get it (unauthorized), use the portal
-        parent = aq_parent(aq_inner(obj))
+        parent = aq_parent(obj)
         
         # # We may get an unauthorized exception if we're not allowed to access#
         # the parent. In this case, return None
@@ -66,7 +68,7 @@ class FolderContentsView(BrowserView):
                    parent.getId() == 'talkback':
                 # Skip any Z3 views that may be in the acq tree;
                 # Skip past the talkback container if that's where we are
-                parent = aq_parent(aq_inner(parent))
+                parent = aq_parent(parent)
 
             if not checkPermission('List folder contents', parent):
                 return None
@@ -86,7 +88,7 @@ class FolderContentsTable(object):
         self.request = request
         self.contentFilter = contentFilter
 
-        url = self.context.absolute_url()
+        url = context.absolute_url()
         view_url = url + '/@@folder_contents'
         self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
@@ -100,21 +102,22 @@ class FolderContentsTable(object):
     def items(self):
         """
         """
-        plone_utils = getToolByName(self.context, 'plone_utils')
-        plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
-        portal_workflow = getToolByName(self.context, 'portal_workflow')
-        portal_properties = getToolByName(self.context, 'portal_properties')
-        portal_types = getToolByName(self.context, 'portal_types')
+        context = aq_inner(self.context)
+        plone_utils = getToolByName(context, 'plone_utils')
+        plone_view = getMultiAdapter((context, self.request), name=u'plone')
+        portal_workflow = getToolByName(context, 'portal_workflow')
+        portal_properties = getToolByName(context, 'portal_properties')
+        portal_types = getToolByName(context, 'portal_types')
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
-        browser_default = self.context.browserDefault()
-                
-        if IATTopic.providedBy(self.context):
-            contentsMethod = self.context.queryCatalog
+        browser_default = context.browserDefault()
+
+        if IATTopic.providedBy(context):
+            contentsMethod = context.queryCatalog
         else:
-            contentsMethod = self.context.getFolderContents
-        
+            contentsMethod = context.getFolderContents
+
         results = []
         for i, obj in enumerate(contentsMethod(self.contentFilter)):
             if (i + 1) % 2 == 0:
@@ -173,15 +176,15 @@ class FolderContentsTable(object):
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,
-                is_expired = self.context.isExpired(obj),
+                is_expired = context.isExpired(obj),
             ))
         return results
 
     @property
     def orderable(self):
         """
-        """        
-        return IOrderedContainer.providedBy(self.context)
+        """
+        return IOrderedContainer.providedBy(aq_inner(self.context))
 
     @property
     def show_sort_column(self):
@@ -191,15 +194,16 @@ class FolderContentsTable(object):
     def editable(self):
         """
         """
-        context_state = getMultiAdapter((self.context, self.request),
+        context_state = getMultiAdapter((aq_inner(self.context), self.request),
                                         name=u'plone_context_state')
         return context_state.is_editable()
 
     @property
     def buttons(self):
         buttons = []
-        portal_actions = getToolByName(self.context, 'portal_actions')
-        button_actions = portal_actions.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
+        context = aq_inner(self.context)
+        portal_actions = getToolByName(context, 'portal_actions')
+        button_actions = portal_actions.listActionInfos(object=context, categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
@@ -213,7 +217,7 @@ class FolderContentsTable(object):
 
         for button in button_actions:
             # Make proper classes for our buttons
-            if button['id'] != 'paste' or self.context.cb_dataValid():
+            if button['id'] != 'paste' or context.cb_dataValid():
                 buttons.append(self.setbuttonclass(button))
         return buttons
 
