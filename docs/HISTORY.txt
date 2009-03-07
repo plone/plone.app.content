@@ -37,8 +37,21 @@ Changelog
   from the context view, instead of a Python Script.
   [hannosch]
 
-1.4 - Unreleased
+1.4 - 2009-03-04
 ----------------
+
+- Changed the folder contents tables to deal properly with the Acquisition
+  context of self.context. In Five's browser views, you need to do
+  aq_inner(self.context). This closes
+  http://dev.plone.org/plone/ticket/7686.
+  [hannosch]
+
+- Translate the name of the content types in folder_contents.
+  Fixes http://dev.plone.org/plone/ticket/8459 
+  [csenger]
+
+- Made the tests less fragile in regard to browser errors.
+  [hannosch]
 
 - Fixed folder contents tests, which tried to remove a no longer existing
   portlet assignment.
@@ -59,8 +72,8 @@ Changelog
   widget method was acquired from parent AT content.
   [elro]
 
-1.3 - July 7th, 2008
---------------------
+1.3 - 2008-07-07
+----------------
 
 - Use the widget itself to render the title and description and include the
   usual viewlet managers around the title.
@@ -69,8 +82,8 @@ Changelog
 - Fixed i18n markup in table.pt.
   [naro]
 
-1.2 - April 22, 2008
-----------------------
+1.2 - 2008-04-22
+----------------
 
 - Added authenticator token for CSRF protection.
   [witsch]
@@ -78,9 +91,8 @@ Changelog
 - Fix invalid leading space in all 'Up to Site Setup' links.
   [wichert]
 
-
-1.1.1 - March 24, 2008
-----------------------
+1.1.1 - 2008-03-24
+------------------
 
 - Improved the batch disabling action so that it only shows up
   when there is a batch.
@@ -99,9 +111,8 @@ Changelog
 - Fixed i18n markup in table.pt.
   [hannosch]
 
-
-1.1.0 - March 8, 2008
----------------------
+1.1.0 - 2008-03-08
+------------------
 
 - Made it possible to show all the items in the folder contents at
   once (no batching). This can be used to drag items across batch
@@ -120,9 +131,8 @@ Changelog
   other things.
   [optilude]
 
-
-1.0 - August 16, 2007
----------------------
+1.0 - 2007-08-16
+----------------
 
 - Fixed missing i18n markup on the folder contents view.
   [hannosch]
