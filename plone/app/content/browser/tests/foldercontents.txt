@@ -231,21 +231,14 @@ Now we will add some documents again.
 
   >>> self.createDocuments(3)
 
-When we press the select all button it should no longer offer us to select the
-whole batch because we are showing everything already.
+When we press the select all button we should now be able to clear the
+selection.
 
   >>> browser.open('http://nohost/plone/@@folder_contents')
   >>> browser.getLink(id='foldercontents-selectall').click()
   >>> print browser.contents
   <BLANKLINE>
   ... All ... items in this folder are selected...
-
-  >>> browser.getLink(id='foldercontents-selectall-completebatch')
-  Traceback (most recent call last):
-  ...
-  LinkNotFoundError
-
-Instead we should now be able to clear the selection.
 
   >>> browser.getLink(id='foldercontents-clearselection')
   <Link ...>
