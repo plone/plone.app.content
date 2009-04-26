@@ -4,6 +4,10 @@ Changelog
 1.4.1 - unreleased
 ------------------
 
+- Correct detection if an item in the review list is folderish.
+  Partially fixes http://dev.plone.org/plone/ticket/8926
+  [csenger]
+
 - Add authenticator token to full_review_list form. 
   Partially fixes http://dev.plone.org/plone/ticket/8926
   [csenger]

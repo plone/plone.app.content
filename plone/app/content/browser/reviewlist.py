@@ -80,7 +80,7 @@ class ReviewListTable(object):
             obj_type = obj.portal_type
             if obj_type in use_view_action:
                 view_url = url + '/view'
-            elif obj.is_folderish:
+            elif obj.is_folderish():
                 view_url = url + "/folder_contents"              
             else:
                 view_url = url
@@ -106,7 +106,7 @@ class ReviewListTable(object):
                                                            obj_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
-                folderish = obj.is_folderish,
+                folderish = obj.is_folderish(),
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,
