@@ -4,6 +4,9 @@ Changelog
 1.4.1 - unreleased
 ------------------
 
+- Translate the name of the content types in full_review_list, 
+  add tests. This fixes http://dev.plone.org/plone/ticket/9164
+  [csenger]
 
 1.4 - 2009-03-04
 ----------------
