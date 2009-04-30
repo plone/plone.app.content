@@ -1,9 +1,11 @@
 from zope.component import getMultiAdapter
+from zope.i18n import translate
 
 from Acquisition import aq_inner
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.app.content.browser.tableview import Table
+from Products.CMFPlone.utils import safe_unicode
 import urllib
 
 class FullReviewListView(BrowserView):
@@ -44,6 +46,7 @@ class ReviewListTable(object):
                                         name=u'plone_context_state')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_properties = getToolByName(self.context, 'portal_properties')
+        portal_types = getToolByName(self.context, 'portal_types')
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
@@ -67,23 +70,29 @@ class ReviewListTable(object):
 
             state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = portal_url.getRelativeContentURL(obj)
-            obj_type = obj.portal_type
+
+            type_title_msgid = portal_types[obj.portal_type].Title()
+            url_href_title = u'%s: %s' % (translate(type_title_msgid,
+                                                    context=self.request),
+                                          safe_unicode(obj.Description()))
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate(), long_format=1)
-            
+
+            obj_type = obj.portal_type
             if obj_type in use_view_action:
                 view_url = url + '/view'
-            elif obj.is_folderish:
+            elif obj.is_folderish():
                 view_url = url + "/folder_contents"              
             else:
                 view_url = url
 
             is_browser_default = len(browser_default[1]) == 1 and (
                 obj.id == browser_default[1][0])
-                                 
+            
             results.append(dict(
                 url = url,
+                url_href_title = url_href_title,
                 id  = obj.getId(),
                 quoted_id = urllib.quote_plus(obj.getId()),
                 path = path,
@@ -99,7 +108,7 @@ class ReviewListTable(object):
                                                            obj_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
-                folderish = obj.is_folderish,
+                folderish = obj.is_folderish(),
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,

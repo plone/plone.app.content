@@ -37,6 +37,21 @@ Changelog
   from the context view, instead of a Python Script.
   [hannosch]
 
+1.4.1 - Unreleased
+------------------
+
+- Correct detection if an item in the review list is folderish.
+  Partially fixes http://dev.plone.org/plone/ticket/8926
+  [csenger]
+
+- Add authenticator token to full_review_list form. 
+  Partially fixes http://dev.plone.org/plone/ticket/8926
+  [csenger]
+
+- Translate the name of the content types in full_review_list, 
+  add tests. This fixes http://dev.plone.org/plone/ticket/9164
+  [csenger]
+
 1.4 - 2009-03-04
 ----------------
 
