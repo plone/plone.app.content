@@ -4,6 +4,11 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Removed the Plone UI related bits from this package by moving them into
+  plone.app.layout.content. This package is reduced to providing bridge-code
+  between CMF and Zope Toolkit-based content types.
+  [hannosch]
+
 - Removed the `getNotAddableTypes` PythonScript hook.
   [hannosch]
 

@@ -1,45 +1,12 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:five="http://namespaces.zope.org/five">
+    xmlns:browser="http://namespaces.zope.org/browser">
 
     <!-- Adding view -->
     <browser:view
         for="Products.CMFCore.interfaces.IFolderish"
         name="+"
         class=".adding.CMFAdding"
-        permission="cmf.AddPortalContent"
-        />
-
-    <!-- Folder contents -->
-    <browser:page
-        for="*"
-        class=".foldercontents.FolderContentsView"
-        name="folder_contents"
-        template="foldercontents.pt"
-        permission="cmf.ListFolderContents" />
-
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsView"
-         attribute="get_paths"
-         name="folder_contents_get_paths"
-         permission="cmf.ListFolderContents" />
-
-    <!-- Review list -->
-    <browser:page
-        for="*"
-        class=".reviewlist.FullReviewListView"
-        name="full_review_list"
-        template="full_review_list.pt"
-        permission="cmf.ReviewPortalContent" />
-
-    <!-- Folder factories -->
-    <browser:page
-        for="*"
-        name="folder_factories"
-        class=".folderfactories.FolderFactoriesView"
-        template="folderfactories.pt"
         permission="cmf.AddPortalContent"
         />
 
