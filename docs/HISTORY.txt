@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.1 - unreleased
+1.5 - 2009-05-16
 ------------------
 
 - Correct detection if an item in the review list is folderish.
