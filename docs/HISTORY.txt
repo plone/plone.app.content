@@ -4,6 +4,10 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Moved the INameChooser to an overrides.zcml as CMFCore has grown a
+  conflicting name chooser itself.
+  [hannosch]
+
 - Updated to new version of zope.container.
   [hannosch]
 
