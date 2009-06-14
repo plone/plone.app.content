@@ -4,6 +4,9 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Updated to new version of zope.container.
+  [hannosch]
+
 - Added the z3c.autoinclude entry point so this package is automatically loaded
   on Plone 3.3 and above.
   [hannosch]

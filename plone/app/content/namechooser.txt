@@ -57,7 +57,7 @@ Choosing names based on id
 By default, the namechooser will choose a name based on the id attribute of
 an object, if it has one.
 
-    >>> from zope.app.container.interfaces import INameChooser
+    >>> from zope.container.interfaces import INameChooser
     >>> chooser = INameChooser(container)
 
     >>> item = MyType("my-item")
