@@ -4,6 +4,10 @@ Changelog
 2.0 - Unreleased
 ----------------
 
+- Added the z3c.autoinclude entry point so this package is automatically loaded
+  on Plone 3.3 and above.
+  [hannosch]
+
 - Removed the Plone UI related bits from this package by moving them into
   plone.app.layout.content. This package is reduced to providing bridge-code
   between CMF and Zope Toolkit-based content types.
