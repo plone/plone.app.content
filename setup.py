@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.6'
+version = '2.0'
 
 setup(name='plone.app.content',
       version=version,
@@ -22,7 +22,31 @@ setup(name='plone.app.content',
       namespace_packages = ['plone', 'plone.app'],
       include_package_data=True,
       zip_safe=False,
+      extras_require=dict(
+          test=[
+            'zope.publisher',
+            'zope.testing',
+            'Products.PloneTestCase',
+          ]
+      ),
       install_requires=[
         'setuptools',
+        'plone.memoize',
+        'zope.i18n',
+        'zope.interface',
+        'zope.component',
+        'zope.event',
+        'zope.lifecycleevent',
+        'zope.schema',
+        'zope.viewlet',
+        'zope.app.container',
+        'zope.app.pagetemplate',
+        'zope.app.publisher',
+        'Plone',
+        'Products.ATContentTypes',
+        'Products.CMFCore',
+        'Products.CMFDefault',
+        # 'Acquisition',
+        # 'Zope2',
       ],
       )

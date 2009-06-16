@@ -1,9 +1,22 @@
 Changelog
 =========
 
-1.6 - unreleased
+2.0 - unreleased
 ------------------
 
+- Moved the INameChooser to an overrides.zcml as CMFCore has grown a
+  conflicting name chooser itself.
+  [hannosch]
+
+- Adjust to singular category argument for the actions tool.
+  [hannosch]
+
+- Removed PortalContent.__init__ call including an id argument from Item, as
+  there's no base class which accepts this argument.
+  [hannosch]
+
+- Added package dependencies.
+  [hannosch]
 
 
 1.5 - 2009-05-16
@@ -28,6 +41,8 @@ Changelog
   context of self.context. In Five's browser views, you need to do
   aq_inner(self.context). This closes
   http://dev.plone.org/plone/ticket/7686.
+
+- Made the tests less fragile in regard to browser errors.
   [hannosch]
 
 - Translate the name of the content types in folder_contents.
