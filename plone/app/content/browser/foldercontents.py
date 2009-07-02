@@ -203,8 +203,7 @@ class FolderContentsTable(object):
         buttons = []
         context = aq_inner(self.context)
         portal_actions = getToolByName(context, 'portal_actions')
-        button_actions = portal_actions.listActionInfos(
-            object=context, category='folder_buttons')
+        button_actions = portal_actions.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted

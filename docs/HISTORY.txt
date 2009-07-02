@@ -8,9 +8,6 @@ Changelog
   conflicting name chooser itself.
   [hannosch]
 
-- Adjust to singular category argument for the actions tool.
-  [hannosch]
-
 - Removed PortalContent.__init__ call including an id argument from Item, as
   there's no base class which accepts this argument.
   [hannosch]
