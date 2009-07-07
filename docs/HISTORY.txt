@@ -17,7 +17,7 @@ Changelog
 
 
 1.5 - 2009-05-16
-------------------
+----------------
 
 - Correct detection if an item in the review list is folderish.
   Partially fixes http://dev.plone.org/plone/ticket/8926
