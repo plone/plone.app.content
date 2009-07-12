@@ -5,6 +5,13 @@
 
     <include package=".browser" />
 
+    <!-- Register a name chooser that chooses plone-like normalized names -->
+    <adapter
+      for="Products.CMFCore.interfaces.IFolderish"
+      factory=".namechooser.NormalizingNameChooser"
+      provides="zope.container.interfaces.INameChooser"
+      />
+
     <!-- Re-index content when it's modified -->
     <subscriber
         for=".interfaces.IReindexOnModify

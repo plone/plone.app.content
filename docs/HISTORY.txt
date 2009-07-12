@@ -4,10 +4,6 @@ Changelog
 2.0 - unreleased
 ------------------
 
-- Moved the INameChooser to an overrides.zcml as CMFCore has grown a
-  conflicting name chooser itself.
-  [hannosch]
-
 - Removed PortalContent.__init__ call including an id argument from Item, as
   there's no base class which accepts this argument.
   [hannosch]
