@@ -4,6 +4,9 @@ Changelog
 2.0 - unreleased
 ------------------
 
+- Removed deprecated use of is_folderish script.
+  [davisagli]
+
 - Removed PortalContent.__init__ call including an id argument from Item, as
   there's no base class which accepts this argument.
   [hannosch]

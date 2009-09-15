@@ -76,12 +76,13 @@ class ReviewListTable(object):
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate(), long_format=1)
+            is_structural_folder = obj.restrictedTraverse('@@plone').isStructuralFolder()
 
             obj_type = obj.portal_type
             if obj_type in use_view_action:
                 view_url = url + '/view'
-            elif obj.is_folderish():
-                view_url = url + "/folder_contents"              
+            elif is_structural_folder:
+                view_url = url + "/folder_contents"
             else:
                 view_url = url
 
@@ -106,7 +107,7 @@ class ReviewListTable(object):
                                                            obj_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
-                folderish = obj.is_folderish(),
+                folderish = is_structural_folder,
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,
