@@ -2,7 +2,7 @@ import unittest
 
 from Products.CMFCore.utils import getToolByName
 
-from Products.PloneTestCase.PloneTestCase import PloneTestCase, FunctionalTestCase
+from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
 from Products.PloneTestCase.PloneTestCase import setupPloneSite
 
 from Products.Five.testbrowser import Browser

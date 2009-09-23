@@ -8,7 +8,7 @@ from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.i18n.normalizer.interfaces import IURLNormalizer
 
-from Acquisition import aq_inner, aq_parent, aq_base
+from Acquisition import aq_inner, aq_base
 from Products.CMFCore.interfaces import IPropertiesTool
 
 ATTEMPTS = 1000

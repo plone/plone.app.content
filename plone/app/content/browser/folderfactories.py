@@ -2,10 +2,7 @@ from urllib import quote_plus
 
 from zope.component import getMultiAdapter, queryMultiAdapter, getAdapters, queryUtility
 
-from zope.component.interfaces import IFactory
 from zope.i18n import translate
-from zope.app.container.constraints import checkFactory
-from zope.app.publisher.interfaces.browser import AddMenu
 
 from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
