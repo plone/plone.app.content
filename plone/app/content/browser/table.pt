@@ -161,7 +161,7 @@
             </tr>
           </tal:items>
         </tbody>
-        <tfooter tal:condition="not:view/within_batch_size">
+        <tfoot tal:condition="not:view/within_batch_size">
           <tr tal:condition="not:view/show_all">
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/show_all_url"
@@ -176,7 +176,7 @@
                  id="foldercontents-show-batched" class="update-selection">Show batched</a>
             </th>
           </tr>
-        </tfooter>
+        </tfoot>
       </metal:block>
     </table>
     <div tal:replace="structure view/batching" tal:condition="not:view/show_all"/>
