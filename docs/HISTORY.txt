@@ -7,6 +7,10 @@ Changelog
 - Removed deprecated use of is_folderish script.
   [davisagli]
 
+- Added support for the new add_view_expr property available on FTIs. This
+  can be used to construct a URL for add views.
+  [optilude]
+
 - Removed PortalContent.__init__ call including an id argument from Item, as
   there's no base class which accepts this argument.
   [hannosch]

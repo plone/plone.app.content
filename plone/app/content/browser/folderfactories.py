@@ -1,6 +1,6 @@
 from urllib import quote_plus
 
-from zope.component import getMultiAdapter, queryMultiAdapter, getAdapters, queryUtility
+from zope.component import getMultiAdapter, queryUtility
 
 from zope.i18n import translate
 
@@ -8,7 +8,6 @@ from Acquisition import aq_inner
 from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
-from Products.CMFPlone import PloneMessageFactory as _
 
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
@@ -50,6 +49,7 @@ class FolderFactoriesView(BrowserView):
         Pass a list of type ids to 'include' to explicitly allow a list of
         types.
         """
+        
         context = aq_inner(self.context)
         request = self.request
         
@@ -63,27 +63,30 @@ class FolderFactoriesView(BrowserView):
         
         allowedTypes = _allowedTypes(request, addContext)
         
-        # XXX: This is calling a pyscript (which we encourage people to customise TTW)
-        exclude = addContext.getNotAddableTypes()
-
+        context_state = getMultiAdapter((context, request), name='plone_context_state')
+        
+        # Note: we don't check 'allowed' or 'available' here, because these are slow.
+        # We assume the 'allowedTypes' list has already performed the necessary 
+        # calculations
+        addActionsById = dict([(a['id'], a) for a in context_state.actions().get('folder/add', [])])
+        
         # If there is an add view available, use that instead of createObject
-        # Note: that this depends on the convention that the add view and the
-        # factory have the same name, and it still only applies where there
-        # is an FTI in portal_types to begin with. Alas, FTI-less content
-        # is pretty much a no-go in CMF.
-        addingview = queryMultiAdapter((addContext, request), name='+')
         idnormalizer = queryUtility(IIDNormalizer)
+        
         for t in allowedTypes:
             typeId = t.getId()
-            if typeId not in exclude and (include is None or typeId in include):
+            if include is None or typeId in include:
                 cssId = idnormalizer.normalize(typeId)
                 cssClass = 'contenttype-%s' % cssId
-                factory = t.factory
-                if addingview is not None and \
-                   queryMultiAdapter((addingview, self.request), name=factory) is not None:
-                    url = '%s/+/%s' % (baseUrl, factory,)
-                else:
+                
+                url = None
+                addAction = addActionsById.get(typeId, None)
+                if addAction is not None:
+                    url = addAction['url']
+                
+                if not url:
                     url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
+                
                 icon = t.getIcon()
                 if icon:
                     icon = '%s/%s' % (portal_url, icon)
