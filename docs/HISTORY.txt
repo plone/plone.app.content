@@ -18,6 +18,12 @@ Changelog
 - Added package dependencies.
   [hannosch]
 
+1.6 - unreleased
+----------------
+
+- Fixed folder_add_settings_long default message, it used "context"
+  instead of "here".
+  [vincentfretin]
 
 1.5 - 2009-05-16
 ----------------
