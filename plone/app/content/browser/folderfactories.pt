@@ -25,12 +25,12 @@
     </p>
 
     <p tal:condition="view/can_constrain_types">
-        <a href="#" title="Configure which content types can be added context"
+        <a href="#" title="Configure which content types can be added here"
                     i18n:attributes="title title_configure_addable_content_types;"
                     tal:define="add_context view/add_context"
                     tal:attributes="href string:${add_context/absolute_url}/folder_constraintypes_form;"
                     i18n:translate="folder_add_settings_long">
-            Click to configure what type of items can be added context&hellip;
+            Click to configure what type of items can be added here&hellip;
         </a>
     </p>
 
