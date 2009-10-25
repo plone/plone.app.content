@@ -1,18 +1,17 @@
 from urllib import quote_plus
 
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize.instance import memoize
+from plone.memoize.request import memoize_diy_request
 from zope.component import getMultiAdapter, queryUtility
-
 from zope.i18n import translate
 
 from Acquisition import aq_inner
+from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
 
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-
-from plone.memoize.instance import memoize
-from plone.memoize.request import memoize_diy_request
 
 @memoize_diy_request(arg=0)
 def _allowedTypes(request, context):
@@ -52,27 +51,31 @@ class FolderFactoriesView(BrowserView):
         
         context = aq_inner(self.context)
         request = self.request
-        
+
         results = []
-        
+
+        idnormalizer = queryUtility(IIDNormalizer)
         portal_state = getMultiAdapter((context, request), name='plone_portal_state')
         portal_url = portal_state.portal_url()
-        
+
         addContext = self.add_context()
         baseUrl = addContext.absolute_url()
-        
+
         allowedTypes = _allowedTypes(request, addContext)
-        
-        context_state = getMultiAdapter((context, request), name='plone_context_state')
-        
-        # Note: we don't check 'allowed' or 'available' here, because these are slow.
-        # We assume the 'allowedTypes' list has already performed the necessary 
-        # calculations
-        addActionsById = dict([(a['id'], a) for a in context_state.actions().get('folder/add', [])])
-        
-        # If there is an add view available, use that instead of createObject
-        idnormalizer = queryUtility(IIDNormalizer)
-        
+
+        types_tool = getToolByName(context, 'portal_types')
+
+        # Note: we don't check 'allowed' or 'available' here, because these are
+        # slow. We assume the 'allowedTypes' list has already performed the
+        # necessary calculations
+        actions = types_tool.listActionInfos(
+            object=context,
+            check_permissions=False,
+            check_condition=False,
+            category='folder/add',
+        )
+        addActionsById = dict([(a['id'], a) for a in actions])
+
         for t in allowedTypes:
             typeId = t.getId()
             if include is None or typeId in include:
