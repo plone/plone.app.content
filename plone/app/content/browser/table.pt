@@ -51,7 +51,7 @@
         </tr>
         <tr tal:condition="view/selectall">
           <th colspan="6" class="nosort">
-            <span tal:omit-tag="" i18n:translate="tableheading_all_items_selected">
+            <span tal:omit-tag="" i18n:translate="tableheading_all_items_selected_in_folder">
             All <tal:block replace="view/batch/size" i18n:name="count"/> items in this folder
             are selected. 
             </span>

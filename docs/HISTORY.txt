@@ -4,6 +4,10 @@ Changelog
 2.0 - unreleased
 ------------------
 
+- folder_contents view used the same msgid for two different messages.
+  Fixed that. This closes http://dev.plone.org/plone/ticket/9634
+  [vincentfretin]
+
 - Removed deprecated use of is_folderish script.
   [davisagli]
 
