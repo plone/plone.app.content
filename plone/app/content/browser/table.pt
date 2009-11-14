@@ -100,8 +100,8 @@
                        tal:attributes="value   item/path;
                                        id      string:cb_${item/id};
                                        checked item/checked;
-                                       alt     string:Select ${item/title_or_id};
-                                       title   string:Select ${item/title_or_id}" />
+                                       alt     python:view.msg_select_item(item);
+                                       title   python:view.msg_select_item(item)" />
                 <input type="hidden" name="selected_obj_paths:list" value="#"
                        tal:attributes="value item/relative_url" />
                 <label tal:content="item/title_or_id"

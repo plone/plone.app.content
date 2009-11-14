@@ -4,6 +4,10 @@ Changelog
 1.6 - unreleased
 ----------------
 
+- Fixed not translatable message in table.pt: "Select ${title}"
+  appears when the mouse is over a checkbox in folder_contents.
+  [vincentfretin]
+
 - Fixed folder_add_settings_long default message, it used "context"
   instead of "here".
   [vincentfretin]
