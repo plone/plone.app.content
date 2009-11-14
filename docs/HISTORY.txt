@@ -2,7 +2,7 @@ Changelog
 =========
 
 2.0 - unreleased
-------------------
+----------------
 
 - folder_contents view used the same msgid for two different messages.
   Fixed that. This closes http://dev.plone.org/plone/ticket/9634
@@ -24,6 +24,10 @@ Changelog
 
 1.6 - unreleased
 ----------------
+
+- Fixed not translatable message in table.pt: "Select ${title}"
+  appears when the mouse is over a checkbox in folder_contents.
+  [vincentfretin]
 
 - Fixed folder_add_settings_long default message, it used "context"
   instead of "here".

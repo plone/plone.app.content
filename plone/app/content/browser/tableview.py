@@ -1,6 +1,8 @@
 from zope.app.pagetemplate import ViewPageTemplateFile
 from plone.app.content.batching import Batch
 from plone.memoize import instance
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('plone')
 
 try:
     from kss.core import KSSView
@@ -37,6 +39,11 @@ class Table(object):
             self.selectall = True
 
         self.pagenumber =  int(request.get('pagenumber', 1))
+
+    def msg_select_item(self, item):
+        return _(u'checkbox_select_item',
+                 default=u"Select ${title}",
+                 mapping={'title': item['title_or_id']})
 
     @property
     def within_batch_size(self):
