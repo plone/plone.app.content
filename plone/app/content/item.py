@@ -1,6 +1,5 @@
+from zope.container.contained import Contained
 from zope.interface import implements
-
-from zope.app.container.contained import Contained
 
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl

@@ -1,6 +1,9 @@
-from zope.app.pagetemplate import ViewPageTemplateFile
-from plone.app.content.batching import Batch
 from plone.memoize import instance
+
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+
+from plone.app.content.batching import Batch
+
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('plone')
 

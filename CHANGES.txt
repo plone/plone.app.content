@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.0 - unreleased
-----------------
+2.0a1 - unreleased
+------------------
+
+- Avoid zope.app dependencies.
+  [hannosch]
 
 - folder_contents view used the same msgid for two different messages.
   Fixed that. This closes http://dev.plone.org/plone/ticket/9634

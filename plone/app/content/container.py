@@ -1,6 +1,6 @@
+from zope.container.interfaces import IContainer
+from zope.container.contained import Contained
 from zope.interface import implements
-from zope.app.container.interfaces import IContainer
-from zope.app.container.contained import Contained
 
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase

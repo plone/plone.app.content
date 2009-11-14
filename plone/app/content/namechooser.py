@@ -1,17 +1,18 @@
-from zope.interface import implements
-from zope.component import getUtility
-from zope.component import queryUtility
-
-from zope.app.container.interfaces import INameChooser
-
-from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.i18n.normalizer.interfaces import IURLNormalizer
+from zope.component import getUtility
+from zope.component import queryUtility
+from zope.container.interfaces import INameChooser
+from zope.interface import implements
 
 from Acquisition import aq_inner, aq_base
 from Products.CMFCore.interfaces import IPropertiesTool
 
-ATTEMPTS = 1000
+from plone.app.content.interfaces import INameFromTitle
+
+
+ATTEMPTS = 100
+
 
 class NormalizingNameChooser(object):
     """A name chooser for a Zope object manager.
