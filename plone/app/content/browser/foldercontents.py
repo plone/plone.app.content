@@ -144,6 +144,8 @@ class FolderContentsTable(object):
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)
 
+            pretty_title_or_id = safe_unicode(obj.pretty_title_or_id())
+
             obj_type = obj.Type
             if obj_type in use_view_action:
                 view_url = url + '/view'
@@ -161,7 +163,7 @@ class FolderContentsTable(object):
                 id  = obj.getId,
                 quoted_id = urllib.quote_plus(obj.getId),
                 path = path,
-                title_or_id = obj.pretty_title_or_id(),
+                title_or_id = pretty_title_or_id,
                 obj_type = obj_type,
                 size = obj.getObjSize,
                 modified = modified,
