@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+ - Fixed a unicodedecodeerror in foldercontents.py. Closes #9853
+   [wigwam]
+
 
 2.0a1 - 2009-11-14
 ------------------
