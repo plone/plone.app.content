@@ -1,12 +1,15 @@
 Changelog
 =========
 
-2.0b1 - Unreleased
+2.0a2 - 2009-12-02
 ------------------
 
 - Fixed a unicodedecodeerror in foldercontents.py. Closes #9853
   [wigwam]
 
+- Templates were updated to a new way of disabling the columns via a REQUEST
+  variable.
+  [spliter]
 
 2.0a1 - 2009-11-14
 ------------------
