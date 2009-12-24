@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Removed no longer required _getCharset handling from the name chooser. Plone
+  only supports utf-8 as a database encoding.
+  [hannosch]
+
 - Use the getIconExprObject method of the FTI instead of the deprecated
   getIcon method.
   [hannosch]
