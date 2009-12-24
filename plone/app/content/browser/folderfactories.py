@@ -8,14 +8,16 @@ from zope.i18n import translate
 from zope.publisher.browser import BrowserView
 
 from Acquisition import aq_inner
+from Acquisition import aq_parent
+from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
-
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
 
 
 @memoize_diy_request(arg=0)
 def _allowedTypes(request, context):
     return context.allowedContentTypes()
+
 
 class FolderFactoriesView(BrowserView):
     """The folder_factories view - show addable types
@@ -76,6 +78,8 @@ class FolderFactoriesView(BrowserView):
         )
         addActionsById = dict([(a['id'], a) for a in actions])
 
+        expr_context = createExprContext(
+            aq_parent(context), portal_state.portal(), context)
         for t in allowedTypes:
             typeId = t.getId()
             if include is None or typeId in include:
@@ -90,9 +94,9 @@ class FolderFactoriesView(BrowserView):
                 if not url:
                     url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
 
-                icon = t.getIcon()
+                icon = t.getIconExprObject()
                 if icon:
-                    icon = '%s/%s' % (portal_url, icon)
+                    icon = icon(expr_context)
 
                 results.append({ 'id'           : typeId,
                                  'title'        : t.Title(),

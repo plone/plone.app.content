@@ -4,6 +4,10 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Use the getIconExprObject method of the FTI instead of the deprecated
+  getIcon method.
+  [hannosch]
+
 - Fixed package dependencies and prefer Acquisition-less BrowserView.
   [hannosch]
 
