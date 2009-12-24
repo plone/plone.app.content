@@ -20,7 +20,7 @@ def _allowedTypes(request, context):
 class FolderFactoriesView(BrowserView):
     """The folder_factories view - show addable types
     """
-    
+
     def __call__(self):
         if 'form.button.Add' in self.request.form:
             url = self.request.form.get('url')
@@ -28,27 +28,27 @@ class FolderFactoriesView(BrowserView):
             return ''
         else:
             return self.index()
-    
+
     def can_constrain_types(self):
         constrain_types = ISelectableConstrainTypes(self.add_context(), None)
         return constrain_types is not None and constrain_types.canConstrainTypes()
-    
+
     @memoize
     def add_context(self):
         context_state = getMultiAdapter((self.context, self.request), name='plone_context_state')
         return context_state.folder()
-    
+
     # NOTE: This is also used by plone.app.contentmenu.menu.FactoriesMenu.
     # The return value is somewhat dictated by the menu infrastructure, so
     # be careful if you change it
 
     def addable_types(self, include=None):
         """Return menu item entries in a TAL-friendly form.
-        
+
         Pass a list of type ids to 'include' to explicitly allow a list of
         types.
         """
-        
+
         context = aq_inner(self.context)
         request = self.request
 
@@ -81,15 +81,15 @@ class FolderFactoriesView(BrowserView):
             if include is None or typeId in include:
                 cssId = idnormalizer.normalize(typeId)
                 cssClass = 'contenttype-%s' % cssId
-                
+
                 url = None
                 addAction = addActionsById.get(typeId, None)
                 if addAction is not None:
                     url = addAction['url']
-                
+
                 if not url:
                     url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
-                
+
                 icon = t.getIcon()
                 if icon:
                     icon = '%s/%s' % (portal_url, icon)
