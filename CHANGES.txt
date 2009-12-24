@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Introduce a new marker interface IContentsPage noting that the current
+  request is showing the folder contents page.
+  [hannnosch]
 
 2.0a2 - 2009-12-02
 ------------------
