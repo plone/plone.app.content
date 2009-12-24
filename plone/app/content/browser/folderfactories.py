@@ -5,10 +5,10 @@ from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
 from zope.component import getMultiAdapter, queryUtility
 from zope.i18n import translate
+from zope.publisher.browser import BrowserView
 
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
-from Products.Five.browser import BrowserView
 
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
 

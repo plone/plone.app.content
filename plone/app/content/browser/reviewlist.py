@@ -1,12 +1,14 @@
+import urllib
+
 from zope.component import getMultiAdapter
 from zope.i18n import translate
+from zope.publisher.browser import BrowserView
 
 from Acquisition import aq_inner
-from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from plone.app.content.browser.tableview import Table, TableKSSView
-import urllib
+
 
 class FullReviewListView(BrowserView):
 

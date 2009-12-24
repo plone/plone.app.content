@@ -4,6 +4,9 @@ Changelog
 2.0b1 - Unreleased
 ------------------
 
+- Fixed package dependencies and prefer Acquisition-less BrowserView.
+  [hannosch]
+
 - Introduce a new marker interface IContentsPage noting that the current
   request is showing the folder contents page.
   [hannnosch]

@@ -10,7 +10,7 @@ _ = MessageFactory('plone')
 try:
     from kss.core import KSSView
 except ImportError:
-    from Products.Five import BrowserView as KSSView
+    from zope.publisher.browser import BrowserView as KSSView
 
 
 class Table(object):
