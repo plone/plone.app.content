@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b1 - Unreleased
+2.0a3 - 2009-12-27
 ------------------
 
 - Removed no longer required _getCharset handling from the name chooser. Plone
