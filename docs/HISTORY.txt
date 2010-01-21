@@ -4,6 +4,10 @@ Changelog
 1.6 - unreleased
 ----------------
 
+- Fixed erroneous tfooter tag in table.pt (used in folder contents). It should 
+  be tfoot, not tfooter.
+  [limi]
+
 - Fixed not translatable message in table.pt: "Select ${title}"
   appears when the mouse is over a checkbox in folder_contents.
   [vincentfretin]
