@@ -4,6 +4,9 @@ Changelog
 2.0b1 - unreleased
 ------------------
 
+- Move logic for deciding source of folder contents listing to a new function
+  so the FolderContentsTable view is useful as a base for subclasses.
+  [MatthewWilkes]
 
 2.0a3 - 2009-12-27
 ------------------
