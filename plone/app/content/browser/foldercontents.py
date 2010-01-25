@@ -101,8 +101,7 @@ class FolderContentsTable(object):
 
     def render(self):
         return self.table.render()
-    
-    @property
+
     def contentsMethod(self):
         context = aq_inner(self.context)
         if IATTopic.providedBy(context):
@@ -127,7 +126,7 @@ class FolderContentsTable(object):
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
         browser_default = context.browserDefault()
 
-        contentsMethod = self.contentsMethod
+        contentsMethod = self.contentsMethod()
 
         results = []
         for i, obj in enumerate(contentsMethod(self.contentFilter)):
