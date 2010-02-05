@@ -1,8 +1,9 @@
+from Acquisition import Implicit
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.adding import ContentAdding
 
 
-class CMFAdding(ContentAdding):
+class CMFAdding(Implicit, ContentAdding):
     """An adding view with a less silly next-url
     """
 

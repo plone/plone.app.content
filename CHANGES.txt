@@ -4,6 +4,10 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Mixed in Acquisition.Implicit back into the CMFAdding class. CMF skins depend
+  on it inside templates. This closes http://dev.plone.org/plone/ticket/9865.
+  [hannosch]
+
 - Added test for adding view and Acquisition interaction. This references
   http://dev.plone.org/plone/ticket/9865.
   [hannosch]
