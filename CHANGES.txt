@@ -4,6 +4,9 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Added test for adding view and Acquisition interaction. This references
+  http://dev.plone.org/plone/ticket/9865.
+  [hannosch]
 
 2.0b1 - 2010-01-25
 ------------------
