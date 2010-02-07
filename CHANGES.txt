@@ -4,6 +4,10 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Updated templates to follow the recent markup conventions. 
+  References http://dev.plone.org/plone/ticket/9981
+  [spliter]
+
 - Mixed in Acquisition.Implicit back into the CMFAdding class. CMF skins depend
   on it inside templates. This closes http://dev.plone.org/plone/ticket/9865.
   [hannosch]

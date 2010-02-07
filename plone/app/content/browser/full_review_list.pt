@@ -10,19 +10,22 @@
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <body>
-  <div metal:fill-slot="main">
+  <metal:main fill-slot="main">
     <h1 class="documentFirstHeading"
         i18n:translate="heading_full_review_list">Full review list:</h1>
-
-    <form name="worklistForm"
-            method="post"
-            action="folder_object"
-            tal:attributes="action context/absolute_url"
-            tal:condition="view/revlist"
-            class="kssattr-serveraction-reviewlist_update_table">
-      <div tal:replace="structure view/review_table"></div>
-      <input tal:replace="structure context/@@authenticator/authenticator" />
-    </form>
-</div>
+        
+    <div id="content-core">
+        <form name="worklistForm"
+                method="post"
+                action="folder_object"
+                tal:attributes="action context/absolute_url"
+                tal:condition="view/revlist"
+                class="kssattr-serveraction-reviewlist_update_table">
+              <div tal:replace="structure view/review_table"></div>
+              <input tal:replace="structure context/@@authenticator/authenticator" />
+        </form>
+    </div>
+    
+  </metal:main>
 </body>
 </html>
