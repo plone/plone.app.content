@@ -16,9 +16,6 @@ class CMFAdding(Implicit, ContentAdding):
         # We need to ensure that we finish type construction, not at least
         # to set the correct permissions based on the workflow
         portal_types = getToolByName(content, 'portal_types')
-        fti = portal_types.getTypeInfo(content)
-        if fti is not None:
-            fti._finishConstruction(content)
 
         return content
 
