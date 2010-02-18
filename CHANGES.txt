@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b2 - unreleased
+2.0b2 - 2010-02-18
 ------------------
 
 - Use non-skins versions of `isExpired` and `pretty_title_or_id` to speed
