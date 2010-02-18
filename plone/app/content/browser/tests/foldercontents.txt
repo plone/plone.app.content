@@ -9,7 +9,7 @@ Viewing the folder contents
 A user should first login before being able to access the folder contents view.
  
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> 'Please log in' in browser.contents
+  >>> 'Login Name' in browser.contents
   True
 
 Log in and try again.
@@ -19,7 +19,7 @@ Log in and try again.
   >>> browser.addHeader('Authorization',
   ...                   'Basic %s:%s' % (portal_owner, default_password))
   >>> browser.open('http://nohost/plone/@@folder_contents')
-  >>> 'Please log in' in browser.contents
+  >>> 'Login Name' in browser.contents
   False
 
 Buttons

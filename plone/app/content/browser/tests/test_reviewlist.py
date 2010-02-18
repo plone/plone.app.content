@@ -41,7 +41,7 @@ class ReviewListTestCase(FunctionalTestCase):
         the review list
         '''
         self.browser.open('http://nohost/plone/full_review_list')
-        self.assertTrue('Please log in' in self.browser.contents)
+        self.assertTrue('Login Name' in self.browser.contents)
 
     def test_authenticated(self):
         '''
