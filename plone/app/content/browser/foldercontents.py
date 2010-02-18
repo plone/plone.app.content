@@ -14,6 +14,7 @@ from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import pretty_title_or_id, isExpired
 
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.interfaces import IContentsPage
@@ -36,7 +37,7 @@ class FolderContentsView(BrowserView):
     def title(self):
         """
         """
-        return aq_inner(self.context).pretty_title_or_id()
+        return pretty_title_or_id(context=self.context, obj=self.context)
 
     def icon(self):
         """
@@ -124,7 +125,7 @@ class FolderContentsTable(object):
         site_properties = portal_properties.site_properties
         
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
-        browser_default = context.browserDefault()
+        browser_default = plone_utils.browserDefault(context)
 
         contentsMethod = self.contentsMethod()
 
@@ -154,8 +155,6 @@ class FolderContentsTable(object):
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)
 
-            pretty_title_or_id = safe_unicode(obj.pretty_title_or_id())
-
             obj_type = obj.Type
             if obj_type in use_view_action:
                 view_url = url + '/view'
@@ -173,7 +172,7 @@ class FolderContentsTable(object):
                 id  = obj.getId,
                 quoted_id = urllib.quote_plus(obj.getId),
                 path = path,
-                title_or_id = pretty_title_or_id,
+                title_or_id = safe_unicode(pretty_title_or_id(plone_utils, obj)),
                 obj_type = obj_type,
                 size = obj.getObjSize,
                 modified = modified,
@@ -188,7 +187,7 @@ class FolderContentsTable(object):
                 relative_url = relative_url,
                 view_url = view_url,
                 table_row_class = table_row_class,
-                is_expired = context.isExpired(obj),
+                is_expired = isExpired(obj),
             ))
         return results
 

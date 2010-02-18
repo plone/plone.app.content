@@ -4,6 +4,10 @@ Changelog
 2.0b2 - unreleased
 ------------------
 
+- Use non-skins versions of `isExpired` and `pretty_title_or_id` to speed
+  up the `folder_contents` view a bit.
+  [witsch]
+
 - Updated templates to follow the recent markup conventions. 
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
