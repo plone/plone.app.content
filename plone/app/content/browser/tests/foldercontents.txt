@@ -12,6 +12,10 @@ A user should first login before being able to access the folder contents view.
   >>> 'Login Name' in browser.contents
   True
 
+  >>> browser.open('http://nohost/plone/news/@@folder_contents')
+  >>> 'Login Name' in browser.contents
+  True
+
 Log in and try again.
 
   >>> from Products.PloneTestCase.setup import portal_owner
@@ -19,6 +23,10 @@ Log in and try again.
   >>> browser.addHeader('Authorization',
   ...                   'Basic %s:%s' % (portal_owner, default_password))
   >>> browser.open('http://nohost/plone/@@folder_contents')
+  >>> 'Login Name' in browser.contents
+  False
+
+  >>> browser.open('http://nohost/plone/news/@@folder_contents')
   >>> 'Login Name' in browser.contents
   False
 
