@@ -50,7 +50,7 @@ class Table(object):
 
     @property
     def within_batch_size(self):
-        return len(self.items) < self.pagesize
+        return len(self.items) <= self.pagesize
 
     def set_checked(self, item):
         selected = self.selected(item)
