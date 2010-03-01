@@ -4,8 +4,12 @@ Changelog
 2.0b3 - Unreleased
 ------------------
 
-- Only display batching controls if we have more than the batch size number of elements.
-  Fixes http://dev.plone.org/plone/ticket/10281
+- Make the folder contents listing fall back to using the portal_type id when
+  the title is not available (e.g. if the portal_type is missing).
+  [davisagli]
+
+- Only display batching controls if we have more than the batch size number of
+  elements. Fixes http://dev.plone.org/plone/ticket/10281
   [esteele]
   
 - Adapt tests to new policy introduced in
