@@ -4,6 +4,10 @@ Changelog
 1.6 - unreleased
 ----------------
 
+- Make the folder contents listing fall back to using the portal_type id when 
+  the title is not available (e.g. if the portal_type is missing). 
+  [davisagli] 
+
 - Fixed erroneous tfooter tag in table.pt (used in folder contents). It should 
   be tfoot, not tfooter.
   [limi]

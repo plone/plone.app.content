@@ -45,8 +45,6 @@ class FolderContentsView(BrowserView):
         """
         """
         context = aq_inner(self.context)
-        portal_url = getToolByName(context, 'portal_url')
-        plone_utils = getToolByName(context, 'plone_utils')
         portal_membership = getToolByName(context, 'portal_membership')
 
         obj = context
@@ -136,7 +134,11 @@ class FolderContentsTable(object):
             state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = obj.getURL(relative=True)
 
-            type_title_msgid = portal_types[obj.portal_type].Title()
+            fti = portal_types.get(obj.portal_type)
+            if fti is not None:
+                type_title_msgid = fti.Title()
+            else:
+                type_title_msgid = obj.portal_type
             url_href_title = u'%s: %s' % (translate(type_title_msgid,
                                                     context=self.request),
                                           safe_unicode(obj.Description))
