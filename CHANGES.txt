@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b3 - Unreleased
+2.0b3 - 2010-03-05
 ------------------
 
 - Make the folder contents listing fall back to using the portal_type id when
@@ -11,7 +11,7 @@ Changelog
 - Only display batching controls if we have more than the batch size number of
   elements. Fixes http://dev.plone.org/plone/ticket/10281
   [esteele]
-  
+
 - Adapt tests to new policy introduced in
   http://dev.plone.org/plone/changeset/34375
   References http://dev.plone.org/plone/ticket/10236
