@@ -12,9 +12,6 @@
            tal:attributes="value item/path"/>
   </tal:block>
 
-  <!-- <div metal:use-macro="context/document_actions/macros/document_actions">
-       Document actions (print, sendto etc)
-       </div> -->
   <p class="discreet"
      tal:condition="not: view/batch"
      i18n:translate="description_no_visible_items_add_paste">
