@@ -3,6 +3,10 @@ Changelog
 
 2.0b4 - unreleased
 ------------------
+- Slight reconfiguration of the order of the folder_contents table; 
+  dragging is now in the first column, and visually much improved.
+  [limi]
+
 - Fixing possibly our #1 integrator issue, where do you find the template
   that corresponds to the folder_contents URL? Grep gives you nothing, since
   this was renamed to foldercontents.pt in the 3.x series. Renamed it back to

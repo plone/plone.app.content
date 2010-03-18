@@ -58,6 +58,10 @@
         </tr>
 
         <tr>
+          <th class="nosort column"
+              id="foldercontents-order-column"
+              tal:condition="view/show_sort_column">
+          </th>
           <th class="nosort">&nbsp;</th>
           <th class="nosort column"
               id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
@@ -71,10 +75,6 @@
           <th class="nosort column"
               id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
               >State</tal:state>&nbsp;</th>
-          <th class="nosort column"
-              id="foldercontents-order-column"
-              tal:condition="view/show_sort_column">
-          &nbsp;<tal:order i18n:translate="listingheader_order">Order</tal:order>&nbsp;</th>
         </tr>
       </thead>
 
@@ -89,6 +89,21 @@
                 * Create title_or_id metadata in the catalog (why not just use item.Title or item.getId? (alecm))
               </tal:comment>
 
+              <td tal:condition="view/show_sort_column" class="draggable">
+                <a href=""
+                   title="Move item up"
+                   i18n:attributes="title title_move_item_up;"
+                   tal:attributes="href string:${view/base_url}/folder_position?position=up&amp;id=${item/quoted_id}">
+                  &#9650;
+                </a>
+                &nbsp;
+                <a href=""
+                   title="Move item down"
+                   i18n:attributes="title title_move_item_down;"
+                   tal:attributes="href string:${view/base_url}/folder_position?position=down&amp;id=${item/quoted_id}">
+                  &#9660;
+                </a>
+              </td>
               <td class="notDraggable">
                 <input type="checkbox"
                        class="noborder"
@@ -139,21 +154,6 @@
                       tal:content="item/state_title"
                       tal:attributes="class item/state_class" />
                 <span tal:condition="not: item/state_title">&nbsp;</span>
-              </td>
-              <td tal:condition="view/show_sort_column" class="draggable">
-                <a href=""
-                   title="Move item up"
-                   i18n:attributes="title title_move_item_up;"
-                   tal:attributes="href string:${view/base_url}/folder_position?position=up&amp;id=${item/quoted_id}">
-                  &#9650;
-                </a>
-                &nbsp;
-                <a href=""
-                   title="Move item down"
-                   i18n:attributes="title title_move_item_down;"
-                   tal:attributes="href string:${view/base_url}/folder_position?position=down&amp;id=${item/quoted_id}">
-                  &#9660;
-                </a>
               </td>
             </tr>
           </tal:items>
