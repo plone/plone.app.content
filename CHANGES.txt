@@ -3,7 +3,15 @@ Changelog
 
 2.0b4 - unreleased
 ------------------
+- Fixing possibly our #1 integrator issue, where do you find the template
+  that corresponds to the folder_contents URL? Grep gives you nothing, since
+  this was renamed to foldercontents.pt in the 3.x series. Renamed it back to
+  folder_contents.pt, and adjusted the ZCML accordingly.
+  [limi]
 
+- Removed unused template foldercontents_table.pt. We have been using table.pt
+  for ~2 years, it's time to kill it off.
+  [limi]
 
 2.0b3 - 2010-03-05
 ------------------

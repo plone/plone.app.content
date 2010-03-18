@@ -16,7 +16,7 @@
         for="*"
         class=".foldercontents.FolderContentsView"
         name="folder_contents"
-        template="foldercontents.pt"
+        template="folder_contents.pt"
         permission="cmf.ListFolderContents" />
     
     <browser:page
