@@ -4,10 +4,6 @@ Changelog
 2.0b4 - unreleased
 ------------------
 
-- Fix a bug where factory icons were not successfully conditional on
-  the icon_expr.
-  [rossp]
-
 - Slight reconfiguration of the order of the folder_contents table; 
   dragging is now in the first column, and visually much improved.
   [limi]

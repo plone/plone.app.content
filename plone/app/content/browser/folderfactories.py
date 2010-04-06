@@ -94,14 +94,8 @@ class FolderFactoriesView(BrowserView):
                 if not url:
                     url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
 
-                # The compiled expression returned by
-                # getIconExprObject() will always evaluate to True in
-                # a truth test even if the icon_expr is empty.  Make
-                # sure we test the expression string before assuming
-                # there is an icon
-                icon = t.getProperty('icon_expr')
+                icon = t.getIconExprObject()
                 if icon:
-                    icon = t.getIconExprObject()
                     icon = icon(expr_context)
 
                 results.append({ 'id'           : typeId,
