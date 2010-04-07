@@ -23,7 +23,6 @@
                   </metal:field>
               </tal:block>
               <tal:block condition="not:exists:here/aq_explicit/widget">
-                  <tal:block replace="structure view/icon" /> 
                   <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
               </tal:block>
           </h1>        
