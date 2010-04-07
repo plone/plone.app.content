@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7 - unreleased
+1.7 - 2010-04-07
 ----------------
 
 - Fixed serious regression introduced in c31433. You cannot pass encoded
