@@ -143,13 +143,13 @@ Now that we have a lot of pages we should also have some batching.
 
 One of the later pages should not be in our current screen.
 
-  >>> 'Testing 20' in browser.contents
+  >>> 'Testing \xc3\xa4 20' in browser.contents
   False
 
 Now when we go to the second screen it should show up.
 
   >>> browser.getLink('2').click()
-  >>> 'Testing 20' in browser.contents
+  >>> 'Testing \xc3\xa4 20' in browser.contents
   True
 
 We should also have at most four pages of batched items. So at page four there
@@ -323,7 +323,7 @@ Now we can show all the items in the folder if we want to.
 You can see all the items are now on the page.
 
   >>> browser.contents
-  '...Testing 1...Testing 11...Testing 60...'
+  '...Testing \xc3\xa4 1...Testing \xc3\xa4 11...Testing \xc3\xa4 60...'
 
 Selecting the current page should make the entire folder selected
 (since we see everything).

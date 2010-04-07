@@ -4,6 +4,9 @@ Changelog
 1.7 - unreleased
 ----------------
 
+- Fixed serious regression introduced in c31433. You cannot pass encoded
+  strings into Message mappings.
+  [hannosch]
 
 1.6 - 2010-03-01
 ----------------
