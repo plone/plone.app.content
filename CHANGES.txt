@@ -21,10 +21,6 @@ Changelog
 2.0b3 - 2010-03-05
 ------------------
 
-- Make the folder contents listing fall back to using the portal_type id when
-  the title is not available (e.g. if the portal_type is missing).
-  [davisagli]
-
 - Only display batching controls if we have more than the batch size number of
   elements. Fixes http://dev.plone.org/plone/ticket/10281
   [esteele]
@@ -121,6 +117,14 @@ Changelog
 
 1.6 - 2010-03-01
 ----------------
+
+- Make the folder contents listing fall back to using the portal_type id when
+  the title is not available (e.g. if the portal_type is missing).
+  [davisagli]
+
+- Fixed erroneous tfooter tag in table.pt (used in folder contents). It should
+  be tfoot, not tfooter.
+  [limi]
 
 - Fixed not translatable message in table.pt: "Select ${title}"
   appears when the mouse is over a checkbox in folder_contents.
