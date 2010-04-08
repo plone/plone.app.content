@@ -112,7 +112,14 @@ Changelog
 - Added package dependencies.
   [hannosch]
 
-1.6 - unreleased
+1.7 - 2010-04-07
+----------------
+
+- Fixed serious regression introduced in c31433. You cannot pass encoded
+  strings into Message mappings.
+  [hannosch]
+
+1.6 - 2010-03-01
 ----------------
 
 - Fixed not translatable message in table.pt: "Select ${title}"

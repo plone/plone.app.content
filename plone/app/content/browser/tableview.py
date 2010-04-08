@@ -5,6 +5,9 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.content.batching import Batch
 
 from zope.i18nmessageid import MessageFactory
+
+from Products.CMFPlone.utils import safe_unicode
+
 _ = MessageFactory('plone')
 
 try:
@@ -46,7 +49,7 @@ class Table(object):
     def msg_select_item(self, item):
         return _(u'checkbox_select_item',
                  default=u"Select ${title}",
-                 mapping={'title': item['title_or_id']})
+                 mapping={'title': safe_unicode(item['title_or_id'])})
 
     @property
     def within_batch_size(self):

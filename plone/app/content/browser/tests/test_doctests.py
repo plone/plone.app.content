@@ -26,7 +26,7 @@ class FolderTestCase(FunctionalTestCase):
         for i in xrange(1, amount + 1):
             self.portal.invokeFactory('Document', 'testing-%d' % i)
             document = getattr(self.portal, 'testing-%d' % i)
-            document.setTitle('Testing %d' % i)
+            document.setTitle(unicode('Testing \xc3\xa4 %d' % i, 'utf-8'))
             document.setExcludeFromNav(True)
             document.reindexObject()
 
