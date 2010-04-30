@@ -125,17 +125,29 @@ class FolderContentsTable(object):
 
         contentsMethod = self.contentsMethod()
 
+        show_all = self.request.get('show_all', '').lower() == 'true'
+        pagesize = 20
+        pagenumber = int(self.request.get('pagenumber', 1))
+        start = (pagenumber - 1) * pagesize
+        end = start + pagesize
+
         results = []
         for i, obj in enumerate(contentsMethod(self.contentFilter)):
+            path = obj.getPath or "/".join(obj.getPhysicalPath())
+
+            # avoid creating unnecessary info for items outside the current
+            # batch;  only the path is needed for the "select all" case...
+            if not show_all and not start <= i < end:
+                results.append(dict(path = path))
+                continue
+
             if (i + 1) % 2 == 0:
                 table_row_class = "draggable even"
             else:
                 table_row_class = "draggable odd"
 
             url = obj.getURL()
-            path = obj.getPath or "/".join(obj.getPhysicalPath())
             icon = plone_view.getIcon(obj);
-            
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 

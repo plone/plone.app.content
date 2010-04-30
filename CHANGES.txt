@@ -4,6 +4,10 @@ Changelog
 2.0b5 - Unreleased
 ------------------
 
+- Speed up folder contents view by only creating the necessary data for
+  items in the batch to be displayed.
+  [witsch]
+
 - Remove KSS updates for "folder contents" view as they are broken for
   folders with lots of content and not consistently used either.
   [witsch]

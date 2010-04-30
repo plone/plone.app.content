@@ -35,9 +35,9 @@ class Batch(object):
 
     @property
     def items_not_on_page(self):
-        items_on_page = list(self)
-        return [item for item in self.items if item not in
-                items_on_page]
+        start = (self.pagenumber-1) * self.pagesize
+        end = start + self.pagesize
+        return self.items[:start] + self.items[end:]
 
     @property
     def multiple_pages(self):
