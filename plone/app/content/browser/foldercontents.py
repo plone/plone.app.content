@@ -1,6 +1,5 @@
 import urllib
 
-from plone.memoize import instance
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.interface import alsoProvides
@@ -91,6 +90,7 @@ class FolderContentsTable(object):
         self.context = context
         self.request = request
         self.contentFilter = contentFilter
+        self.items = self.folderitems()
 
         url = context.absolute_url()
         view_url = url + '/@@folder_contents'
@@ -109,9 +109,7 @@ class FolderContentsTable(object):
             contentsMethod = context.getFolderContents
         return contentsMethod
 
-    @property
-    @instance.memoize
-    def items(self):
+    def folderitems(self):
         """
         """
         context = aq_inner(self.context)
