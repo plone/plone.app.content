@@ -56,8 +56,7 @@
           <form name="folderContentsForm"
                 method="post"
                 action="folder_object"
-                tal:attributes="action context/absolute_url"
-                class="kssattr-serveraction-foldercontents_update_table">
+                tal:attributes="action context/absolute_url">
             <div tal:replace="structure view/contents_table"></div>
             <input tal:replace="structure context/@@authenticator/authenticator" />
           </form>

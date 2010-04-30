@@ -18,13 +18,6 @@
         name="folder_contents"
         template="folder_contents.pt"
         permission="cmf.ListFolderContents" />
-    
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsKSSView"
-         attribute="update_table"
-         name="foldercontents_update_table"
-         permission="cmf.ListFolderContents" />
 
     <!-- Review list -->
     <browser:page
@@ -34,13 +27,6 @@
         template="full_review_list.pt"
         permission="cmf.ReviewPortalContent" />
 
-    <browser:page
-         for="*"
-         class=".reviewlist.ReviewListKSSView"
-         attribute="update_table"
-         name="reviewlist_update_table"
-         permission="cmf.ReviewPortalContent" />
-
     <!-- Folder factories -->
     <browser:page
         for="*"
@@ -49,6 +35,5 @@
         template="folderfactories.pt"
         permission="cmf.AddPortalContent"
         />
-        
 
 </configure>

@@ -32,7 +32,7 @@
            tal:condition="view/items">
       <thead>
         <tr tal:condition="not:view/selectcurrentbatch">
-          <th colspan="6" class="nosort"><span i18n:translate="label_select" tal:omit-tag="">Select:</span> <a i18n:translate="label_all" tal:attributes="href view/selectscreen_url" id="foldercontents-selectall" class="update-selection">All</a></th>
+          <th colspan="6" class="nosort"><span i18n:translate="label_select" tal:omit-tag="">Select:</span> <a i18n:translate="label_all" tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
         </tr>
         <tr tal:condition="view/show_select_all_items">
           <th colspan="6" class="nosort">
@@ -41,7 +41,7 @@
             page are selected. 
             </span>
             <a tal:attributes="href view/selectall_url" 
-               id="foldercontents-selectall-completebatch" class="update-selection"
+               id="foldercontents-selectall-completebatch"
                i18n:translate="tableheading_select_all_items">Select all 
             <tal:block replace="view/batch/size" i18n:name="count"/> items in this folder.</a>
           </th>
@@ -53,7 +53,7 @@
             are selected. 
             </span>
             <a tal:attributes="href view/selectnone_url"  i18n:translate="tableheading_clear_selection"
-               id="foldercontents-clearselection" class="update-selection">Clear selection</a>
+               id="foldercontents-clearselection">Clear selection</a>
           </th>
         </tr>
 
@@ -161,14 +161,14 @@
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/show_all_url"
                  i18n:translate="label_show_all"
-                 id="foldercontents-show-all" class="update-selection">Show all items</a>
+                 id="foldercontents-show-all">Show all items</a>
             </th>
           </tr>
           <tr tal:condition="view/show_all">
             <th colspan="6" class="nosort">
               <a tal:attributes="href view/view_url"
                  i18n:translate="label_show_batched"
-                 id="foldercontents-show-batched" class="update-selection">Show batched</a>
+                 id="foldercontents-show-batched">Show batched</a>
             </th>
           </tr>
         </tfoot>

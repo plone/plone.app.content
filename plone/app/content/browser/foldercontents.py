@@ -18,7 +18,7 @@ from Products.CMFPlone.utils import pretty_title_or_id, isExpired
 
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.interfaces import IContentsPage
-from plone.app.content.browser.tableview import Table, TableKSSView
+from plone.app.content.browser.tableview import Table
 
 
 class FolderContentsView(BrowserView):
@@ -240,7 +240,3 @@ class FolderContentsTable(object):
         else:
             button['cssclass'] = 'context'
         return button
-
-class FolderContentsKSSView(TableKSSView):
-    table = FolderContentsTable
-

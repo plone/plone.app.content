@@ -4,6 +4,11 @@ Changelog
 2.0b5 - Unreleased
 ------------------
 
+- Remove KSS updates for "folder contents" view as they are broken for
+  folders with lots of content and not consistently used either.
+  [witsch]
+
+
 2.0b4 - 2010-04-08
 ------------------
 
