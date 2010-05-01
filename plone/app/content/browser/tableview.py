@@ -10,6 +10,11 @@ from Products.CMFPlone.utils import safe_unicode
 
 _ = MessageFactory('plone')
 
+try:
+    from kss.core import KSSView
+except ImportError:
+    from zope.publisher.browser import BrowserView as KSSView
+
 
 class Table(object):
     """   
@@ -134,3 +139,21 @@ class Table(object):
     @property
     def viewname(self):
         return self.view_url.split('?')[0].split('/')[-1]
+
+
+class TableKSSView(KSSView):
+    '''Base class which can be used from a KSS view
+
+    Subclasses only need to set the table property to a different
+    class.'''
+
+    table = None
+
+    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent', show_all=False):
+        self.request.set('sort_on', sort_on)
+        self.request.set('pagenumber', pagenumber)
+        table = self.table(self.context, self.request,
+                                    contentFilter={'sort_on':sort_on})
+        core = self.getCommandSet('core')
+        core.replaceHTML('#folderlisting-main-table', table.render())
+        return self.render()

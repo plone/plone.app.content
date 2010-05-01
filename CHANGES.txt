@@ -8,8 +8,8 @@ Changelog
   items in the batch to be displayed.
   [witsch]
 
-- Remove KSS updates for "folder contents" view as they are broken for
-  folders with lots of content and not consistently used either.
+- Disable KSS updates for "select all" and "show all items/batched" in
+  "folder contents" view as they are broken for folders with lots of content.
   [witsch]
 
 
