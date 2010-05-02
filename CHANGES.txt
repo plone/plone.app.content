@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0b5 - Unreleased
+2.0b5 - 2010-05-01
 ------------------
 
 - Speed up folder contents view by only creating the necessary data for
