@@ -115,6 +115,7 @@ class FolderContentsTable(object):
         context = aq_inner(self.context)
         plone_utils = getToolByName(context, 'plone_utils')
         plone_view = getMultiAdapter((context, self.request), name=u'plone')
+        plone_layout = getMultiAdapter((context, self.request), name=u'plone_layout')
         portal_workflow = getToolByName(context, 'portal_workflow')
         portal_properties = getToolByName(context, 'portal_properties')
         portal_types = getToolByName(context, 'portal_types')
@@ -147,7 +148,7 @@ class FolderContentsTable(object):
                 table_row_class = "draggable odd"
 
             url = obj.getURL()
-            icon = plone_view.getIcon(obj);
+            icon = plone_layout.getIcon(obj);
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
