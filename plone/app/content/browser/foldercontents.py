@@ -42,8 +42,8 @@ class FolderContentsView(BrowserView):
         """
         """
         context = aq_inner(self.context)
-        ploneview = getMultiAdapter((context, self.request), name="plone")
-        icon = ploneview.getIcon(context)
+        plone_layout = getMultiAdapter((context, self.request), name="plone_layout")
+        icon = plone_layout.getIcon(context)
         return icon.html_tag()
 
     def parent_url(self):

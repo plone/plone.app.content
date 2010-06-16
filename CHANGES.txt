@@ -4,6 +4,9 @@ Changelog
 2.0b6 - Unreleased
 ------------------
 
+- Fetch the folder contents view icon more directly.
+  [davisagli]
+
 2.0b5 - 2010-05-01
 ------------------
 
