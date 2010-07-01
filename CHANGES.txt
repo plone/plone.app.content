@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.1 - unreleased
+------------------
+
+
 2.0 - 2010-07-01
 ----------------
 
@@ -17,7 +21,6 @@ Changelog
 - Disable KSS updates for "select all" and "show all items/batched" in
   "folder contents" view as they are broken for folders with lots of content.
   [witsch]
-
 
 2.0b4 - 2010-04-08
 ------------------
