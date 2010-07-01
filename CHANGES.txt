@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.0b6 - Unreleased
-------------------
+2.0 - 2010-07-01
+----------------
 
 - Fetch the folder contents view icon more directly.
   [davisagli]
