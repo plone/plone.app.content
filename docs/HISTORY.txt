@@ -4,6 +4,10 @@ Changelog
 1.8 - unreleased
 ----------------
 
+- Fixed a UnicodeDecodeError in foldercontents.py. Backported from plone4-trunk.
+  Cfr. http://dev.plone.org/plone/ticket/9853
+  [WouterVH]
+
 
 1.7 - 2010-04-07
 ----------------
