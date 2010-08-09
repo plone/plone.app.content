@@ -71,7 +71,7 @@ class FolderFactoriesView(BrowserView):
         # slow. We assume the 'allowedTypes' list has already performed the
         # necessary calculations
         actions = types_tool.listActionInfos(
-            object=context,
+            object=addContext,
             check_permissions=False,
             check_condition=False,
             category='folder/add',
@@ -79,7 +79,7 @@ class FolderFactoriesView(BrowserView):
         addActionsById = dict([(a['id'], a) for a in actions])
 
         expr_context = createExprContext(
-            aq_parent(context), portal_state.portal(), context)
+            aq_parent(addContext), portal_state.portal(), addContext)
         for t in allowedTypes:
             typeId = t.getId()
             if include is None or typeId in include:
