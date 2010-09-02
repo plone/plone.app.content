@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8 - unreleased
+1.8 - 2010-09-02
 ----------------
 
 - Fixed a UnicodeDecodeError in foldercontents.py. Backported from plone4-trunk.
