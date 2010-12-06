@@ -4,6 +4,11 @@ Changelog
 1.9 - Unreleased
 ----------------
 
+- Fix the addContext in the FolderFactoriesView to make it possible to add
+  content to a folderish object that set as the default view on its parent folder.
+  This closes http://dev.plone.org/plone/ticket/9057.
+  [WouterVH]
+
 
 1.8 - 2010-09-02
 ----------------
@@ -24,7 +29,7 @@ Changelog
 ----------------
 
 - Make the folder contents listing fall back to using the portal_type id when 
-  the title is not available (e.g. if the portal_type is missing). 
+  the title is not available (e.g. if the portal_type is missing).
   [davisagli] 
 
 - Fixed erroneous tfooter tag in table.pt (used in folder contents). It should 
