@@ -59,11 +59,10 @@ class FolderContentsView(BrowserView):
         # Abort if we are at the root of the portal
         if IPloneSiteRoot.providedBy(context):
             return None
-        
 
         # Get the parent. If we can't get it (unauthorized), use the portal
         parent = aq_parent(obj)
-        
+
         # # We may get an unauthorized exception if we're not allowed to access#
         # the parent. In this case, return None
         try:
@@ -77,14 +76,14 @@ class FolderContentsView(BrowserView):
                 return None
 
             return parent.absolute_url()
-
         except Unauthorized:
             return None
 
+
 class FolderContentsTable(object):
-    """   
+    """
     The foldercontents table renders the table and its actions.
-    """                
+    """
 
     def __init__(self, context, request, contentFilter={}):
         self.context = context
@@ -120,7 +119,7 @@ class FolderContentsTable(object):
         portal_properties = getToolByName(context, 'portal_properties')
         portal_types = getToolByName(context, 'portal_types')
         site_properties = portal_properties.site_properties
-        
+
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
         browser_default = plone_utils.browserDefault(context)
 
@@ -148,7 +147,7 @@ class FolderContentsTable(object):
                 table_row_class = "draggable odd"
 
             url = obj.getURL()
-            icon = plone_layout.getIcon(obj);
+            icon = plone_layout.getIcon(obj)
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
@@ -172,17 +171,17 @@ class FolderContentsTable(object):
             if obj_type in use_view_action:
                 view_url = url + '/view'
             elif obj.is_folderish:
-                view_url = url + "/folder_contents"              
+                view_url = url + "/folder_contents"
             else:
                 view_url = url
 
             is_browser_default = len(browser_default[1]) == 1 and (
                 obj.id == browser_default[1][0])
-                                 
+
             results.append(dict(
                 url = url,
                 url_href_title = url_href_title,
-                id  = obj.getId,
+                id = obj.getId,
                 quoted_id = urllib.quote_plus(obj.getId),
                 path = path,
                 title_or_id = safe_unicode(pretty_title_or_id(plone_utils, obj)),
@@ -213,7 +212,7 @@ class FolderContentsTable(object):
     @property
     def show_sort_column(self):
         return self.orderable and self.editable
-        
+
     @property
     def editable(self):
         """
