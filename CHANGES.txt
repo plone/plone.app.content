@@ -5,8 +5,7 @@ Changelog
 ------------------
 
 - Use the folder as the factory expression context when a front-page
-  is used as the display for the folder.  Tests in
-  plone.app.contentmenu.
+  is used as the display for the folder. Tests in `plone.app.contentmenu`.
   [rossp]
 
 2.0.1 - 2010-07-18
