@@ -1,3 +1,4 @@
+from plone.i18n.normalizer import FILENAME_REGEX
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.i18n.normalizer.interfaces import IURLNormalizer
 from zope.component import getUtility
@@ -62,9 +63,15 @@ class NormalizingNameChooser(object):
         if not check_id(name, required=1):
             return name
 
+        ext  = ''
+        m = FILENAME_REGEX.match(name)
+        if m is not None:
+            name = m.groups()[0]
+            ext  = '.' + m.groups()[1]
+
         idx = 1
         while idx <= ATTEMPTS:
-            new_name = "%s-%d" % (name, idx)
+            new_name = "%s-%d%s" % (name, idx, ext)
             if not check_id(new_name, required=1):
                 return new_name
             idx += 1

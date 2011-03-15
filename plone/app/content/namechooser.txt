@@ -89,6 +89,22 @@ be obtained from the id (or portal type or class or title)
     >>> chooser.chooseName("my-item", item)
     'my-item-1'
 
+When a filename is used as an id, the extension is preserved.
+
+    >>> item = MyType("file.txt")
+    >>> name = chooser.chooseName(None, item)
+    >>> name
+    'file.txt'
+    >>> chooser.checkName(name, object)
+    True
+    >>> container[name] = item
+    >>> item = MyType("file.txt") # a distinct object, but with the same id
+    >>> name = chooser.chooseName(None, item)
+    >>> name
+    'file-1.txt'
+    >>> chooser.checkName(name, object)
+    True
+
 Choosing names based on type
 ----------------------------
 
