@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.3 - unreleased
+2.0.3 - 2011-03-15
 ------------------
 
 - Preserve filename extension when picking a unique name.
