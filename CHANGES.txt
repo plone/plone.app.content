@@ -4,6 +4,9 @@ Changelog
 2.0.4 - unreleased
 ------------------
 
+- It is the portal_type that is listed in `typesUseViewActionInListings`.
+  [elro]
+
 2.0.3 - 2011-03-15
 ------------------
 

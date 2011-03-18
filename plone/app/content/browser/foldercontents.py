@@ -168,7 +168,7 @@ class FolderContentsTable(object):
                 obj.ModificationDate, long_format=1)
 
             obj_type = obj.Type
-            if obj_type in use_view_action:
+            if obj.portal_type in use_view_action:
                 view_url = url + '/view'
             elif obj.is_folderish:
                 view_url = url + "/folder_contents"
