@@ -54,9 +54,11 @@ class Table(object):
         self.pagenumber =  int(request.get('pagenumber', 1))
 
     def msg_select_item(self, item):
+        title_or_id = (item.get('title_or_id') or item.get('title') or
+                       item.get('Title') or item.get('id') or item['getId'])
         return _(u'checkbox_select_item',
                  default=u"Select ${title}",
-                 mapping={'title': safe_unicode(item['title_or_id'])})
+                 mapping={'title': safe_unicode(title_or_id)})
 
     @property
     def within_batch_size(self):

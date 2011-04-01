@@ -87,7 +87,7 @@
         <tbody>
           <tal:items tal:repeat="item view/batch">
             <tr  tal:define="id item/id|item/getId;
-                             title python:item.get('Title') or item.get('title') or id;
+                             title python:item.get('title') or item.get('Title') or id;
                              title_or_id title_or_id|title;"
                  tal:attributes="class item/table_row_class;
                                 id string:folder-contents-item-${id};">
