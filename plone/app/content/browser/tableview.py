@@ -1,3 +1,5 @@
+import urllib
+
 from plone.memoize import instance
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -24,7 +26,8 @@ class Table(object):
     """                
 
     def __init__(self, request, base_url, view_url, items, show_sort_column=False,
-                 buttons=[], pagesize=20):
+                 buttons=[], pagesize=20, show_select_column=True, show_size_column=True,
+                 show_modified_column=True, show_status_column=True):
         self.request = request
         self.context = None # Need for view pagetemplate
 
@@ -33,6 +36,10 @@ class Table(object):
         self.url = view_url
         self.items = items
         self.show_sort_column = show_sort_column
+        self.show_select_column = show_select_column
+        self.show_size_column = show_size_column
+        self.show_modified_column = show_modified_column
+        self.show_status_column = show_status_column
         self.buttons = buttons
         self.default_page_size = 20
         self.pagesize = pagesize
@@ -139,6 +146,9 @@ class Table(object):
     @property
     def viewname(self):
         return self.view_url.split('?')[0].split('/')[-1]
+    
+    def quote_plus(self, string):
+        return urllib.quote_plus(string)
 
 
 class TableKSSView(KSSView):

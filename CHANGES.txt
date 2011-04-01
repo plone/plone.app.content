@@ -4,6 +4,12 @@ Changelog
 2.0.4 - unreleased
 ------------------
 
+- Reduce the required table item keys to ``id`` or ``getId``.
+  [elro]
+
+- Make all columns other than title optional in table view.
+  [elro]
+
 - It is the portal_type that is listed in `typesUseViewActionInListings`.
   [elro]
 

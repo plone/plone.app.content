@@ -9,7 +9,7 @@
   <tal:block condition="view/selectall">
     <input type="hidden" name="paths:list"
            tal:repeat="item view/batch/items_not_on_page"
-           tal:attributes="value item/path"/>
+           tal:attributes="value item/path|item/id|item/getId"/>
   </tal:block>
 
   <p class="discreet"
@@ -31,7 +31,7 @@
            i18n:attributes="summary summary_content_listing;"
            tal:condition="view/items">
       <thead>
-        <tr tal:condition="not:view/selectcurrentbatch">
+        <tr tal:condition="python:view.show_select_column and not view.selectcurrentbatch">
           <th colspan="6" class="nosort"><span i18n:translate="label_select" tal:omit-tag="">Select:</span> <a i18n:translate="label_all" tal:attributes="href view/selectscreen_url" id="foldercontents-selectall">All</a></th>
         </tr>
         <tr tal:condition="view/show_select_all_items">
@@ -62,18 +62,23 @@
               id="foldercontents-order-column"
               tal:condition="view/show_sort_column">
           </th>
-          <th class="nosort">&nbsp;</th>
+          <th class="nosort"
+              id="foldercontents-select-column"
+              tal:condition="view/show_select_column">&nbsp;</th>
           <th class="nosort column"
               id="foldercontents-title-column">&nbsp;<tal:title i18n:translate="listingheader_title"
               >Title</tal:title>&nbsp;</th>
           <th class="nosort column"
-              id="foldercontents-size-column">&nbsp;<tal:size i18n:translate="listingheader_size"
+              id="foldercontents-size-column"
+              tal:condition="view/show_size_column">&nbsp;<tal:size i18n:translate="listingheader_size"
               >Size</tal:size>&nbsp;</th>
           <th class="nosort column"
-              id="foldercontents-modified-column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
+              id="foldercontents-modified-column"
+              tal:condition="view/show_modified_column">&nbsp;<tal:modified i18n:translate="listingheader_modified"
               >Modified</tal:modified>&nbsp;</th>
           <th class="nosort column"
-              id="foldercontents-status-column">&nbsp;<tal:state i18n:translate="listingheader_status"
+              id="foldercontents-status-column"
+              tal:condition="view/show_status_column">&nbsp;<tal:state i18n:translate="listingheader_status"
               >State</tal:state>&nbsp;</th>
         </tr>
       </thead>
@@ -81,77 +86,78 @@
       <metal:block tal:condition="view/batch">
         <tbody>
           <tal:items tal:repeat="item view/batch">
-            <tr tal:attributes="class item/table_row_class;
-                                id string:folder-contents-item-${item/id};" >
-
-              <tal:comment replace="nothing">
-                * We have to check if the browserDefault stuff is really necessary
-                * Create title_or_id metadata in the catalog (why not just use item.Title or item.getId? (alecm))
-              </tal:comment>
+            <tr  tal:define="id item/id|item/getId;
+                             title python:item.get('Title') or item.get('title') or id;
+                             title_or_id title_or_id|title;"
+                 tal:attributes="class item/table_row_class;
+                                id string:folder-contents-item-${id};">
 
               <td tal:condition="view/show_sort_column" class="draggable">
+               <tal:block tal:define="quoted_id item/quoted_id|python: view.quote_plus(id);">
                 <a href=""
                    title="Move item up"
                    i18n:attributes="title title_move_item_up;"
-                   tal:attributes="href string:${view/base_url}/folder_position?position=up&amp;id=${item/quoted_id}">
+                   tal:attributes="href string:${view/base_url}/folder_position?position=up&amp;id=${quoted_id}">
                   &#9650;
                 </a>
                 &nbsp;
                 <a href=""
                    title="Move item down"
                    i18n:attributes="title title_move_item_down;"
-                   tal:attributes="href string:${view/base_url}/folder_position?position=down&amp;id=${item/quoted_id}">
+                   tal:attributes="href string:${view/base_url}/folder_position?position=down&amp;id=${quoted_id}">
                   &#9660;
                 </a>
+               </tal:block>
               </td>
-              <td class="notDraggable">
+              <td tal:condition="view/show_select_column" class="notDraggable">
                 <input type="checkbox"
                        class="noborder"
                        name="paths:list" id="#"
                        value="#"
-                       tal:attributes="value   item/path;
-                                       id      string:cb_${item/id};
+                       tal:attributes="value   item/path|id;
+                                       id      string:cb_${id};
                                        checked item/checked;
                                        alt     python:view.msg_select_item(item);
                                        title   python:view.msg_select_item(item)" />
                 <input type="hidden" name="selected_obj_paths:list" value="#"
-                       tal:attributes="value item/relative_url" />
-                <label tal:content="item/title_or_id"
-                       tal:attributes="for string:cb_${item/id}" 
+                       tal:attributes="value item/path|id" />
+                <label tal:content="title_or_id"
+                       tal:attributes="for string:cb_${id}" 
                        class="hiddenStructure">
                   Item Title
                 </label>
               </td>
               <td>
-                  <img tal:replace="structure item/icon" />
-                  <a href="#" tal:attributes="href  item/view_url;
-                                              title item/url_href_title;
-                                              class string: ${item/state_class} ${item/type_class};">
-                    <strong tal:omit-tag="not: item/is_browser_default"
-                            tal:content="item/title_or_id"/>
+                  <img tal:replace="structure item/icon|nothing" />
+                  <a href="#" tal:attributes="href  item/view_url|string:${view/base_url}/${id};
+                                              title item/url_href_title|nothing;
+                                              class string: ${item/state_class|python:''} ${item/type_class|python:''};">
+                    <strong tal:omit-tag="not: item/is_browser_default|nothing"
+                            tal:content="title_or_id"/>
                   </a>
 
                 <span class="state-expired"
-                      tal:condition="item/is_expired"
+                      tal:condition="item/is_expired|nothing"
                       i18n:translate="time_expired">expired</span>
               </td>
 
-              <td>
+              <td tal:condition="view/show_size_column">
                 <span tal:condition="not: item/size"> &nbsp; </span>
                 <span tal:condition="item/size"
                       tal:content="item/size"
-                      tal:attributes="class item/state_class"> size </span>
+                      tal:attributes="class item/state_class|nothing"> size </span>
               </td>
-              <td tal:content="item/modified"
-                  tal:attributes="class item/state_class">
+              <td tal:condition="view/show_modified_column"
+                  tal:content="item/modified"
+                  tal:attributes="class item/state_class|nothing">
                 08/19/2001 03:01 AM
               </td>
-              <td>
+              <td tal:condition="view/show_status_column">
                 <span i18n:translate=""
-                      tal:condition="item/state_title"
+                      tal:condition="item/state_title|nothing"
                       tal:content="item/state_title"
-                      tal:attributes="class item/state_class" />
-                <span tal:condition="not: item/state_title">&nbsp;</span>
+                      tal:attributes="class item/state_class|nothing" />
+                <span tal:condition="not: item/state_title|nothing">&nbsp;</span>
               </td>
             </tr>
           </tal:items>
