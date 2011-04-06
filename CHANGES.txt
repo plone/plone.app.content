@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.5 - unreleased
+2.0.5 - 2011-04-06
 ------------------
 
 - Fix display of title in folder contents table.
