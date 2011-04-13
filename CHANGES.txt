@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.0.6 - (unreleased)
+--------------------
+
+- Fixed state title in folder contents.
+  [thomasdesvenain]
+
 2.0.5 - 2011-04-06
 ------------------
 
@@ -68,7 +74,7 @@ Changelog
 2.0b4 - 2010-04-08
 ------------------
 
-- Slight reconfiguration of the order of the folder_contents table; 
+- Slight reconfiguration of the order of the folder_contents table;
   dragging is now in the first column, and visually much improved.
   [limi]
 
@@ -101,7 +107,7 @@ Changelog
   up the `folder_contents` view a bit.
   [witsch]
 
-- Updated templates to follow the recent markup conventions. 
+- Updated templates to follow the recent markup conventions.
   References http://dev.plone.org/plone/ticket/9981
   [spliter]
 
@@ -205,11 +211,11 @@ Changelog
   Partially fixes http://dev.plone.org/plone/ticket/8926
   [csenger]
 
-- Add authenticator token to full_review_list form. 
+- Add authenticator token to full_review_list form.
   Partially fixes http://dev.plone.org/plone/ticket/8926
   [csenger]
 
-- Translate the name of the content types in full_review_list, 
+- Translate the name of the content types in full_review_list,
   add tests. This fixes http://dev.plone.org/plone/ticket/9164
   [csenger]
 
@@ -225,7 +231,7 @@ Changelog
   [hannosch]
 
 - Translate the name of the content types in folder_contents.
-  Fixes http://dev.plone.org/plone/ticket/8459 
+  Fixes http://dev.plone.org/plone/ticket/8459
   [csenger]
 
 - Made the tests less fragile in regard to browser errors.
@@ -238,7 +244,7 @@ Changelog
 - Small cleanup and removed hard-dependency on KSS.
   [hannosch]
 
-- Added missing i18n markup to batching.pt. This closes 
+- Added missing i18n markup to batching.pt. This closes
   http://dev.plone.org/plone/ticket/8501
   [dunlapm]
 
@@ -298,7 +304,7 @@ Changelog
   the folder to the beginning.
   [jvloothuis]
 
-- Update the folder_factories view to add the FTI id to the output of 
+- Update the folder_factories view to add the FTI id to the output of
   of addable_types. This makes it possible for callers to manipulate its
   results.
   [wichert]

@@ -167,7 +167,6 @@ class FolderContentsTable(object):
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)
 
-            obj_type = obj.Type
             if obj.portal_type in use_view_action:
                 view_url = url + '/view'
             elif obj.is_folderish:
@@ -185,14 +184,14 @@ class FolderContentsTable(object):
                 quoted_id = urllib.quote_plus(obj.getId),
                 path = path,
                 title_or_id = safe_unicode(pretty_title_or_id(plone_utils, obj)),
-                obj_type = obj_type,
+                obj_type = obj.Type,
                 size = obj.getObjSize,
                 modified = modified,
                 icon = icon.html_tag(),
                 type_class = type_class,
                 wf_state = review_state,
                 state_title = portal_workflow.getTitleForStateOnType(review_state,
-                                                           obj_type),
+                                                                 obj.portal_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
                 folderish = obj.is_folderish,

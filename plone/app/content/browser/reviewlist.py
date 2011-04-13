@@ -23,9 +23,9 @@ class FullReviewListView(BrowserView):
         return table.render()
 
 class ReviewListTable(object):
-    """   
+    """
     The review list table renders the table and its actions.
-    """                
+    """
 
     def __init__(self, context, request, **kwargs):
         self.context = context
@@ -48,7 +48,7 @@ class ReviewListTable(object):
         portal_properties = getToolByName(self.context, 'portal_properties')
         portal_types = getToolByName(self.context, 'portal_types')
         site_properties = portal_properties.site_properties
-        
+
         use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
         browser_default = self.context.browserDefault()
 
@@ -58,11 +58,11 @@ class ReviewListTable(object):
                 table_row_class = "even"
             else:
                 table_row_class = "odd"
-            
+
             url = obj.absolute_url()
             path = '/'.join(obj.getPhysicalPath())
             icon = plone_view.getIcon(obj)
-            
+
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
@@ -80,8 +80,7 @@ class ReviewListTable(object):
                 obj.ModificationDate(), long_format=1)
             is_structural_folder = obj.restrictedTraverse('@@plone').isStructuralFolder()
 
-            obj_type = obj.portal_type
-            if obj_type in use_view_action:
+            if obj.portal_type in use_view_action:
                 view_url = url + '/view'
             elif is_structural_folder:
                 view_url = url + "/folder_contents"
@@ -90,7 +89,7 @@ class ReviewListTable(object):
 
             is_browser_default = len(browser_default[1]) == 1 and (
                 obj.id == browser_default[1][0])
-            
+
             results.append(dict(
                 url = url,
                 url_href_title = url_href_title,
@@ -99,14 +98,14 @@ class ReviewListTable(object):
                 path = path,
                 title_or_id = obj.pretty_title_or_id(),
                 description = obj.Description(),
-                obj_type = obj_type,
+                obj_type = obj.Type,
                 size = obj.getObjSize(),
                 modified = modified,
                 icon = icon.html_tag(),
                 type_class = type_class,
                 wf_state = review_state,
                 state_title = portal_workflow.getTitleForStateOnType(review_state,
-                                                           obj_type),
+                                                           obj.portal_type),
                 state_class = state_class,
                 is_browser_default = is_browser_default,
                 folderish = is_structural_folder,
