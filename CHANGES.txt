@@ -5,6 +5,10 @@ Changelog
 2.0.6 - unreleased
 ------------------
 
+- Add brain in dict returned by ``folderitems`` method 
+  of ``FolderContentsTable`` class to ease customisation.
+  [gotcha]
+
 - Add MANIFEST.in.
   [WouterVH]
 

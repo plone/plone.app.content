@@ -178,6 +178,12 @@ class FolderContentsTable(object):
                 obj.id == browser_default[1][0])
 
             results.append(dict(
+                # provide the brain itself to allow cleaner customisation of
+                # the view.
+                #
+                # this doesn't add any memory overhead, a reference to
+                # the brain is already kept through its getPath bound method.
+                brain = obj,
                 url = url,
                 url_href_title = url_href_title,
                 id = obj.getId,
