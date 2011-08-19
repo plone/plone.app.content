@@ -10,6 +10,11 @@ Changelog
   This fixes http://dev.plone.org/plone/ticket/10122.
   [thomasdesvenain]
 
+- Add brain in dict returned by ``folderitems`` method of
+  the ``FolderContentsTable`` for items not part of the currently
+  visible batch as well.
+  [mj]
+
 
 2.0.6 (2011-05-02)
 ------------------

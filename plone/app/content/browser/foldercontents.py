@@ -137,8 +137,9 @@ class FolderContentsTable(object):
 
             # avoid creating unnecessary info for items outside the current
             # batch;  only the path is needed for the "select all" case...
+            # Include brain to make customizations easier (see comment below)
             if not show_all and not start <= i < end:
-                results.append(dict(path = path))
+                results.append(dict(path=path, brain=obj))
                 continue
 
             if (i + 1) % 2 == 0:
