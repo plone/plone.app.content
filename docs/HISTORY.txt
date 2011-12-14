@@ -9,6 +9,14 @@ Changelog
   This closes http://dev.plone.org/plone/ticket/9057.
   [WouterVH]
 
+- Backporting tom_gross and hannosch fix from version 2.0.2.
+  
+  Avoid using a mutable default argument in the FolderContentsTable code. In a
+  LinguaPlone environment after viewing the folder contents of a collection,
+  the language of that collection got stuck as a content filter and wasn't
+  reset anymore. Viewing the folder contents of any item in a different
+  language showed an empty table until the Zope instance was restarted.
+  [keul]
 
 1.8 - 2010-09-02
 ----------------

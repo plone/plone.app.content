@@ -84,7 +84,7 @@ class FolderContentsTable(object):
     def __init__(self, context, request, contentFilter={}):
         self.context = context
         self.request = request
-        self.contentFilter = contentFilter
+        self.contentFilter = contentFilter is not None and contentFilter or {}
 
         url = context.absolute_url()
         view_url = url + '/@@folder_contents'
