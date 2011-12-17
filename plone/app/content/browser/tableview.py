@@ -1,10 +1,12 @@
 import urllib
+import zope.component
 
 from plone.memoize import instance
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from plone.app.content.batching import Batch
+from plone.batching import Batch
+from plone.batching.browser import BatchTemplate
 
 from zope.i18nmessageid import MessageFactory
 
@@ -16,6 +18,17 @@ try:
     from kss.core import KSSView
 except ImportError:
     from zope.publisher.browser import BrowserView as KSSView
+
+from ZTUtils import  make_query
+
+from plone.batching.browser import BatchView
+
+class TableBatchView(BatchView):
+
+    def make_link(self, pagenumber):
+        batchlinkparams = self.request.form.copy()
+        return '%s?%s' % (self.request.ACTUAL_URL,
+                          make_query(batchlinkparams, {'pagenumber': pagenumber}))
 
 
 class Table(object):
@@ -77,14 +90,16 @@ class Table(object):
         pagesize = self.pagesize
         if self.show_all:
             pagesize = len(self.items)
-        b = Batch(self.items,
+        b = Batch.fromPagenumber(self.items,
                   pagesize=pagesize,
                   pagenumber=self.pagenumber)
         map(self.set_checked, b)
         return b
 
     render = ViewPageTemplateFile("table.pt")
-    batching = ViewPageTemplateFile("batching.pt")
+
+    def batching(self):
+        return TableBatchView(self.context, self.request)(self.batch)
 
     # options
     _selectcurrentbatch = False
