@@ -6,6 +6,7 @@ from zope.container.interfaces import INameChooser
 from zope.interface import implements
 
 from Acquisition import aq_inner, aq_base
+from zExceptions import BadRequest
 
 from plone.app.content.interfaces import INameFromTitle
 
@@ -84,6 +85,10 @@ class NormalizingNameChooser(object):
         check_id = getattr(object, 'check_id', None)
         if check_id is None:
             parent = aq_inner(self.context)
-            parent_ids = parent.objectIds()
-            check_id = lambda id, required: id in parent_ids
+            def do_OFS_check(parent, id):
+                try:
+                    parent._checkId(id)
+                except BadRequest:
+                    return True
+            check_id = lambda id, required: do_OFS_check(parent, id)
         return check_id

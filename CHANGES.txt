@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.0.8 (unreleased)
+------------------
+
+- Use the Zope ObjectManager _checkId method to check
+  new ids when possible, to avoid errors when adding invalid
+  ids not caught by the old check. This fixes
+  http://code.google.com/p/dexterity/issues/detail?id=244
+  [davisagli]
+
 
 2.0.7 (2011-07-04)
 ------------------
