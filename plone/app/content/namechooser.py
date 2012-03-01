@@ -87,9 +87,13 @@ class NormalizingNameChooser(object):
     def _getCheckId(self, object):
         """Return a function that can act as the check_id script.
         """
-        check_id = getattr(object, 'check_id', None)
-        if check_id is None:
-            parent = aq_inner(self.context)
+        parent = aq_inner(self.context)
+        _check_id = getattr(object, 'check_id', None)
+        if _check_id is not None:
+            def do_Plone_check(id, required):
+                return _check_id(id, required=required, contained_by=parent)
+            check_id = lambda id, required: do_Plone_check(id, required)
+        else:
             def do_OFS_check(parent, id):
                 try:
                     parent._checkId(id)
