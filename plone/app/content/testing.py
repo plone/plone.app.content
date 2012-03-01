@@ -66,7 +66,7 @@ class PloneAppContent(PloneSandboxLayer):
 PLONE_APP_CONTENT_FIXTURE = PloneAppDiscussion()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE,),
-    name="PloneAppDiscussion:Integration")
+    name="PloneAppContent:Integration")
 PLONE_APP_CONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE,),
-    name="PloneAppDiscussion:Functional")
+    name="PloneAppContent:Functional")
