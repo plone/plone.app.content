@@ -9,7 +9,7 @@ from plone.app.testing import FunctionalTesting
 from zope.configuration import xmlconfig
 
 
-class PloneAppDiscussion(PloneSandboxLayer):
+class PloneAppContent(PloneSandboxLayer):
 
     defaultBases = (PLONE_FIXTURE,)
 
