@@ -1,7 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
@@ -63,7 +62,7 @@ class PloneAppContent(PloneSandboxLayer):
             [],
         )
 
-PLONE_APP_CONTENT_FIXTURE = PloneAppDiscussion()
+PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE,),
     name="PloneAppContent:Integration")
