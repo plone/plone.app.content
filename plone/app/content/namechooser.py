@@ -9,7 +9,7 @@ from Acquisition import aq_inner, aq_base
 from zExceptions import BadRequest
 
 from plone.app.content.interfaces import INameFromTitle
-
+import time
 
 ATTEMPTS = 100
 
@@ -76,6 +76,11 @@ class NormalizingNameChooser(object):
             if not check_id(new_name, required=1):
                 return new_name
             idx += 1
+
+        # give one last attempt using the current date time before giving up
+        new_name = "%s-%s%s" % (name, time.time(), ext)
+        if not check_id(new_name, required=1):
+            return new_name
 
         raise ValueError("Cannot find a unique name based on %s after %d attemps." % (name, ATTEMPTS,))
         

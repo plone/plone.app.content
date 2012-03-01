@@ -9,6 +9,9 @@ Changelog
   ids not caught by the old check. This fixes
   http://code.google.com/p/dexterity/issues/detail?id=244
   [davisagli]
+- Attempt to return an id with timestamp before returning a 
+  value error after 100 id check attempts
+  [eleddy]
 
 
 2.0.7 (2011-07-04)
