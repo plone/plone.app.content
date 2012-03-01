@@ -4,7 +4,14 @@ Changelog
 2.0.8 (unreleased)
 ------------------
 
-- Use the Zope ObjectManager _checkId method to check
+- Namechooser: Attempt to return an id with timestamp before returning a 
+  value error after 100 id check attempts.
+  [eleddy]
+
+- Namechooser: Pass the parent object to the Plone check_id script so
+  it can detect duplicates.
+
+- Namechooser: Use the Zope ObjectManager _checkId method to check
   new ids when possible, to avoid errors when adding invalid
   ids not caught by the old check. This fixes
   http://code.google.com/p/dexterity/issues/detail?id=244

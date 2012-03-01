@@ -9,7 +9,7 @@ from Acquisition import aq_inner, aq_base
 from zExceptions import BadRequest
 
 from plone.app.content.interfaces import INameFromTitle
-
+import time
 
 ATTEMPTS = 100
 
@@ -77,14 +77,23 @@ class NormalizingNameChooser(object):
                 return new_name
             idx += 1
 
+        # give one last attempt using the current date time before giving up
+        new_name = "%s-%s%s" % (name, time.time(), ext)
+        if not check_id(new_name, required=1):
+            return new_name
+
         raise ValueError("Cannot find a unique name based on %s after %d attemps." % (name, ATTEMPTS,))
         
     def _getCheckId(self, object):
         """Return a function that can act as the check_id script.
         """
-        check_id = getattr(object, 'check_id', None)
-        if check_id is None:
-            parent = aq_inner(self.context)
+        parent = aq_inner(self.context)
+        _check_id = getattr(object, 'check_id', None)
+        if _check_id is not None:
+            def do_Plone_check(id, required):
+                return _check_id(id, required=required, contained_by=parent)
+            check_id = lambda id, required: do_Plone_check(id, required)
+        else:
             def do_OFS_check(parent, id):
                 try:
                     parent._checkId(id)
