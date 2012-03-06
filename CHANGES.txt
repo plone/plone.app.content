@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.8 (unreleased)
+2.0.8 (2012-03-06)
 ------------------
 
 - Namechooser: Attempt to return an id with timestamp before returning a 
