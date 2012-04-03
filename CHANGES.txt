@@ -4,7 +4,9 @@ Changelog
 2.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- In table.pt allow properly sorting on modification date, by adding a
+  class like sortabledata-2012-04-03-10-37-27.
+  [maurits]
 
 
 2.0.8 (2012-03-06)

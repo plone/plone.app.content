@@ -167,6 +167,8 @@ class FolderContentsTable(object):
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate, long_format=1)
+            modified_sortable = 'sortabledata-' + obj.modified.strftime(
+                '%Y-%m-%d-%H-%M-%S')
 
             if obj.portal_type in use_view_action:
                 view_url = url + '/view'
@@ -194,6 +196,7 @@ class FolderContentsTable(object):
                 obj_type = obj.Type,
                 size = obj.getObjSize,
                 modified = modified,
+                modified_sortable = modified_sortable,
                 icon = icon.html_tag(),
                 type_class = type_class,
                 wf_state = review_state,

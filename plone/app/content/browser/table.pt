@@ -149,7 +149,7 @@
               </td>
               <td tal:condition="view/show_modified_column"
                   tal:content="item/modified"
-                  tal:attributes="class item/state_class|nothing">
+                  tal:attributes="class string:${item/state_class|python:''} ${item/modified_sortable|python:''}">
                 08/19/2001 03:01 AM
               </td>
               <td tal:condition="view/show_status_column">
