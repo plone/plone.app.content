@@ -1,10 +1,11 @@
 Changelog
 =========
 
-2.0.10 (unreleased)
+2.1.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use plone.batching for all batches (PLIP #12235)
+  [tom_gross]
 
 
 2.0.9 (2012-04-15)
