@@ -26,7 +26,7 @@ One of the table's main virtues is that it batches. A template can use the
 
   >>> items = [{'id': i} for i in range(100)]
   >>> table = Table({}, base_url, view_url, items=items)
-  >>> from plone.app.content.interfaces import IBatch
+  >>> from plone.batching.interfaces import IBatch
   >>> IBatch.providedBy(table.batch)
   True
 
