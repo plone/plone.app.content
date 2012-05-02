@@ -30,6 +30,7 @@ setup(name='plone.app.content',
       install_requires=[
         'setuptools',
         'plone.memoize',
+        'plone.batching',
         'plone.i18n',
         'zope.i18n',
         'zope.i18nmessageid',
