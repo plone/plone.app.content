@@ -4,6 +4,10 @@ Changelog
 2.1.0 (unreleased)
 -------------------
 
+- Clarify which item is the default view for the folder in the folder
+  contents view.
+  [rossp]
+
 - Use plone.batching for all batches (PLIP #12235)
   [tom_gross]
 
