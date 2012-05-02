@@ -195,12 +195,5 @@
              i18n:attributes="value"
              tal:attributes="value button/title; name button/url; class button/cssclass|nothing" />
     </tal:buttons>
-    <div class="formHelp">
-      <span class="defaultView"
-            title="Default view for this folder"
-            style="color: #f00;">
-        &#x25a0;
-      </span> = default view for this folder
-    </div>
   </metal:listing>
 </div>
