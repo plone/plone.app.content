@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.10 (unreleased)
+2.0.10 (2012-05-07)
 -------------------
 
 - Clarify which item is the default view for the folder in the folder
