@@ -4,6 +4,9 @@ Changelog
 2.1.0 (unreleased)
 -------------------
 
+- Remove hard dependency on ATContentTypes.
+  [davisagli]
+
 - Clarify which item is the default view for the folder in the folder
   contents view.
   [rossp]
