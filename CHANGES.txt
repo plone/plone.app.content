@@ -14,6 +14,9 @@ Changelog
   about only allowing path expressions within string expressions.
   [davisagli]
 
+- In table.pt use sequence_length to get batch size.
+  [cah190]
+
 - Remove hard dependency on ATContentTypes.
   [davisagli]
 
