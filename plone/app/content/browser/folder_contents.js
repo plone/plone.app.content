@@ -16,6 +16,7 @@ function replaceFolderContentsTable(overrides) {
             $(this).attr("href", $(this).attr("href").replace(/foldercontents_get_table/, orig_template));
         });
         $(initializeDnDReorder('#listing-table'));
+        $("#listing-table input:checkbox").enableCheckboxRangeSelection();
     });
 }
 
@@ -31,7 +32,27 @@ $.fn.enableTableReload = function(selector, overrides, prevent) {
             event.preventDefault();
         replaceFolderContentsTable(overrides);
     });
+    return $target;
 }
+
+/* checkbox range selection based on:
+ * http://www.barneyb.com/barneyblog/2008/05/12/checkbox-range-selection-update/
+ */
+$.fn.enableCheckboxRangeSelection = function() {
+    var lastCheckbox = null;
+    var $spec = this;
+    $spec.unbind("click");
+    $spec.bind("click", function(e) {
+        if (lastCheckbox != null && (e.shiftKey)) {
+            $spec.slice(
+              Math.min($spec.index(lastCheckbox), $spec.index(e.target)),
+              Math.max($spec.index(lastCheckbox), $spec.index(e.target)) + 1
+            ).attr({checked: e.target.checked ? "checked" : ""});
+        } else
+            lastCheckbox = e.target;
+    });
+    return $spec;
+};
 
 $(document).ready(function(){
     /* folder contents table loading actions */
@@ -50,6 +71,7 @@ $(document).ready(function(){
         var page = decodeURI((RegExp("pagenumber\:int" + '=' + '(.+?)(&|$)').exec(link)||[,null])[1]);
         replaceFolderContentsTable({ "pagenumber": page });
     });
+    $("#listing-table input:checkbox").enableCheckboxRangeSelection();
 });
 
 })(jQuery);
