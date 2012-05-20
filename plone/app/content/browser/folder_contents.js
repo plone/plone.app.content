@@ -1,7 +1,9 @@
 (function($){
 
+
+
 /* reload folder contents listings */
-function replaceFolderContentsTable(overrides, prevent) {
+function replaceFolderContentsTable(overrides) {
     var fCF = $("form[name=folderContentsForm]");
     var defaults = {
         "sort_on": fCF.find("input[name=sort_on]").first().val(),
@@ -16,49 +18,42 @@ function replaceFolderContentsTable(overrides, prevent) {
             $(this).attr("href", $(this).attr("href").replace(/foldercontents_get_table/, orig_template));
         });
         $(initializeDnDReorder('#listing-table'));
+        $("#listing-table input:checkbox").enableCheckboxRangeSelection();
+    });
+}
+
+/* enable reloading of the table for a given selector and set of overrides */
+$.fn.enableTableReload = function(selector, overrides, prevent) {
+    var $target = this;
+    if(arguments.count < 3)
+        prevent = false;
+    if(arguments.count < 2)
+        overrides = {};
+
+    $target.delegate(selector, "click", function(event) {
+        if(prevent)
+            event.preventDefault();
+        replaceFolderContentsTable(overrides);
     });
 }
 
 $(document).ready(function(){
-
     /* folder contents table loading actions */
     var ccore = $("#content-core");
-    ccore.delegate("#foldercontents-show-all", "click", function(event) {
-        event.preventDefault();
-        replaceFolderContentsTable({ "show_all": "True", "pagenumber": "1" });
-    });
-    ccore.delegate("#foldercontents-show-batched", "click", function(event) {
-        event.preventDefault();
-        replaceFolderContentsTable({ "show_all": "False" });
-    });
-    ccore.delegate("#foldercontents-title-column", "click", function(event) {
-        replaceFolderContentsTable({ "sort_on": "sortable_title" });
-    });
-    ccore.delegate("#foldercontents-modified-column", "click", function(event) {
-        replaceFolderContentsTable({ "sort_on": "modified" });
-    });
-    ccore.delegate("#foldercontents-status-column", "click", function(event) {
-        replaceFolderContentsTable({ "sort_on": "review_state" });
-    });
-    ccore.delegate("#foldercontents-selectall", "click", function(event) {
-        event.preventDefault();
-        replaceFolderContentsTable({ "select": "screen" });
-    });
-    ccore.delegate("#foldercontents-selectall-completebatch", "click", function(event) {
-        event.preventDefault();
-        replaceFolderContentsTable({ "select": "all" });
-    });
-    ccore.delegate("#foldercontents-clearselection", "click", function(event) {
-        event.preventDefault();
-        replaceFolderContentsTable({ "select": "none" });
-    });
+    ccore.enableTableReload("#foldercontents-show-all", { "show_all": "True", "pagenumber": "1" }, true);
+    ccore.enableTableReload("#foldercontents-show-batched", { "show_all": "False" }, true);
+    ccore.enableTableReload("#foldercontents-title-column", { "sort_on": "sortable_title" });
+    ccore.enableTableReload("#foldercontents-modified-column", { "sort_on": "modified" });
+    ccore.enableTableReload("#foldercontents-status-column", { "sort_on": "review_state" });
+    ccore.enableTableReload("#foldercontents-selectall", { "select": "screen" }, true);
+    ccore.enableTableReload("#foldercontents-selectall-completebatch", { "select": "all" }, true);
+    ccore.enableTableReload("#foldercontents-clearselection", { "select": "none" }, true);
     ccore.delegate("div.listingBar a", "click", function(event) {
         event.preventDefault();
         var link = $(this).attr("href");
         var page = decodeURI((RegExp("pagenumber\:int" + '=' + '(.+?)(&|$)').exec(link)||[,null])[1]);
         replaceFolderContentsTable({ "pagenumber": page });
     });
-
 });
 
 })(jQuery);
