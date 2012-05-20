@@ -1,12 +1,10 @@
 import urllib
-import zope.component
 
 from plone.memoize import instance
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone.batching import Batch
-from plone.batching.browser import BatchTemplate
 
 from zope.i18nmessageid import MessageFactory
 
@@ -19,28 +17,32 @@ from ZTUtils import  make_query
 from plone.batching.browser import BatchView
 from zope.publisher.browser import BrowserView
 
+
 class TableBatchView(BatchView):
 
     def make_link(self, pagenumber):
         batchlinkparams = self.request.form.copy()
         return '%s?%s' % (self.request.ACTUAL_URL,
-                          make_query(batchlinkparams, {'pagenumber': pagenumber}))
+                          make_query(batchlinkparams,
+                                {'pagenumber': pagenumber}))
 
 
 class Table(object):
-    """   
+    """
     The table renders a table with sortable columns etc.
 
-    It is meant to be subclassed to provide methods for getting specific table info.
-    """                
+    It is meant to be subclassed to provide methods for getting specific table
+    info.
+    """
 
-    def __init__(self, request, base_url, view_url, items, show_sort_column=False,
-                 buttons=None, pagesize=20, show_select_column=True, show_size_column=True,
+    def __init__(self, request, base_url, view_url, items,
+                 show_sort_column=False, buttons=None, pagesize=20,
+                 show_select_column=True, show_size_column=True,
                  show_modified_column=True, show_status_column=True):
         if buttons is None:
             buttons = []
         self.request = request
-        self.context = None # Need for view pagetemplate
+        self.context = None  # Need for view pagetemplate
 
         self.base_url = base_url
         self.view_url = view_url
@@ -58,11 +60,11 @@ class Table(object):
 
         selection = request.get('select')
         if selection == 'screen':
-            self.selectcurrentbatch=True
+            self.selectcurrentbatch = True
         elif selection == 'all':
             self.selectall = True
 
-        self.pagenumber =  int(request.get('pagenumber', 1))
+        self.pagenumber = int(request.get('pagenumber', 1))
 
     def msg_select_item(self, item):
         title_or_id = (item.get('title_or_id') or item.get('title') or
@@ -136,11 +138,11 @@ class Table(object):
 
     @property
     def selectall_url(self):
-        return self.selectnone_url+'&select=all'
+        return self.selectnone_url + '&select=all'
 
     @property
     def selectscreen_url(self):
-        return self.selectnone_url+'&select=screen'
+        return self.selectnone_url + '&select=screen'
 
     @property
     def selectnone_url(self):
@@ -161,7 +163,7 @@ class Table(object):
     @property
     def viewname(self):
         return self.view_url.split('?')[0].split('/')[-1]
-    
+
     def quote_plus(self, string):
         return urllib.quote_plus(string)
 
@@ -174,9 +176,10 @@ class TableBrowserView(BrowserView):
 
     table = None
 
-    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent', show_all=False):
+    def update_table(self, pagenumber='1', sort_on='getObjPositionInParent',
+                     show_all=False):
         self.request.set('sort_on', sort_on)
         self.request.set('pagenumber', pagenumber)
         table = self.table(self.context, self.request,
-                                    contentFilter={'sort_on':sort_on})
+                                    contentFilter={'sort_on': sort_on})
         return table.render()

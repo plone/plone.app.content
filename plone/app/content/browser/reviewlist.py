@@ -16,11 +16,12 @@ class FullReviewListView(BrowserView):
         return self.context.my_worklist()
 
     def url(self):
-        return self.context.absolute_url()+'/full_review_list'
+        return self.context.absolute_url() + '/full_review_list'
 
     def review_table(self):
         table = ReviewListTable(self.context, self.request)
         return table.render()
+
 
 class ReviewListTable(object):
     """
@@ -43,13 +44,15 @@ class ReviewListTable(object):
     def items(self):
         plone_utils = getToolByName(self.context, 'plone_utils')
         portal_url = getToolByName(self.context, 'portal_url')
-        plone_view = getMultiAdapter((self.context, self.request), name=u'plone')
+        plone_view = getMultiAdapter((self.context, self.request),
+                                     name=u'plone')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_properties = getToolByName(self.context, 'portal_properties')
         portal_types = getToolByName(self.context, 'portal_types')
         site_properties = portal_properties.site_properties
 
-        use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
+        use_view_action = site_properties.getProperty(
+            'typesUseViewActionInListings', ())
         browser_default = self.context.browserDefault()
 
         results = list()
@@ -66,7 +69,7 @@ class ReviewListTable(object):
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
-            review_state = portal_workflow.getInfoFor( obj, 'review_state', '')
+            review_state = portal_workflow.getInfoFor(obj, 'review_state', '')
 
             state_class = 'state-' + plone_utils.normalizeString(review_state)
             relative_url = portal_url.getRelativeContentURL(obj)
@@ -91,28 +94,28 @@ class ReviewListTable(object):
                 obj.id == browser_default[1][0])
 
             results.append(dict(
-                url = url,
-                url_href_title = url_href_title,
-                id  = obj.getId(),
-                quoted_id = urllib.quote_plus(obj.getId()),
-                path = path,
-                title_or_id = obj.pretty_title_or_id(),
-                description = obj.Description(),
-                obj_type = obj.Type,
-                size = obj.getObjSize(),
-                modified = modified,
-                icon = icon.html_tag(),
-                type_class = type_class,
-                wf_state = review_state,
-                state_title = portal_workflow.getTitleForStateOnType(review_state,
-                                                           obj.portal_type),
-                state_class = state_class,
-                is_browser_default = is_browser_default,
-                folderish = is_structural_folder,
-                relative_url = relative_url,
-                view_url = view_url,
-                table_row_class = table_row_class,
-                is_expired = self.context.isExpired(obj),
+                url=url,
+                url_href_title=url_href_title,
+                id=obj.getId(),
+                quoted_id=urllib.quote_plus(obj.getId()),
+                path=path,
+                title_or_id=obj.pretty_title_or_id(),
+                description=obj.Description(),
+                obj_type=obj.Type,
+                size=obj.getObjSize(),
+                modified=modified,
+                icon=icon.html_tag(),
+                type_class=type_class,
+                wf_state=review_state,
+                state_title=portal_workflow.getTitleForStateOnType(
+                    review_state, obj.portal_type),
+                state_class=state_class,
+                is_browser_default=is_browser_default,
+                folderish=is_structural_folder,
+                relative_url=relative_url,
+                view_url=view_url,
+                table_row_class=table_row_class,
+                is_expired=self.context.isExpired(obj)
             ))
         return results
 
@@ -123,11 +126,12 @@ class ReviewListTable(object):
     def buttons(self):
         buttons = []
         portal_actions = getToolByName(self.context, 'portal_actions')
-        button_actions = portal_actions.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
+        button_actions = portal_actions.listActionInfos(
+            object=aq_inner(self.context), categories=('folder_buttons',))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
-        if False:#not len(self.batch):
+        if False:  # not len(self.batch):
             if self.context.cb_dataValid():
                 for button in button_actions:
                     if button['id'] == 'paste':

@@ -37,7 +37,8 @@ class FolderFactoriesView(BrowserView):
 
     @memoize
     def add_context(self):
-        context_state = getMultiAdapter((self.context, self.request), name='plone_context_state')
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name='plone_context_state')
         return context_state.folder()
 
     # NOTE: This is also used by plone.app.contentmenu.menu.FactoriesMenu.
@@ -57,8 +58,8 @@ class FolderFactoriesView(BrowserView):
         results = []
 
         idnormalizer = queryUtility(IIDNormalizer)
-        portal_state = getMultiAdapter((context, request), name='plone_portal_state')
-        portal_url = portal_state.portal_url()
+        portal_state = getMultiAdapter((context, request),
+                                       name='plone_portal_state')
 
         addContext = self.add_context()
         baseUrl = addContext.absolute_url()
@@ -92,24 +93,30 @@ class FolderFactoriesView(BrowserView):
                     url = addAction['url']
 
                 if not url:
-                    url = '%s/createObject?type_name=%s' % (baseUrl, quote_plus(typeId),)
+                    url = '%s/createObject?type_name=%s' % (baseUrl,
+                        quote_plus(typeId))
 
                 icon = t.getIconExprObject()
                 if icon:
                     icon = icon(expr_context)
 
-                results.append({ 'id'           : typeId,
-                                 'title'        : t.Title(),
-                                 'description'  : t.Description(),
-                                 'action'       : url,
-                                 'selected'     : False,
-                                 'icon'         : icon,
-                                 'extra'        : {'id' : cssId, 'separator' : None, 'class' : cssClass},
-                                 'submenu'      : None,
-                                })
+                results.append({
+                    'id': typeId,
+                    'title': t.Title(),
+                    'description': t.Description(),
+                    'action': url,
+                    'selected': False,
+                    'icon': icon,
+                    'extra': {
+                        'id': cssId,
+                        'separator': None,
+                        'class': cssClass},
+                    'submenu': None,
+                })
 
         # Sort the addable content types based on their translated title
-        results = [(translate(ctype['title'], context=request), ctype) for ctype in results]
+        results = [(translate(ctype['title'], context=request), ctype)
+                        for ctype in results]
         results.sort()
         results = [ctype[-1] for ctype in results]
 

@@ -41,7 +41,8 @@ class FolderContentsView(BrowserView):
         """
         """
         context = aq_inner(self.context)
-        plone_layout = getMultiAdapter((context, self.request), name="plone_layout")
+        plone_layout = getMultiAdapter((context, self.request),
+                                       name="plone_layout")
         icon = plone_layout.getIcon(context)
         return icon.html_tag()
 
@@ -62,7 +63,7 @@ class FolderContentsView(BrowserView):
         # Get the parent. If we can't get it (unauthorized), use the portal
         parent = aq_parent(obj)
 
-        # # We may get an unauthorized exception if we're not allowed to access#
+        # We may get an unauthorized exception if we're not allowed to access
         # the parent. In this case, return None
         try:
             if getattr(parent, 'getId', None) is None or \
@@ -113,13 +114,15 @@ class FolderContentsTable(object):
         context = aq_inner(self.context)
         plone_utils = getToolByName(context, 'plone_utils')
         plone_view = getMultiAdapter((context, self.request), name=u'plone')
-        plone_layout = getMultiAdapter((context, self.request), name=u'plone_layout')
+        plone_layout = getMultiAdapter((context, self.request),
+                                       name=u'plone_layout')
         portal_workflow = getToolByName(context, 'portal_workflow')
         portal_properties = getToolByName(context, 'portal_properties')
         portal_types = getToolByName(context, 'portal_types')
         site_properties = portal_properties.site_properties
 
-        use_view_action = site_properties.getProperty('typesUseViewActionInListings', ())
+        use_view_action = site_properties.getProperty(
+            'typesUseViewActionInListings', ())
         browser_default = plone_utils.browserDefault(context)
 
         contentsMethod = self.contentsMethod()
@@ -185,29 +188,30 @@ class FolderContentsTable(object):
                 #
                 # this doesn't add any memory overhead, a reference to
                 # the brain is already kept through its getPath bound method.
-                brain = obj,
-                url = url,
-                url_href_title = url_href_title,
-                id = obj.getId,
-                quoted_id = urllib.quote_plus(obj.getId),
-                path = path,
-                title_or_id = safe_unicode(pretty_title_or_id(plone_utils, obj)),
-                obj_type = obj.Type,
-                size = obj.getObjSize,
-                modified = modified,
-                modified_sortable = modified_sortable,
-                icon = icon.html_tag(),
-                type_class = type_class,
-                wf_state = review_state,
-                state_title = portal_workflow.getTitleForStateOnType(review_state,
-                                                                 obj.portal_type),
-                state_class = state_class,
-                is_browser_default = is_browser_default,
-                folderish = obj.is_folderish,
-                relative_url = relative_url,
-                view_url = view_url,
-                table_row_class = table_row_class,
-                is_expired = isExpired(obj),
+                brain=obj,
+                url=url,
+                url_href_title=url_href_title,
+                id=obj.getId,
+                quoted_id=urllib.quote_plus(obj.getId),
+                path=path,
+                title_or_id=safe_unicode(pretty_title_or_id(
+                    plone_utils, obj)),
+                obj_type=obj.Type,
+                size=obj.getObjSize,
+                modified=modified,
+                modified_sortable=modified_sortable,
+                icon=icon.html_tag(),
+                type_class=type_class,
+                wf_state=review_state,
+                state_title=portal_workflow.getTitleForStateOnType(
+                    review_state, obj.portal_type),
+                state_class=state_class,
+                is_browser_default=is_browser_default,
+                folderish=obj.is_folderish,
+                relative_url=relative_url,
+                view_url=view_url,
+                table_row_class=table_row_class,
+                is_expired=isExpired(obj)
             ))
         return results
 
@@ -234,7 +238,8 @@ class FolderContentsTable(object):
         buttons = []
         context = aq_inner(self.context)
         portal_actions = getToolByName(context, 'portal_actions')
-        button_actions = portal_actions.listActionInfos(object=aq_inner(self.context), categories=('folder_buttons', ))
+        button_actions = portal_actions.listActionInfos(
+            object=aq_inner(self.context), categories=('folder_buttons', ))
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted

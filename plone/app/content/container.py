@@ -9,16 +9,17 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 
 from plone.app.content.interfaces import IReindexOnModify
 
+
 class OFSContainer(object):
     """A folder that's also a container.
-    
+
     Borrowed in part from megrok.five.
     """
-    
+
     implements(IContainer)
-    
+
     isPrincipiaFolderish = 1
-    
+
     def __init__(self, id=None):
         if id is not None:
             self.id = id
@@ -40,7 +41,7 @@ class OFSContainer(object):
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
-        name = name.encode('ascii') # may raise if there's a bugus id
+        name = name.encode('ascii')  # may raise if there's a bugus id
         self._setObject(name, obj)
 
     def __delitem__(self, name):
@@ -54,33 +55,35 @@ class OFSContainer(object):
 
     def __len__(self):
         return len(self.objectIds())
-        
+
 # Notes on this insane mixing of classes:
-# 
+#
 #  - OFSContainer gives us Zope3-like container operations, and we want that
 #       to take priority so it comes first
 #  - CMFCatalogAware gives us catalog functionality. So does PortalContent,
-#       but PortalFolderBase overrides indexObject() and friends to do 
+#       but PortalFolderBase overrides indexObject() and friends to do
 #       nothing.
 #  - PortalFolderBase gives folder-like behaviour. It needs to come before
 #       PortalContent, otherwise objectIds() and friends don't work
 #  - PortalContent gives us SearchableText and WebDAV
 #  - DublinCoreImpl gives us DC fields
 #  - Contained gives us Zope3-like containment
-# 
+#
 # ... I WANT AN ADAPTER!
-        
-class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent, DefaultDublinCoreImpl, Contained):
+
+
+class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent,
+                DefaultDublinCoreImpl, Contained):
     """A base class mixing in CMFish, contentish, containerish, containedish,
     dublincoreish behaviour.
     """
-    
+
     implements(IReindexOnModify)
-    
+
     def __init__(self, id=None, **kwargs):
         OFSContainer.__init__(self, id, **kwargs)
         PortalFolderBase.__init__(self, id, **kwargs)
         DefaultDublinCoreImpl.__init__(self, **kwargs)
-        
+
         if id is not None:
             self.id = id
