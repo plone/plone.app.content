@@ -26,6 +26,10 @@
          name="foldercontents_get_table"
          permission="cmf.ListFolderContents" />
 
+    <browser:resource
+        file="folder_contents.js"
+        name="folder_contents.js" />
+
     <!-- Review list -->
     <browser:page
         for="*"
