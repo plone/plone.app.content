@@ -1,7 +1,5 @@
 (function($){
 
-
-
 /* reload folder contents listings */
 function replaceFolderContentsTable(overrides) {
     var fCF = $("form[name=folderContentsForm]");
@@ -18,17 +16,15 @@ function replaceFolderContentsTable(overrides) {
             $(this).attr("href", $(this).attr("href").replace(/foldercontents_get_table/, orig_template));
         });
         $(initializeDnDReorder('#listing-table'));
-        $("#listing-table input:checkbox").enableCheckboxRangeSelection();
     });
 }
 
-/* enable reloading of the table for a given selector and set of overrides */
+/* enable reloading of the table for a given selector and set of overrides
+ * with optional default event prevention */
 $.fn.enableTableReload = function(selector, overrides, prevent) {
     var $target = this;
     if(arguments.count < 3)
         prevent = false;
-    if(arguments.count < 2)
-        overrides = {};
 
     $target.delegate(selector, "click", function(event) {
         if(prevent)
