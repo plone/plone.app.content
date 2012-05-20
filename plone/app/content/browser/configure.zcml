@@ -21,9 +21,9 @@
 
     <browser:page
          for="*"
-         class=".foldercontents.FolderContentsKSSView"
+         class=".foldercontents.FolderContentsBrowserView"
          attribute="update_table"
-         name="foldercontents_update_table"
+         name="foldercontents_get_table"
          permission="cmf.ListFolderContents" />
 
     <!-- Review list -->
@@ -36,9 +36,9 @@
 
     <browser:page
          for="*"
-         class=".reviewlist.ReviewListKSSView"
+         class=".reviewlist.ReviewListBrowserView"
          attribute="update_table"
-         name="reviewlist_update_table"
+         name="reviewlist_get_table"
          permission="cmf.ReviewPortalContent" />
 
     <!-- Folder factories -->

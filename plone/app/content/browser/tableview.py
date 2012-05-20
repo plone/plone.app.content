@@ -14,14 +14,10 @@ from Products.CMFPlone.utils import safe_unicode
 
 _ = MessageFactory('plone')
 
-try:
-    from kss.core import KSSView
-except ImportError:
-    from zope.publisher.browser import BrowserView as KSSView
-
 from ZTUtils import  make_query
 
 from plone.batching.browser import BatchView
+from zope.publisher.browser import BrowserView
 
 class TableBatchView(BatchView):
 
@@ -170,8 +166,8 @@ class Table(object):
         return urllib.quote_plus(string)
 
 
-class TableKSSView(KSSView):
-    '''Base class which can be used from a KSS view
+class TableBrowserView(BrowserView):
+    '''Base class which can be used from a AJAX view
 
     Subclasses only need to set the table property to a different
     class.'''
@@ -183,6 +179,4 @@ class TableKSSView(KSSView):
         self.request.set('pagenumber', pagenumber)
         table = self.table(self.context, self.request,
                                     contentFilter={'sort_on':sort_on})
-        core = self.getCommandSet('core')
-        core.replaceHTML('#folderlisting-main-table', table.render())
-        return self.render()
+        return table.render()

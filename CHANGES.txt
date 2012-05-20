@@ -14,6 +14,9 @@ Changelog
   about only allowing path expressions within string expressions.
   [davisagli]
 
+- Remove KSS dependency from AJAX table views.
+  [cah190]
+
 - In table.pt use sequence_length to get batch size.
   [cah190]
 
