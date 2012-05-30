@@ -131,7 +131,7 @@
                   <img tal:replace="structure item/icon|nothing" />
                   <a href="#" tal:attributes="href  item/view_url|string:${view/base_url}/${id};
                                               title item/url_href_title|nothing;
-                                              class string: ${item/state_class|python:''} ${item/type_class|python:''};">
+                                              class string: ${item/state_class|nothing} ${item/type_class|nothing};">
                     <strong tal:omit-tag="not: item/is_browser_default|nothing"
                             tal:content="title_or_id"/>
                     <span class="defaultView"
@@ -155,7 +155,7 @@
               </td>
               <td tal:condition="view/show_modified_column"
                   tal:content="item/modified"
-                  tal:attributes="class string:${item/state_class|python:''} ${item/modified_sortable|python:''}">
+                  tal:attributes="class string:${item/state_class|nothing} ${item/modified_sortable|nothing}">
                 08/19/2001 03:01 AM
               </td>
               <td tal:condition="view/show_status_column">
