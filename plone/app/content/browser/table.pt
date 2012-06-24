@@ -93,7 +93,8 @@
                                 id string:folder-contents-item-${id};">
 
               <td tal:condition="view/show_sort_column" class="draggable">
-               <tal:block tal:define="quoted_id item/quoted_id|python: view.quote_plus(id);">
+               <tal:block tal:define="quoted_id python:view.quote_plus(id);
+                                      quoted_id item/quoted_id|quoted_id;">
                 <a href=""
                    title="Move item up"
                    i18n:attributes="title title_move_item_up;"
@@ -131,7 +132,9 @@
                   <img tal:replace="structure item/icon|nothing" />
                   <a href="#" tal:attributes="href  item/view_url|string:${view/base_url}/${id};
                                               title item/url_href_title|nothing;
-                                              class string: ${item/state_class|python:''} ${item/type_class|python:''};">
+                                              state_class item/state_class|string:;
+                                              type_class item/type_class|string:;
+                                              class string: ${state_class} ${type_class};">
                     <strong tal:omit-tag="not: item/is_browser_default|nothing"
                             tal:content="title_or_id"/>
                     <span class="defaultView"
@@ -155,7 +158,9 @@
               </td>
               <td tal:condition="view/show_modified_column"
                   tal:content="item/modified"
-                  tal:attributes="class string:${item/state_class|python:''} ${item/modified_sortable|python:''}">
+                  tal:attributes="state_class item/state_class|string:;
+                                  modified_sortable item/modified_sortable|string:;
+                                  class string:${state_class} ${modified_sortable}">
                 08/19/2001 03:01 AM
               </td>
               <td tal:condition="view/show_status_column">

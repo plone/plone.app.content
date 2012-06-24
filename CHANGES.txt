@@ -4,6 +4,10 @@ Changelog
 2.1.0 (unreleased)
 -------------------
 
+- Adjust table.pt TAL to work after the TAL engine became a bit stricter
+  about only allowing path expressions within string expressions.
+  [davisagli]
+
 - Remove hard dependency on ATContentTypes.
   [davisagli]
 
