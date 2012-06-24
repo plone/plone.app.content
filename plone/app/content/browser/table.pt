@@ -130,10 +130,10 @@
               </td>
               <td>
                   <img tal:replace="structure item/icon|nothing" />
-                  <a href="#" tal:attributes="href  item/view_url|string:${view/base_url}/${id};
+                  <a href="#" tal:define="state_class item/state_class|string:;
+                                          type_class item/type_class|string:;"
+                              tal:attributes="href  item/view_url|string:${view/base_url}/${id};
                                               title item/url_href_title|nothing;
-                                              state_class item/state_class|string:;
-                                              type_class item/type_class|string:;
                                               class string: ${state_class} ${type_class};">
                     <strong tal:omit-tag="not: item/is_browser_default|nothing"
                             tal:content="title_or_id"/>
@@ -158,9 +158,9 @@
               </td>
               <td tal:condition="view/show_modified_column"
                   tal:content="item/modified"
-                  tal:attributes="state_class item/state_class|string:;
-                                  modified_sortable item/modified_sortable|string:;
-                                  class string:${state_class} ${modified_sortable}">
+                  tal:define="state_class item/state_class|string:;
+                              modified_sortable item/modified_sortable|string:;"
+                  tal:attributes="class string:${state_class} ${modified_sortable}">
                 08/19/2001 03:01 AM
               </td>
               <td tal:condition="view/show_status_column">
