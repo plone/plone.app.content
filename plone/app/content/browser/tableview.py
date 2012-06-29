@@ -39,8 +39,10 @@ class Table(object):
     """                
 
     def __init__(self, request, base_url, view_url, items, show_sort_column=False,
-                 buttons=[], pagesize=20, show_select_column=True, show_size_column=True,
+                 buttons=None, pagesize=20, show_select_column=True, show_size_column=True,
                  show_modified_column=True, show_status_column=True):
+        if buttons is None:
+            buttons = []
         self.request = request
         self.context = None # Need for view pagetemplate
 
