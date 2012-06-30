@@ -1,8 +1,8 @@
 Changelog
 =========
 
-2.1.0 (unreleased)
--------------------
+2.1a1 (2012-06-29)
+------------------
 
 - Adjust table.pt TAL to work after the TAL engine became a bit stricter
   about only allowing path expressions within string expressions.

@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '2.1.dev0'
+version = '2.1a1'
 
 setup(name='plone.app.content',
       version=version,
