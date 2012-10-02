@@ -4,7 +4,12 @@ Changelog
 2.0.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Backported ``remove hard dep on ATContentTypes`` commit from master branch
+  in order for plone.app.collection to be able to use folder_contents.
+  See the `github comment <https://github.com/plone/plone.app.content/commit/
+  e38f7ee455b64e0693bdd9cdb955497da6b7ccce#commitcomment-1920878>`_ for more 
+  details 
+  [ichimdav]
 
 
 2.0.11 (2012-05-30)

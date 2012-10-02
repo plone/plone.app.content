@@ -9,7 +9,6 @@ from zope.publisher.browser import BrowserView
 from AccessControl import Unauthorized
 from Acquisition import aq_parent, aq_inner
 from OFS.interfaces import IOrderedContainer
-from Products.ATContentTypes.interface import IATTopic
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
@@ -102,7 +101,7 @@ class FolderContentsTable(object):
 
     def contentsMethod(self):
         context = aq_inner(self.context)
-        if IATTopic.providedBy(context):
+        if hasattr(context.__class__, 'queryCatalog'):
             contentsMethod = context.queryCatalog
         else:
             contentsMethod = context.getFolderContents
