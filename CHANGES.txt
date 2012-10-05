@@ -4,7 +4,11 @@ Changelog
 2.1a2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove KSS dependency from AJAX table views.
+  [cah190]
+
+- In table.pt use sequence_length to get batch size.
+  [cah190]
 
 
 2.1a1 (2012-06-29)
@@ -13,12 +17,6 @@ Changelog
 - Adjust table.pt TAL to work after the TAL engine became a bit stricter
   about only allowing path expressions within string expressions.
   [davisagli]
-
-- Remove KSS dependency from AJAX table views.
-  [cah190]
-
-- In table.pt use sequence_length to get batch size.
-  [cah190]
 
 - Remove hard dependency on ATContentTypes.
   [davisagli]
