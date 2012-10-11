@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.12 (unreleased)
+2.0.12 (2012-10-11)
 -------------------
 
 - Backported ``remove hard dep on ATContentTypes`` commit from master branch
