@@ -37,7 +37,10 @@ class FolderTestCase(FunctionalTestCase):
         folder.setTitle('New Folder')
         folder.setExcludeFromNav(True)
         folder.reindexObject()
-        
+
+    def createUser(self, userid):
+        registration = getToolByName(site, 'portal_registration')
+        return registration.addMember(userid, 'fakepw', ['Member',])
 
     def loginAsManager(self):
         """points the browser to the login screen and logs in as user root with Manager role."""
@@ -48,7 +51,7 @@ class FolderTestCase(FunctionalTestCase):
         self.browser.getControl('Log in').click()
 
 def test_suite():
-    tests = ['foldercontents.txt',]
+    tests = ['foldercontents.txt', 'change_ownership.txt']
     suite = TestSuite()
     for test in tests:
         suite.addTest(FunctionalDocFileSuite(test,

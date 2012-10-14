@@ -1,0 +1,74 @@
+Change Ownership Form
+=====================
+
+  >>> browser = self.browser
+
+Add some mor users
+
+  >>> self.portal.acl_users._doAddUser('additional-1', 'secret', ['Site Administrator'], [])
+  <PloneUser 'additional-1'>
+  >>> self.portal.acl_users._doAddUser('additional-2', 'secret', ['Manager'], [])
+  <PloneUser 'additional-2'>
+
+
+Viewing the folder contents
+---------------------------
+
+A user should first login before being able to access the changing ownership form
+
+  >>> browser.open('http://nohost/plone/news/@@ownership_form')
+  >>> 'Login Name' in browser.contents
+  True
+
+Log in and try again.
+
+  >>> from Products.PloneTestCase.setup import portal_owner
+  >>> from Products.PloneTestCase.setup import default_password
+  >>> browser.addHeader('Authorization',
+  ...                   'Basic %s:%s' % (portal_owner, default_password))
+  >>> browser.open('http://nohost/plone/@@ownership_form')
+  >>> 'Login Name' in browser.contents
+  False
+
+  >>> browser.open('http://nohost/plone/news/@@ownership_form')
+  >>> 'Login Name' in browser.contents
+  False
+
+Create some test content and check the preselected value
+
+  >>> self.createFolder('test-folder')
+  >>> folder = self.portal.get('test-folder')
+  >>> folder.invokeFactory('Folder', 'subfolder')
+  'subfolder'
+  >>> folder.get('subfolder').__ac_local_roles__
+  {'test_user_1_': ['Owner']}
+
+
+Change the ownership without the subobjects
+
+  >>> browser.open('http://nohost/plone/test-folder/@@ownership_form')
+
+  >>> browser.getControl(name='form.widgets.owner:list').options
+  ['additional-1', 'additional-2', 'root', 'test_user_1_']
+
+  >>> browser.getControl(name='form.widgets.owner:list').value = ['additional-2']
+  >>> browser.getControl(name='form.buttons.save').click()
+
+  >>> folder.__ac_local_roles__
+  {'additional-2': ['Owner']}
+  >>> folder.get('subfolder').__ac_local_roles__
+  {'test_user_1_': ['Owner']}
+
+
+Change the ownership including the subobjects
+
+  >>> browser.open('http://nohost/plone/test-folder/@@ownership_form')
+  >>> browser.getControl(name='form.widgets.owner:list').value = ['additional-1']
+  >>> browser.getControl(name='form.widgets.subobjects:list').value = ['selected']
+  >>> browser.getControl(name='form.buttons.save').click()
+
+  >>> folder.__ac_local_roles__
+  {'additional-1': ['Owner']}
+  >>> folder.get('subfolder').__ac_local_roles__
+  {'additional-1': ['Owner']}
+

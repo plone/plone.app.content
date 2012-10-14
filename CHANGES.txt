@@ -4,6 +4,9 @@ Changelog
 2.1a2 (unreleased)
 ------------------
 
+- Reimplement the change_ownership form with z3c.form
+  [phgross]
+
 - Remove KSS dependency from AJAX table views.
   [cah190]
 
