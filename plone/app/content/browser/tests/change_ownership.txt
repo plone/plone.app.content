@@ -48,10 +48,9 @@ Change the ownership without the subobjects
 
   >>> browser.open('http://nohost/plone/test-folder/@@ownership_form')
 
-  >>> browser.getControl(name='form.widgets.owner:list').options
-  ['additional-1', 'additional-2', 'root', 'test_user_1_']
-
-  >>> browser.getControl(name='form.widgets.owner:list').value = ['additional-2']
+  >>> browser.getControl(name='form.widgets.owner.widgets.query').value = 'additional-2'
+  >>> browser.getControl(name='form.widgets.owner.buttons.search').click()
+  >>> browser.getControl(name='form.widgets.owner').getControl(value='additional-2').click()
   >>> browser.getControl(name='form.buttons.save').click()
 
   >>> folder.__ac_local_roles__
@@ -63,7 +62,9 @@ Change the ownership without the subobjects
 Change the ownership including the subobjects
 
   >>> browser.open('http://nohost/plone/test-folder/@@ownership_form')
-  >>> browser.getControl(name='form.widgets.owner:list').value = ['additional-1']
+  >>> browser.getControl(name='form.widgets.owner.widgets.query').value = 'additional-1'
+  >>> browser.getControl(name='form.widgets.owner.buttons.search').click()
+  >>> browser.getControl(name='form.widgets.owner').getControl(value='additional-1').click()
   >>> browser.getControl(name='form.widgets.subobjects:list').value = ['selected']
   >>> browser.getControl(name='form.buttons.save').click()
 
@@ -71,4 +72,3 @@ Change the ownership including the subobjects
   {'additional-1': ['Owner']}
   >>> folder.get('subfolder').__ac_local_roles__
   {'additional-1': ['Owner']}
-

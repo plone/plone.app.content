@@ -47,5 +47,6 @@ setup(name='plone.app.content',
         'Products.CMFCore>=2.2.0dev',
         'Products.CMFDefault',
         'Zope2',
+        'plone.formwidget.autocomplete',
       ],
       )

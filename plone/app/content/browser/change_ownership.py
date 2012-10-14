@@ -1,12 +1,11 @@
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
+from plone.formwidget.autocomplete.widget import AutocompleteFieldWidget
 from z3c.form import form, field, button
 from zope import schema
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
-
-
-_ = MessageFactory('Plone')
 
 
 class IOwnershipForm(Interface):
@@ -29,6 +28,8 @@ class IOwnershipForm(Interface):
 
 class ChangeOwnershipForm(form.Form):
     fields = field.Fields(IOwnershipForm)
+    fields['owner'].widgetFactory = AutocompleteFieldWidget
+
     ignoreContext = True
 
     @button.buttonAndHandler(_(u'Save'))
