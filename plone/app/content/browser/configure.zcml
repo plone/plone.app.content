@@ -54,12 +54,4 @@
         permission="cmf.AddPortalContent"
         />
 
-    <!-- change ownership form -->
-    <browser:page
-        for="*"
-        name="ownership_form"
-        class=".change_ownership.ChangeOwnershipForm"
-        permission="cmf.ModifyPortalContent"
-        />
-
 </configure>
