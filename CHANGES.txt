@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1a2 (unreleased)
+2.1a2 (2012-10-16)
 ------------------
 
 - Remove KSS dependency from AJAX table views.
