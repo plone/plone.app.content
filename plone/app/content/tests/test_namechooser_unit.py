@@ -20,13 +20,11 @@ class NameChooserTest(unittest.TestCase):
         # add the same item 110 times. the first 100 items should be numbered.
         # after that it should use datetime to generate the id
         self.portal.invokeFactory("Folder", 'holder')
-        transaction.commit()
         holder = self.portal.get('holder')
         
         title="A Small Document"
         # create the first object, which will have no suffix
         holder.invokeFactory("Document", id='a-small-document')
-        transaction.commit()
 
         chooser = INameChooser(holder)
          
