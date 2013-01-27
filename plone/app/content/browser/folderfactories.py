@@ -32,8 +32,8 @@ class FolderFactoriesView(BrowserView):
             return self.index()
 
     def can_constrain_types(self):
-        constrain_types = ISelectableConstrainTypes(self.add_context(), None)
-        return constrain_types is not None and constrain_types.canConstrainTypes()
+        aspect = ISelectableConstrainTypes(self.add_context(), None)
+        return aspect.canSetConstrainTypes() if aspect else False
 
     @memoize
     def add_context(self):
