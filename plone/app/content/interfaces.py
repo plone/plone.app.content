@@ -35,3 +35,22 @@ class IIndexableObjectWrapper(Interface):
         """Update the wrapper with variables from e.g. the workflow
         tool.
         """
+
+class ISiteContentSettings(Interface):
+    """ Settings in the registry which determine various admin configurable global behaviour of content items
+    """
+    file_mimetype_behaviour = schema.Dict(
+        title=u"Behaviour of mimetypes in File objects when accessed by default view",
+        key_type=schema.ASCII(title=u"Mimetype"),
+        value_type=schema.Choice(
+            values=("inline","attachment","view"),
+            title=u"Behaviour when file accessed via naked url",
+            ),
+        default={'application/msword':'inline',
+                 'application/x-msexcel':'inline',
+                 'application/vnd.ms-excel':'inline',
+                 'application/vnd.ms-powerpoint':'inline',
+                 'application/pdf':'inline',
+                 'application/x-shockwave-flash':'inline',
+                 '':'attachment'}
+    )
