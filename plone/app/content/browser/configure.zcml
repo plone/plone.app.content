@@ -54,4 +54,17 @@
         permission="cmf.AddPortalContent"
         />
 
+    <!-- Constrain container allowed content types -->
+    <browser:page
+        name="folder_constraintypes_form"
+        for="Products.CMFCore.interfaces.IFolderish"
+        permission="zope2.View"
+        class=".constraintypes.ConstrainsFormView"
+        />
+    <utility
+        component=".constraintypes.ValidTypesFactory"
+        name="plone.app.content.ValidAddableTypes"
+        />
+
+
 </configure>
