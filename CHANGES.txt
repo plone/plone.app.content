@@ -4,7 +4,7 @@ Changelog
 2.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Added registry settings for download behaviour of blobs based on mimetype patters [djay].
 
 
 2.1a2 (2012-10-16)
