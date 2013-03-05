@@ -12,6 +12,7 @@ from Acquisition import aq_parent
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
+from plone.app.content.browser.interfaces import IFolderContentsView
 
 
 @memoize_diy_request(arg=0)
@@ -37,9 +38,26 @@ class FolderFactoriesView(BrowserView):
 
     @memoize
     def add_context(self):
-        context_state = getMultiAdapter((self.context, self.request),
+        context = self.context
+        context_state = getMultiAdapter((context, self.request),
                                         name='plone_context_state')
-        return context_state.folder()
+        context = aq_inner(context)
+        try:
+            published = self.request.PUBLISHED
+        except AttributeError:
+            published = context
+        if context_state.is_structural_folder():
+            if context_state.is_default_page():
+                if IFolderContentsView.providedBy(published):
+                    # on the folder_contents view, show the actual context
+                    # object's addable types
+                    return context
+                else:
+                    return aq_parent(context)
+            else:
+                return context
+        else:
+            return aq_parent(context)
 
     # NOTE: This is also used by plone.app.contentmenu.menu.FactoriesMenu.
     # The return value is somewhat dictated by the menu infrastructure, so

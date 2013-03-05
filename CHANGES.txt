@@ -4,7 +4,11 @@ Changelog
 2.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- on the folder_contents view, show the add menu for the
+  context object always. This fixes the issue when the
+  default view of a folder is also a folder and you
+  can not add items to it. fixes https://dev.plone.org/ticket/9057
+  [vangheem]
 
 
 2.1a2 (2012-10-16)
