@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1 (unreleased)
+2.1 (2013-03-05)
 ----------------
 
 - show a warning message on the folder contents view when
