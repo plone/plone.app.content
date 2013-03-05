@@ -48,7 +48,24 @@
           </tal:block>
       </metal:content-description>
 
-      <metal:content-core fill-slot="content-core">
+      <metal:content-core fill-slot="content-core"
+                          tal:define="folder_default_page view/default_page_is_folderish">
+          <dl class="portalMessage warning"
+              tal:condition="python:folder_default_page">
+            <dt i18n:translate="">
+                Warning
+            </dt>
+            <dd i18n:translate="label_folder_contents_folder_default_page">
+                The default page for this folder is also a folder. To add items
+                to it, visit the default page's
+                <a href=""
+                    i18n:name="go_here"
+                    i18n:translate="label_folder_contents_view"
+                    tal:attributes="href string:${folder_default_page}/@@folder_contents">folder contents view</a>
+                and use the add menu.
+            </dd>
+          </dl>
+
           <a href=""
              class="link-parent"
              tal:define="parent_url view/parent_url"

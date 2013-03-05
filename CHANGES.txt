@@ -4,6 +4,12 @@ Changelog
 2.1 (unreleased)
 ----------------
 
+- show a warning message on the folder contents view when
+  the default page is also a folder, that in order to add items
+  to the default page's folder, they'll need to visit it's
+  folder_contents view. also addresses https://dev.plone.org/ticket/9057
+  [vangheem]
+
 - on the folder_contents view, show the add menu for the
   context object always. This fixes the issue when the
   default view of a folder is also a folder and you

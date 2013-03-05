@@ -47,7 +47,7 @@ class FolderFactoriesView(BrowserView):
         except AttributeError:
             published = context
         if context_state.is_structural_folder():
-            if context_state.is_default_page():
+            if context_state.is_default_page() and context_state.is_folderish():
                 if IFolderContentsView.providedBy(published):
                     # on the folder_contents view, show the actual context
                     # object's addable types
