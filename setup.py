@@ -23,7 +23,7 @@ setup(name='plone.app.content',
       zip_safe=False,
       extras_require=dict(
           test=[
-            'zope.testing',
+            'plone.app.testing',
             'Products.PloneTestCase',
           ]
       ),
