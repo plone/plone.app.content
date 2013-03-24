@@ -7,6 +7,9 @@
       metal:use-macro="here/main_template/macros/master">
 
   <head>
+      <metal:baseslot fill-slot="base">
+        <base tal:attributes="href view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+      </metal:baseslot>
       <metal:block fill-slot="top_slot">
         <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
