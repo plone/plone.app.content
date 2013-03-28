@@ -99,6 +99,12 @@ class FolderContentsView(BrowserView):
         except Unauthorized:
             return None
 
+    def renderBase(self):
+        """Returns the URL used in the base tag.
+        """
+        # Assume a folderish context
+        return self.context.absolute_url() + '/'
+
 
 class FolderContentsTable(object):
     """
