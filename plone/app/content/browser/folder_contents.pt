@@ -14,11 +14,11 @@
         <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
       </metal:block>
-      <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
+      <metal:js fill-slot="javascript_head_slot">
           <script type="text/javascript"
-                  tal:attributes="src string:${context/absolute_url}/++resource++folder_contents.js">
+                  tal:attributes="src string:${portal_url}/++resource++folder_contents.js">
           </script>
-      </div>
+      </metal:js>
   </head>
 
   <body>
