@@ -8,6 +8,9 @@ Changelog
   with a trailing slash. Fixes https://dev.plone.org/ticket/13487
   [danjacka]
 
+- Added missing i18n markup to table.pt.
+  [jianaijun]
+
 
 2.1 (2013-03-05)
 ----------------
