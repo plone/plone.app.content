@@ -140,6 +140,7 @@
                     <span class="defaultView"
                           tal:condition="item/is_browser_default|nothing"
                           title="Default view for this folder"
+                          i18n:attributes="title title_default_view_for_this_folder;"
                           style="color: #f00;">
                       &#x25a0;
                     </span>
