@@ -4,6 +4,9 @@ Changelog
 2.1.1 (unreleased)
 ------------------
 
+- Load folder_contents.js from the portal root instead of the context.
+  [maurits]
+
 - In the folder_contents view, assume a folderish context and set the base tag
   with a trailing slash. Fixes https://dev.plone.org/ticket/13487
   [danjacka]
