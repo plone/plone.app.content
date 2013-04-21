@@ -32,7 +32,8 @@ class FolderContentsView(BrowserView):
     def __call__(self):
         context_state = getMultiAdapter((self.context, self.request),
                                         name='plone_context_state')
-        dp_view = getMultiAdapter((self.context, self.request), name='default_page')
+        dp_view = getMultiAdapter((
+            self.context, self.request), name='default_page')
         default_page = dp_view.getDefaultPage()
         self.default_page_is_folderish = False
         if default_page:
@@ -42,10 +43,12 @@ class FolderContentsView(BrowserView):
             # its folder_contents view.
             default_page = self.context.restrictedTraverse(default_page, None)
             if default_page:
-                df_context_state = getMultiAdapter((default_page, self.request),
-                                                    name='plone_context_state')
+                df_context_state = getMultiAdapter(
+                    (default_page, self.request),
+                    name='plone_context_state')
                 if df_context_state.is_folderish():
-                    self.default_page_is_folderish = default_page.absolute_url()
+                    self.default_page_is_folderish = default_page.absolute_url(
+                    )
         return super(FolderContentsView, self).__call__()
 
     def contents_table(self):
@@ -87,7 +90,7 @@ class FolderContentsView(BrowserView):
         # the parent. In this case, return None
         try:
             if getattr(parent, 'getId', None) is None or \
-                   parent.getId() == 'talkback':
+                    parent.getId() == 'talkback':
                 # Skip any Z3 views that may be in the acq tree;
                 # Skip past the talkback container if that's where we are
                 parent = aq_parent(parent)

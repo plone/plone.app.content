@@ -21,19 +21,19 @@ class NameChooserTest(unittest.TestCase):
         # after that it should use datetime to generate the id
         self.portal.invokeFactory("Folder", 'holder')
         holder = self.portal.get('holder')
-        
-        title="A Small Document"
+
+        title = "A Small Document"
         # create the first object, which will have no suffix
         holder.invokeFactory("Document", id='a-small-document')
 
         chooser = INameChooser(holder)
-         
+
         for i in range(1, ATTEMPTS + 1):
             id = chooser.chooseName(title, holder)
-            if i <= ATTEMPTS: # first addition has no suffix
-                self.assertEqual("a-small-document-%s"%i, id)
+            if i <= ATTEMPTS:  # first addition has no suffix
+                self.assertEqual("a-small-document-%s" % i, id)
             else:
-                self.assertNotEqual("a-small-document-%s"%i, id)
+                self.assertNotEqual("a-small-document-%s" % i, id)
 
             holder.invokeFactory("Document", id)
             transaction.savepoint(optimistic=True)

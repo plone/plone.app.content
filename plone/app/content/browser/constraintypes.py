@@ -13,7 +13,7 @@ from zope.schema import List, Choice
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-#XXX
+# XXX
 ACQUIRE = -1  # acquire locallyAllowedTypes from parent (default)
 DISABLED = 0  # use default behavior of PortalFolder which uses the
               # FTI information

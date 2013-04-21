@@ -112,7 +112,7 @@ class FolderFactoriesView(BrowserView):
 
                 if not url:
                     url = '%s/createObject?type_name=%s' % (baseUrl,
-                        quote_plus(typeId))
+                                                            quote_plus(typeId))
 
                 icon = t.getIconExprObject()
                 if icon:
@@ -134,7 +134,7 @@ class FolderFactoriesView(BrowserView):
 
         # Sort the addable content types based on their translated title
         results = [(translate(ctype['title'], context=request), ctype)
-                        for ctype in results]
+                   for ctype in results]
         results.sort()
         results = [ctype[-1] for ctype in results]
 
