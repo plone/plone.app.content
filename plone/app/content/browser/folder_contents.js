@@ -33,7 +33,7 @@ $.fn.enableTableReload = function(selector, overrides, prevent) {
         replaceFolderContentsTable(overrides);
     });
     return $target;
-}
+};
 
 /* checkbox range selection based on:
  * http://www.barneyb.com/barneyblog/2008/05/12/checkbox-range-selection-update/
@@ -43,7 +43,7 @@ $.fn.enableCheckboxRangeSelection = function() {
     var $spec = this;
     $spec.unbind("click");
     $spec.bind("click", function(e) {
-        if (lastCheckbox != null && (e.shiftKey)) {
+        if (lastCheckbox !== null && (e.shiftKey)) {
             $spec.slice(
               Math.min($spec.index(lastCheckbox), $spec.index(e.target)),
               Math.max($spec.index(lastCheckbox), $spec.index(e.target)) + 1
