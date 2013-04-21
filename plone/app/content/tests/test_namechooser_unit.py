@@ -5,7 +5,6 @@ from plone.app.testing import setRoles, login
 import transaction
 from plone.app.content.namechooser import ATTEMPTS
 from zope.container.interfaces import INameChooser
-from Products.CMFPlone.utils import _createObjectByType
 
 
 class NameChooserTest(unittest.TestCase):
@@ -37,4 +36,4 @@ class NameChooserTest(unittest.TestCase):
 
             holder.invokeFactory("Document", id)
             transaction.savepoint(optimistic=True)
-            item = holder.get(id)
+            holder.get(id)

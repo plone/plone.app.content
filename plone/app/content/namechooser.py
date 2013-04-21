@@ -82,7 +82,11 @@ class NormalizingNameChooser(object):
             return new_name
 
         raise ValueError(
-            "Cannot find a unique name based on %s after %d attemps." % (name, ATTEMPTS,))
+            "Cannot find a unique name based on %s after %d attemps." % (
+                name,
+                ATTEMPTS,
+            )
+        )
 
     def _getCheckId(self, object):
         """Return a function that can act as the check_id script.

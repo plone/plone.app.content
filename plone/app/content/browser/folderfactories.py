@@ -48,7 +48,9 @@ class FolderFactoriesView(BrowserView):
             published = context
         if context_state.is_structural_folder():
             if context_state.is_default_page():
-                if IFolderContentsView.providedBy(published) or self == published:
+                is_folder_contents_view = \
+                    IFolderContentsView.providedBy(published)
+                if is_folder_contents_view or self == published:
                     # on the folder_contents view and factories view,
                     # show the actual context object's addable types
                     return context

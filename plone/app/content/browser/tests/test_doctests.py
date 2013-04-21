@@ -40,7 +40,8 @@ class FolderTestCase(FunctionalTestCase):
         folder.reindexObject()
 
     def loginAsManager(self):
-        """points the browser to the login screen and logs in as user root with Manager role."""
+        """points the browser to the login screen and logs in as user root with
+        Manager role."""
         self.browser.open('http://nohost/plone/')
         self.browser.getLink('Log in').click()
         self.browser.getControl('Login Name').value = 'root'
@@ -52,8 +53,10 @@ def test_suite():
     tests = ['foldercontents.txt', ]
     suite = TestSuite()
     for test in tests:
-        suite.addTest(FunctionalDocFileSuite(test,
-                                             optionflags=OPTIONFLAGS,
-                                             package="plone.app.content.browser.tests",
-                                             test_class=FolderTestCase))
+        suite.addTest(FunctionalDocFileSuite(
+            test,
+            optionflags=OPTIONFLAGS,
+            package="plone.app.content.browser.tests",
+            test_class=FolderTestCase
+        ))
     return suite

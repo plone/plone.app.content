@@ -17,7 +17,6 @@ from Products.CMFPlone.utils import pretty_title_or_id, isExpired
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.interfaces import IContentsPage
 from plone.app.content.browser.tableview import Table, TableBrowserView
-from Products.statusmessages.interfaces import IStatusMessage
 
 
 class FolderContentsView(BrowserView):
@@ -30,25 +29,27 @@ class FolderContentsView(BrowserView):
         alsoProvides(request, IContentsPage)
 
     def __call__(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name='plone_context_state')
+        getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
         dp_view = getMultiAdapter((
             self.context, self.request), name='default_page')
         default_page = dp_view.getDefaultPage()
         self.default_page_is_folderish = False
         if default_page:
-            # We need to check if the folder has a default page set that is also
-            # a folder. If it does, give a status message warning that to be able
-            # to add items to the default page's folder, they'll need to go to
-            # its folder_contents view.
+            # We need to check if the folder has a default page set that is
+            # also a folder. If it does, give a status message warning that to
+            # be able to add items to the default page's folder, they'll need
+            # to go to its folder_contents view.
             default_page = self.context.restrictedTraverse(default_page, None)
             if default_page:
                 df_context_state = getMultiAdapter(
                     (default_page, self.request),
                     name='plone_context_state')
                 if df_context_state.is_folderish():
-                    self.default_page_is_folderish = default_page.absolute_url(
-                    )
+                    self.default_page_is_folderish = \
+                        default_page.absolute_url()
         return super(FolderContentsView, self).__call__()
 
     def contents_table(self):

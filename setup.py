@@ -23,8 +23,8 @@ setup(name='plone.app.content',
       zip_safe=False,
       extras_require=dict(
           test=[
-    'plone.app.testing',
-    'Products.PloneTestCase',
+              'plone.app.testing',
+              'Products.PloneTestCase',
           ]
       ),
       install_requires=[
