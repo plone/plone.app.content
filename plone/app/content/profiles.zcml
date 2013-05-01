@@ -5,7 +5,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="Default provile for plone.app.content"
+      title="plone.app.content"
       description=""
       directory="profiles/default"
       for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
