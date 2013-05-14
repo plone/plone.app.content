@@ -41,7 +41,6 @@
                       }
                     });
                   }
-                  debugger;
                   constrain_mode.change(updateVisibility);
                   updateVisibility();
                   prefered_field.change(updateSelectable);
