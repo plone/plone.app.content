@@ -8,7 +8,7 @@
       title="Default provile for plone.app.content"
       description=""
       directory="profiles/default"
-      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
