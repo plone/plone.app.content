@@ -110,7 +110,7 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         self.widgets['constrain_types_mode'].addClass(
             'constrain_types_mode_form')
 
-    @button.buttonAndHandler(u'Save')
+    @button.buttonAndHandler(PC_(u'Save'), name='save')
     def handleSave(self, action):
         data, errors = self.extractData()
 
