@@ -22,10 +22,10 @@ ENABLED = 1   # allow types from locallyAllowedTypes only
 ST = lambda key, txt, default: SimpleTerm(value=key,
                                           title=PC_(txt, default=default))
 possible_constrain_types = SimpleVocabulary(
-    [ST(ACQUIRE, u'constraintypes_acquire_label',
+    [ST(ACQUIRE, u'constraintypes_mode_acquire',
                  u'Use parent folder settings'),
-     ST(DISABLED, 'constraintypes_disable_label', u'Use portal default'),
-     ST(ENABLED, u'constraintypes_enable_label', u'Select manually')
+     ST(DISABLED, 'label_constraintypes_allow_standard', u'Use portal default'),
+     ST(ENABLED, u'label_constraintypes_specify_manually', u'Select manually')
      ])
 
 
