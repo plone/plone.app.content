@@ -4,7 +4,10 @@ Changelog
 2.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use PLONE_APP_CONTENTTYPES_FIXTURE as testing base layer because
+  ATContentTypes have been removed from PLONE_FIXTURE and some tests require
+  content types.
+  [timo]
 
 
 2.1.3 (2013-08-13)

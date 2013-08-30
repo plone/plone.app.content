@@ -8,6 +8,7 @@ from zope.container.interfaces import INameChooser
 
 
 class NameChooserTest(unittest.TestCase):
+
     layer = PLONE_APP_CONTENT_INTEGRATION_TESTING
 
     def setUp(self):

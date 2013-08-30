@@ -25,6 +25,7 @@ setup(name='plone.app.content',
           test=[
               'plone.app.testing',
               'Products.PloneTestCase',
+              'plone.app.contenttypes',
           ]
       ),
       install_requires=[
