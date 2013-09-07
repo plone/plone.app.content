@@ -4,6 +4,9 @@ Changelog
 2.1.4 (unreleased)
 ------------------
 
+- Allow modifying the pagesize by adding a request-string e.g. "?pagesize=100".
+  [pbauer]
+
 - Use PLONE_APP_CONTENTTYPES_FIXTURE as testing base layer because
   ATContentTypes have been removed from PLONE_FIXTURE and some tests require
   content types.

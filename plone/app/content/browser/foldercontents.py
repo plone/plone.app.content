@@ -123,9 +123,11 @@ class FolderContentsTable(object):
 
         url = context.absolute_url()
         view_url = url + '/folder_contents'
+        self.pagesize = int(self.request.get('pagesize', 20))
         self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
-                           buttons=self.buttons)
+                           buttons=self.buttons,
+                           pagesize=self.pagesize)
 
     def render(self):
         return self.table.render()
@@ -158,7 +160,7 @@ class FolderContentsTable(object):
         contentsMethod = self.contentsMethod()
 
         show_all = self.request.get('show_all', '').lower() == 'true'
-        pagesize = 20
+        pagesize = int(self.request.get('pagesize', 20))
         pagenumber = int(self.request.get('pagenumber', 1))
         start = (pagenumber - 1) * pagesize
         end = start + pagesize
