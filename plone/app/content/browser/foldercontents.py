@@ -119,11 +119,11 @@ class FolderContentsTable(object):
         self.context = context
         self.request = request
         self.contentFilter = contentFilter is not None and contentFilter or {}
+        self.pagesize = int(self.request.get('pagesize', 20))
         self.items = self.folderitems()
 
         url = context.absolute_url()
         view_url = url + '/folder_contents'
-        self.pagesize = int(self.request.get('pagesize', 20))
         self.table = Table(request, url, view_url, self.items,
                            show_sort_column=self.show_sort_column,
                            buttons=self.buttons,
