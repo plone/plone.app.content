@@ -146,7 +146,8 @@ class Table(object):
 
     @property
     def selectnone_url(self):
-        base = self.view_url + '?pagenumber=%s' % (self.pagenumber)
+        base = self.view_url + '?pagenumber=%s&pagesize=%s' % (
+            self.pagenumber, self.pagesize)
         if self.show_all:
             base += '&show_all=true'
         return base
