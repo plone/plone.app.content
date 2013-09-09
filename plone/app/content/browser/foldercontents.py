@@ -121,7 +121,6 @@ class FolderContentsTable(object):
         self.contentFilter = contentFilter is not None and contentFilter or {}
         self.pagesize = int(self.request.get('pagesize', 20))
         self.items = self.folderitems()
-
         url = context.absolute_url()
         view_url = url + '/folder_contents'
         self.table = Table(request, url, view_url, self.items,
