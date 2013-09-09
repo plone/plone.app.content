@@ -160,7 +160,7 @@ class FolderContentsTable(object):
         contentsMethod = self.contentsMethod()
 
         show_all = self.request.get('show_all', '').lower() == 'true'
-        pagesize = int(self.request.get('pagesize', 20))
+        pagesize = self.pagesize
         pagenumber = int(self.request.get('pagenumber', 1))
         start = (pagenumber - 1) * pagesize
         end = start + pagesize
