@@ -1,10 +1,13 @@
-import unittest2 as unittest
+from Products.CMFCore.utils import getToolByName
 from plone.app.content.testing import PLONE_APP_CONTENT_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID, TEST_USER_NAME
 from plone.app.testing import setRoles, login
 import transaction
 from plone.app.content.namechooser import ATTEMPTS
+from plone.dexterity.fti import DexterityFTI
 from zope.container.interfaces import INameChooser
+
+import unittest2 as unittest
 
 
 class NameChooserTest(unittest.TestCase):
@@ -13,6 +16,10 @@ class NameChooserTest(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
+        portal_types = getToolByName(self.portal, "portal_types")
+        if 'Document' not in portal_types.objectIds():
+            fti = DexterityFTI('Document')
+            portal_types._setObject('Document', fti)
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         login(self.portal, TEST_USER_NAME)
 
