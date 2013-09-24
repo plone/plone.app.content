@@ -1,16 +1,16 @@
 from Products.CMFCore.utils import getToolByName
 
-from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
-
+from plone.dexterity.fti import DexterityFTI
 from zope.configuration import xmlconfig
 
 
 class PloneAppContent(PloneSandboxLayer):
 
-    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
+    defaultBases = (PLONE_FIXTURE,)
 
     USER_NAME = 'johndoe'
     USER_PASSWORD = 'secret'
@@ -61,6 +61,9 @@ class PloneAppContent(PloneSandboxLayer):
             ['Manager'],
             [],
         )
+
+        fti = DexterityFTI('Document')
+        portal.portal_types._setObject('Document', fti)
 
 PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(

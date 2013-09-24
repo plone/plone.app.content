@@ -19,9 +19,8 @@ class NameChooserTest(unittest.TestCase):
     def test_100_or_more_unique_ids(self):
         # add the same item 110 times. the first 100 items should be numbered.
         # after that it should use datetime to generate the id
-        self.portal.invokeFactory("Folder", 'holder')
-        holder = self.portal.get('holder')
 
+        holder = self.portal
         title = "A Small Document"
         # create the first object, which will have no suffix
         holder.invokeFactory("Document", id='a-small-document')
