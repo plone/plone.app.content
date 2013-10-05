@@ -4,6 +4,10 @@ Changelog
 2.1.4 (unreleased)
 ------------------
 
+- Protect the folder constraintypes form with the 'Modify constrain types'
+  permission.
+  [davisagli]
+
 - Fix tests for Plone 5 where the PLONE_FIXTURE layer does not provide
   content types any longer.
   [timo]
