@@ -6,6 +6,7 @@ function replaceFolderContentsTable(overrides) {
     var defaults = {
         "sort_on": fCF.find("input[name=sort_on]").first().val(),
         "pagenumber": fCF.find("input[name=pagenumber]").first().val(),
+        "pagesize": fCF.find("input[name=pagesize]").first().val(),
         "show_all": fCF.find("input[name=show_all]").first().val()
     };
     $.get('foldercontents_get_table', $.extend(defaults, overrides), function(data) {
