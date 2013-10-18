@@ -372,7 +372,7 @@
               <input type="hidden" name="orig_template"
                      tal:condition="request/orig_template|nothing"
                      tal:attributes="value request/orig_template"/>
-
+              <input tal:replace="structure context/@@authenticator/authenticator" />
           </form>
       </div>
     </metal:main>
