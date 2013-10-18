@@ -45,6 +45,14 @@
          name="reviewlist_get_table"
          permission="cmf.ReviewPortalContent" />
 
+    <!-- Content status history -->
+    <browser:page
+        for="*"
+        name="content_status_history"
+        class=".content_status_history.ContentStatusHistoryView"
+        permission="cmf.ModifyPortalContent"
+        />
+
     <!-- Folder factories -->
     <browser:page
         for="*"
