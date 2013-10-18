@@ -3,7 +3,6 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.publisher.browser import BrowserView
 from zope.interface import Interface
-from plone.fieldsets.fieldsets import FormFieldsets
 from zope.schema import Datetime
 from zope.schema.fieldproperty import FieldProperty
 from z3c.form import form, field
@@ -43,7 +42,6 @@ class ContentStatusHistoryDatesForm(form.Form):
 class ContentStatusHistoryView(BrowserView):
 
     template = ViewPageTemplateFile('templates/content_status_history.pt')
-
 
     def __init__(self, context, request):
         super(ContentStatusHistoryView, self).__init__(context, request)

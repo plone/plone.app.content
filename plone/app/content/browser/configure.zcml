@@ -50,7 +50,7 @@
         for="*"
         name="content_status_history"
         class=".content_status_history.ContentStatusHistoryView"
-        permission="cmf.ModifyPortalContent"
+        permission="zope2.View"
         />
 
     <!-- Folder factories -->

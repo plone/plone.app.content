@@ -1,8 +1,11 @@
 Changelog
 =========
 
-2.1.4 (unreleased)
+2.2.0 (unreleased)
 ------------------
+
+- Move content_status_history from CMFPlone to a browser view in this package.
+  [bloodbare]
 
 - Protect the folder constraintypes form with the 'Modify constrain types'
   permission.

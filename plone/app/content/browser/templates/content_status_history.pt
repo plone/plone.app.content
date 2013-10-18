@@ -368,17 +368,10 @@
                        i18n:attributes="value label_cancel;" />
               </div>
 
-
-              <span tal:replace="nothing">
-                ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE
-                THESE INTO YOUR FORM ####
-              </span>
               <input type="hidden" name="form.submitted" value="1" />
               <input type="hidden" name="orig_template"
                      tal:condition="request/orig_template|nothing"
                      tal:attributes="value request/orig_template"/>
-
-              <input tal:replace="structure context/@@authenticator/authenticator" />
 
           </form>
       </div>
