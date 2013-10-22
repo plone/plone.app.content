@@ -5,7 +5,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import invariant
 from zope.interface.exceptions import Invalid
@@ -29,11 +29,11 @@ possible_constrain_types = SimpleVocabulary(
      ])
 
 
+@implementer(IVocabularyFactory)
 class ValidTypes(object):
-    implements(IVocabularyFactory)
 
     def __call__(self, context):
-        constrain_aspect = ISelectableConstrainTypes(context)
+        constrain_aspect = context.context
         items = []
         for type_ in constrain_aspect.getDefaultAddableTypes():
             items.append(SimpleTerm(value=type_.getId(), title=type_.Title()))
@@ -52,7 +52,7 @@ class IConstrainForm(Interface):
         vocabulary=possible_constrain_types
     )
 
-    current_prefer = List(
+    allowed_types = List(
         title=PC_("label_immediately_addable_types", default="Allowed types"),
         description=PC_("help_immediately_addable_types",
                         default="Controls what types are addable "
@@ -61,7 +61,7 @@ class IConstrainForm(Interface):
             source="plone.app.content.ValidAddableTypes"),
     )
 
-    current_allow = List(
+    secondary_types = List(
         title=PC_("label_locally_allowed_types", default="Secondary types"),
         description=PC_("help_locally_allowed_types", default=""
                         "Select which types should be available in the "
@@ -79,8 +79,8 @@ class IConstrainForm(Interface):
     @invariant
     def legal_not_immediately_addable(data):
         missing = []
-        for one_allowed in data.current_allow:
-            if one_allowed not in data.current_prefer:
+        for one_allowed in data.secondary_types:
+            if one_allowed not in data.allowed_types:
                 missing.append(one_allowed)
         if missing:
             raise Invalid(
@@ -90,37 +90,69 @@ class IConstrainForm(Interface):
         return True
 
 
+@implementer(IConstrainForm)
+class FormContentAdapter(object):
+
+    def __init__(self, context):
+        self.context = ISelectableConstrainTypes(context)
+
+    @property
+    def constrain_types_mode(self):
+        return self.context.getConstrainTypesMode()
+
+    @property
+    def allowed_types(self):
+        return self.context.getLocallyAllowedTypes()
+
+    @property
+    def secondary_types(self):
+        immediately_addable = self.context.getImmediatelyAddableTypes()
+        return [t for t in self.context.getLocallyAllowedTypes()
+                if t not in immediately_addable]
+
+
 class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
 
     schema = IConstrainForm
-    ignoreContext = True
     label = PC_("heading_set_content_type_restrictions",
                 default="Restrict what types of content can be added")
     template = ViewPageTemplateFile("constraintypes.pt")
 
+    def getContent(self):
+        return FormContentAdapter(self.context)
+
     def updateFields(self):
         super(ConstrainsFormView, self).updateFields()
-        self.fields['current_prefer'].widgetFactory = CheckBoxFieldWidget
-        self.fields['current_allow'].widgetFactory = CheckBoxFieldWidget
+        self.fields['allowed_types'].widgetFactory = CheckBoxFieldWidget
+        self.fields['secondary_types'].widgetFactory = CheckBoxFieldWidget
 
     def updateWidgets(self):
         super(ConstrainsFormView, self).updateWidgets()
-        self.widgets['current_prefer'].addClass('current_prefer_form')
-        self.widgets['current_allow'].addClass('current_allow_form')
+        self.widgets['allowed_types'].addClass('current_prefer_form')
+        self.widgets['secondary_types'].addClass('current_allow_form')
         self.widgets['constrain_types_mode'].addClass(
             'constrain_types_mode_form')
 
-    @button.buttonAndHandler(PC_(u'Save'), name='save')
+    @button.buttonAndHandler(u'Save')
     def handleSave(self, action):
         data, errors = self.extractData()
-
         if errors:
+            self.status = self.formErrorsMessage
             return
 
-        immediately_addable_types = [t for t in data['current_prefer']
-                                     if t not in data['current_allow']]
-        locally_allowed_types = data['current_prefer']
+        allowed_types = data['allowed_types']
+        immediately_addable = [
+            t for t in allowed_types
+            if t not in data['secondary_types']]
+
         aspect = ISelectableConstrainTypes(self.context)
         aspect.setConstrainTypesMode(data['constrain_types_mode'])
-        aspect.setLocallyAllowedTypes(locally_allowed_types)
-        aspect.setImmediatelyAddableTypes(immediately_addable_types)
+        aspect.setLocallyAllowedTypes(allowed_types)
+        aspect.setImmediatelyAddableTypes(immediately_addable)
+        contextURL = self.context.absolute_url()
+        self.request.response.redirect(contextURL)
+
+    @button.buttonAndHandler(u'Cancel')
+    def handleCancel(self, action):
+        contextURL = self.context.absolute_url()
+        self.request.response.redirect(contextURL)

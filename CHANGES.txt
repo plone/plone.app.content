@@ -4,6 +4,9 @@ Changelog
 2.1.4 (unreleased)
 ------------------
 
+- Fix constrainttypes form.
+  [davisagli]
+
 - Protect the folder constraintypes form with the 'Modify constrain types'
   permission.
   [davisagli]
