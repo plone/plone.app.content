@@ -340,20 +340,3 @@ Selecting the current page should make the entire folder selected
   >>> print browser.contents
   <BLANKLINE>
   ... All ... items in this folder are selected. ...
-
-
-Folder contents of non-folders
-------------------------------
-
-The folder contents view is available on all content items, including
-non-folders. Most non-folders have no content, but some (like
-plone.app.collection collections) support folder-like operations and need to be
-set up appropriately, e.g. with the correct base tag.
-
-    >>> _ = self.portal.invokeFactory('Document', 'doc')
-    >>> browser.open('http://nohost/plone/doc')
-    >>> '<base href="http://nohost/plone/doc" />' in browser.contents
-    True
-    >>> browser.open('http://nohost/plone/doc/@@folder_contents')
-    >>> '<base href="http://nohost/plone/doc/" />' in browser.contents
-    True
