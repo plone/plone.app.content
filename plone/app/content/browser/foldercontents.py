@@ -28,6 +28,30 @@ class FolderContentsView(BrowserView):
         super(FolderContentsView, self).__init__(context, request)
         alsoProvides(request, IContentsPage)
 
+    def __call__(self):
+        getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
+        dp_view = getMultiAdapter((
+            self.context, self.request), name='default_page')
+        default_page = dp_view.getDefaultPage()
+        self.default_page_is_folderish = False
+        if default_page:
+            # We need to check if the folder has a default page set that is
+            # also a folder. If it does, give a status message warning that to
+            # be able to add items to the default page's folder, they'll need
+            # to go to its folder_contents view.
+            default_page = self.context.restrictedTraverse(default_page, None)
+            if default_page:
+                df_context_state = getMultiAdapter(
+                    (default_page, self.request),
+                    name='plone_context_state')
+                if df_context_state.is_folderish():
+                    self.default_page_is_folderish = \
+                        default_page.absolute_url()
+        return super(FolderContentsView, self).__call__()
+
     def contents_table(self):
         table = FolderContentsTable(aq_inner(self.context), self.request)
         return table.render()
@@ -67,7 +91,7 @@ class FolderContentsView(BrowserView):
         # the parent. In this case, return None
         try:
             if getattr(parent, 'getId', None) is None or \
-                   parent.getId() == 'talkback':
+                    parent.getId() == 'talkback':
                 # Skip any Z3 views that may be in the acq tree;
                 # Skip past the talkback container if that's where we are
                 parent = aq_parent(parent)
@@ -78,6 +102,12 @@ class FolderContentsView(BrowserView):
             return parent.absolute_url()
         except Unauthorized:
             return None
+
+    def renderBase(self):
+        """Returns the URL used in the base tag.
+        """
+        # Assume a folderish context
+        return self.context.absolute_url() + '/'
 
 
 class FolderContentsTable(object):

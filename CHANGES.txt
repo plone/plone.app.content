@@ -1,10 +1,64 @@
 Changelog
 =========
 
-2.1 (unreleased)
+2.1.4 (unreleased)
+------------------
+
+- Fix constrainttypes form.
+  [davisagli]
+
+- Protect the folder constraintypes form with the 'Modify constrain types'
+  permission.
+  [davisagli]
+
+- Fix tests for Plone 5 where the PLONE_FIXTURE layer does not provide
+  content types any longer.
+  [timo]
+
+- Added registry settings for download behaviour of blobs based on mimetype patterns [djay].
+
+2.1.3 (2013-08-13)
+------------------
+
+- Fix translations of selectable restriction-options.
+  [pbauer]
+
+
+2.1.2 (2013-05-26)
+------------------
+
+- PEP8 cleanup.
+  [timo]
+
+- Added missing i18n markup to table.pt.
+  [jianaijun]
+
+
+2.1.1 (2013-04-06)
+------------------
+
+- Load folder_contents.js from the portal root instead of the context.
+  [maurits]
+
+- In the folder_contents view, assume a folderish context and set the base tag
+  with a trailing slash. Fixes https://dev.plone.org/ticket/13487
+  [danjacka]
+
+
+2.1 (2013-03-05)
 ----------------
 
-- Added registry settings for download behaviour of blobs based on mimetype patters [djay].
+- show a warning message on the folder contents view when
+  the default page is also a folder, that in order to add items
+  to the default page's folder, they'll need to visit it's
+  folder_contents view. also addresses https://dev.plone.org/ticket/9057
+  [vangheem]
+
+- on the folder_contents view, show the add menu for the
+  context object always. This fixes the issue when the
+  default view of a folder is also a folder and you
+  can not add items to it. fixes https://dev.plone.org/ticket/9057
+  [vangheem]
 
 
 2.1a2 (2012-10-16)
@@ -46,7 +100,7 @@ Changelog
 2.0.8 (2012-03-06)
 ------------------
 
-- Namechooser: Attempt to return an id with timestamp before returning a 
+- Namechooser: Attempt to return an id with timestamp before returning a
   value error after 100 id check attempts.
   [eleddy]
 

@@ -55,10 +55,14 @@
         />
 
     <!-- Constrain container allowed content types -->
+    <permission
+        id="plone.ModifyConstrainTypes"
+        title="Modify constrain types"
+        />
     <browser:page
         name="folder_constraintypes_form"
         for="Products.CMFCore.interfaces.IFolderish"
-        permission="zope2.View"
+        permission="plone.ModifyConstrainTypes"
         class=".constraintypes.ConstrainsFormView"
         />
     <utility

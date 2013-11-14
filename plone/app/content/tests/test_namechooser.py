@@ -1,5 +1,7 @@
 from zope.component.testing import setUp, tearDown
-import unittest, doctest
+import unittest
+import doctest
+
 
 def test_suite():
     return unittest.TestSuite((

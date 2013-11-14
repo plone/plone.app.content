@@ -12,7 +12,7 @@ from Products.CMFPlone.utils import safe_unicode
 
 _ = MessageFactory('plone')
 
-from ZTUtils import  make_query
+from ZTUtils import make_query
 
 from plone.batching.browser import BatchView
 from zope.publisher.browser import BrowserView
@@ -24,7 +24,7 @@ class TableBatchView(BatchView):
         batchlinkparams = self.request.form.copy()
         return '%s?%s' % (self.request.ACTUAL_URL,
                           make_query(batchlinkparams,
-                                {'pagenumber': pagenumber}))
+                                     {'pagenumber': pagenumber}))
 
 
 class Table(object):
@@ -91,8 +91,8 @@ class Table(object):
         if self.show_all:
             pagesize = len(self.items)
         b = Batch.fromPagenumber(self.items,
-                  pagesize=pagesize,
-                  pagenumber=self.pagenumber)
+                                 pagesize=pagesize,
+                                 pagenumber=self.pagenumber)
         map(self.set_checked, b)
         return b
 
@@ -111,7 +111,7 @@ class Table(object):
     def _set_select_currentbatch(self, value):
         self._selectcurrentbatch = value
         if self._selectcurrentbatch and self.show_all or (
-            len(self.items) <= self.pagesize):
+                len(self.items) <= self.pagesize):
             self.selectall = True
 
     selectcurrentbatch = property(_get_select_currentbatch,
@@ -181,5 +181,5 @@ class TableBrowserView(BrowserView):
         self.request.set('sort_on', sort_on)
         self.request.set('pagenumber', pagenumber)
         table = self.table(self.context, self.request,
-                                    contentFilter={'sort_on': sort_on})
+                           contentFilter={'sort_on': sort_on})
         return table.render()

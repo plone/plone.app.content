@@ -16,13 +16,13 @@ ATTEMPTS = 100
 
 class NormalizingNameChooser(object):
     """A name chooser for a Zope object manager.
-    
+
     If the object is adaptable to or provides INameFromTitle, use the
     title to generate a name.
     """
-    
+
     implements(INameChooser)
-    
+
     def __init__(self, context):
         self.context = context
 
@@ -50,9 +50,8 @@ class NormalizingNameChooser(object):
             name = IUserPreferredURLNormalizer(request).normalize(name)
         else:
             name = getUtility(IURLNormalizer).normalize(name)
-            
+
         return self._findUniqueName(name, object)
-            
 
     def _findUniqueName(self, name, object):
         """Find a unique name in the parent folder, based on the given id, by
@@ -64,11 +63,11 @@ class NormalizingNameChooser(object):
         if not check_id(name, required=1):
             return name
 
-        ext  = ''
+        ext = ''
         m = FILENAME_REGEX.match(name)
         if m is not None:
             name = m.groups()[0]
-            ext  = '.' + m.groups()[1]
+            ext = '.' + m.groups()[1]
 
         idx = 1
         while idx <= ATTEMPTS:
@@ -82,8 +81,13 @@ class NormalizingNameChooser(object):
         if not check_id(new_name, required=1):
             return new_name
 
-        raise ValueError("Cannot find a unique name based on %s after %d attemps." % (name, ATTEMPTS,))
-        
+        raise ValueError(
+            "Cannot find a unique name based on %s after %d attemps." % (
+                name,
+                ATTEMPTS,
+            )
+        )
+
     def _getCheckId(self, object):
         """Return a function that can act as the check_id script.
         """

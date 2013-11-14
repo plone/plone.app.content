@@ -81,7 +81,8 @@ class ReviewListTable(object):
 
             modified = plone_view.toLocalizedTime(
                 obj.ModificationDate(), long_format=1)
-            is_structural_folder = obj.restrictedTraverse('@@plone').isStructuralFolder()
+            is_structural_folder = obj.restrictedTraverse(
+                '@@plone').isStructuralFolder()
 
             if obj.portal_type in use_view_action:
                 view_url = url + '/view'

@@ -15,7 +15,7 @@ class CMFAdding(Implicit, ContentAdding):
         content = super(CMFAdding, self).add(content)
         # We need to ensure that we finish type construction, not at least
         # to set the correct permissions based on the workflow
-        portal_types = getToolByName(content, 'portal_types')
+        getToolByName(content, 'portal_types')
 
         return content
 

@@ -31,7 +31,7 @@
                   }
                   function updateSelectable(){
                     prefered.each(function(){
-                      var allowed_id = this.id.replace('prefer', 'allow'),
+                      var allowed_id = this.id.replace('allowed', 'secondary'),
                           allowed_item = allowed_field.find("#" + allowed_id);
                       if (this.checked){
                         allowed_item[0].disabled = false;
@@ -41,7 +41,6 @@
                       }
                     });
                   }
-                  debugger;
                   constrain_mode.change(updateVisibility);
                   updateVisibility();
                   prefered_field.change(updateSelectable);

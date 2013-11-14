@@ -7,15 +7,18 @@
       metal:use-macro="here/main_template/macros/master">
 
   <head>
+      <metal:baseslot fill-slot="base">
+        <base tal:attributes="href view/renderBase" /><!--[if lt IE 7]></base><![endif]-->
+      </metal:baseslot>
       <metal:block fill-slot="top_slot">
         <tal:insert tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
       </metal:block>
-      <div metal:fill-slot="javascript_head_slot" tal:omit-tag="">
+      <metal:js fill-slot="javascript_head_slot">
           <script type="text/javascript"
-                  tal:attributes="src string:${context/absolute_url}/++resource++folder_contents.js">
+                  tal:attributes="src string:${portal_url}/++resource++folder_contents.js">
           </script>
-      </div>
+      </metal:js>
   </head>
 
   <body>
@@ -48,7 +51,24 @@
           </tal:block>
       </metal:content-description>
 
-      <metal:content-core fill-slot="content-core">
+      <metal:content-core fill-slot="content-core"
+                          tal:define="folder_default_page view/default_page_is_folderish">
+          <dl class="portalMessage warning"
+              tal:condition="python:folder_default_page">
+            <dt i18n:translate="">
+                Warning
+            </dt>
+            <dd i18n:translate="label_folder_contents_folder_default_page">
+                The default page for this folder is also a folder. To add items
+                to it, visit the default page's
+                <a href=""
+                    i18n:name="go_here"
+                    i18n:translate="label_folder_contents_view"
+                    tal:attributes="href string:${folder_default_page}/@@folder_contents">folder contents view</a>
+                and use the add menu.
+            </dd>
+          </dl>
+
           <a href=""
              class="link-parent"
              tal:define="parent_url view/parent_url"
