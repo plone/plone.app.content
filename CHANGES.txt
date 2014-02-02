@@ -4,6 +4,9 @@ Changelog
 2.2.0 (unreleased)
 ------------------
 
+- PLIP #13705: Remove <base> tag.
+  [frapell]
+
 - Fix constrainttypes form.
   [davisagli]
 
