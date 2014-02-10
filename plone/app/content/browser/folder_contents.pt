@@ -21,7 +21,7 @@
   <body>
 
       <metal:content-title fill-slot="content-title">
-          <h1 class="documentFirstHeading"> 
+          <h1 class="documentFirstHeading">
               <tal:block condition="exists:here/aq_explicit/widget">
                   <metal:field use-macro="python:here.widget('title', mode='view')">
                   Title
@@ -30,9 +30,9 @@
               <tal:block condition="not:exists:here/aq_explicit/widget">
                   <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
               </tal:block>
-          </h1>        
+          </h1>
       </metal:content-title>
-      
+
       <metal:content-description fill-slot="content-description">
           <div class="documentDescription" tal:condition="exists:here/aq_explicit/widget">
               <metal:field use-macro="python:here.widget('description', mode='view')">
@@ -40,9 +40,9 @@
               </metal:field>
           </div>
           <tal:block condition="not:exists:here/aq_explicit/widget">
-              <div class="documentDescription" 
-                         tal:content="context/Description" 
-                         tal:condition="context/Description"> 
+              <div class="documentDescription"
+                         tal:content="context/Description"
+                         tal:condition="context/Description">
                   Description
               </div>
           </tal:block>
@@ -50,12 +50,13 @@
 
       <metal:content-core fill-slot="content-core"
                           tal:define="folder_default_page view/default_page_is_folderish">
-          <dl class="portalMessage warning"
+          <div class="portalMessage warning"
               tal:condition="python:folder_default_page">
-            <dt i18n:translate="">
+            <strong i18n:translate="">
                 Warning
-            </dt>
-            <dd i18n:translate="label_folder_contents_folder_default_page">
+            </strong>
+            <span tal:omit-tag=""
+                i18n:translate="label_folder_contents_folder_default_page">
                 The default page for this folder is also a folder. To add items
                 to it, visit the default page's
                 <a href=""
@@ -63,8 +64,8 @@
                     i18n:translate="label_folder_contents_view"
                     tal:attributes="href string:${folder_default_page}/@@folder_contents">folder contents view</a>
                 and use the add menu.
-            </dd>
-          </dl>
+            </span>
+          </div>
 
           <a href=""
              class="link-parent"
@@ -84,6 +85,6 @@
             <input tal:replace="structure context/@@authenticator/authenticator" />
           </form>
       </metal:content-core>
-      
+
   </body>
 </html>
