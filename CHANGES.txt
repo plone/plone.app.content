@@ -4,6 +4,10 @@ Changelog
 2.2.0 (unreleased)
 ------------------
 
+- Remove DL's from portal message templates.
+  https://github.com/plone/Products.CMFPlone/issues/153
+  [khink]
+
 - PLIP #13705: Remove <base> tag.
   [frapell]
 
