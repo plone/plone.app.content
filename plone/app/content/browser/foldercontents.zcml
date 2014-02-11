@@ -1,0 +1,87 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n">
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    class=".folder.FolderContentsView"
+    name="folder_contents"
+    template="templates/folder_contents.pt"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-delete"
+    class=".folder.DeleteAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-paste"
+    class=".folder.PasteAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-workflow"
+    class=".folder.WorkflowAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-tags"
+    class=".folder.TagsAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-properties"
+    class=".folder.PropertiesAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-rename"
+    class=".folder.RenameAction"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-itemOrder"
+    class=".folder.ItemOrder"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-contextInfo"
+    class=".folder.ContextInfo"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-setDefaultPage"
+    class=".folder.SetDefaultPage"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-rearrange"
+    class=".folder.Rearrange"
+    permission="cmf.ModifyPortalContent"
+    />
+
+</configure>
+
+

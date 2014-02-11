@@ -5,6 +5,7 @@ from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 from zope.configuration import xmlconfig
+from plone.testing import z2
 
 
 class PloneAppContent(PloneSandboxLayer):
@@ -60,6 +61,37 @@ class PloneAppContent(PloneSandboxLayer):
             ['Manager'],
             [],
         )
+        portal.portal_workflow.setDefaultChain("simple_publication_workflow")
+
+
+class PloneAppContentDX(PloneAppContent):
+
+    def setUpZope(self, app, configurationContext):
+        super(PloneAppContentDX, self).setUpZope(app, configurationContext)
+        import plone.app.contenttypes
+        xmlconfig.file('configure.zcml',
+                       plone.app.contenttypes,
+                       context=configurationContext)
+
+    def setUpPloneSite(self, portal):
+        super(PloneAppContentDX, self).setUpPloneSite(portal)
+        self.applyProfile(portal, 'plone.app.contenttypes:default')
+
+
+class PloneAppContentAT(PloneAppContent):
+
+    def setUpZope(self, app, configurationContext):
+        super(PloneAppContentAT, self).setUpZope(app, configurationContext)
+        import Products.ATContentTypes
+        xmlconfig.file('configure.zcml',
+                       Products.ATContentTypes,
+                       context=configurationContext)
+        z2.installProduct(app, 'Products.ATContentTypes')
+
+    def setUpPloneSite(self, portal):
+        super(PloneAppContentAT, self).setUpPloneSite(portal)
+        self.applyProfile(portal, 'Products.ATContentTypes:default')
+
 
 PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
@@ -68,3 +100,19 @@ PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
 PLONE_APP_CONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE,),
     name="PloneAppContent:Functional")
+
+PLONE_APP_CONTENT_DX_FIXTURE = PloneAppContentDX()
+PLONE_APP_CONTENT_DX_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PLONE_APP_CONTENT_DX_FIXTURE,),
+    name="PloneAppContentDX:Integration")
+PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(PLONE_APP_CONTENT_DX_FIXTURE,),
+    name="PloneAppContentDX:Functional")
+
+PLONE_APP_CONTENT_AT_FIXTURE = PloneAppContentAT()
+PLONE_APP_CONTENT_AT_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PLONE_APP_CONTENT_AT_FIXTURE,),
+    name="PloneAppContentAT:Integration")
+PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(PLONE_APP_CONTENT_AT_FIXTURE,),
+    name="PloneAppContentAT:Functional")

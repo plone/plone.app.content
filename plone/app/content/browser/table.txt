@@ -144,3 +144,4 @@ selected (don't show) or the screen has not been selected (don't show then).
   >>> table = Table({'select': 'all'}, base_url, view_url, items=items)
   >>> table.show_select_all_items
   False
+

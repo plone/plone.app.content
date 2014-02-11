@@ -12,23 +12,7 @@
         />
 
     <!-- Folder contents -->
-    <browser:page
-        for="*"
-        class=".foldercontents.FolderContentsView"
-        name="folder_contents"
-        template="folder_contents.pt"
-        permission="cmf.ListFolderContents" />
-
-    <browser:page
-         for="*"
-         class=".foldercontents.FolderContentsBrowserView"
-         attribute="update_table"
-         name="foldercontents_get_table"
-         permission="cmf.ListFolderContents" />
-
-    <browser:resource
-        file="folder_contents.js"
-        name="folder_contents.js" />
+    <include file="foldercontents.zcml" />
 
     <!-- Review list -->
     <browser:page
