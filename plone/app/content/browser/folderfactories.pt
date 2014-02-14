@@ -37,12 +37,10 @@
 
         <metal:addlist define-macro="addlist">
 
-            <form name="quickAdd" method="post" 
+            <form name="quickAdd" method="post"
                 tal:attributes="action string:${context/absolute_url}/@@folder_factories">
 
-                <dl>
-                    <tal:typelist repeat="item view/addable_types">
-                        <dt>
+                    <article tal:repeat="item view/addable_types">
                             <input type="radio" name="url"
                                    tal:attributes="value item/action;
                                                    id string:form-field-${item/extra/id}" />
@@ -51,10 +49,8 @@
                                 <img tal:attributes="src item/icon" alt="" />
                                 <span tal:replace="item/title">Type title</span>
                             </label>
-                        </dt>
-                        <dd tal:content="item/description">Type description</dd>
-                    </tal:typelist>
-                </dl>
+                        <span tal:content="item/description">Type description</span>
+                    </article>
 
                 <div class="formControls">
                     <input class="standalone"
