@@ -4,7 +4,8 @@ Changelog
 2.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow modifying the pagesize by adding a request-string e.g. "?pagesize=100".
+  [pbauer]
 
 
 2.1.4 (2013-12-09)

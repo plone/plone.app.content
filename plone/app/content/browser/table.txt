@@ -12,7 +12,7 @@ A table can be parameterized at creation time.
   >>> view_url = 'http://plone/view'
   >>> base_url = 'http://plone'
   >>> table = Table(request={}, base_url=base_url, view_url=view_url,
-  ...               items=[], show_sort_column=False, buttons=[]) 
+  ...               items=[], show_sort_column=False, buttons=[])
 
 The most important argument is items. This must provide a list of dictionaries
 because the table will add more information to them for rendering.
@@ -116,18 +116,18 @@ The table provides the template with urls for selecting or deselecting items in
 the batch. These urls are based on the url passed in at creation time.
 
   >>> table.selectnone_url
-  'http://plone/view?pagenumber=1'
+  'http://plone/view?pagenumber=1&pagesize=20'
 
 You can see how it automatically adds the current page to the url.
 
   >>> table.selectscreen_url
-  'http://plone/view?pagenumber=1&select=screen'
+  'http://plone/view?pagenumber=1&pagesize=20&select=screen'
 
 The same goes for selecting the screen and the whole batch.
 
   >>> table.selectall_url
-  'http://plone/view?pagenumber=1&select=all'
-   
+  'http://plone/view?pagenumber=1&pagesize=20&select=all'
+
 A template may want to display only one of these urls at the same time.
 Therefore the table has a boolean property to query wheter or not to show the
 select all option. The display of this depends on wheter the whole batch is
