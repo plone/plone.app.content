@@ -35,6 +35,9 @@ Changelog
   content types.
   [timo]
 
+- New folder contents implementation based on mockup
+  [vangheem]
+
 
 2.1.3 (2013-08-13)
 ------------------
