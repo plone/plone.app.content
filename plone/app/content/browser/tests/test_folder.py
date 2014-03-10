@@ -176,3 +176,15 @@ class WorkflowTest(BaseTest):
         self.assertEquals(
             workflowTool.getInfoFor(self.portal.page, 'review_state'),
             'published')
+
+
+class ContextInfoTest(BaseTest):
+
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def testStateChange(self):
+        from plone.app.content.browser.folder import ContextInfo
+        view = ContextInfo(self.portal.page, self.request)
+        result = json.loads(view())
+        self.assertEquals(result['object']['Title'], 'page')
+        self.assertEquals(len(result['object']['breadcrumbs']), 2)

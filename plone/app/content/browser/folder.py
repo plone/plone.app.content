@@ -24,6 +24,7 @@ import json
 from plone.dexterity.interfaces import IDexterityContent
 from .interfaces import IFolderContentsView
 from zope.interface import implements
+from plone.uuid.interfaces import IUUID
 
 try:
     from plone.app.widgets.browser.file import TUS_ENABLED
@@ -483,6 +484,12 @@ class SetDefaultPage(FolderContentsActionView):
 
 class ContextInfo(BrowserView):
 
+    attributes = ['UID', 'Title', 'Type', 'path', 'review_state',
+                  'ModificationDate', 'EffectiveDate', 'CreationDate',
+                  'is_folderish', 'Subject', 'getURL', 'id',
+                  'exclude_from_nav', 'getObjSize', 'last_comment_date',
+                  'total_comments']
+
     def __call__(self):
         factories_menu = getUtility(
             IBrowserMenu, name='plone_contentmenu_factory',
@@ -499,10 +506,33 @@ class ContextInfo(BrowserView):
             })
             context = utils.parent(context)
 
+        catalog = getToolByName(self.context, 'portal_catalog')
+        try:
+            brains = catalog(UID=IUUID(self.context))
+        except TypeError:
+            brains = []
+        item = None
+        if len(brains) > 0:
+            obj = brains[0]
+            # context here should be site root
+            base_path = '/'.join(context.getPhysicalPath())
+            item = {}
+            for attr in self.attributes:
+                key = attr
+                if key == 'path':
+                    attr = 'getPath'
+                val = getattr(obj, attr, None)
+                if callable(val):
+                    val = val()
+                if key == 'path':
+                    val = val[len(base_path):]
+                item[key] = val
+
         return json.dumps({
             'addButtons': factories_menu,
             'defaultPage': self.context.getDefaultPage(),
-            'breadcrumbs': [c for c in reversed(crumbs)]
+            'breadcrumbs': [c for c in reversed(crumbs)],
+            'object': item
         })
 
 
