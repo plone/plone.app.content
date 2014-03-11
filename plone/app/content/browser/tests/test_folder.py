@@ -16,6 +16,8 @@ import json
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from plone.dexterity.fti import DexterityFTI
+from zope.annotation.interfaces import IAttributeAnnotatable
+from zope.interface import alsoProvides
 
 
 class BaseTest(unittest.TestCase):
@@ -39,6 +41,7 @@ class BaseTest(unittest.TestCase):
             }
         )
         self.request.REQUEST_METHOD = 'POST'
+        alsoProvides(self.request, IAttributeAnnotatable)
         self.userList = json.dumps([{
             'id': 'one'
         }, {
@@ -187,4 +190,4 @@ class ContextInfoTest(BaseTest):
         view = ContextInfo(self.portal.page, self.request)
         result = json.loads(view())
         self.assertEquals(result['object']['Title'], 'page')
-        self.assertEquals(len(result['object']['breadcrumbs']), 2)
+        self.assertTrue(len(result['breadcrumbs']) > 0)
