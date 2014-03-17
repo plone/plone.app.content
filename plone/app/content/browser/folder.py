@@ -53,6 +53,20 @@ class FolderContentsView(BrowserView):
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
+            'availableColumns': {
+                'Title': 'Title',
+                'ModificationDate': 'Last modified',
+                'EffectiveDate': 'Published',
+                'CreationDate': 'Created',
+                'review_state': 'Review state',
+                'Subject': 'Tags',
+                'Type': 'Type',
+                'is_folderish': 'Folder',
+                'exclude_from_nav': 'Excluded from nav',
+                'getObjSize': 'Object Size',
+                'last_comment_date': 'Last comment date',
+                'total_comments': 'Total comments',
+            },
             'buttonGroups': {
                 'primary': [{
                     'title': 'Cut',
