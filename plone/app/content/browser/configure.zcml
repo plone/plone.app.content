@@ -62,5 +62,33 @@
         name="plone.app.content.ValidAddableTypes"
         />
 
+    <!-- Required for cmf.ModifyViewTemplate -->
+    <include package="Products.CMFDynamicViewFTI" />
+
+    <!-- Select default view -->
+    <browser:page
+        for="*"
+        name="select_default_view"
+        class=".selection.DefaultViewSelectionView"
+        template="templates/select_default_view.pt"
+        permission="cmf.ModifyViewTemplate"
+        />
+
+    <browser:page
+        for="*"
+        name="selectViewTemplate"
+        class=".selection.DefaultViewSelectionView"
+        attribute="selectViewTemplate"
+        permission="cmf.ModifyViewTemplate"
+        />
+
+    <!-- Select default page view -->
+    <browser:page
+        for="*"
+        name="select_default_page"
+        class=".selection.DefaultPageSelectionView"
+        template="templates/select_default_page.pt"
+        permission="cmf.ModifyViewTemplate"
+        />
 
 </configure>

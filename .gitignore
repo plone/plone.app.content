@@ -20,3 +20,4 @@
 /.coverage
 coverage.xml
 zptlint.log
+.DS_Store
