@@ -4,8 +4,12 @@ Changelog
 2.2.1 (unreleased)
 ------------------
 
--  PLIP 13260 add browser views for ``select_default_page`` and
+-  PLIP 13260: add browser views for ``select_default_page`` and
    ``select_default_view``.
+   [saily]
+
+-  PLIP 13260: convert ``delete_confirmation`` and ``folder_rename`` into
+   z3c.forms.
    [saily]
 
 

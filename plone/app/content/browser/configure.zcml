@@ -91,4 +91,19 @@
         permission="cmf.ModifyViewTemplate"
         />
 
+    <!-- Actions -->
+    <browser:page
+        for="*"
+        name="delete_confirmation"
+        class=".actions.DeleteConfirmationForm"
+        permission="zope2.DeleteObjects"
+        />
+
+    <browser:page
+        for="*"
+        name="folder_rename"
+        class=".actions.RenameForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
 </configure>
