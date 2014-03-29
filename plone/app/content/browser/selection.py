@@ -19,11 +19,20 @@ class DefaultViewSelectionView(BrowserView):
         if not self.context_state.is_default_page():
             return self.context.getLayout()
         else:
-            return ""
+            return ''
+
+    def selectViewTemplate(self):
+        templateId = self.request.get('templateId')
+
+        if self.isValidTemplate(templateId):
+            self.context.setLayout(templateId)
+
+        self.request.response.redirect(self.context.absolute_url() + '/view')
 
     @property
     def action_url(self):
-        return "%s/select_default_view" % self.context_state.object_url()
+        return '{0:s}/select_default_view'.format(
+            self.context_state.object_url())
 
     def __call__(self):
 

@@ -74,6 +74,14 @@
         permission="cmf.ModifyViewTemplate"
         />
 
+    <browser:page
+        for="*"
+        name="selectViewTemplate"
+        class=".selection.DefaultViewSelectionView"
+        attribute="selectViewTemplate"
+        permission="cmf.ModifyViewTemplate"
+        />
+
     <!-- Select default page view -->
     <browser:page
         for="*"
