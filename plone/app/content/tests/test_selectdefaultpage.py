@@ -1,10 +1,11 @@
-import transaction
-import unittest
-from plone.testing.z2 import Browser
+# -*- coding: utf-8 -*-
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
-from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import setRoles
+from plone.testing.z2 import Browser
+import transaction
+import unittest
 
 
 FOLDER = {'id': 'testfolder',
