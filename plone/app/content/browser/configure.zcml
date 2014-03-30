@@ -106,4 +106,14 @@
         permission="cmf.ModifyPortalContent"
         />
 
+    <browser:page
+        for="*"
+        name="object_rename"
+        class=".actions.RenameForm"
+        permission="cmf.ModifyPortalContent"
+        />
+
+    <adapter factory=".actions.default_new_id" name="default" />
+    <adapter factory=".actions.default_new_title" name="default" />
+
 </configure>

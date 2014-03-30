@@ -8,8 +8,8 @@ Changelog
    ``select_default_view``.
    [saily]
 
--  PLIP 13260: convert ``delete_confirmation`` and ``folder_rename`` into
-   z3c.forms.
+-  PLIP 13260: convert ``delete_confirmation``, ``folder_rename`` and
+   ``object_rename`` into z3c.forms.
    [saily]
 
 
