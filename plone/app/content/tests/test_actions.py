@@ -3,6 +3,7 @@ from zope.interface import alsoProvides
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
@@ -64,12 +65,17 @@ class ActionsDXTestCase(unittest.TestCase):
         form = folder.restrictedTraverse('delete_confirmation')
         self.assertTrue(form.is_locked)
 
+        logout()
+        login(self.portal, TEST_USER_NAME)
+
+        ILockable(folder).unlock()
+
     def test_delete_confirmation_cancel(self):
         folder = self.portal['f1']
 
         self.browser.open(folder.absolute_url() + '/delete_confirmation')
         self.browser.getControl(name='form.buttons.cancel').click()
-        self.assertEqual(self.browser.url, self.context.absolute_url())
+        self.assertEqual(self.browser.url, folder.absolute_url())
 
 
 class ActionsATTestCase(ActionsDXTestCase):
