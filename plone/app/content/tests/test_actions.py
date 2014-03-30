@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from zope.interface import alsoProvides
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
@@ -10,6 +9,8 @@ from plone.app.testing import setRoles
 from plone.testing.z2 import Browser
 from plone.locking.interfaces import ILockable
 from z3c.form.interfaces import IFormLayer
+from zope.component import getMultiAdapter
+from zope.interface import alsoProvides
 
 import transaction
 import unittest
@@ -52,23 +53,35 @@ class ActionsDXTestCase(unittest.TestCase):
 
     def test_delete_confirmation_if_locked(self):
         folder = self.portal['f1']
-        ILockable(folder).lock()
+        lockable = ILockable.providedBy(folder)
 
-        form = folder.restrictedTraverse('delete_confirmation')
+        form = getMultiAdapter(
+            (folder, self.request), name='delete_confirmation')
+
+        self.assertFalse(form.is_locked)
+
+        if lockable:
+            lockable.lock()
+
+        form = getMultiAdapter(
+            (folder, self.request), name='delete_confirmation')
         self.assertFalse(form.is_locked)
 
         # After switching the user it should not be possible to delete the
-        # object.
-        logout()
-        login(self.portal, 'editor')
+        # object. Of course this is only possible if our context provides
+        # ILockable interface.
+        if lockable:
+            logout()
+            login(self.portal, 'editor')
 
-        form = folder.restrictedTraverse('delete_confirmation')
-        self.assertTrue(form.is_locked)
+            form = getMultiAdapter(
+                (folder, self.request), name='delete_confirmation')
+            self.assertTrue(form.is_locked)
 
-        logout()
-        login(self.portal, TEST_USER_NAME)
+            logout()
+            login(self.portal, TEST_USER_NAME)
 
-        ILockable(folder).unlock()
+            ILockable(folder).unlock()
 
     def test_delete_confirmation_cancel(self):
         folder = self.portal['f1']

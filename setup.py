@@ -26,6 +26,7 @@ setup(name='plone.app.content',
       extras_require=dict(
           test=[
               'plone.app.testing',
+              'plone.app.contenttypes',
               'Products.PloneTestCase',
           ]
       ),

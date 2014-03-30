@@ -1,5 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import IntegrationTesting
@@ -103,10 +104,10 @@ PLONE_APP_CONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
 
 PLONE_APP_CONTENT_DX_FIXTURE = PloneAppContentDX()
 PLONE_APP_CONTENT_DX_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(PLONE_APP_CONTENT_DX_FIXTURE,),
+    bases=(PLONE_APP_CONTENT_DX_FIXTURE, PLONE_APP_CONTENTTYPES_FIXTURE),
     name="PloneAppContentDX:Integration")
 PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONE_APP_CONTENT_DX_FIXTURE,),
+    bases=(PLONE_APP_CONTENT_DX_FIXTURE, ),
     name="PloneAppContentDX:Functional")
 
 PLONE_APP_CONTENT_AT_FIXTURE = PloneAppContentAT()
@@ -114,5 +115,5 @@ PLONE_APP_CONTENT_AT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_AT_FIXTURE,),
     name="PloneAppContentAT:Integration")
 PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONE_APP_CONTENT_AT_FIXTURE,),
+    bases=(PLONE_APP_CONTENT_DX_FIXTURE, PLONE_APP_CONTENTTYPES_FIXTURE),
     name="PloneAppContentAT:Functional")
