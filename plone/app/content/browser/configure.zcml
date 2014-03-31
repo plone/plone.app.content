@@ -116,4 +116,25 @@
     <adapter factory=".actions.default_new_id" name="default" />
     <adapter factory=".actions.default_new_title" name="default" />
 
+    <browser:page
+        for="*"
+        name="object_cut"
+        class=".actions.ObjectCutView"
+        permission="zope2.DeleteObjects"
+        />
+
+    <browser:page
+        for="*"
+        name="object_copy"
+        class=".actions.ObjectCopyView"
+        permission="zope2.CopyOrMove"
+        />
+
+    <browser:page
+        for="*"
+        name="object_paste"
+        class=".actions.ObjectPasteView"
+        permission="cmf.AddPortalContent"
+        />
+
 </configure>

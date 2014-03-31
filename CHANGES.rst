@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.1 (unreleased)
+2.3.0 (unreleased)
 ------------------
 
 -  PLIP 13260: add browser views for ``select_default_page`` and
@@ -11,6 +11,9 @@ Changelog
 -  PLIP 13260: convert ``delete_confirmation``, ``folder_rename`` and
    ``object_rename`` into z3c.forms.
    [saily]
+
+- PLIP 13260: Migration cut, copy and paste into browser views.
+  [saily]
 
 
 2.2.0 (2014-03-01)
