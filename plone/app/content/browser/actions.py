@@ -115,8 +115,7 @@ class RenameForm(ProtectedBaseForm):
                     u'Each item has a Short Name and a Title, which you can ' +
                     u'change by entering the new details below.')
 
-    @button.buttonAndHandler(_(u'Rename'),
-                             name='rename')
+    @button.buttonAndHandler(_(u'Rename'), name='rename')
     def handle_rename(self, action):
         data, errors = self.extractData()
         if errors:
@@ -128,14 +127,21 @@ class RenameForm(ProtectedBaseForm):
             raise Unauthorized(_(u'Permission denied to rename ${title}.',
                                  mapping={u'title': self.context.title}))
 
+        oldid = self.context.getId()
+        newid = data['new_id']
+
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
         # Requires zope2.CopyOrMove permission
-        parent.manage_renameObjects([self.context.getId(), ],
-                                    [str(data['new_id']), ])
+        parent.manage_renameObjects([oldid, ], [str(newid), ])
 
         transaction.savepoint(optimistic=True)
         notify(ObjectModifiedEvent(self.context))
+
+        IStatusMessage(self.request).add(
+            _(u"Renamed '${oldid}' to '${newid}'.", mapping={
+                u'oldid': oldid, u'newid': newid}))
+
         self.request.response.redirect(self.context.absolute_url())
 
     @button.buttonAndHandler(_(u'label_cancel', default=u'Cancel'),
