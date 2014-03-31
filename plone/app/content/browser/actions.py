@@ -60,7 +60,7 @@ class DeleteConfirmationForm(ProtectedBaseForm):
         })
         return len(results)
 
-    @button.buttonAndHandler(_(u'Delete'), name='delete')
+    @button.buttonAndHandler(_(u'Delete'), name='Delete')
     def handle_delete(self, action):
         title = self.context.Title()
         parent = aq_parent(aq_inner(self.context))
@@ -71,7 +71,7 @@ class DeleteConfirmationForm(ProtectedBaseForm):
         self.request.response.redirect(parent.absolute_url())
 
     @button.buttonAndHandler(
-        _(u'label_cancel', default=u'Cancel'), name='cancel')
+        _(u'label_cancel', default=u'Cancel'), name='Cancel')
     def handle_cancel(self, action):
         self.request.response.redirect(self.context.absolute_url())
 
@@ -115,7 +115,7 @@ class RenameForm(ProtectedBaseForm):
                     u'Each item has a Short Name and a Title, which you can ' +
                     u'change by entering the new details below.')
 
-    @button.buttonAndHandler(_(u'Rename'), name='rename')
+    @button.buttonAndHandler(_(u'Rename'), name='Rename')
     def handle_rename(self, action):
         data, errors = self.extractData()
         if errors:
@@ -145,6 +145,6 @@ class RenameForm(ProtectedBaseForm):
         self.request.response.redirect(self.context.absolute_url())
 
     @button.buttonAndHandler(_(u'label_cancel', default=u'Cancel'),
-                             name='cancel')
+                             name='Cancel')
     def handle_cancel(self, action):
         self.request.response.redirect(self.context.absolute_url())

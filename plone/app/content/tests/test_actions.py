@@ -52,7 +52,7 @@ class ActionsDXTestCase(unittest.TestCase):
             (folder, self.request), name='delete_confirmation')
         form.update()
 
-        cancel = form.buttons['cancel']
+        cancel = form.buttons['Cancel']
         form.handlers.getHandler(cancel)(form, form)
 
         self.assertFalse(form.is_locked)
@@ -97,7 +97,7 @@ class ActionsDXTestCase(unittest.TestCase):
         folder = self.portal['f1']
 
         self.browser.open(folder.absolute_url() + '/delete_confirmation')
-        self.browser.getControl(name='form.buttons.cancel').click()
+        self.browser.getControl(name='form.buttons.Cancel').click()
         self.assertEqual(self.browser.url, folder.absolute_url())
 
     def test_rename_form(self):
@@ -108,7 +108,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser.open(folder.absolute_url() + '/folder_rename')
         self.browser.getControl(name='form.widgets.new_id').value = 'f2'
         self.browser.getControl(name='form.widgets.new_title').value = 'F2'
-        self.browser.getControl(name='form.buttons.rename').click()
+        self.browser.getControl(name='form.buttons.Rename').click()
         self.assertEqual(folder.getId(), 'f2')
         self.assertEqual(folder.Title(), 'F2')
         self.assertEqual(self.browser.url, folder.absolute_url())
@@ -124,7 +124,7 @@ class ActionsDXTestCase(unittest.TestCase):
         _title = folder.Title()
 
         self.browser.open(folder.absolute_url() + '/folder_rename')
-        self.browser.getControl(name='form.buttons.cancel').click()
+        self.browser.getControl(name='form.buttons.Cancel').click()
         transaction.commit()
 
         self.assertEqual(self.browser.url, folder.absolute_url())
