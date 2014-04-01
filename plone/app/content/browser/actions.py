@@ -9,7 +9,6 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
 from ZODB.POSException import ConflictError
-# from plone.protect.postonly import check as checkpost
 from zExceptions import Unauthorized
 from z3c.form import button
 from z3c.form import field
@@ -188,7 +187,6 @@ class ObjectCutView(LockingBase):
         if not authenticator.verify():
             raise Unauthorized
 
-        # checkpost(self.request)
         return self.do_action()
 
 
@@ -205,6 +203,17 @@ class ObjectCopyView(ObjectCutView):
         return self.do_redirect(self.canonical_object_url,
                                 _(u'${title} copied.',
                                     mapping={'title': self.title}))
+
+
+class ObjectDeleteView(ObjectCutView):
+
+    def do_action(self):
+        form = DeleteConfirmationForm(self.context, self.request)
+        form.update()
+
+        button = form.buttons['Delete']
+        # delete by clicking the form button in delete_confirmation
+        form.handlers.getHandler(button)(form, button)
 
 
 class ObjectPasteView(ObjectCutView):

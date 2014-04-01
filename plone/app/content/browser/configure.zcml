@@ -137,4 +137,11 @@
         permission="cmf.AddPortalContent"
         />
 
+    <browser:page
+        for="*"
+        name="object_delete"
+        class=".actions.ObjectDeleteView"
+        permission="zope2.DeleteObjects"
+        />
+
 </configure>

@@ -8,6 +8,7 @@ from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.testing.z2 import Browser
 from plone.locking.interfaces import ILockable
+from zExceptions import Unauthorized
 from z3c.form.interfaces import IFormLayer
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
@@ -130,6 +131,127 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertEqual(self.browser.url, folder.absolute_url())
         self.assertEqual(folder.getId(), _id)
         self.assertEqual(folder.Title(), _title)
+
+    def _get_token(self, context):
+        authenticator = getMultiAdapter(
+            (context, self.request), name='authenticator')
+
+        return authenticator.token()
+
+    def test_object_cut_view(self):
+        folder = self.portal['f1']
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_cut'.format(folder.absolute_url())
+        )
+
+        # We need to have Copy or Move permission to cut an object
+        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(folder)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn(
+            '{0:s} cut.'.format(folder.Title()), self.browser.contents)
+
+    def test_object_copy_view(self):
+        folder = self.portal['f1']
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_copy'.format(folder.absolute_url())
+        )
+
+        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(folder)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn(
+            '{0:s} copied.'.format(folder.Title()), self.browser.contents)
+
+    def test_object_cut_and_paste(self):
+        folder = self.portal['f1']
+        self.portal.invokeFactory(type_name='Document', id='d1', title='A Doc')
+        doc = self.portal['d1']
+        transaction.commit()
+
+        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+            doc.absolute_url(), self._get_token(doc)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn('d1', self.portal.objectIds())
+        self.assertIn('f1', self.portal.objectIds())
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_paste'.format(folder.absolute_url())
+        )
+
+        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(doc)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        transaction.commit()
+
+        self.assertNotIn('d1', self.portal.objectIds())
+        self.assertIn('d1', folder.objectIds())
+        self.assertIn('Item(s) pasted.', self.browser.contents)
+
+    def test_object_copy_and_paste(self):
+        folder = self.portal['f1']
+        folder.invokeFactory(type_name='Document', id='d1', title='A Doc')
+        doc = folder['d1']
+        transaction.commit()
+
+        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+            doc.absolute_url(), self._get_token(doc)))
+
+        self.assertIn('__cp', self.browser.cookies)
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_paste'.format(folder.absolute_url())
+        )
+
+        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(folder)))
+        transaction.commit()
+
+        self.assertIn('f1', self.portal.objectIds())
+        self.assertIn('d1', folder.objectIds())
+        self.assertIn('copy_of_d1', folder.objectIds())
+        self.assertIn('Item(s) pasted.', self.browser.contents)
+
+    def test_object_copy_and_paste_multiple_times(self):
+        folder = self.portal['f1']
+        folder.invokeFactory(type_name='Document', id='d1', title='A Doc')
+        doc = folder['d1']
+        transaction.commit()
+
+        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+            doc.absolute_url(), self._get_token(doc)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(folder)))
+        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+            folder.absolute_url(), self._get_token(folder)))
+
+        # Cookie should persist, because you can paste the item multiple times
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn('f1', self.portal.objectIds())
+        self.assertIn('d1', folder.objectIds())
+        self.assertIn('copy_of_d1', folder.objectIds())
+        self.assertIn('copy2_of_d1', folder.objectIds())
+        self.assertIn('Item(s) pasted.', self.browser.contents)
 
 
 class ActionsATTestCase(ActionsDXTestCase):
