@@ -155,11 +155,14 @@ class ObjectCutView(LockingBase):
             (self.context, self.request), name='plone_context_state')
         return context_state.canonical_object_url()
 
-    def do_redirect(self, url, message=None, message_type='info'):
+    def do_redirect(self, url, message=None, message_type='info',
+                    raise_exception=None):
         if message is not None:
             IStatusMessage(self.request).add(message, type=message_type)
 
-        return self.request.response.redirect(url)
+        if raise_exception is None:
+            return self.request.response.redirect(url)
+        raise raise_exception
 
     def do_action(self):
         if self.is_locked:
@@ -195,7 +198,7 @@ class ObjectCopyView(ObjectCutView):
     def do_action(self):
         try:
             self.parent.manage_copyObjects(self.context.getId(), self.request)
-        except CopyError:
+        except CopyError, e:
             return self.do_redirect(self.canonical_object_url,
                                     _(u'${title} is not copyable.',
                                         mapping={'title': self.title}))
@@ -229,24 +232,26 @@ class ObjectPasteView(ObjectCutView):
             self.context.manage_pasteObjects(self.request['__cp'])
         except ConflictError:
             raise
-        except Unauthorized:
-            return self.do_redirect(
+        except Unauthorized, e:
+            self.do_redirect(
                 self.canonical_object_url,
-                _(u'You are not authorized to paste here.')
+                _(u'You are not authorized to paste here.'),
+                e
             )
         except CopyError as e:
             error_string = str(e)
             if 'Item Not Found' in error_string:
-                return self.do_redirect(
+                self.do_redirect(
                     self.canonical_object_url,
                     _(u'The item you are trying to paste could not be found. '
                       u'It may have been moved or deleted after you copied or '
                       u'cut it.'),
-                    'error'
+                    'error',
+                    e
                 )
         except Exception as e:
             if '__cp' in self.request:
-                return self.do_redirect(self.canonical_object_url, e, 'error')
+                self.do_redirect(self.canonical_object_url, e, 'error', e)
 
         return self.do_redirect(self.canonical_object_url,
                                 _(u'Item(s) pasted.'))
