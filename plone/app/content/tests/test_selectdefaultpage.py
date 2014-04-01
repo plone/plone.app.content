@@ -77,7 +77,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         folder = self.portal.testfolder
 
         self.browser.open('%s/@@select_default_page' % folder.absolute_url())
-        cancel_button = self.browser.getControl(name='form.button.Cancel')
+        cancel_button = self.browser.getControl(name='form.buttons.Cancel')
         cancel_button.click()
 
         self.assertEqual(self.browser.url, folder.absolute_url())
@@ -88,7 +88,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         folder = self.portal.testfolder
         self.browser.open('%s/@@select_default_page' % folder.absolute_url())
 
-        submit_button = self.browser.getControl(name='form.button.Save')
+        submit_button = self.browser.getControl(name='form.buttons.Save')
         submit_button.click()
 
         self.assertEqual(self.browser.url, folder.absolute_url())
