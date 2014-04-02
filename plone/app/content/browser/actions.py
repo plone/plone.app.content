@@ -241,13 +241,12 @@ class ObjectPasteView(ObjectCutView):
         except CopyError as e:
             error_string = str(e)
             if 'Item Not Found' in error_string:
-                self.do_redirect(
+                return self.do_redirect(
                     self.canonical_object_url,
                     _(u'The item you are trying to paste could not be found. '
                       u'It may have been moved or deleted after you copied or '
                       u'cut it.'),
                     'error',
-                    e
                 )
         except Exception as e:
             if '__cp' in self.request:
