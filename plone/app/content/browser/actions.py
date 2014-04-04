@@ -53,7 +53,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     def handle_delete(self, action):
         title = self.context.Title()
         parent = aq_parent(aq_inner(self.context))
-        parent.manage_delObjects(ids=self.context.getId())
+        parent.manage_delObjects(self.context.getId(), self.request)
         IStatusMessage(self.request).add(
             _(u'${title} has been deleted.', mapping={u'title': title}))
 
@@ -122,7 +122,7 @@ class RenameForm(form.Form):
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
         # Requires zope2.CopyOrMove permission
-        parent.manage_renameObjects([oldid, ], [str(newid), ])
+        parent.manage_renameObjects([oldid, ], [str(newid), ], self.request)
 
         transaction.savepoint(optimistic=True)
         notify(ObjectModifiedEvent(self.context))
@@ -198,7 +198,7 @@ class ObjectCopyView(ObjectCutView):
     def do_action(self):
         try:
             self.parent.manage_copyObjects(self.context.getId(), self.request)
-        except CopyError, e:
+        except CopyError:
             return self.do_redirect(self.canonical_object_url,
                                     _(u'${title} is not copyable.',
                                         mapping={'title': self.title}))

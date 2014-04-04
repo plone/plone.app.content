@@ -16,6 +16,10 @@ Changelog
   tests for that.
   [saily]
 
+- Pass ``REQUEST`` into ``manage_delObjects`` method to support
+  ``plone.app.linintegrity`` checks.
+  [saily]
+
 
 2.2.0 (2014-03-01)
 ------------------
