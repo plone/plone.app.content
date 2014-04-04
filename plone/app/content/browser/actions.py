@@ -122,7 +122,7 @@ class RenameForm(form.Form):
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
         # Requires zope2.CopyOrMove permission
-        parent.manage_renameObjects([oldid, ], [str(newid), ], self.request)
+        parent.manage_renameObjects([oldid, ], [str(newid), ])
 
         transaction.savepoint(optimistic=True)
         notify(ObjectModifiedEvent(self.context))
