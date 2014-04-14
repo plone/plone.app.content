@@ -1,10 +1,13 @@
 Changelog
 =========
 
-2.2.1 (unreleased)
+3.0.0 (2014-04-13)
 ------------------
 
--  PLIP 13260 add browser views for ``select_default_page`` and
+- Bump Plone 5 branch to 3.0
+  [esteele]
+
+- PLIP 13260 add browser views for ``select_default_page`` and
    ``select_default_view``.
    [saily]
 
