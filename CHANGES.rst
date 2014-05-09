@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.0 (unreleased)
+3.0.1 (unreleased)
 ------------------
 
 - PLIP 13260: add browser views for ``select_default_page`` and
@@ -19,6 +19,17 @@ Changelog
 - Pass ``REQUEST`` into ``manage_delObjects`` method to support
   ``plone.app.linintegrity`` checks.
   [saily]
+
+
+3.0.0 (2014-04-13)
+------------------
+
+- Bump Plone 5 branch to 3.0
+  [esteele]
+
+- PLIP 13260 add browser views for ``select_default_page`` and
+   ``select_default_view``.
+   [saily]
 
 
 2.2.0 (2014-03-01)
