@@ -109,7 +109,7 @@ class FolderContentsView(BrowserView):
             'upload': {
                 'relativePath': 'fileUpload',
                 'baseUrl': base_url,
-                'initialFolder': IUUID(self.context),
+                'initialFolder': IUUID(self.context, None),
                 'useTus': TUS_ENABLED
             }
         }
