@@ -4,7 +4,21 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- PLIP 13260: add browser views for ``select_default_page`` and
+  ``select_default_view``.
+  [saily]
+
+- PLIP 13260: convert ``delete_confirmation``, ``folder_rename`` and
+  ``object_rename`` into z3c.forms.
+  [saily]
+
+- PLIP 13260: Migration cut, copy and paste into browser views and add
+  tests for that.
+  [saily]
+
+- Pass ``REQUEST`` into ``manage_delObjects`` method to support
+  ``plone.app.linkintegrity`` checks.
+  [saily]
 
 
 3.0.0 (2014-04-13)

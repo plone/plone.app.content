@@ -65,13 +65,13 @@
               <div class="formControls">
                 <input class="context"
                        type="submit"
-                       name="form.button.Save"
+                       name="form.buttons.Save"
                        value="Save"
                        i18n:attributes="value label_save;"
                        />
                 <input class="context"
                        type="submit"
-                       name="form.button.Cancel"
+                       name="form.buttons.Cancel"
                        value="Cancel"
                        i18n:attributes="value label_cancel;"
                        />

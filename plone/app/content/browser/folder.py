@@ -258,7 +258,7 @@ class DeleteAction(FolderContentsActionView):
                                  mapping={u'title': title}))
             return
         else:
-            parent.manage_delObjects(obj.getId())
+            parent.manage_delObjects(obj.getId(), self.request)
 
 
 class RenameAction(FolderContentsActionView):

@@ -51,7 +51,7 @@ class DefaultViewSelectionView(BrowserView):
                 plone_utils.addPortalMessage(u'Invalid view.', type="error")
                 return self.index()
 
-        if templateId or self.request.form.get('form.button.Cancel', False):
+        if templateId or self.request.form.get('form.buttons.Cancel', False):
             # Redirect to view
             self.request.response.redirect(
                 '%s/view' % self.context_state.object_url())
@@ -62,7 +62,7 @@ class DefaultViewSelectionView(BrowserView):
 class DefaultPageSelectionView(BrowserView):
 
     def __call__(self):
-        if 'form.button.Save' in self.request.form:
+        if 'form.buttons.Save' in self.request.form:
             if not 'objectId' in self.request.form:
                 message = _(u'Please select an item to use.')
                 msgtype = 'error'
@@ -80,7 +80,7 @@ class DefaultPageSelectionView(BrowserView):
                     msgtype = 'info'
                     self.request.response.redirect(self.context.absolute_url())
             IStatusMessage(self.request).add(message, msgtype)
-        elif 'form.button.Cancel' in self.request.form:
+        elif 'form.buttons.Cancel' in self.request.form:
             self.request.response.redirect(self.context.absolute_url())
 
         return self.index()

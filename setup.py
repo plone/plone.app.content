@@ -5,8 +5,10 @@ version = '3.0.1.dev0'
 setup(name='plone.app.content',
       version=version,
       description="Content Views for Plone",
-      long_description=open("README.txt").read() + "\n" +
-      open("CHANGES.txt").read(),
+      long_description='\n\n'.join([
+          open("README.rst").read(),
+          open("CHANGES.rst").read(),
+      ]),
       classifiers=[
           "Framework :: Plone",
           "License :: OSI Approved :: GNU General Public License (GPL)",
@@ -24,6 +26,7 @@ setup(name='plone.app.content',
       extras_require=dict(
           test=[
               'plone.app.testing',
+              'plone.app.contenttypes',
               'Products.PloneTestCase',
           ]
       ),
