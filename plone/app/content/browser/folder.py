@@ -48,7 +48,6 @@ class FolderContentsView(BrowserView):
                 base_vocabulary),
             'usersVocabularyUrl': '%splone.app.vocabularies.Users' % (
                 base_vocabulary),
-            'uploadUrl': '%s{path}/fileUpload' % base_url,
             'moveUrl': '%s{path}/fc-itemOrder' % base_url,
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
@@ -107,7 +106,12 @@ class FolderContentsView(BrowserView):
                 'url': '%s{path}/@@fc-rearrange' % base_url
             },
             'basePath': '/' + '/'.join(context_path[len(site_path):]),
-            'useTus': TUS_ENABLED
+            'upload': {
+                'relativePath': 'fileUpload',
+                'baseUrl': base_url,
+                'initialFolder': IUUID(self.context, None),
+                'useTus': TUS_ENABLED
+            }
         }
         self.options = json.dumps(options)
         return super(FolderContentsView, self).__call__()
