@@ -24,12 +24,15 @@
   <body>
 
     <tal:comment tal:condition="nothing">
-      NOTE: This form is used in two different ways - from folder_contents,
-      allowing you to publish several things at once, and from the state
-      drop-down. In the first case, the 'paths' request parameter is set;
-      in the second case, giving the relative paths to the content object
-      to manipulate; in the second case, this parameter is omitted and the
-      path of the context is used.
+      <div class="portalMessage info">
+        <strong>Note</strong> 
+        <span>This form is used in two different ways - from folder_contents,
+        allowing you to publish several things at once, and from the state
+        drop-down. In the first case, the 'paths' request parameter is set;
+        in the second case, giving the relative paths to the content object
+        to manipulate; in the second case, this parameter is omitted and the
+        path of the context is used.</span>
+      </div>
     </tal:comment>
 
       <metal:main fill-slot="main"
