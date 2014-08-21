@@ -4,6 +4,10 @@ Changelog
 2.1.5 (unreleased)
 ------------------
 
+- Always show inactive content in the folder_contents view.
+  This is part of a fix for https://dev.plone.org/ticket/8353.
+  [pbauer]
+
 - Allow modifying the pagesize by adding a request-string e.g. "?pagesize=100".
   [pbauer]
 
