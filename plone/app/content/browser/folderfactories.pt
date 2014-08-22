@@ -37,7 +37,7 @@
 
         <metal:addlist define-macro="addlist">
 
-            <form name="quickAdd" method="post" 
+            <form name="quickAdd" method="post"
                 tal:attributes="action string:${context/absolute_url}/@@folder_factories">
 
                 <dl>

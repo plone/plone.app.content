@@ -3,7 +3,7 @@ Normalizing name chooser
 ========================
 
 plone.app.content provides a namechooser for IFolderish objects that can
-pick a normalized name based on the object's id, title, portal type or class, 
+pick a normalized name based on the object's id, title, portal type or class,
 and can provide uniqueness.
 
 Let's create some dummy content.
@@ -11,7 +11,7 @@ Let's create some dummy content.
     >>> from plone.app.content import container, item
     >>> from zope.interface import implements, Interface, alsoProvides
     >>> from zope import schema
-    
+
     >>> class IMyContainer(Interface):
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
@@ -25,7 +25,7 @@ Let's create some dummy content.
     >>> class IMyType(Interface):
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
-    
+
     >>> class MyType(item.Item):
     ...     implements(IMyType)
     ...     portal_type = "My portal type"
@@ -63,7 +63,7 @@ an object, if it has one.
     >>> item = MyType("my-item")
     >>> item.id
     'my-item'
-    
+
     >>> name = chooser.chooseName(None, item)
     >>> name
     'my-item'
@@ -128,7 +128,7 @@ back on the class name.
     >>> delattr(item, 'id')
     >>> chooser.chooseName(None, item)
     'my-portal-type'
-    
+
     >>> delattr(MyType, 'portal_type')
     >>> chooser.chooseName(None, item)
     'mytype'
@@ -140,7 +140,7 @@ An object can also gain a name based on its title. To do so, the object
 must implement or be adaptable to INameFromTitle.
 
     >>> from plone.app.content.interfaces import INameFromTitle
-    
+
     >>> class TitleAdapter(object):
     ...     implements(INameFromTitle)
     ...     adapts(IMyType)
@@ -150,7 +150,7 @@ must implement or be adaptable to INameFromTitle.
     ...     def title(self):
     ...         return self.context.title
     >>> provideAdapter(TitleAdapter)
-    
+
 
     >>> item = MyType("some-id")
     >>> item.title = u"My funky item"

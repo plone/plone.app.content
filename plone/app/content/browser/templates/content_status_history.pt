@@ -65,7 +65,7 @@
                 tal:attributes="action string:${context/@@plone_context_state/object_url}/${view/__name__}"
                 tal:condition="not:python:paths and not batch">
 
-              <div class="field" tal:condition="batch" 
+              <div class="field" tal:condition="batch"
                    tal:define="error errors/paths | nothing;"
                    tal:attributes="class python:error and 'field error' or 'field'">
                 <label i18n:translate="label_affected_content">Affected content</label>
@@ -266,7 +266,7 @@
                     </div>
                   </div>
                 </div>
-              </div> 
+              </div>
 
               <div class="field">
                 <label for="comment"

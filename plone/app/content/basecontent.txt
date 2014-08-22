@@ -8,7 +8,7 @@ some simple examples of using them.
     >>> from plone.app.content import container, item
 
 Let us define two fictional types, a folderish one and a non-folderish one.
-We should define factories for these types as well. Factories can be 
+We should define factories for these types as well. Factories can be
 referenced from CMF FTI's, and also from <browser:addMenuItem /> directives.
 With an appropriate add view (e.g. using formlib's AddForm) this will be
 available from Plone's "add item" menu. Factories are registered as named
@@ -39,7 +39,7 @@ Then, an item:
     >>> class IMyType(Interface):
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
-    
+
     >>> class MyType(item.Item):
     ...     implements(IMyType)
     ...     portal_type = "My type"
@@ -54,21 +54,21 @@ We can now create the items.
     >>> container.id
     'my-container'
     >>> container.title = "A sample container"
-    
+
 We need to add it to an object manager for acquisition to do its magic.
 
     >>> newid = self.portal._setObject(container.id, container)
     >>> container = getattr(self.portal, newid)
-    
+
 We will add the item directly to the container later.
-    
+
     >>> item = itemFactory("my-item")
     >>> item.id
     'my-item'
     >>> item.title = "A non-folderish item"
-    
+
 Note that both the container type and the item type are contentish. This is
-important, because CMF provides event handlers that automatically index 
+important, because CMF provides event handlers that automatically index
 objects that are IContentish.
 
     >>> from Products.CMFCore.interfaces import IContentish
@@ -76,9 +76,9 @@ objects that are IContentish.
     True
     >>> IContentish.providedBy(item)
     True
-    
+
 Only the container is folderish, though:
-    
+
     >>> from Products.CMFCore.interfaces import IFolderish
     >>> bool(container.isPrincipiaFolderish)
     True
@@ -88,7 +88,7 @@ Only the container is folderish, though:
     False
     >>> IFolderish.providedBy(item)
     False
-    
+
 We can use the more natural Zope3-style container API, or the traditional
 ObjectManager one.
 
@@ -104,7 +104,7 @@ ObjectManager one.
     'my-item'
     >>> 'my-item' in container
     True
-    
+
 Both pieces of content should have been cataloged.
 
     >>> container = self.portal['my-container']
@@ -116,20 +116,20 @@ Both pieces of content should have been cataloged.
     ['A sample container']
     >>> [b.Title for b in catalog(getId = 'my-item')]
     ['A non-folderish item']
-    
+
 If we modify an object and trigger a modified event, it should be updated.
 
     >>> from zope.lifecycleevent import ObjectModifiedEvent
     >>> from zope.event import notify
-    
+
     >>> container.title = "Updated title"
     >>> item.title = "Also updated title"
-    
+
     >>> [b.Title for b in catalog(getId = 'my-container')]
     ['A sample container']
     >>> [b.Title for b in catalog(getId = 'my-item')]
     ['A non-folderish item']
-    
+
 
     >>> notify(ObjectModifiedEvent(container))
     >>> notify(ObjectModifiedEvent(item))
