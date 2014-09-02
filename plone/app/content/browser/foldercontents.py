@@ -119,6 +119,8 @@ class FolderContentsTable(object):
         self.context = context
         self.request = request
         self.contentFilter = contentFilter is not None and contentFilter or {}
+        if 'show_inactive' not in self.contentFilter:
+            self.contentFilter['show_inactive'] = True
         self.pagesize = int(self.request.get('pagesize', 20))
         self.items = self.folderitems()
         url = context.absolute_url()
