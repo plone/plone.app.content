@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.5 (unreleased)
+2.1.5 (2014-09-07)
 ------------------
 
 - Always show inactive content in the folder_contents view.
