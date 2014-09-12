@@ -5,6 +5,8 @@
 
     <include package=".browser" />
 
+    <include file="profiles.zcml"/>
+
     <!-- Register a name chooser that chooses plone-like normalized names -->
     <adapter
       for="Products.CMFCore.interfaces.IFolderish"
