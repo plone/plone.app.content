@@ -57,6 +57,7 @@ class ReviewListTestCase(PloneTestCase):
         doc = self.createDocument(
             'testdoc', 'Test Document', 'Test Description')
         self.wftool.doActionFor(doc, 'submit')
+        transaction.commit()
 
         self.browser.addHeader('Authorization',
                                'Basic %s:%s' % ('reviewer', 'secret'))
