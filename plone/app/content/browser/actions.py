@@ -84,7 +84,6 @@ class IRenameForm(Interface):
         title=_(u'label_new_title', default=u'New Title'),
     )
 
-
 default_new_id = ComputedWidgetAttribute(
     lambda form: form.context.getId(), field=IRenameForm['new_id'])
 

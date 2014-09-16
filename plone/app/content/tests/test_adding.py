@@ -1,5 +1,3 @@
-import unittest
-
 from Acquisition import aq_get
 from plone.app.testing.bbb import PloneTestCase
 

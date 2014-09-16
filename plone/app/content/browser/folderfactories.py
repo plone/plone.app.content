@@ -60,7 +60,6 @@ class FolderFactoriesView(BrowserView):
                 return context
         else:
             return aq_parent(context)
-
     # NOTE: This is also used by plone.app.contentmenu.menu.FactoriesMenu.
     # The return value is somewhat dictated by the menu infrastructure, so
     # be careful if you change it

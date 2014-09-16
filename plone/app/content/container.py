@@ -23,7 +23,6 @@ class OFSContainer(object):
     def __init__(self, id=None):
         if id is not None:
             self.id = id
-
     # fulfill IContainer interface
 
     def keys(self):
@@ -37,7 +36,6 @@ class OFSContainer(object):
 
     def get(self, name, default=None):
         return getattr(self, name, default)
-
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
@@ -70,7 +68,6 @@ class OFSContainer(object):
 #  - Contained gives us Zope3-like containment
 #
 # ... I WANT AN ADAPTER!
-
 
 class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent,
                 DefaultDublinCoreImpl, Contained):

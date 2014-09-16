@@ -308,7 +308,7 @@ class RenameAction(FolderContentsActionView):
                     notify(ObjectModifiedEvent(obj))
                 if newid and obid != newid:
                     parent = aq_parent(aq_inner(obj))
-                    parent.manage_renameObjects((obid,), (newid,))
+                    parent.manage_renameObjects((obid, ), (newid, ))
                 elif change_title:
                     # the rename will have already triggered a reindex
                     obj.reindexObject()
