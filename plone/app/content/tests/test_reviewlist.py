@@ -1,4 +1,5 @@
 from Products.CMFCore.utils import getToolByName
+import transaction
 
 from plone.app.testing.bbb import PloneTestCase
 from plone.testing.z2 import Browser
@@ -10,6 +11,7 @@ class ReviewListTestCase(PloneTestCase):
     def afterSetUp(self):
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('reviewer', 'secret', ['Reviewer'], [])
+        transaction.commit()
         self.browser = Browser(self.layer['app'])
         self.wftool = getToolByName(self.portal, 'portal_workflow')
 
@@ -22,6 +24,7 @@ class ReviewListTestCase(PloneTestCase):
         # we don't want it in the navigation
         doc.setExcludeFromNav(True)
         doc.reindexObject()
+        transaction.commit()
         return doc
 
     def submitToReview(self, obj):
