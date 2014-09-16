@@ -11,8 +11,10 @@ setup(name='plone.app.content',
       ]),
       classifiers=[
           "Framework :: Plone",
+          "Framework :: Plone :: 5.0",
           "License :: OSI Approved :: GNU General Public License (GPL)",
           "Programming Language :: Python",
+          "Programming Language :: Python :: 2.7",
       ],
       keywords='plone content views viewlet',
       author='Plone Foundation',
@@ -27,7 +29,6 @@ setup(name='plone.app.content',
           test=[
               'plone.app.testing',
               'plone.app.contenttypes',
-              'Products.PloneTestCase',
           ]
       ),
       install_requires=[
