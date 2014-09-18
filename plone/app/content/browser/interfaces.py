@@ -6,6 +6,7 @@ from zope.viewlet.interfaces import IViewletManager
 class IFolderContentsView(Interface):
     """Interface, which provides methods for folder contens
     """
+
     def test(a, b, c):
         """A simple replacement of python's test.
         """

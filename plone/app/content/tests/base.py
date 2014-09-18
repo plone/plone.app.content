@@ -1,10 +1,9 @@
-from Products.PloneTestCase import PloneTestCase as ptc
-ptc.setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
 
 
-class ContentTestCase(ptc.PloneTestCase):
+class ContentTestCase(PloneTestCase):
     pass
 
 
-class ContentFunctionalTestCase(ptc.FunctionalTestCase):
+class ContentFunctionalTestCase(PloneTestCase):
     pass

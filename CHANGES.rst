@@ -20,6 +20,11 @@ Changelog
   ``plone.app.linkintegrity`` checks.
   [saily]
 
+- Ported tests to plone.app.testing
+  [tomgross]
+
+- PEP8
+  [tomgross]
 
 3.0.0 (2014-04-13)
 ------------------

@@ -1,24 +1,18 @@
-import unittest
-
 from Products.CMFCore.utils import getToolByName
+import transaction
 
-from Products.PloneTestCase.PloneTestCase import FunctionalTestCase
-from Products.PloneTestCase.PloneTestCase import setupPloneSite
-
-from Products.Five.testbrowser import Browser
-
-setupPloneSite()
+from plone.app.testing.bbb import PloneTestCase
+from plone.testing.z2 import Browser
 
 
-class ReviewListTestCase(FunctionalTestCase):
+class ReviewListTestCase(PloneTestCase):
     """dsfsdaf"""
 
     def afterSetUp(self):
-        super(ReviewListTestCase, self).afterSetUp()
-
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('reviewer', 'secret', ['Reviewer'], [])
-        self.browser = Browser()
+        transaction.commit()
+        self.browser = Browser(self.layer['app'])
         self.wftool = getToolByName(self.portal, 'portal_workflow')
 
     def createDocument(self, id, title, description):
@@ -30,6 +24,7 @@ class ReviewListTestCase(FunctionalTestCase):
         # we don't want it in the navigation
         doc.setExcludeFromNav(True)
         doc.reindexObject()
+        transaction.commit()
         return doc
 
     def submitToReview(self, obj):
@@ -62,6 +57,7 @@ class ReviewListTestCase(FunctionalTestCase):
         doc = self.createDocument(
             'testdoc', 'Test Document', 'Test Description')
         self.wftool.doActionFor(doc, 'submit')
+        transaction.commit()
 
         self.browser.addHeader('Authorization',
                                'Basic %s:%s' % ('reviewer', 'secret'))
@@ -69,9 +65,3 @@ class ReviewListTestCase(FunctionalTestCase):
         self.assertTrue('Full review list:' in self.browser.contents)
         # test if the table with review items contains an entry for testdoc
         self.assertTrue('value="/plone/testdoc"' in self.browser.contents)
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ReviewListTestCase))
-    return suite

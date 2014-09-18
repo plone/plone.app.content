@@ -12,7 +12,7 @@ from plone.testing import z2
 
 class PloneAppContent(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (PLONE_FIXTURE, )
 
     USER_NAME = 'johndoe'
     USER_PASSWORD = 'secret'
@@ -80,13 +80,12 @@ class PloneAppContentAT(PloneAppContent):
         super(PloneAppContentAT, self).setUpPloneSite(portal)
         self.applyProfile(portal, 'Products.ATContentTypes:default')
 
-
 PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(PLONE_APP_CONTENT_FIXTURE,),
+    bases=(PLONE_APP_CONTENT_FIXTURE, ),
     name="PloneAppContent:Integration")
 PLONE_APP_CONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONE_APP_CONTENT_FIXTURE,),
+    bases=(PLONE_APP_CONTENT_FIXTURE, ),
     name="PloneAppContent:Functional")
 
 # Dexterity test layers

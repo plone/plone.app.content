@@ -19,7 +19,6 @@ class IReindexOnModify(Interface):
 
 # XXX: This should be deprecated and removed in Plone 4.
 
-
 class IIndexableObjectWrapper(Interface):
     """An adapter of a (object, portal) where object is to be indexed in
     portal_catalog.
