@@ -53,3 +53,4 @@ class ISiteContentSettings(Interface):
                  'application/x-shockwave-flash':'inline',
                  '*':'attachment'}
     )
+

@@ -30,7 +30,6 @@ Changelog
   of blobs based on mimetype patterns. (code in plone.app.blob) 
   [djay].
 
-
 3.0.0 (2014-04-13)
 ------------------
 
