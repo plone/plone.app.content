@@ -53,9 +53,6 @@ Changelog
 - Move content_status_history from CMFPlone to a browser view in this package.
   [bloodbare]
 
-- Fix constrainttypes form.
-  [davisagli]
-
 - Protect the folder constraintypes form with the 'Modify constrain types'
   permission.
   [davisagli]
