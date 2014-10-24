@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.1 (2014-10-23)
 ------------------
 
 - PLIP 13260: add browser views for ``select_default_page`` and
