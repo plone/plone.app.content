@@ -71,6 +71,21 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         self.assertTrue('Select default page' in self.browser.contents)
         self.assertTrue('id="testdoc"' in self.browser.contents)
 
+    def test_select_default_page_view_with_folderish_type(self):
+        """Check if folderish types are available."""
+        folder = self.portal.testfolder
+        folder.invokeFactory(id=FOLDER['id'], type_name='Folder')
+        folder2 = getattr(folder, FOLDER['id'])
+        folder.setTitle(FOLDER['title'])
+        folder2.reindexObject()
+        folder_fti = self.portal.portal_types['Folder']
+        folder_fti.manage_changeProperties(
+            filter_content_types=True, allowed_content_types=[])
+        view = folder.restrictedTraverse('@@select_default_page')()
+
+        self.assertTrue('id="testdoc"' in view)
+        self.assertTrue('id="testfolder"' in view)
+
     def test_default_page_action_cancel(self):
         """Check the Cancel action."""
         folder = self.portal.testfolder

@@ -1,3 +1,4 @@
+from Acquisition import aq_inner
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFCore.utils import getToolByName
@@ -84,3 +85,37 @@ class DefaultPageSelectionView(BrowserView):
             self.request.response.redirect(self.context.absolute_url())
 
         return self.index()
+
+    def get_selectable_items(self):
+        """ Return brains in this container that can be used as default_pages
+        """
+        context = aq_inner(self.context)
+        portal_properties = getToolByName(context, 'portal_properties')
+        sp = portal_properties.site_properties
+        view_types = sp.getProperty('typesUseViewActionInListings', [])
+        default_page_types = sp.getProperty('default_page_types', [])
+        portal_types = getToolByName(self.context, 'portal_types')
+
+        results = []
+        for brain in context.getFolderContents():
+            portal_type = brain.portal_type
+            if portal_type in view_types:
+                # Skip files and images
+                continue
+
+            if portal_type in default_page_types:
+                # Allow types that are explicitly in default_page_types
+                results.append(brain)
+                continue
+
+            if brain.is_folderish:
+                fti = portal_types.get(portal_type)
+                if not fti:
+                    continue
+                if fti.filter_content_types and fti.allowed_content_types or \
+                        not fti.filter_content_types:
+                    # Disallow folderish types if you can't add any content.
+                    # To override you have to add type to default_page_types
+                    continue
+            results.append(brain)
+        return results

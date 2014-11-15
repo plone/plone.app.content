@@ -4,7 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow folderish types as default_page as long as users cannot add content
+  to them.
+  [pbauer]
 
 
 3.0.1 (2014-10-23)
