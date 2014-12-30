@@ -13,19 +13,19 @@
 
   <metal:calendar fill-slot="javascript_head_slot">
     <style type="text/css" media="all"
-            tal:content="string:@import url(${context/portal_url}/jscalendar/calendar-system.css);"></style>
+            tal:content="string:@import url(${portal_url}/jscalendar/calendar-system.css);"></style>
     <script type="text/javascript"
-            tal:attributes="src string:${context/portal_url}/jscalendar/calendar_stripped.js"></script>
+            tal:attributes="src string:${portal_url}/jscalendar/calendar_stripped.js"></script>
     <script type="text/javascript" charset="iso-8859-1"
             tal:condition="exists: context/jscalendar/calendar-en.js"
-            tal:attributes="src string:${context/portal_url}/jscalendar/calendar-en.js"></script>
+            tal:attributes="src string:${portal_url}/jscalendar/calendar-en.js"></script>
   </metal:calendar>
 
   <body>
 
     <tal:comment tal:condition="nothing">
       <div class="portalMessage info">
-        <strong>Note</strong> 
+        <strong>Note</strong>
         <span>This form is used in two different ways - from folder_contents,
         allowing you to publish several things at once, and from the state
         drop-down. In the first case, the 'paths' request parameter is set;
@@ -37,7 +37,7 @@
 
       <metal:main fill-slot="main"
            tal:define="errors view/errors;
-                       review_state context/@@plone_context_state/workflow_state;
+                       review_state context_state/workflow_state;
                        paths python:request.get('paths', ['/'.join(context.getPhysicalPath())]);
                        batch python:context.getObjectsFromPathList(paths, batch=False);
                        folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];
@@ -65,7 +65,7 @@
                 name="edit_form"
                 method="post"
                 action="content_status_modify"
-                tal:attributes="action string:${context/@@plone_context_state/object_url}/${view/__name__}"
+                tal:attributes="action string:${context_state/object_url}/${view/__name__}"
                 tal:condition="not:python:paths and not batch">
 
               <div class="field" tal:condition="batch"
@@ -85,11 +85,9 @@
                           <th class="nosort">
                               <input class="noborder"
                                      type="checkbox"
-                                     src="select_all_icon.gif"
                                      name="selectButton"
                                      title="Select all items"
                                      onClick="toggleSelect(this,'paths:list');"
-                                     tal:attributes="src string:$portal_url/select_all_icon.gif"
                                      alt="Select all items"
                                      i18n:attributes="title label_select_all_items; alt label_select_all_items;"
                           />
@@ -111,10 +109,12 @@
                     </thead>
 
                     <metal:block tal:condition="batch|nothing">
-                    <tbody tal:define="portal context/@@plone_portal_state/portal;
-                                       getRelativeContentURL nocall:context/portal_url/getRelativeContentURL;
-                                       normalizeString nocall:context/@@plone/normalizeString;
+                    <tbody tal:define="portal portal_state/portal;
+                                       url_tool context/@@plone_tools/url;
+                                       getRelativeContentURL nocall:url_tool/getRelativeContentURL;
+                                       normalizeString nocall:plone_view/normalizeString;
                                        wtool portal/portal_workflow;
+                                       getIcon nocall:plone_layout/getIcon;
                                        ">
                         <tal:items tal:repeat="item batch">
                            <tr tal:define="oddrow               repeat/item/odd;
@@ -126,7 +126,7 @@
                                            item_type            item/portal_type;
                                            item_size            item/getObjSize;
                                            item_modified        item/ModificationDate;
-                                           item_icon            python:plone_view.getIcon(item);
+                                           item_icon            python:getIcon(item);
                                            item_type_class      python:'contenttype-' + normalizeString(item_type);
                                            item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                            item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
@@ -181,7 +181,7 @@
                                     tal:content="item_size"
                                     tal:attributes="class item_wf_state_class"> size </span>
                             </td>
-                            <td tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime;"
+                            <td tal:define="toLocalizedTime nocall:plone_view/toLocalizedTime;"
                                 tal:content="python:toLocalizedTime(item_modified, long_format=1)"
                                 tal:attributes="class item_wf_state_class">
                                 08/19/2001 03:01 AM

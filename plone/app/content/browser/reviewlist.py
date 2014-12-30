@@ -46,6 +46,8 @@ class ReviewListTable(object):
         portal_url = getToolByName(self.context, 'portal_url')
         plone_view = getMultiAdapter((self.context, self.request),
                                      name=u'plone')
+        plone_layout = getMultiAdapter((self.context, self.request),
+                                       name=u'plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_properties = getToolByName(self.context, 'portal_properties')
         portal_types = getToolByName(self.context, 'portal_types')
@@ -64,7 +66,7 @@ class ReviewListTable(object):
 
             url = obj.absolute_url()
             path = '/'.join(obj.getPhysicalPath())
-            icon = plone_view.getIcon(obj)
+            icon = plone_layout.getIcon(obj)
 
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
