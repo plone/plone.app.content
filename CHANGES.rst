@@ -7,7 +7,8 @@ Changelog
 - Allow folderish types as default_page as long as users cannot add content
   to them.
   [pbauer]
-
+- fix removing tags with non-ascii characters in folder_contents
+  [petschki]
 
 3.0.1 (2014-10-23)
 ------------------
