@@ -326,10 +326,10 @@ class TagsAction(FolderContentsActionView):
     required_obj_permission = 'Modify portal content'
 
     def __call__(self):
-        self.remove = set([v.encode('utf8') for v in \
-            json.loads(self.request.form.get('remove'))])
-        self.add = set([v.encode('utf8') for v in \
-            json.loads(self.request.form.get('add'))])
+        self.remove = set([v.encode('utf8') for v in
+                           json.loads(self.request.form.get('remove'))])
+        self.add = set([v.encode('utf8') for v in
+                        json.loads(self.request.form.get('add'))])
         return super(TagsAction, self).__call__()
 
     def action(self, obj):
@@ -414,10 +414,10 @@ class PropertiesAction(FolderContentsActionView):
         return super(PropertiesAction, self).__call__()
 
     def dx_action(self, obj):
-        if self.effectiveDate and hasattr(obj, 'effective'):
-            obj.effective = DateTime(self.effectiveDate)
-        if self.expirationDate and hasattr(obj, 'expires'):
-            obj.expires = DateTime(self.expirationDate)
+        if self.effectiveDate and hasattr(obj, 'effective_date'):
+            obj.effective_date = DateTime(self.effectiveDate)
+        if self.expirationDate and hasattr(obj, 'expiration_date'):
+            obj.expiration_date = DateTime(self.expirationDate)
         if self.copyright and hasattr(obj, 'rights'):
             obj.rights = self.copyright
         if self.contributors and hasattr(obj, 'contributors'):
