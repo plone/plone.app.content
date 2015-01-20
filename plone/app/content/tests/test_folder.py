@@ -70,7 +70,7 @@ class PropertiesDXTest(DXBaseTest):
         self.request.form['effectiveTime'] = '09:00'
         view = PropertiesAction(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.effective,
+        self.assertEquals(self.portal.page.effective_date,
                           DateTime('1999/01/01 09:00'))
 
     def testExpires(self):
@@ -79,7 +79,7 @@ class PropertiesDXTest(DXBaseTest):
         self.request.form['expirationTime'] = '09:00'
         view = PropertiesAction(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.expires,
+        self.assertEquals(self.portal.page.expiration_date,
                           DateTime('1999/01/01 09:00'))
 
     def testSetDexterityExcludeFromNav(self):
