@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
@@ -19,7 +19,7 @@ import unittest
 
 class ActionsDXTestCase(unittest.TestCase):
 
-    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
@@ -256,4 +256,4 @@ class ActionsDXTestCase(unittest.TestCase):
 
 class ActionsATTestCase(ActionsDXTestCase):
 
-    layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
+    layer = PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
