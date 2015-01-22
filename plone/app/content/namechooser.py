@@ -26,39 +26,39 @@ class NormalizingNameChooser(object):
     def __init__(self, context):
         self.context = context
 
-    def checkName(self, name, object):
-        return not self._getCheckId(object)(name, required=1)
+    def checkName(self, name, obj):
+        return not self._getCheckId(obj)(name, required=1)
 
-    def chooseName(self, name, object):
+    def chooseName(self, name, obj):
         container = aq_inner(self.context)
         if not name:
-            nameFromTitle = INameFromTitle(object, None)
+            nameFromTitle = INameFromTitle(obj, None)
             if nameFromTitle is not None:
                 name = nameFromTitle.title
             if not name:
-                name = getattr(aq_base(object), 'id', None)
+                name = getattr(aq_base(obj), 'id', None)
             if not name:
-                name = getattr(aq_base(object), 'portal_type', None)
+                name = getattr(aq_base(obj), 'portal_type', None)
             if not name:
-                name = object.__class__.__name__
+                name = obj.__class__.__name__
 
         if not isinstance(name, unicode):
             name = unicode(name, 'utf-8')
 
-        request = getattr(object.__of__(container), 'REQUEST', None)
+        request = getattr(obj.__of__(container), 'REQUEST', None)
         if request is not None:
             name = IUserPreferredURLNormalizer(request).normalize(name)
         else:
             name = getUtility(IURLNormalizer).normalize(name)
 
-        return self._findUniqueName(name, object)
+        return self._findUniqueName(name, obj)
 
-    def _findUniqueName(self, name, object):
+    def _findUniqueName(self, name, obj):
         """Find a unique name in the parent folder, based on the given id, by
         appending -n, where n is a number greater than 1, or just the id if
         it's ok.
         """
-        check_id = self._getCheckId(object)
+        check_id = self._getCheckId(obj)
 
         if not check_id(name, required=1):
             return name
@@ -88,11 +88,11 @@ class NormalizingNameChooser(object):
             )
         )
 
-    def _getCheckId(self, object):
+    def _getCheckId(self, obj):
         """Return a function that can act as the check_id script.
         """
         parent = aq_inner(self.context)
-        _check_id = getattr(object, 'check_id', None)
+        _check_id = getattr(obj, 'check_id', None)
         if _check_id is not None:
             def do_Plone_check(id, required):
                 return _check_id(id, required=required, contained_by=parent)
