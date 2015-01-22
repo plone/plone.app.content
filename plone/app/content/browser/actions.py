@@ -17,6 +17,7 @@ from z3c.form.widget import ComputedWidgetAttribute
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
+from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import Interface
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -117,6 +118,7 @@ class RenameForm(form.Form):
 
         oldid = self.context.getId()
         newid = data['new_id']
+        newid = INameChooser(parent).chooseName(newid, self.context)
 
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']

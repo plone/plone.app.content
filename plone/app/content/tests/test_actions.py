@@ -118,6 +118,23 @@ class ActionsDXTestCase(unittest.TestCase):
         self.portal.manage_delObjects(ids='f2')
         transaction.commit()
 
+    def test_create_safe_id_on_renaming(self):
+        logout()
+        folder = self.portal['f1']
+
+        # We need zope2.CopyOrMove permission to rename content
+        self.browser.open(folder.absolute_url() + '/folder_rename')
+        self.browser.getControl(name='form.widgets.new_id').value = ' ? f4 4 '
+        self.browser.getControl(name='form.widgets.new_title').value = ' F2 '
+        self.browser.getControl(name='form.buttons.Rename').click()
+        self.assertEqual(folder.getId(), 'f4-4')
+        self.assertEqual(folder.Title(), 'F2')
+        self.assertEqual(self.browser.url, folder.absolute_url())
+
+        login(self.portal, TEST_USER_NAME)
+        self.portal.manage_delObjects(ids='f4-4')
+        transaction.commit()
+
     def test_rename_form_cancel(self):
         folder = self.portal['f1']
 
