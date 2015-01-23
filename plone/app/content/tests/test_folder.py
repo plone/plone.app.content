@@ -181,6 +181,26 @@ class WorkflowTest(BaseTest):
             'published')
 
 
+class RenameTest(BaseTest):
+
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def test_folder_rename_objects(self):
+        from plone.app.content.browser.folder import RenameAction
+        uid = IUUID(self.portal.page)
+        self.portal.invokeFactory('Document', id="page2", title="2nd page")
+        uid2 = IUUID(self.portal.page2)
+        items = [
+            {"UID": uid, "newid": "I am UnSafe! ", "newtitle": "New!"},
+            {"UID": uid2, "newid": ". ,;new id : _! ", "newtitle": "Newer!"},
+        ]
+        self.request.form['torename'] = json.dumps(items)
+        view = RenameAction(self.portal, self.request)
+        view()
+        self.assertEqual(self.portal['i-am-unsafe'].title, "New!")
+        self.assertEqual(self.portal['new-id-_'].title, "Newer!")
+
+
 class ContextInfoTest(BaseTest):
 
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING

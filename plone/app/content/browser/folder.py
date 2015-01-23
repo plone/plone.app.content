@@ -1,30 +1,32 @@
-import transaction
+from .interfaces import IFolderContentsView
 from AccessControl import Unauthorized
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from DateTime import DateTime
+from OFS.CopySupport import CopyError
+from Products.CMFCore.interfaces._content import IFolderish
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
+from Products.Five import BrowserView
+from ZODB.POSException import ConflictError
+from plone.dexterity.interfaces import IDexterityContent
+from plone.folder.interfaces import IExplicitOrdering
+from plone.protect.postonly import check as checkpost
+from plone.uuid.interfaces import IUUID
+from zope.browsermenu.interfaces import IBrowserMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from OFS.CopySupport import CopyError
-from Products.CMFCore.utils import getToolByName
-from Products.Five import BrowserView
-from Products.CMFPlone import utils
-from Products.CMFPlone import PloneMessageFactory as _
-from plone.protect.postonly import check as checkpost
-from ZODB.POSException import ConflictError
 from zope.component.hooks import getSite
+from zope.container.interfaces import INameChooser
 from zope.event import notify
-from zope.lifecycleevent import ObjectModifiedEvent
-from plone.folder.interfaces import IExplicitOrdering
-from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
-from DateTime import DateTime
-from Products.CMFCore.interfaces._content import IFolderish
-from zope.browsermenu.interfaces import IBrowserMenu
-import json
-from plone.dexterity.interfaces import IDexterityContent
-from .interfaces import IFolderContentsView
 from zope.interface import implements
-from plone.uuid.interfaces import IUUID
+from zope.lifecycleevent import ObjectModifiedEvent
+
+import json
+import transaction
 
 try:
     from plone.app.widgets.browser.file import TUS_ENABLED
@@ -308,6 +310,8 @@ class RenameAction(FolderContentsActionView):
                     notify(ObjectModifiedEvent(obj))
                 if newid and obid != newid:
                     parent = aq_parent(aq_inner(obj))
+                    # make the new id safe
+                    newid = INameChooser(parent).chooseName(newid, obj)
                     parent.manage_renameObjects((obid, ), (newid, ))
                 elif change_title:
                     # the rename will have already triggered a reindex
