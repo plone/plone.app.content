@@ -120,6 +120,10 @@ class RenameForm(form.Form):
         newid = data['new_id']
         newid = INameChooser(parent).chooseName(newid, self.context)
 
+        context_state = getMultiAdapter(
+            (self.context, self.request), name='plone_context_state')
+        if context_state.is_default_page():
+            parent.setDefaultPage(newid)
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
         # Requires zope2.CopyOrMove permission
