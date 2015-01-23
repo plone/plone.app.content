@@ -188,17 +188,29 @@ class RenameTest(BaseTest):
     def test_folder_rename_objects(self):
         from plone.app.content.browser.folder import RenameAction
         uid = IUUID(self.portal.page)
-        self.portal.invokeFactory('Document', id="page2", title="2nd page")
+        self.portal.invokeFactory('Document', id='page2', title='2nd page')
         uid2 = IUUID(self.portal.page2)
         items = [
-            {"UID": uid, "newid": "I am UnSafe! ", "newtitle": "New!"},
-            {"UID": uid2, "newid": ". ,;new id : _! ", "newtitle": "Newer!"},
+            {'UID': uid, 'newid': 'I am UnSafe! ', 'newtitle': 'New!'},
+            {'UID': uid2, 'newid': '. ,;new id : _! ', 'newtitle': 'Newer!'},
         ]
         self.request.form['torename'] = json.dumps(items)
         view = RenameAction(self.portal, self.request)
         view()
         self.assertEqual(self.portal['i-am-unsafe'].title, "New!")
         self.assertEqual(self.portal['new-id-_'].title, "Newer!")
+
+    def test_default_page_updated_on_rename_objects(self):
+        from plone.app.content.browser.folder import RenameAction
+        self.portal.setDefaultPage('page')
+        uid = IUUID(self.portal.page)
+        items = [
+            {'UID': uid, 'newid': 'page-renamed', 'newtitle': 'Page'},
+        ]
+        self.request.form['torename'] = json.dumps(items)
+        view = RenameAction(self.portal, self.request)
+        view()
+        self.assertEqual(self.portal.default_page, 'page-renamed')
 
 
 class ContextInfoTest(BaseTest):

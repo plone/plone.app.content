@@ -310,8 +310,13 @@ class RenameAction(FolderContentsActionView):
                     notify(ObjectModifiedEvent(obj))
                 if newid and obid != newid:
                     parent = aq_parent(aq_inner(obj))
-                    # make the new id safe
+                    # Make sure newid is safe
                     newid = INameChooser(parent).chooseName(newid, obj)
+                    # Update the default_page on the parent.
+                    context_state = getMultiAdapter(
+                        (obj, self.request), name='plone_context_state')
+                    if context_state.is_default_page():
+                        parent.setDefaultPage(newid)
                     parent.manage_renameObjects((obid, ), (newid, ))
                 elif change_title:
                     # the rename will have already triggered a reindex

@@ -4,6 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- Keep default_page when renaming objects.
+  [pbauer]
+
 - Use INameChooser for new id when renaming objects using folder_rename or
   object_rename. Fix https://github.com/plone/plone.app.dexterity/issues/73
   [pbauer]

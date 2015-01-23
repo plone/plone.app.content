@@ -135,6 +135,23 @@ class ActionsDXTestCase(unittest.TestCase):
         self.portal.manage_delObjects(ids='f4-4')
         transaction.commit()
 
+    def test_default_page_updated_on_rename(self):
+        login(self.portal, TEST_USER_NAME)
+        folder = self.portal['f1']
+        folder.invokeFactory(type_name='Document', id='d1', title='A Doc')
+        doc = folder['d1']
+        folder.setDefaultPage('d1')
+        transaction.commit()
+        self.assertEqual(folder.default_page, 'd1')
+
+        # We need zope2.CopyOrMove permission to rename content
+        self.browser.open(doc.absolute_url() + '/object_rename')
+        self.browser.getControl(name='form.widgets.new_id').value = ' ?renamed'
+        self.browser.getControl(name='form.widgets.new_title').value = 'Doc'
+        self.browser.getControl(name='form.buttons.Rename').click()
+        self.assertEqual(folder.getFolderContents()[0].id, 'renamed')
+        self.assertEqual(folder.default_page, 'renamed')
+
     def test_rename_form_cancel(self):
         folder = self.portal['f1']
 
