@@ -52,5 +52,6 @@ setup(name='plone.app.content',
           'Products.CMFDefault',
           'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
           'Zope2',
+          'plone.app.widgets>=2'
       ],
       )
