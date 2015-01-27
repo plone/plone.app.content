@@ -4,7 +4,8 @@ Changelog
 2.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make contentlisting work with plone.app.contenttypes collections
+  [kiorky]
 
 
 2.1.5 (2014-09-07)

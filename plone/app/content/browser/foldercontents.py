@@ -1,5 +1,8 @@
 import urllib
 
+import datetime
+import DateTime
+
 from zope.component import getMultiAdapter
 from zope.interface import implements
 from zope.interface import alsoProvides
@@ -12,11 +15,52 @@ from OFS.interfaces import IOrderedContainer
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import pretty_title_or_id, isExpired
 
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.browser.interfaces import IContentsPage
 from plone.app.content.browser.tableview import Table, TableBrowserView
+
+
+try:
+    from plone.app.contentlisting.interfaces import IContentListingObject
+    HAS_CL = True
+except ImportError:
+    HAS_CL = False
+
+
+class ContentListingProxy(object):
+
+    def __init__(self, obj):
+        self.obj = obj
+        self.brain = obj
+        self.cl = False
+        if HAS_CL:
+            if IContentListingObject.providedBy(obj):
+                self.cl = True
+        if not (
+            'Products.ZCatalog.Catalog.mybrains' in repr(obj.__class__)
+        ):
+            try:
+                self.brain = getattr(obj, '_brain')
+            except AttributeError:
+                self.brain = getattr(obj, 'brain')
+
+    def __getattr__(self, attr):
+        selfattrs = {'cl': 'cl',
+                     'brain': 'brain',
+                     '_brain': 'brain',
+                     'obj': 'obj'}
+        if attr in selfattrs:
+            return object.getattr(self, selfattrs[attr])
+        ignored = ['modified', 'portal_type', 'getURL',
+                   'is_folderish', 'getObjSize']
+        ret = getattr(self.obj, attr)
+        call = self.cl and (attr not in ignored)
+        if call and safe_callable(ret):
+            ret = ret()
+        return ret
 
 
 class FolderContentsView(BrowserView):
@@ -182,8 +226,9 @@ class FolderContentsTable(object):
             else:
                 table_row_class = "draggable odd"
 
+            obj = ContentListingProxy(obj)
             url = obj.getURL()
-            icon = plone_layout.getIcon(obj)
+            icon = plone_layout.getIcon(obj.obj)
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
@@ -221,7 +266,7 @@ class FolderContentsTable(object):
                 #
                 # this doesn't add any memory overhead, a reference to
                 # the brain is already kept through its getPath bound method.
-                brain=obj,
+                brain=obj.brain,
                 url=url,
                 url_href_title=url_href_title,
                 id=obj.getId,
