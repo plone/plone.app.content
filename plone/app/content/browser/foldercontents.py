@@ -25,7 +25,7 @@ from plone.app.content.browser.tableview import Table, TableBrowserView
 try:
     from plone.app.contentlisting.interfaces import IContentListingObject
     HAS_CL = True
-except:
+except ImportError:
     HAS_CL = False
 
 
