@@ -4,7 +4,7 @@ from Products.Five.browser import BrowserView
 import json
 import mimetypes
 from plone.dexterity.interfaces import IDexterityFTI
-from plone.app.widgets.interfaces import IATCTFileFactory, IDXFileFactory
+from plone.app.dexterity.interfaces import IDXFileFactory
 from plone.uuid.interfaces import IUUID
 import os
 import logging
@@ -129,6 +129,7 @@ class FileUploadView(BrowserView):
             factory = IDXFileFactory(self.context)
             dx_based = True
         else:
+            from Products.ATContentTypes.interfaces import IATCTFileFactory
             factory = IATCTFileFactory(self.context)
 
         obj = factory(filename, content_type, filedata)

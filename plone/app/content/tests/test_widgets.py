@@ -297,7 +297,7 @@ class BrowserTest(unittest.TestCase):
         widget.field = Choice(source=DummyCatalogSource())
         widget.field.interface = Interface
 
-        from plone.app.widgets.browser.vocabulary import SourceView
+        from plone.app.content.browser.vocabulary import SourceView
         view = SourceView(widget, self.request)
         query = {
             'criteria': [
@@ -338,7 +338,7 @@ class BrowserTest(unittest.TestCase):
         widget.field = List(value_type=Choice(source=DummySource()))
         widget.field.interface = Interface
 
-        from plone.app.widgets.browser.vocabulary import SourceView
+        from plone.app.content.browser.vocabulary import SourceView
         view = SourceView(widget, self.request)
         query = {
             'criteria': [
@@ -377,7 +377,7 @@ class BrowserTest(unittest.TestCase):
         widget.field = Choice(source=DummyCatalogSource())
         widget.field.interface = Interface
 
-        from plone.app.widgets.browser.vocabulary import SourceView
+        from plone.app.content.browser.vocabulary import SourceView
         view = SourceView(widget, self.request)
         query = {
             'criteria': [
