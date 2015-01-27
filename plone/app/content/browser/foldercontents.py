@@ -15,6 +15,7 @@ from OFS.interfaces import IOrderedContainer
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.utils import pretty_title_or_id, isExpired
 
 from plone.app.content.browser.interfaces import IFolderContentsView
@@ -57,11 +58,7 @@ class ContentListingProxy(object):
                    'is_folderish', 'getObjSize']
         ret = getattr(self.obj, attr)
         call = self.cl and (attr not in ignored)
-        if call and not isinstance(ret, (basestring, int, bool,
-                                         DateTime.DateTime,
-                                         datetime.datetime,
-                                         datetime.time,
-                                         float, list, set, tuple)):
+        if call and safe_callable(ret):
             ret = ret()
         return ret
 
