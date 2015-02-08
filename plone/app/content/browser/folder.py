@@ -50,6 +50,10 @@ class FolderContentsView(BrowserView):
                 base_vocabulary),
             'usersVocabularyUrl': '%splone.app.vocabularies.Users' % (
                 base_vocabulary),
+            'urlStructure': {
+                'base': base_url,
+                'appended': '/folder_contents'
+            },
             'moveUrl': '%s{path}/fc-itemOrder' % base_url,
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
