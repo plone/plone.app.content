@@ -27,11 +27,22 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 import json
 import transaction
+import Missing
 
 try:
-    from plone.app.widgets.browser.file import TUS_ENABLED
+    from plone.app.content.browser.file import TUS_ENABLED
 except ImportError:
     TUS_ENABLED = False
+
+
+def custom_json_handler(obj):
+    if obj == Missing.Value:
+        return None
+    return obj
+
+
+def dumps(data):
+    return json.dumps(data, default=custom_json_handler)
 
 
 class FolderContentsView(BrowserView):
@@ -119,7 +130,7 @@ class FolderContentsView(BrowserView):
                 'useTus': TUS_ENABLED
             }
         }
-        self.options = json.dumps(options)
+        self.options = dumps(options)
         return super(FolderContentsView, self).__call__()
 
 
@@ -143,7 +154,7 @@ class FolderContentsActionView(BrowserView):
 
     def json(self, data):
         self.request.response.setHeader("Content-Type", "application/json")
-        return json.dumps(data)
+        return dumps(data)
 
     def get_selection(self):
         selection = self.request.form.get('selection', '[]')
@@ -560,8 +571,7 @@ class ContextInfo(BrowserView):
                 if key == 'path':
                     val = val[len(base_path):]
                 item[key] = val
-
-        return json.dumps({
+        return dumps({
             'addButtons': factories_menu,
             'defaultPage': self.context.getDefaultPage(),
             'breadcrumbs': [c for c in reversed(crumbs)],
