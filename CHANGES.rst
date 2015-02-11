@@ -4,6 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- fix json responses to be able to handle datetime objects and Missing.Value
+  [vangheem]
+
 - Keep default_page when renaming objects.
   [pbauer]
 

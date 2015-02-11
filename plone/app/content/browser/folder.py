@@ -12,6 +12,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.Five import BrowserView
 from ZODB.POSException import ConflictError
+from plone.app.content.utils import json_dumps, json_loads
 from plone.dexterity.interfaces import IDexterityContent
 from plone.folder.interfaces import IExplicitOrdering
 from plone.protect.postonly import check as checkpost
@@ -25,24 +26,12 @@ from zope.event import notify
 from zope.interface import implements
 from zope.lifecycleevent import ObjectModifiedEvent
 
-import json
 import transaction
-import Missing
 
 try:
     from plone.app.content.browser.file import TUS_ENABLED
 except ImportError:
     TUS_ENABLED = False
-
-
-def custom_json_handler(obj):
-    if obj == Missing.Value:
-        return None
-    return obj
-
-
-def dumps(data):
-    return json.dumps(data, default=custom_json_handler)
 
 
 class FolderContentsView(BrowserView):
@@ -130,7 +119,7 @@ class FolderContentsView(BrowserView):
                 'useTus': TUS_ENABLED
             }
         }
-        self.options = dumps(options)
+        self.options = json_dumps(options)
         return super(FolderContentsView, self).__call__()
 
 
@@ -154,11 +143,11 @@ class FolderContentsActionView(BrowserView):
 
     def json(self, data):
         self.request.response.setHeader("Content-Type", "application/json")
-        return dumps(data)
+        return json_dumps(data)
 
     def get_selection(self):
         selection = self.request.form.get('selection', '[]')
-        return json.loads(selection)
+        return json_loads(selection)
 
     def action(self, obj):
         """
@@ -180,8 +169,8 @@ class FolderContentsActionView(BrowserView):
         self.mtool = getToolByName(self.context, 'portal_membership')
 
         for brain in self.catalog(UID=selection):
-            selection.remove(brain.UID)  # remove everyone so we know if we
-                                         # missed any
+            # remove everyone so we know if we missed any
+            selection.remove(brain.UID)
             obj = brain.getObject()
             if self.required_obj_permission:
                 if not self.mtool.checkPermission(self.required_obj_permission,
@@ -291,7 +280,7 @@ class RenameAction(FolderContentsActionView):
         self.protect()
         context = aq_inner(self.context)
 
-        torename = json.loads(self.request.form['torename'])
+        torename = json_loads(self.request.form['torename'])
 
         catalog = getToolByName(context, 'portal_catalog')
         mtool = getToolByName(context, 'portal_membership')
@@ -351,9 +340,9 @@ class TagsAction(FolderContentsActionView):
 
     def __call__(self):
         self.remove = set([v.encode('utf8') for v in
-                           json.loads(self.request.form.get('remove'))])
+                           json_loads(self.request.form.get('remove'))])
         self.add = set([v.encode('utf8') for v in
-                        json.loads(self.request.form.get('add'))])
+                        json_loads(self.request.form.get('add'))])
         return super(TagsAction, self).__call__()
 
     def action(self, obj):
@@ -431,9 +420,9 @@ class PropertiesAction(FolderContentsActionView):
         if self.expirationDate and expirationTime:
             self.expirationDate = self.expirationDate + ' ' + expirationTime
         self.copyright = self.request.form.get('copyright', '')
-        self.contributors = json.loads(
+        self.contributors = json_loads(
             self.request.form.get('contributors', '[]'))
-        self.creators = json.loads(self.request.form.get('creators', '[]'))
+        self.creators = json_loads(self.request.form.get('creators', '[]'))
         self.exclude = self.request.form.get('exclude_from_nav', None)
         return super(PropertiesAction, self).__call__()
 
@@ -489,7 +478,7 @@ class ItemOrder(FolderContentsActionView):
         id = self.request.form.get('id')
         ordering = self.getOrdering()
         delta = self.request.form['delta']
-        subset_ids = json.loads(self.request.form.get('subset_ids', '[]'))
+        subset_ids = json_loads(self.request.form.get('subset_ids', '[]'))
         if delta == 'top':
             ordering.moveObjectsToTop([id])
         elif delta == 'bottom':
@@ -571,7 +560,7 @@ class ContextInfo(BrowserView):
                 if key == 'path':
                     val = val[len(base_path):]
                 item[key] = val
-        return dumps({
+        return json_dumps({
             'addButtons': factories_menu,
             'defaultPage': self.context.getDefaultPage(),
             'breadcrumbs': [c for c in reversed(crumbs)],

@@ -5,6 +5,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five import BrowserView
 from logging import getLogger
+from plone.app.content.utils import json_loads, json_dumps
 from plone.app.querystring import queryparser
 from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
@@ -18,7 +19,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
 import inspect
 import itertools
-import json
 
 logger = getLogger(__name__)
 
@@ -36,7 +36,7 @@ def _parseJSON(s):
         s = s.strip()
         if (s.startswith('{') and s.endswith('}')) or \
                 (s.startswith('[') and s.endswith(']')):  # detect if json
-            return json.loads(s)
+            return json_loads(s)
     return s
 
 
@@ -74,7 +74,7 @@ class BaseVocabularyView(BrowserView):
         try:
             vocabulary = self.get_vocabulary()
         except VocabLookupException, e:
-            return json.dumps({'error': e.message})
+            return json_dumps({'error': e.message})
 
         results_are_brains = False
         if hasattr(vocabulary, 'search_catalog'):
@@ -94,9 +94,10 @@ class BaseVocabularyView(BrowserView):
         try:
             total = len(results)
         except TypeError:
-            total = 0  # do not error if object does not support __len__
-                       # we'll check again later if we can figure some size
-                       # out
+            # do not error if object does not support __len__
+            # we'll check again later if we can figure some size
+            # out
+            total = 0
 
         # get batch
         batch = _parseJSON(self.request.get('batch', ''))
@@ -157,7 +158,7 @@ class BaseVocabularyView(BrowserView):
         if total == 0:
             total = len(items)
 
-        return json.dumps({
+        return json_dumps({
             'results': items,
             'total': total
         })
