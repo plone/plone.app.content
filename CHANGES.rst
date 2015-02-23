@@ -4,6 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- Add ``id`` to available columns of the ``folder_contents`` view.
+  [thet]
+
 - fix json responses to be able to handle datetime objects and Missing.Value
   [vangheem]
 

@@ -59,6 +59,7 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': {
+                'id': 'ID',
                 'Title': 'Title',
                 'ModificationDate': 'Last modified',
                 'EffectiveDate': 'Published',
