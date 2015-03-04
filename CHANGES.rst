@@ -27,6 +27,10 @@ Changelog
 3.0.1 (2014-10-23)
 ------------------
 
+- Added registry settings for download behaviour of blobs based on mimetype 
+  patterns.
+  [djay]
+
 - PLIP 13260: add browser views for ``select_default_page`` and
   ``select_default_view``.
   [saily]
