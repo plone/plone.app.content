@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.0.2 (2015-03-13)
 ------------------
 
 - Add ``id`` to available columns of the ``folder_contents`` view.
