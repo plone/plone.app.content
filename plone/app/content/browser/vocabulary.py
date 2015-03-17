@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five import BrowserView
 from logging import getLogger
-from plone.app.content.utils import json_loads, json_dumps
+from plone.app.content.utils import json_dumps
+from plone.app.content.utils import json_loads
 from plone.app.querystring import queryparser
 from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY

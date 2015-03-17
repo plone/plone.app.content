@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.statusmessages.interfaces import IStatusMessage
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
 from zope.component import getMultiAdapter
 
 

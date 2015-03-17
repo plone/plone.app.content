@@ -1,21 +1,15 @@
+# -*- coding: utf-8 -*-
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZTUtils import make_query
+from plone.batching import Batch
+from plone.batching.browser import BatchView
+from plone.memoize import instance
+from zope.i18nmessageid import MessageFactory
+from zope.publisher.browser import BrowserView
 import urllib
 
-from plone.memoize import instance
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.batching import Batch
-
-from zope.i18nmessageid import MessageFactory
-
-from Products.CMFPlone.utils import safe_unicode
-
 _ = MessageFactory('plone')
-
-from ZTUtils import make_query
-
-from plone.batching.browser import BatchView
-from zope.publisher.browser import BrowserView
 
 
 class TableBatchView(BatchView):
