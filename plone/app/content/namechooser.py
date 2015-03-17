@@ -92,15 +92,18 @@ class NormalizingNameChooser(object):
         """
         parent = aq_inner(self.context)
         _check_id = getattr(obj, 'check_id', None)
-        if _check_id is not None:
-            def do_Plone_check(id, required):
-                return _check_id(id, required=required, contained_by=parent)
-            check_id = do_Plone_check
-        else:
-            def do_OFS_check(parent, id):
-                try:
-                    parent._checkId(id)
-                except BadRequest:
-                    return True
-            check_id = do_OFS_check
-        return check_id
+
+        def do_Plone_check(newid, required):
+            if _check_id is not None:
+                return _check_id(
+                    newid,
+                    required=required,
+                    contained_by=parent
+                )
+            # fallback to OFS
+            try:
+                parent._checkId(newid)
+            except BadRequest:
+                return True
+
+        return do_Plone_check
