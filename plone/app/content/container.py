@@ -1,22 +1,20 @@
-from zope.container.interfaces import IContainer
-from zope.container.contained import Contained
-from zope.interface import implements
-
+# -*- coding: utf-8 -*-
+from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
-from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
-
 from plone.app.content.interfaces import IReindexOnModify
+from zope.container.contained import Contained
+from zope.container.interfaces import IContainer
+from zope.interface import implementer
 
 
+@implementer(IContainer)
 class OFSContainer(object):
     """A folder that's also a container.
 
     Borrowed in part from megrok.five.
     """
-
-    implements(IContainer)
 
     isPrincipiaFolderish = 1
 
@@ -69,13 +67,13 @@ class OFSContainer(object):
 #
 # ... I WANT AN ADAPTER!
 
+
+@implementer(IReindexOnModify)
 class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent,
                 DefaultDublinCoreImpl, Contained):
     """A base class mixing in CMFish, contentish, containerish, containedish,
     dublincoreish behaviour.
     """
-
-    implements(IReindexOnModify)
 
     def __init__(self, id=None, **kwargs):
         OFSContainer.__init__(self, id, **kwargs)

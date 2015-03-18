@@ -4,8 +4,12 @@ Changelog
 3.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- pep8, flake8, utf8-headers et al cleanup.
+  [jensens]
 
+- refactored ``p.a.c.namechooser.NormalizingNameChooser._getCheckId`` to not
+  use lambdas.
+  [jensens]
 
 3.0.2 (2015-03-13)
 ------------------
