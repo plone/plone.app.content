@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-import Missing
-import datetime
 import json
+import datetime
+import Missing
 
 
 def custom_json_handler(obj):

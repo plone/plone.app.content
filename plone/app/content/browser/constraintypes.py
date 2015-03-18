@@ -1,52 +1,32 @@
-# -*- coding: utf-8 -*-
+from plone.autoform.form import AutoExtensibleForm
 from Products.CMFPlone import PloneMessageFactory as PC_
 from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.autoform.form import AutoExtensibleForm
 from z3c.form import button
 from z3c.form import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from zope.interface import Interface
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.interface import invariant
 from zope.interface.exceptions import Invalid
-from zope.schema import Choice
-from zope.schema import List
+from zope.schema import List, Choice
 from zope.schema.interfaces import IVocabularyFactory
-from zope.schema.vocabulary import SimpleTerm
-from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 # XXX
-# acquire locallyAllowedTypes from parent (default)
-ACQUIRE = -1
+ACQUIRE = -1  # acquire locallyAllowedTypes from parent (default)
+DISABLED = 0  # use default behavior of PortalFolder which uses the
+              # FTI information
+ENABLED = 1   # allow types from locallyAllowedTypes only
 
-# use default behavior of PortalFolder which uses the FTI information
-DISABLED = 0
-
-# allow types from locallyAllowedTypes only
-ENABLED = 1
-
-
-def ST(key, txt, default):
-    SimpleTerm(value=key, title=PC_(txt, default=default))
-
-possible_constrain_types = SimpleVocabulary([
-    ST(
-        ACQUIRE,
-        u'constraintypes_mode_acquire',
-        u'Use parent folder settings'
-    ),
-    ST(
-        DISABLED,
-        'label_constraintypes_allow_standard',
-        u'Use portal default'
-    ),
-    ST(
-        ENABLED,
-        u'label_constraintypes_specify_manually',
-        u'Select manually'
-    )
-])
+ST = lambda key, txt, default: SimpleTerm(value=key,
+                                          title=PC_(txt, default=default))
+possible_constrain_types = SimpleVocabulary(
+    [ST(ACQUIRE, u'constraintypes_mode_acquire',
+                 u'Use parent folder settings'),
+     ST(DISABLED, 'label_constraintypes_allow_standard', u'Use portal default'),
+     ST(ENABLED, u'label_constraintypes_specify_manually', u'Select manually')
+     ])
 
 
 @implementer(IVocabularyFactory)

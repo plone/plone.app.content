@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from .interfaces import IFolderContentsView
 from AccessControl import Unauthorized
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
@@ -12,9 +12,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from Products.Five import BrowserView
 from ZODB.POSException import ConflictError
-from plone.app.content.interfaces import IFolderContentsView
-from plone.app.content.utils import json_dumps
-from plone.app.content.utils import json_loads
+from plone.app.content.utils import json_dumps, json_loads
 from plone.dexterity.interfaces import IDexterityContent
 from plone.folder.interfaces import IExplicitOrdering
 from plone.protect.postonly import check as checkpost
@@ -25,7 +23,7 @@ from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.container.interfaces import INameChooser
 from zope.event import notify
-from zope.interface import implementer
+from zope.interface import implements
 from zope.lifecycleevent import ObjectModifiedEvent
 
 import transaction
@@ -36,8 +34,8 @@ except ImportError:
     TUS_ENABLED = False
 
 
-@implementer(IFolderContentsView)
 class FolderContentsView(BrowserView):
+    implements(IFolderContentsView)
 
     def __call__(self):
         site = getSite()

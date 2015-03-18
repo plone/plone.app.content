@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from z3c.form import field
-from z3c.form import form
-from zope.interface import Interface
 from zope.publisher.browser import BrowserView
+from zope.interface import Interface
 from zope.schema import Datetime
 from zope.schema.fieldproperty import FieldProperty
+from z3c.form import form, field
 
 
 class IContentStatusHistoryDates(Interface):
@@ -17,22 +15,18 @@ class IContentStatusHistoryDates(Interface):
     effective_date = Datetime(
         title=_(u"label_effective_date",
                 default=u"Publishing Date"),
-        description=_(
-            u"help_effective_date",
-            default=u"The date when the item will be published. If no "
-                    u"date is selected the item will be published immediately."
-        ),
+        description=_(u"help_effective_date",
+                      default=u"The date when the item will be published. If no "
+                              u"date is selected the item will be published immediately."),
         required=False)
 
     expiration_date = Datetime(
         title=_(u"label_expiration_date",
                 default=u"Expiration Date"),
-        description=_(
-            u"help_expiration_date",
-            default=u"The date when the item expires. This will automatically "
-                    u"make the item invisible for others at the given date."
-                    u"If no date is chosen, it will never expire."
-            ),
+        description=_(u"help_expiration_date",
+                      default=u"The date when the item expires. This will automatically "
+                              u"make the item invisible for others at the given date."
+                              u"If no date is chosen, it will never expire."),
         required=False)
 
 
@@ -41,12 +35,8 @@ class ContentStatusHistoryDatesForm(form.Form):
     ignoreContext = True
     label = "Content status history dates"
 
-    effective_date = FieldProperty(
-        IContentStatusHistoryDates['effective_date']
-    )
-    expiration_date = FieldProperty(
-        IContentStatusHistoryDates['expiration_date']
-    )
+    effective_date = FieldProperty(IContentStatusHistoryDates['effective_date'])
+    expiration_date = FieldProperty(IContentStatusHistoryDates['expiration_date'])
 
 
 class ContentStatusHistoryView(BrowserView):
@@ -66,17 +56,11 @@ class ContentStatusHistoryView(BrowserView):
                  include_children=False, *args):
 
         data = self.dates_form.extractData()
-        if self.request.get('form.widgets.effective_date-calendar', None) \
-           and data:
-            effective_date = data[0]['effective_date'].strftime(
-                "%Y-%m-%d %H:%M"
-            )
+        if self.request.get('form.widgets.effective_date-calendar', None) and data:
+            effective_date = data[0]['effective_date'].strftime("%Y-%m-%d %H:%M")
 
-        if self.request.get('form.widgets.expiration_date-calendar', None) \
-           and data:
-            expiration_date = data[0]['expiration_date'].strftime(
-                "%Y-%m-%d %H:%M"
-            )
+        if self.request.get('form.widgets.expiration_date-calendar', None) and data:
+            expiration_date = data[0]['expiration_date'].strftime("%Y-%m-%d %H:%M")
 
         if self.request.get('form.button.Cancel', None):
             return self.request.RESPONSE.redirect(

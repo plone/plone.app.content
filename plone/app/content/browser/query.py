@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from Products.Five import BrowserView
-from plone.app.querystring.interfaces import IQuerystringRegistryReader
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 import json
+from plone.registry.interfaces import IRegistry
+from plone.app.querystring.interfaces import IQuerystringRegistryReader
+from zope.component import getUtility
+from Products.Five import BrowserView
 
 
 class QueryStringIndexOptions(BrowserView):

@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
+from urllib import quote_plus
+
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+from plone.memoize.instance import memoize
+from plone.memoize.request import memoize_diy_request
+from zope.component import getMultiAdapter, queryUtility
+from zope.i18n import translate
+from zope.publisher.browser import BrowserView
+
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
 from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.i18n.normalizer.interfaces import IIDNormalizer
-from plone.memoize.instance import memoize
-from plone.memoize.request import memoize_diy_request
-from urllib import quote_plus
-from zope.component import getMultiAdapter
-from zope.component import queryUtility
-from zope.i18n import translate
-from zope.publisher.browser import BrowserView
 
 
 @memoize_diy_request(arg=0)
