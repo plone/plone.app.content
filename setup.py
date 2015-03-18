@@ -41,7 +41,7 @@ setup(
         'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
         'Products.CMFPlone',
         'Zope2',
-        'plone.app.widgets>=2.0.0.dev0',
+        'plone.app.widgets>=2.0.0.dev0'
         'plone.batching',
         'plone.i18n',
         'plone.memoize',
