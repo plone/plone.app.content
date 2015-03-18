@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import Implicit
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.adding import ContentAdding

@@ -1,13 +1,13 @@
+# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
-
-import json
-import mimetypes
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.app.dexterity.interfaces import IDXFileFactory
+from plone.dexterity.interfaces import IDexterityFTI
 from plone.uuid.interfaces import IUUID
-import os
+import json
 import logging
+import mimetypes
+import os
 
 logger = logging.getLogger('plone')
 

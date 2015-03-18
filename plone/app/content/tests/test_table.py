@@ -1,6 +1,8 @@
-from zope.component.testing import setUp, tearDown
-import unittest
+# -*- coding: utf-8 -*-
+from zope.component.testing import setUp
+from zope.component.testing import tearDown
 import doctest
+import unittest
 
 
 def test_suite():

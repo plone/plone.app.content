@@ -1,27 +1,26 @@
+# -*- coding: utf-8 -*-
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer import FILENAME_REGEX
-from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from plone.i18n.normalizer.interfaces import IURLNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
+from zExceptions import BadRequest
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
-from zope.interface import implements
-
-from Acquisition import aq_inner, aq_base
-from zExceptions import BadRequest
-
-from plone.app.content.interfaces import INameFromTitle
+from zope.interface import implementer
 import time
 
 ATTEMPTS = 100
 
 
+@implementer(INameChooser)
 class NormalizingNameChooser(object):
     """A name chooser for a Zope object manager.
 
     If the object is adaptable to or provides INameFromTitle, use the
     title to generate a name.
     """
-
-    implements(INameChooser)
 
     def __init__(self, context):
         self.context = context
@@ -93,15 +92,18 @@ class NormalizingNameChooser(object):
         """
         parent = aq_inner(self.context)
         _check_id = getattr(obj, 'check_id', None)
-        if _check_id is not None:
-            def do_Plone_check(id, required):
-                return _check_id(id, required=required, contained_by=parent)
-            check_id = lambda id, required: do_Plone_check(id, required)
-        else:
-            def do_OFS_check(parent, id):
-                try:
-                    parent._checkId(id)
-                except BadRequest:
-                    return True
-            check_id = lambda id, required: do_OFS_check(parent, id)
-        return check_id
+
+        def do_Plone_check(newid, required):
+            if _check_id is not None:
+                return _check_id(
+                    newid,
+                    required=required,
+                    contained_by=parent
+                )
+            # fallback to OFS
+            try:
+                parent._checkId(newid)
+            except BadRequest:
+                return True
+
+        return do_Plone_check

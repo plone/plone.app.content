@@ -1,10 +1,9 @@
-import json
-
+# -*- coding: utf-8 -*-
+from Products.Five.browser import BrowserView
 from plone.memoize import ram
 from zope.component import queryUtility
 from zope.i18n.interfaces import ITranslationDomain
-
-from Products.Five.browser import BrowserView
+import json
 
 
 def _cache_key(method, self, domain, language):

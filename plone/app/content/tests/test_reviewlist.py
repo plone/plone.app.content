@@ -1,8 +1,8 @@
+# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
-import transaction
-
 from plone.app.testing.bbb import PloneTestCase
 from plone.testing.z2 import Browser
+import transaction
 
 
 class ReviewListTestCase(PloneTestCase):

@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
-from plone.app.content.testing import (
-    PLONE_APP_CONTENT_DX_INTEGRATION_TESTING,
-    PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
-)
+from DateTime import DateTime
+from Products.CMFCore.utils import getToolByName
+from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import setRoles
-
-from zope.publisher.browser import TestRequest
-from plone.uuid.interfaces import IUUID
-import unittest
-from plone.protect.authenticator import createToken
-import json
-from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
 from plone.dexterity.fti import DexterityFTI
+from plone.protect.authenticator import createToken
+from plone.uuid.interfaces import IUUID
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
+from zope.publisher.browser import TestRequest
+import json
+import unittest
 
 
 class BaseTest(unittest.TestCase):
