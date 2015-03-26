@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.3 (unreleased)
+3.0.3 (2015-03-26)
 ------------------
 
 - pep8, flake8, utf8-headers et al cleanup.
