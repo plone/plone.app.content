@@ -4,7 +4,8 @@ Changelog
 3.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Translate folder contents add menu
+  [vangheem]
 
 
 3.0.3 (2015-03-26)

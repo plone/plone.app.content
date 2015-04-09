@@ -26,6 +26,7 @@ from zope.component.hooks import getSite
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import implementer
+from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent
 
 import transaction
@@ -530,8 +531,15 @@ class ContextInfo(BrowserView):
         factories_menu = getUtility(
             IBrowserMenu, name='plone_contentmenu_factory',
             context=self.context).getMenuItems(self.context, self.request)
-        factories_menu = [m for m in factories_menu
-                          if m.get('title') != 'folder_add_settings']
+        factories = []
+        for item in factories_menu:
+            if item.get('title') == 'folder_add_settings':
+                continue
+            factories.append({
+                'id': item.get('id'),
+                'title': translate(item.get('title', '')),
+                'action': item.get('action')
+                })
 
         context = aq_inner(self.context)
         crumbs = []
@@ -564,7 +572,7 @@ class ContextInfo(BrowserView):
                     val = val[len(base_path):]
                 item[key] = val
         return json_dumps({
-            'addButtons': factories_menu,
+            'addButtons': factories,
             'defaultPage': self.context.getDefaultPage(),
             'breadcrumbs': [c for c in reversed(crumbs)],
             'object': item
