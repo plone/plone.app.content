@@ -30,7 +30,7 @@ class IContentStatusHistoryDates(Interface):
         description=_(
             u"help_expiration_date",
             default=u"The date when the item expires. This will automatically "
-                    u"make the item invisible for others at the given date."
+                    u"make the item invisible for others at the given date. "
                     u"If no date is chosen, it will never expire."
             ),
         required=False)
