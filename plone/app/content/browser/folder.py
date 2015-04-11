@@ -28,7 +28,6 @@ from zope.event import notify
 from zope.interface import implementer
 from zope.i18n import translate
 from zope.lifecycleevent import ObjectModifiedEvent
-
 import transaction
 
 try:
@@ -62,56 +61,64 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': {
-                'id': 'ID',
-                'Title': 'Title',
-                'ModificationDate': 'Last modified',
-                'EffectiveDate': 'Published',
-                'CreationDate': 'Created',
-                'review_state': 'Review state',
-                'Subject': 'Tags',
-                'Type': 'Type',
-                'is_folderish': 'Folder',
-                'exclude_from_nav': 'Excluded from nav',
-                'getObjSize': 'Object Size',
-                'last_comment_date': 'Last comment date',
-                'total_comments': 'Total comments',
+                'id': _('ID'),
+                'Title': _('Title'),
+                'ModificationDate': _('Last modified'),
+                'EffectiveDate': _('Published'),
+                'CreationDate': _('Created'),
+                'review_state': _('Review state'),
+                'Subject': _('Tags'),
+                'Type': _('Type'),
+                'is_folderish': _('Folder'),
+                'exclude_from_nav': _('Excluded from nav'),
+                'getObjSize': _('Object Size'),
+                'last_comment_date': _('Last comment date'),
+                'total_comments': _('Total comments'),
             },
             'buttonGroups': {
                 'primary': [{
-                    'title': 'Cut',
+                    'id': 'cut',
+                    'title': _('Cut'),
                 }, {
-                    'title': 'Copy',
+                    'id': 'copy',
+                    'title': _('Copy'),
                 }, {
-                    'title': 'Paste',
+                    'id': 'paste',
+                    'title': _('Paste'),
                     'url': base_url + '/@@fc-paste'
                 }, {
-                    'title': 'Delete',
+                    'id': 'delete',
+                    'title': _('Delete'),
                     'url': base_url + '/@@fc-delete',
                     'context': 'danger',
                     'icon': 'trash'
                 }],
                 'secondary': [{
-                    'title': 'Workflow',
+                    'id': 'workflow',
+                    'title': _('Workflow'),
                     'url': base_url + '/@@fc-workflow'
                 }, {
-                    'title': 'Tags',
+                    'id': 'tags',
+                    'title': _('Tags'),
                     'url': base_url + '/@@fc-tags'
                 }, {
-                    'title': 'Properties',
+                    'id': 'properties',
+                    'title': _('Properties'),
                     'url': base_url + '/@@fc-properties'
                 }, {
-                    'title': 'Rename',
+                    'id': 'rename',
+                    'title': _('Rename'),
                     'url': base_url + '/@@fc-rename'
                 }]
             },
             'rearrange': {
                 'properties': {
-                    'id': 'ID',
-                    'sortable_title': 'Title',
-                    'modified': 'Last Modified',
-                    'created': 'Created on',
-                    'effective': 'Publication Date',
-                    'Type': 'Type'
+                    'id': _('ID'),
+                    'sortable_title': _('Title'),
+                    'modified': _('Last Modified'),
+                    'created': _('Created on'),
+                    'effective': _('Publication Date'),
+                    'Type': _('Type')
                 },
                 'url': '%s{path}/@@fc-rearrange' % base_url
             },
