@@ -61,64 +61,76 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': {
-                'id': _('ID'),
-                'Title': _('Title'),
-                'ModificationDate': _('Last modified'),
-                'EffectiveDate': _('Published'),
-                'CreationDate': _('Created'),
-                'review_state': _('Review state'),
-                'Subject': _('Tags'),
-                'Type': _('Type'),
-                'is_folderish': _('Folder'),
-                'exclude_from_nav': _('Excluded from nav'),
-                'getObjSize': _('Object Size'),
-                'last_comment_date': _('Last comment date'),
-                'total_comments': _('Total comments'),
+                'id': translate(_('ID'), context=self.request),
+                'Title': translate(_('Title'), context=self.request),
+                'ModificationDate': translate(_('Last modified'),
+                    context=self.request),
+                'EffectiveDate': translate(_('Published'),
+                    context=self.request),
+                'CreationDate': translate(_('Created'),
+                    context=self.request),
+                'review_state': translate(_('Review state'),
+                    context=self.request),
+                'Subject': translate(_('Tags'), context=self.request),
+                'Type': translate(_('Type'), context=self.request),
+                'is_folderish': translate(_('Folder'), context=self.request),
+                'exclude_from_nav': translate(_('Excluded from nav'),
+                    context=self.request),
+                'getObjSize': translate(_('Object Size'),
+                    context=self.request),
+                'last_comment_date': translate(_('Last comment date'),
+                    context=self.request),
+                'total_comments': translate(_('Total comments'),
+                    context=self.request),
             },
             'buttonGroups': {
                 'primary': [{
                     'id': 'cut',
-                    'title': _('Cut'),
+                    'title': translate(_('Cut'), context=self.request),
                 }, {
                     'id': 'copy',
-                    'title': _('Copy'),
+                    'title': translate(_('Copy'), context=self.request),
                 }, {
                     'id': 'paste',
-                    'title': _('Paste'),
+                    'title': translate(_('Paste'), context=self.request),
                     'url': base_url + '/@@fc-paste'
                 }, {
                     'id': 'delete',
-                    'title': _('Delete'),
+                    'title': translate(_('Delete'), context=self.request),
                     'url': base_url + '/@@fc-delete',
                     'context': 'danger',
                     'icon': 'trash'
                 }],
                 'secondary': [{
                     'id': 'workflow',
-                    'title': _('Workflow'),
+                    'title': translate(_('Workflow'), context=self.request),
                     'url': base_url + '/@@fc-workflow'
                 }, {
                     'id': 'tags',
-                    'title': _('Tags'),
+                    'title': translate(_('Tags'), context=self.request),
                     'url': base_url + '/@@fc-tags'
                 }, {
                     'id': 'properties',
-                    'title': _('Properties'),
+                    'title': translate(_('Properties'), context=self.request),
                     'url': base_url + '/@@fc-properties'
                 }, {
                     'id': 'rename',
-                    'title': _('Rename'),
+                    'title': translate(_('Rename'), context=self.request),
                     'url': base_url + '/@@fc-rename'
                 }]
             },
             'rearrange': {
                 'properties': {
-                    'id': _('ID'),
-                    'sortable_title': _('Title'),
-                    'modified': _('Last Modified'),
-                    'created': _('Created on'),
-                    'effective': _('Publication Date'),
-                    'Type': _('Type')
+                    'id': translate(_('ID'), context=self.request),
+                    'sortable_title': translate(_('Title'),
+                        context=self.request),
+                    'modified': translate(_('Last Modified'),
+                        context=self.request),
+                    'created': translate(_('Created on'),
+                        context=self.request),
+                    'effective': translate(_('Publication Date'),
+                        context=self.request),
+                    'Type': translate(_('Type'), context=self.request)
                 },
                 'url': '%s{path}/@@fc-rearrange' % base_url
             },
