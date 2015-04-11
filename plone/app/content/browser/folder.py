@@ -215,9 +215,13 @@ class FolderContentsActionView(BrowserView):
         else:
             msg = self.failure_msg
 
+        translated_msg = translate(msg, context=self.request)
+        translated_errors = [translate(error, context=self.request)
+                             for error in self.errors]
+
         return self.json({
             'status': 'success',
-            'msg': '%s: %s' % (msg, '\n'.join(self.errors))
+            'msg': '%s: %s' % (translated_msg, '\n'.join(translated_errors))
         })
 
 
@@ -424,8 +428,8 @@ class WorkflowAction(FolderContentsActionView):
             except ConflictError:
                 raise
             except Exception:
-                self.errors.append('Could not transition: %s' % (
-                    self.objectTitle(obj)))
+                self.errors.append(_('Could not transition: ${title}',
+                    mapping={'title': self.objectTitle(obj)}))
 
 
 class PropertiesAction(FolderContentsActionView):
@@ -554,9 +558,11 @@ class ContextInfo(BrowserView):
         for item in factories_menu:
             if item.get('title') == 'folder_add_settings':
                 continue
+            title = item.get('title', '')
             factories.append({
                 'id': item.get('id'),
-                'title': translate(item.get('title', '')),
+                'title': title and translate(title,
+                    context=self.request) or '',
                 'action': item.get('action')
                 })
 
@@ -624,5 +630,5 @@ class Rearrange(FolderContentsActionView):
             for idx, brain in enumerate(brains):
                 ordering.moveObjectToPosition(brain.id, idx)
         else:
-            self.errors.append(u'cannot rearrange folder')
+            self.errors.append(_(u'cannot rearrange folder'))
         return self.message()
