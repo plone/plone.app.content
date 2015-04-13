@@ -10,6 +10,7 @@ from plone.app.testing import setRoles
 from plone.dexterity.fti import DexterityFTI
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
+from Testing.makerequest import makerequest
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
@@ -26,6 +27,7 @@ class BaseTest(unittest.TestCase):
 
         self.portal.invokeFactory('Document', id="page", title="page")
         self.portal.page.reindexObject()
+
         self.request = TestRequest(
             environ={
                 'HTTP_ACCEPT_LANGUAGE': 'en',
@@ -220,3 +222,75 @@ class ContextInfoTest(BaseTest):
         result = json.loads(view())
         self.assertEquals(result['object']['Title'], 'page')
         self.assertTrue(len(result['breadcrumbs']) > 0)
+
+
+class DeleteDXTest(BaseTest):
+    """Verify delete behavior from the folder contents view"""
+
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+        self.portal.invokeFactory('Document', id="page", title="page")
+        self.portal.page.reindexObject()
+
+        self.env = {'HTTP_ACCEPT_LANGUAGE': 'en', 'REQUEST_METHOD': 'POST'}
+        self.request = makerequest(self.layer['app']).REQUEST
+        self.request.environ.update(self.env)
+        self.request.form = {
+            'selection': '["' + IUUID(self.portal.page) + '"]',
+            '_authenticator': createToken(),
+            'folder': '/'
+        }
+        self.request.REQUEST_METHOD = 'POST'
+
+    def make_request(self):
+        request = makerequest(self.layer['app'], environ=self.env).REQUEST
+        self.request.environ.update(self.env)
+        request.REQUEST_METHOD = 'POST'
+        return request
+
+    def test_delete_object(self):
+        from plone.app.content.browser.folder import DeleteAction
+        page_id = self.portal.page.id
+        self.assertTrue(page_id in self.portal)
+        view = DeleteAction(self.portal, self.request)
+        view()
+        self.assertTrue(page_id not in self.portal)
+
+    def test_delete_wrong_object_by_acquisition(self):
+        page_id = self.portal.page.id
+        f1 = self.portal.invokeFactory('Folder', id="f1", title="folder one")
+        # created a nested page with the same id as the one at the site root
+        p1 = self.portal[f1].invokeFactory('Document', id=page_id, title="page")
+        self.assertEquals(p1, page_id)
+        request2 = self.make_request()
+
+        # both pages exist before we delete on
+        for location in [self.portal, self.portal[f1]]:
+            self.assertTrue(p1 in location)
+
+        # instantiate two different views and delete the same object with each
+        from plone.app.content.browser.folder import DeleteAction
+        object_uuid = IUUID(self.portal[f1][p1])
+        for req in [self.request, request2]:
+            req.form = {
+                'selection': '["{}"]'.format(object_uuid),
+                '_authenticator': createToken(),
+                'folder': '/{}/'.format(f1)
+            }
+            view = DeleteAction(self.portal, req)
+            view()
+
+        # the root page exists, the nested one is gone
+        self.assertTrue(p1 in self.portal)
+        self.assertFalse(p1 in self.portal[f1])
+
+
+
+class DeleteATTest(DeleteDXTest):
+
+    layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING

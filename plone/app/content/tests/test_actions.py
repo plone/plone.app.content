@@ -106,9 +106,9 @@ class ActionsDXTestCase(unittest.TestCase):
 
         creates the following content structure:
 
-        ├── f1
-        │   └── test
-        └── test
+        |-- f1
+        |   |-- test
+        |-- test
         """
         # create a page at the root and one nested with the same id.
         p1 = self.portal.invokeFactory(
