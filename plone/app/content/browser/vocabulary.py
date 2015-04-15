@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.Five import BrowserView
 from logging import getLogger
 from plone.app.content.utils import json_dumps
@@ -193,7 +193,7 @@ class VocabularyView(BaseVocabularyView):
         authorized = None
         sm = getSecurityManager()
         if (factory_name not in _permissions or
-                not IPloneSiteRoot.providedBy(context)):
+                not INavigationRoot.providedBy(context)):
             # Check field specific permission
             if field_name:
                 permission_checker = queryAdapter(context,
