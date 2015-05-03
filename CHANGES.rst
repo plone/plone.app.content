@@ -4,6 +4,9 @@ Changelog
 3.0.4 (unreleased)
 ------------------
 
+- provide _authenticator token on old style createObject factory views
+  [vangheem]
+
 - Translate folder contents add menu
   [vangheem]
 

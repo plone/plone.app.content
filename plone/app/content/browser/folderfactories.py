@@ -8,6 +8,7 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
+from plone.protect.authenticator import createToken
 from urllib import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
@@ -82,6 +83,7 @@ class FolderFactoriesView(BrowserView):
 
         addContext = self.add_context()
         baseUrl = addContext.absolute_url()
+        token = createToken()
 
         allowedTypes = _allowedTypes(request, addContext)
 
@@ -112,8 +114,8 @@ class FolderFactoriesView(BrowserView):
                     url = addAction['url']
 
                 if not url:
-                    url = '%s/createObject?type_name=%s' % (baseUrl,
-                                                            quote_plus(typeId))
+                    url = '%s/createObject?type_name=%s&_authenticator=%s' % (
+                        baseUrl, quote_plus(typeId), token)
 
                 icon = t.getIconExprObject()
                 if icon:
