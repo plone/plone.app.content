@@ -56,5 +56,6 @@ setup(
         'zope.publisher',
         'zope.schema',
         'zope.viewlet',
+        'plone.protect'
     ],
 )
