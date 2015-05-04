@@ -4,11 +4,20 @@ Changelog
 3.0.4 (unreleased)
 ------------------
 
+- add plone.protect as a dependency
+  [vangheem]
+
 - provide _authenticator token on old style createObject factory views
   [vangheem]
 
+- Solving https://github.com/plone/Products.CMFPlone/issues/440
+  [aleix]
+
 - Translate folder contents add menu
   [vangheem]
+
+- use same columns title in results and in displayed colums configuration
+  [vincent]
 
 
 3.0.3 (2015-03-26)
