@@ -37,7 +37,6 @@ setup(
     install_requires=[
         'Acquisition',
         'Products.CMFCore>=2.2.0dev',
-        'Products.CMFDefault',
         'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
         'Products.CMFPlone',
         'Zope2',
