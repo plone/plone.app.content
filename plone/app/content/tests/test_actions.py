@@ -101,6 +101,55 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser.getControl(name='form.buttons.Cancel').click()
         self.assertEqual(self.browser.url, folder.absolute_url())
 
+    def prepare_for_acquisition_tests(self):
+        """create content and an alternate authenticated browser session
+
+        creates the following content structure:
+
+        |-- f1
+        |   |-- test
+        |-- test
+        """
+        # create a page at the root and one nested with the same id.
+        p1 = self.portal.invokeFactory(
+            type_name='Document', id='test', title='Test Page at Root')
+        folder_1 = self.portal['f1']
+        p2 = folder_1.invokeFactory(
+            type_name='Document', id='test', title='Test Page in Folder')
+        contained_test_page = folder_1[p2]
+
+        transaction.commit()
+
+        # create an alternate browser also logged in with manager
+        browser_2 = Browser(self.layer['app'])
+        browser_2.handleErrors = False
+        browser_2.addHeader(
+            'Authorization', 'Basic {0}:{1}'.format(TEST_USER_NAME, 'secret'))
+
+        # return the id of the root page, the nested page itself, and the
+        # alternate browser
+        return p1, contained_test_page, browser_2
+
+    def test_delete_wrong_object_by_acquisition_with_action(self):
+        """exposes delete-by-acquisition bug using the delete action
+
+        see https://github.com/plone/Products.CMFPlone/issues/383
+        """
+        p1_id, page_2, browser_2 = self.prepare_for_acquisition_tests()
+
+        # open two different browsers to the 'delete confirmation' view
+        delete_url = page_2.absolute_url() + '/delete_confirmation'
+        self.browser.open(delete_url)
+        browser_2.open(delete_url)
+        self.assertTrue(p1_id in self.portal)
+        for browser in [self.browser, browser_2]:
+            browser.getControl(name='form.buttons.Delete').click()
+
+        # the nested folder should be gone, but the one at the root should
+        # remain.
+        self.assertFalse(page_2.id in self.portal['f1'])
+        self.assertTrue(p1_id in self.portal)
+
     def test_rename_form(self):
         logout()
         folder = self.portal['f1']

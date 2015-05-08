@@ -7,6 +7,11 @@ Changelog
 - Removed CMFDefault dependency
   [tomgross]
 
+- Ensure that content is not deleted by acquisition when the delete action is
+  used from a context that has already been deleted.  Provide tests to catch
+  regressions (see https://github.com/plone/Products.CMFPlone/issues/383)
+  [cewing]
+
 3.0.4 (2015-05-04)
 ------------------
 

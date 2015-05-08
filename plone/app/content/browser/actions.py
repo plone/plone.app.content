@@ -54,9 +54,18 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     def handle_delete(self, action):
         title = self.context.Title()
         parent = aq_parent(aq_inner(self.context))
-        parent.manage_delObjects(self.context.getId(), self.request)
-        IStatusMessage(self.request).add(
-            _(u'${title} has been deleted.', mapping={u'title': title}))
+
+        # has the context object been acquired from a place it should not have
+        # been?
+        if self.context.aq_chain == self.context.aq_inner.aq_chain:
+            parent.manage_delObjects(self.context.getId(), self.request)
+            IStatusMessage(self.request).add(
+                _(u'${title} has been deleted.', mapping={u'title': title}))
+        else:
+            IStatusMessage(self.request).add(
+                _(u'"{title}" has already been deleted',
+                  mapping={u'title': title})
+            )
 
         self.request.response.redirect(parent.absolute_url())
 
