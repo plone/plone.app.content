@@ -246,7 +246,7 @@ class ObjectPasteView(ObjectCutView):
             self.context.manage_pasteObjects(self.request['__cp'])
         except ConflictError:
             raise
-        except Unauthorized, e:
+        except Unauthorized as e:
             self.do_redirect(
                 self.canonical_object_url,
                 _(u'You are not authorized to paste here.'),
