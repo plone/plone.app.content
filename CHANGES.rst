@@ -4,6 +4,9 @@ Changelog
 3.0.2 (unreleased)
 ------------------
 
+- Fix a few minor issues on folder_constraintypes_form.
+  [fulv]
+
 - Add ``id`` to available columns of the ``folder_contents`` view.
   [thet]
 
