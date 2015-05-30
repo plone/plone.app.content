@@ -69,7 +69,7 @@ class IConstrainForm(Interface):
                         "main pulldown. "
                         "This is useful to indicate that these are not the "
                         "preferred types "
-                        "in this location, but are allowed if your really "
+                        "in this location, but are allowed if you really "
                         "need them."
                         ),
         value_type=Choice(
