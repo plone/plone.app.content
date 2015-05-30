@@ -49,7 +49,8 @@ class IConstrainForm(Interface):
         description=PC_("help_add_restriction_mode",
                         default="Select the restriction policy "
                         "in this location"),
-        vocabulary=possible_constrain_types
+        vocabulary=possible_constrain_types,
+        required=False,
     )
 
     allowed_types = List(
@@ -59,6 +60,7 @@ class IConstrainForm(Interface):
                         "in this location"),
         value_type=Choice(
             source="plone.app.content.ValidAddableTypes"),
+        required=False,
     )
 
     secondary_types = List(
@@ -74,6 +76,7 @@ class IConstrainForm(Interface):
                         ),
         value_type=Choice(
             source="plone.app.content.ValidAddableTypes"),
+        required=False,
     )
 
     @invariant
