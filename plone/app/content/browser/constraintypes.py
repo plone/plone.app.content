@@ -63,7 +63,8 @@ class IConstrainForm(Interface):
         description=PC_("help_add_restriction_mode",
                         default="Select the restriction policy "
                         "in this location"),
-        vocabulary=possible_constrain_types
+        vocabulary=possible_constrain_types,
+        required=False,
     )
 
     allowed_types = List(
@@ -73,6 +74,7 @@ class IConstrainForm(Interface):
                         "in this location"),
         value_type=Choice(
             source="plone.app.content.ValidAddableTypes"),
+        required=False,
     )
 
     secondary_types = List(
@@ -83,11 +85,12 @@ class IConstrainForm(Interface):
                         "main pulldown. "
                         "This is useful to indicate that these are not the "
                         "preferred types "
-                        "in this location, but are allowed if your really "
+                        "in this location, but are allowed if you really "
                         "need them."
                         ),
         value_type=Choice(
             source="plone.app.content.ValidAddableTypes"),
+        required=False,
     )
 
     @invariant
@@ -146,6 +149,10 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         self.widgets['secondary_types'].addClass('current_allow_form')
         self.widgets['constrain_types_mode'].addClass(
             'constrain_types_mode_form')
+
+    def updateActions(self):
+        super(ConstrainsFormView, self).updateActions()
+        self.actions['save'].addClass('context')
 
     @button.buttonAndHandler(u'Save')
     def handleSave(self, action):
