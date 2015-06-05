@@ -4,7 +4,14 @@ Changelog
 3.0.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- remove context class from cancel button on select_default_page fixes https://github.com/plone/Products.CMFPlone/issues/577
+  [vangheem]
+
+- Fixes issue #584 in plone/Products.CMFPlone.
+  [fulv]
+
+- use 'as' syntax for exception
+ [frentin]
 
 
 3.0.5 (2015-05-11)
