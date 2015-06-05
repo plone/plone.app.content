@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.6 (unreleased)
+3.0.6 (2015-06-05)
 ------------------
 
 - remove context class from cancel button on select_default_page fixes https://github.com/plone/Products.CMFPlone/issues/577
