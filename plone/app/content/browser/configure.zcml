@@ -163,7 +163,7 @@
         name="fileUpload"
         for="Products.CMFCore.interfaces._content.IFolderish"
         class=".file.FileUploadView"
-        permission="cmf.AddPortalContent"
+        permission="zope2.View"
         />
 
     <browser:page

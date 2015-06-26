@@ -4,6 +4,11 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- Make the ``@@fileUpload`` to not be guarded by the AddPortalContent
+  permission, and instead do that check in code, so we can return better
+  error message
+  [frapell]
+
 - Let ``@@getVocabulary`` return the vocabulary's value instead of the token
   for the id in the result set. The token is binary encoded and leads to
   encoding errors when selecting a value with non-ASCII data from vocabulary
