@@ -22,6 +22,7 @@ import itertools
 
 logger = getLogger(__name__)
 
+MAX_BATCH_SIZE = 500  # prevent overloading server
 
 _permissions = {
     'plone.app.vocabularies.Users': 'Modify portal content',
@@ -106,9 +107,12 @@ class BaseVocabularyView(BrowserView):
         if batch:
             # must be slicable for batching support
             page = int(batch['page'])
+            size = int(batch['size'])
+            if size > MAX_BATCH_SIZE:
+                raise Exception('Max batch size is 500')
             # page is being passed in is 1-based
-            start = (max(page - 1, 0)) * int(batch['size'])
-            end = start + int(batch['size'])
+            start = (max(page - 1, 0)) * size
+            end = start + size
             # Try __getitem__-based slice, then iterator slice.
             # The iterator slice has to consume the iterator through
             # to the desired slice, but that shouldn't be the end

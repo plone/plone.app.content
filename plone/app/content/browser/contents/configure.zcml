@@ -1,0 +1,123 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:i18n="http://namespaces.zope.org/i18n">
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    class=".FolderContentsView"
+    name="folder_contents"
+    template="templates/folder_contents.pt"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-itemOrder"
+    class=".ItemOrder"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-contextInfo"
+    class=".ContextInfo"
+    permission="cmf.ListFolderContents"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-setDefaultPage"
+    class=".SetDefaultPage"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-rearrange"
+    class=".Rearrange"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <!-- buttons -->
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-rename"
+    class=".rename.RenameActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".rename.RenameAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="rename" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-tags"
+    class=".tags.TagsActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".tags.TagsAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="tags" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-delete"
+    class=".delete.DeleteActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".delete.DeleteAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="delete" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-workflow"
+    class=".workflow.WorkflowActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".workflow.WorkflowAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="workflow" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-properties"
+    class=".properties.PropertiesActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".properties.PropertiesAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="properties" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-copy"
+    class=".copy.CopyActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".copy.CopyAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="copy" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-cut"
+    class=".cut.CutActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".cut.CutAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="cut" />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-paste"
+    class=".paste.PasteActionView"
+    permission="cmf.ListFolderContents"
+    />
+  <utility component=".paste.PasteAction"
+           provides="plone.app.content.interfaces.IStructureAction"
+           name="paste" />
+</configure>

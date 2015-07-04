@@ -1,0 +1,87 @@
+from DateTime import DateTime
+from Products.CMFCore.interfaces._content import IFolderish
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from ZODB.POSException import ConflictError
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from zope.interface import implements
+
+
+class WorkflowAction(object):
+    implements(IStructureAction)
+
+    template = ViewPageTemplateFile('templates/workflow.pt')
+    order = 7
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def get_options(self):
+        return {
+            'title': _('Workflow'),
+            'id': 'workflow',
+            'icon': 'lock',
+            'url': self.context.absolute_url() + '/@@fc-workflow',
+            'form': {
+                'title': _('Change workflow a selected items'),
+                'template': self.template(),
+                'dataUrl': self.context.absolute_url() + '/@@fc-workflow'
+            }
+        }
+
+
+class WorkflowActionView(ContentsBaseAction):
+    required_obj_permission = 'Modify portal content'
+    success_msg = _('Successly modified items')
+    failure_msg = _('Failed to modify items')
+
+    def __call__(self):
+        self.pworkflow = getToolByName(self.context, 'portal_workflow')
+        self.putils = getToolByName(self.context, 'plone_utils')
+        self.transition_id = self.request.form.get('transition', None)
+        self.comments = self.request.form.get('comments', '')
+        self.recurse = self.request.form.get('recurse', 'no') == 'yes'
+        if self.request.form.get('render') == 'yes':
+            # asking for render information
+            selection = self.get_selection()
+            catalog = getToolByName(self.context, 'portal_catalog')
+            brains = catalog(UID=selection)
+            transitions = []
+            for brain in brains:
+                obj = brain.getObject()
+                for transition in self.pworkflow.getTransitionsFor(obj):
+                    tdata = {
+                        'id': transition['id'],
+                        'title': transition['name']
+                    }
+                    if tdata not in transitions:
+                        transitions.append(tdata)
+            return self.json({
+                'transitions': transitions
+            })
+        else:
+            return super(WorkflowActionView, self).__call__()
+
+    def action(self, obj):
+        transitions = self.pworkflow.getTransitionsFor(obj)
+        if self.transition_id in [t['id'] for t in transitions]:
+            try:
+                # set effective date if not already set
+                if obj.EffectiveDate() == 'None':
+                    obj.setEffectiveDate(DateTime())
+
+                self.pworkflow.doActionFor(obj, self.transition_id,
+                                           comment=self.comments)
+                if self.putils.isDefaultPage(obj):
+                    self.action(obj.aq_parent.aq_parent)
+                if self.recurse and IFolderish.providedBy(obj):
+                    for sub in obj.values():
+                        self.action(sub)
+            except ConflictError:
+                raise
+            except Exception:
+                self.errors.append(
+                    _('Could not transition: ${title}', mapping={'title': self.objectTitle(obj)}))

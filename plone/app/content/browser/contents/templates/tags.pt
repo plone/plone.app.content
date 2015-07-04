@@ -1,0 +1,22 @@
+<div i18n:domain="plone">
+  <label i18n:translate="tags_to_remove">Tags to remove</label>
+  <div class="form-group">
+    <select multiple class="toremove pat-select2" name="toremove" style="width: 300px">
+      <% var tags = [];
+      _.each(items, function(item, index) {
+        _.each(item.Subject, function(tag) {
+          if(tags.indexOf(tag) === -1){
+            tags.push(tag);
+            %><option value="<%= tag %>"><%= tag %></option>
+            <%
+          }
+        });
+      }); %>
+    </select>
+  </div>
+  <label i18n:translate="tags_to_add">Tags to add</label>
+  <div class="form-group">
+    <input class="toadd pat-select2" style="width:300px" name="toadd"
+           data-pat-select2="multiple: true; vocabularyUrl: ${python: options['vocabulary_url']}"/>
+  </div>
+</div>

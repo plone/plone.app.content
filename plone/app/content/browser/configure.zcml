@@ -12,7 +12,7 @@
         />
 
     <!-- Folder contents -->
-    <include file="foldercontents.zcml" />
+    <include package=".contents" />
 
     <!-- Review list -->
     <browser:page

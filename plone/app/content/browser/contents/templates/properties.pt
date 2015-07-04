@@ -1,0 +1,41 @@
+<div i18n:domain="plone">
+  <div class="form-group">
+    <label i18n:translate="publiciation_date">Publication Date</label>
+    <input class="form-control pat-pickadate" name="effective" />
+  </div>
+  <div class="form-group">
+    <label i18n:translate="expiration_date">Expiration Date</label>
+    <input class="form-control pat-pickadate" name="expiration" />
+  </div>
+  <div class="form-group">
+    <label i18n:translate="copyright">Copyright</label>
+    <textarea class="form-control" name="copyright"></textarea>
+  </div>
+  <label i18n:translate="creators">Creators</label>
+  <div class="form-group">
+    <input name="creators" style="width: 300px"
+           class="pat-select2"
+           data-pat-select2="multiple: true;
+                             vocabularyUrl: ${python: options['vocabulary_url']}"/>
+  </div>
+  <label i18n:translate="contributors">Contributors</label>
+  <div class="form-group">
+    <input name="contributors" style="width: 300px"
+           class="pat-select2"
+           data-pat-select2="multiple: true;
+                             vocabularyUrl: ${python: options['vocabulary_url']}"/>
+  </div>
+  <label i18n:translate="exclude_from_nav">Exclude from nav</label>
+  <div class="radio">
+    <label>
+      <input type="radio" name="exclude-from-nav" value="yes" />
+      <span i18n:translate="yes">Yes</span>
+    </label>
+  </div>
+  <div class="radio">
+    <label>
+      <input type="radio" name="exclude-from-nav" value="no" />
+      <span i18n:translate="no">No</span>
+    </label>
+  </div>
+</div>

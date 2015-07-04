@@ -41,11 +41,7 @@ class BaseTest(unittest.TestCase):
         )
         self.request.REQUEST_METHOD = 'POST'
         alsoProvides(self.request, IAttributeAnnotatable)
-        self.userList = json.dumps([{
-            'id': 'one'
-        }, {
-            'id': 'two'
-        }])
+        self.userList = 'one,two'
 
 
 class DXBaseTest(BaseTest):
@@ -64,48 +60,46 @@ class DXBaseTest(BaseTest):
 class PropertiesDXTest(DXBaseTest):
 
     def testEffective(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['effectiveDate'] = '1999/01/01'
-        self.request.form['effectiveTime'] = '09:00'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['effectiveDate'] = '1999/01/01 09:00'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.effective_date,
                           DateTime('1999/01/01 09:00'))
 
     def testExpires(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['expirationDate'] = '1999/01/01'
-        self.request.form['expirationTime'] = '09:00'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['expirationDate'] = '1999/01/01 09:00'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.expiration_date,
                           DateTime('1999/01/01 09:00'))
 
     def testSetDexterityExcludeFromNav(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['exclude_from_nav'] = 'yes'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['exclude-from-nav'] = 'yes'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.exclude_from_nav, True)
 
     def testRights(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['copyright'] = 'foobar'
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.rights, 'foobar')
 
     def testContributors(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['contributors'] = self.userList
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.contributors, ('one', 'two'))
 
     def testCreators(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['creators'] = self.userList
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(
             self.portal.page.creators,
@@ -117,50 +111,48 @@ class PropertiesArchetypesTest(BaseTest):
     layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 
     def testExcludeFromNav(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['exclude_from_nav'] = 'yes'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['exclude-from-nav'] = 'yes'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.getExcludeFromNav(), True)
 
     def testEffective(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['effectiveDate'] = '1999/01/01'
-        self.request.form['effectiveTime'] = '09:00'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['effectiveDate'] = '1999/01/01 09:00'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(
             DateTime(self.portal.page.EffectiveDate()).toZone('UTC'),
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
     def testExpires(self):
-        from plone.app.content.browser.folder import PropertiesAction
-        self.request.form['expirationDate'] = '1999/01/01'
-        self.request.form['expirationTime'] = '09:00'
-        view = PropertiesAction(self.portal.page, self.request)
+        from plone.app.content.browser.contents.properties import PropertiesActionView
+        self.request.form['expirationDate'] = '1999/01/01 09:00'
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(
             DateTime(self.portal.page.ExpirationDate()).toZone('UTC'),
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
     def testRights(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['copyright'] = 'foobar'
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.Rights(), 'foobar')
 
     def testContributors(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['contributors'] = self.userList
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.Contributors(), ('one', 'two'))
 
     def testCreators(self):
-        from plone.app.content.browser.folder import PropertiesAction
+        from plone.app.content.browser.contents.properties import PropertiesActionView
         self.request.form['creators'] = self.userList
-        view = PropertiesAction(self.portal.page, self.request)
+        view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.Creators(), ('one', 'two'))
 
@@ -170,9 +162,9 @@ class WorkflowTest(BaseTest):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def testStateChange(self):
-        from plone.app.content.browser.folder import WorkflowAction
+        from plone.app.content.browser.contents.workflow import WorkflowActionView
         self.request.form['transition'] = 'publish'
-        view = WorkflowAction(self.portal.page, self.request)
+        view = WorkflowActionView(self.portal.page, self.request)
         view()
         workflowTool = getToolByName(self.portal, "portal_workflow")
         self.assertEquals(
@@ -185,29 +177,33 @@ class RenameTest(BaseTest):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def test_folder_rename_objects(self):
-        from plone.app.content.browser.folder import RenameAction
+        from plone.app.content.browser.contents.rename import RenameActionView
         uid = IUUID(self.portal.page)
         self.portal.invokeFactory('Document', id='page2', title='2nd page')
         uid2 = IUUID(self.portal.page2)
-        items = [
-            {'UID': uid, 'newid': 'I am UnSafe! ', 'newtitle': 'New!'},
-            {'UID': uid2, 'newid': '. ,;new id : _! ', 'newtitle': 'Newer!'},
-        ]
-        self.request.form['torename'] = json.dumps(items)
-        view = RenameAction(self.portal, self.request)
+        self.request.form.update({
+            'UID_0': uid,
+            'newid_0': 'I am UnSafe! ',
+            'newtitle_0': 'New!',
+            'UID_1': uid2,
+            'newid_1': '. ,;new id : _! ',
+            'newtitle_1': 'Newer!'
+        })
+        view = RenameActionView(self.portal, self.request)
         view()
         self.assertEqual(self.portal['i-am-unsafe'].title, "New!")
         self.assertEqual(self.portal['new-id-_'].title, "Newer!")
 
     def test_default_page_updated_on_rename_objects(self):
-        from plone.app.content.browser.folder import RenameAction
+        from plone.app.content.browser.contents.rename import RenameActionView
         self.portal.setDefaultPage('page')
         uid = IUUID(self.portal.page)
-        items = [
-            {'UID': uid, 'newid': 'page-renamed', 'newtitle': 'Page'},
-        ]
-        self.request.form['torename'] = json.dumps(items)
-        view = RenameAction(self.portal, self.request)
+        self.request.form.update({
+            'UID_0': uid,
+            'newid_0': 'page-renamed',
+            'newtitle_0': 'Page'
+        })
+        view = RenameActionView(self.portal, self.request)
         view()
         self.assertEqual(self.portal.default_page, 'page-renamed')
 
@@ -217,7 +213,7 @@ class ContextInfoTest(BaseTest):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def testStateChange(self):
-        from plone.app.content.browser.folder import ContextInfo
+        from plone.app.content.browser.contents import ContextInfo
         view = ContextInfo(self.portal.page, self.request)
         result = json.loads(view())
         self.assertEquals(result['object']['Title'], 'page')
@@ -254,10 +250,10 @@ class DeleteDXTest(BaseTest):
         return request
 
     def test_delete_object(self):
-        from plone.app.content.browser.folder import DeleteAction
+        from plone.app.content.browser.contents.delete import DeleteActionView
         page_id = self.portal.page.id
         self.assertTrue(page_id in self.portal)
-        view = DeleteAction(self.portal, self.request)
+        view = DeleteActionView(self.portal, self.request)
         view()
         self.assertTrue(page_id not in self.portal)
 
@@ -274,7 +270,7 @@ class DeleteDXTest(BaseTest):
             self.assertTrue(p1 in location)
 
         # instantiate two different views and delete the same object with each
-        from plone.app.content.browser.folder import DeleteAction
+        from plone.app.content.browser.contents.delete import DeleteActionView
         object_uuid = IUUID(self.portal[f1][p1])
         for req in [self.request, request2]:
             req.form = {
@@ -282,13 +278,12 @@ class DeleteDXTest(BaseTest):
                 '_authenticator': createToken(),
                 'folder': '/{}/'.format(f1)
             }
-            view = DeleteAction(self.portal, req)
+            view = DeleteActionView(self.portal, req)
             view()
 
         # the root page exists, the nested one is gone
         self.assertTrue(p1 in self.portal)
         self.assertFalse(p1 in self.portal[f1])
-
 
 
 class DeleteATTest(DeleteDXTest):

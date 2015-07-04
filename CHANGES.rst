@@ -4,6 +4,10 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- Update folder contents integration to be able to work in a way where
+  button actions can be provided by add-on products
+  [vangheem]
+
 - Make the ``@@fileUpload`` to not be guarded by the AddPortalContent
   permission, and instead do that check in code, so we can return better
   error message

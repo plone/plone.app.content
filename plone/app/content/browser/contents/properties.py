@@ -1,0 +1,90 @@
+from DateTime import DateTime
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from plone.dexterity.interfaces import IDexterityContent
+from zope.component.hooks import getSite
+from zope.interface import implements
+
+
+class PropertiesAction(object):
+    implements(IStructureAction)
+
+    template = ViewPageTemplateFile('templates/properties.pt')
+    order = 8
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def get_options(self):
+        site = getSite()
+        base_url = site.absolute_url()
+        base_vocabulary = '%s/@@getVocabulary?name=' % base_url
+        return {
+            'title': _('Properties'),
+            'id': 'properties',
+            'icon': 'edit',
+            'url': self.context.absolute_url() + '/@@fc-properties',
+            'form': {
+                'title': _('Modify properties on items'),
+                'template': self.template(
+                    vocabulary_url='%splone.app.vocabularies.Users' % (
+                        base_vocabulary)
+                    )
+            }
+        }
+
+
+class PropertiesActionView(ContentsBaseAction):
+    success_msg = _(u'Successfully updated metadata')
+    failure_msg = _(u'Failure updating metadata')
+    required_obj_permission = 'Modify portal content'
+
+    def __call__(self):
+        self.effectiveDate = self.request.form.get('effectiveDate')
+        self.expirationDate = self.request.form.get('expirationDate')
+        self.copyright = self.request.form.get('copyright')
+        self.contributors = self.request.form.get('contributors')
+        if self.contributors:
+            self.contributors = self.contributors.split(',')
+        else:
+            self.contributors = []
+        self.creators = self.request.form.get('creators', '')
+        if self.creators:
+            self.creators = self.creators.split(',')
+        self.exclude = self.request.form.get('exclude-from-nav')
+        return super(PropertiesActionView, self).__call__()
+
+    def dx_action(self, obj):
+        if self.effectiveDate and hasattr(obj, 'effective_date'):
+            obj.effective_date = DateTime(self.effectiveDate)
+        if self.expirationDate and hasattr(obj, 'expiration_date'):
+            obj.expiration_date = DateTime(self.expirationDate)
+        if self.copyright and hasattr(obj, 'rights'):
+            obj.rights = self.copyright
+        if self.contributors and hasattr(obj, 'contributors'):
+            obj.contributors = tuple(self.contributors)
+        if self.creators and hasattr(obj, 'creators'):
+            obj.creators = tuple(self.creators)
+        if self.exclude and hasattr(obj, 'exclude_from_nav'):
+            obj.exclude_from_nav = self.exclude == 'yes'
+
+    def action(self, obj):
+        if IDexterityContent.providedBy(obj):
+            self.dx_action(obj)
+        else:
+            if self.effectiveDate:
+                obj.setEffectiveDate(DateTime(self.effectiveDate))
+            if self.expirationDate:
+                obj.setExpirationDate(DateTime(self.expirationDate))
+            if self.copyright:
+                obj.setRights(self.copyright)
+            if self.contributors:
+                obj.setContributors(self.contributors)
+            if self.creators:
+                obj.setCreators(self.creators)
+            if self.exclude:
+                obj.setExcludeFromNav(self.exclude == 'yes')
+        obj.reindexObject()
