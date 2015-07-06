@@ -2,7 +2,6 @@
   <div class="form-group">
     <label i18n:translate="comments">Comments</label>
     <textarea class="form-control" rows="2" name="comments"></textarea>
-    <p class="help-block" i18n:translate="select_transition">Select the transition to be used for modifying the items state.</p>
   </div>
   <div class="form-group">
     <label i18n:translate="change_state">Change State</label>
