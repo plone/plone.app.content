@@ -214,7 +214,10 @@ class ItemOrder(ContentsBaseAction):
                     self.errors.append(_('Client/server ordering mismatch'))
                     return self.message()
 
-            ordering.moveObjectsByDelta([id], delta)
+            if not hasattr(ordering, 'moveObjectsByDelta'):
+                self.errors.append(_('This folder does not support ordering'))
+            else:
+                ordering.moveObjectsByDelta([id], delta)
         return self.message()
 
 
