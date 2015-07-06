@@ -25,7 +25,7 @@
            data-pat-select2="multiple: true;
                              vocabularyUrl: ${python: options['vocabulary_url']}"/>
   </div>
-  <label i18n:translate="exclude_from_nav">Exclude from nav</label>
+  <label i18n:translate="exclude_from_nav">Exclude from navigation</label>
   <div class="radio">
     <label>
       <input type="radio" name="exclude-from-nav" value="yes" />
