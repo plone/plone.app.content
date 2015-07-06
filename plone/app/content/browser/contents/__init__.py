@@ -151,7 +151,7 @@ class FolderContentsView(BrowserView):
                 'Subject': translate(_('Tags'), context=self.request),
                 'Type': translate(_('Type'), context=self.request),
                 'is_folderish': translate(_('Folder'), context=self.request),
-                'exclude_from_nav': translate(_('Excluded from nav'), context=self.request),
+                'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),
                 'getObjSize': translate(_('Object Size'), context=self.request),
                 'last_comment_date': translate(_('Last comment date'), context=self.request),
                 'total_comments': translate(_('Total comments'), context=self.request),
