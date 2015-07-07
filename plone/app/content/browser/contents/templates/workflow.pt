@@ -17,7 +17,7 @@
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox" name="recurse" />
+      <input type="checkbox" name="recurse" value="yes" />
       <span i18n:translate="include_contained">Include contained items?</span>
     </label>
     <p class="help-block" i18n:translate="if_checked_modify_contained">
