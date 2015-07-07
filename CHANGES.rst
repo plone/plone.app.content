@@ -4,6 +4,12 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- add portal_type to context info for folder contents pattern as it needs that data
+  [hgarus]
+
+- Give a decent error when ordering is not supported on a folder.
+  [vangheem]
+
 - Update folder contents integration to be able to work in a way where
   button actions can be provided by add-on products
   [vangheem]
