@@ -29,6 +29,7 @@ class DeleteAction(object):
                 'submitText': _('Yes'),
                 'submitContext': 'danger',
                 'template': self.template(),
+                'closeText': _('No')
             }
         }
 

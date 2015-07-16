@@ -4,6 +4,9 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- provide "no" button to delete on folder contents
+  [vangheem]
+
 - add portal_type to context info for folder contents pattern as it needs that data
   [hgarus]
 
