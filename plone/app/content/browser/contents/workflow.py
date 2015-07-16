@@ -21,7 +21,7 @@ class WorkflowAction(object):
 
     def get_options(self):
         return {
-            'title': _('Workflow'),
+            'title': _('State'),
             'id': 'workflow',
             'icon': 'lock',
             'url': self.context.absolute_url() + '/@@fc-workflow',

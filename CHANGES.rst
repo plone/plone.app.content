@@ -4,6 +4,9 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- Change "Workflow" to "State" in folder contents
+  [vangheem]
+
 - provide "no" button to delete on folder contents
   [vangheem]
 
