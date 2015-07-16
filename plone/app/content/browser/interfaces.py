@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zope.interface import Interface
-from zope.viewlet.interfaces import IViewletManager
 
 
 class IFolderContentsView(Interface):
@@ -18,14 +17,3 @@ class IFolderContentsView(Interface):
     def title():
         """Returns the title for the template.
         """
-
-
-class IFolderContentsViewletManager(IViewletManager):
-    """A viewlet manager for folder contents
-    """
-
-
-class IContentsPage(Interface):
-    """Marker interface which specifies that the current request is showing
-    the "folder contents page" of the object.
-    """
