@@ -50,6 +50,13 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         )
         return context_state.view_url()
 
+    def more_info(self):
+        adapter = queryMultiAdapter(
+            (self.context, self.request), name='delete_confirmation_info')
+        if adapter:
+            return adapter()
+        return ""
+
     @property
     def items_to_delete(self):
         catalog = getToolByName(self.context, 'portal_catalog')
