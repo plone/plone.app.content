@@ -58,7 +58,6 @@ class DeleteActionView(ContentsBaseAction):
                 confirm_view.checkObject(obj)
             self.request.response.setHeader('Content-Type', 'application/json')
             return json.dumps({
-                'success': True,
                 'html': confirm_view(True)
             })
         else:
