@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from zope.component import getMultiAdapter
+from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
+import json
 
 
 @implementer(IStructureAction)
@@ -31,7 +35,8 @@ class DeleteAction(object):
                 'submitText': _('Yes'),
                 'submitContext': 'danger',
                 'template': self.template(),
-                'closeText': _('No')
+                'closeText': _('No'),
+                'dataUrl': self.context.absolute_url() + '/@@fc-delete'
             }
         }
 
@@ -40,6 +45,24 @@ class DeleteActionView(ContentsBaseAction):
     required_obj_permission = delete_objects
     success_msg = _('Successfully delete items')
     failure_msg = _('Failed to delete items')
+
+    def __call__(self):
+        if self.request.form.get('render') == 'yes':
+            confirm_view = getMultiAdapter((getSite(), self.request),
+                                           name='delete_confirmation_info')
+            selection = self.get_selection()
+            catalog = getToolByName(self.context, 'portal_catalog')
+            brains = catalog(UID=selection)
+            for brain in brains:
+                obj = brain.getObject()
+                confirm_view.checkObject(obj)
+            self.request.response.setHeader('Content-Type', 'application/json')
+            return json.dumps({
+                'success': True,
+                'html': confirm_view(True)
+            })
+        else:
+            return super(DeleteActionView, self).__call__()
 
     def action(self, obj):
         parent = obj.aq_inner.aq_parent
