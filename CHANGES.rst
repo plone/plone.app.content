@@ -4,6 +4,10 @@ Changelog
 3.0.7 (unreleased)
 ------------------
 
+- Remove IFolderContentsViewletManager and IContentsPage as it's
+  not used in Plone 5 anymore.
+  [vangheem]
+
 - Change "Workflow" to "State" in folder contents
   [vangheem]
 
