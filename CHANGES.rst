@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.7 (unreleased)
+3.0.7 (2015-07-18)
 ------------------
 
 - Remove IFolderContentsViewletManager and IContentsPage as it's
