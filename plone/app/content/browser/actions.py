@@ -60,10 +60,10 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         if self.context.aq_chain == self.context.aq_inner.aq_chain:
             parent.manage_delObjects(self.context.getId(), self.request)
             IStatusMessage(self.request).add(
-                _(u'"${title}" has been deleted.', mapping={u'title': title}))
+                _(u'${title} has been deleted.', mapping={u'title': title}))
         else:
             IStatusMessage(self.request).add(
-                _(u'"${title}" has already been deleted',
+                _(u'"{title}" has already been deleted',
                   mapping={u'title': title})
             )
 

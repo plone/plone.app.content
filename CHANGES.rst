@@ -4,8 +4,7 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
-- Fix i18n of '"title" has already been deleted'.
-  [vincentfretin]
+- Nothing changed yet.
 
 
 3.0.7 (2015-07-18)
