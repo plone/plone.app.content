@@ -28,7 +28,7 @@ class PasteAction(object):
 
 class PasteActionView(ContentsBaseAction):
     required_obj_permission = 'Copy or Move'
-    success_msg = _('Successfully pasted items')
+    success_msg = _('Successly pasted items')
     failure_msg = _('Failed to paste items')
 
     def __call__(self):
