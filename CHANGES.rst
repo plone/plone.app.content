@@ -4,6 +4,9 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- Fix typo in some messages.
+  [vincentfretin]
+
 - Fix i18n of '"title" has already been deleted'.
   [vincentfretin]
 
