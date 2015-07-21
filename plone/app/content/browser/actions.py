@@ -63,7 +63,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                 _(u'${title} has been deleted.', mapping={u'title': title}))
         else:
             IStatusMessage(self.request).add(
-                _(u'"{title}" has already been deleted',
+                _(u'"${title}" has already been deleted',
                   mapping={u'title': title})
             )
 
