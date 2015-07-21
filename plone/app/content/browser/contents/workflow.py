@@ -35,7 +35,7 @@ class WorkflowAction(object):
 
 class WorkflowActionView(ContentsBaseAction):
     required_obj_permission = 'Modify portal content'
-    success_msg = _('Successly modified items')
+    success_msg = _('Successfully modified items')
     failure_msg = _('Failed to modify items')
 
     def __call__(self):

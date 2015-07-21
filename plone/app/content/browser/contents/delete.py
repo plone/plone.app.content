@@ -36,7 +36,7 @@ class DeleteAction(object):
 
 class DeleteActionView(ContentsBaseAction):
     required_obj_permission = delete_objects
-    success_msg = _('Successly delete items')
+    success_msg = _('Successfully delete items')
     failure_msg = _('Failed to delete items')
 
     def action(self, obj):
