@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -7,12 +8,13 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
-import transaction
 from zope.component import getMultiAdapter
 from zope.container.interfaces import INameChooser
 from zope.event import notify
+from zope.i18n import translate
 from zope.interface import implements
 from zope.lifecycleevent import ObjectModifiedEvent
+import transaction
 
 
 class RenameAction(object):
@@ -27,7 +29,7 @@ class RenameAction(object):
 
     def get_options(self):
         return {
-            'title': _('Rename'),
+            'title': translate(_('Rename'), context=self.request),
             'id': 'rename',
             'icon': 'random',
             'url': self.context.absolute_url() + '/@@fc-rename',

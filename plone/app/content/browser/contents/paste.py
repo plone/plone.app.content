@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from OFS.CopySupport import cookie_path
 from Products.CMFPlone import PloneMessageFactory as _
@@ -5,6 +6,7 @@ from ZODB.POSException import ConflictError
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from zope.component.hooks import getSite
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -19,7 +21,7 @@ class PasteAction(object):
 
     def get_options(self):
         return {
-            'title': _('Paste'),
+            'title': translate(_('Paste'), context=self.request),
             'id': 'paste',
             'icon': 'paste',
             'url': self.context.absolute_url() + '/@@fc-paste'

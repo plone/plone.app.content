@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
@@ -6,6 +7,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -21,7 +23,7 @@ class WorkflowAction(object):
 
     def get_options(self):
         return {
-            'title': _('State'),
+            'title': translate(_('State'), context=self.request),
             'id': 'workflow',
             'icon': 'lock',
             'url': self.context.absolute_url() + '/@@fc-workflow',
@@ -84,4 +86,5 @@ class WorkflowActionView(ContentsBaseAction):
                 raise
             except Exception:
                 self.errors.append(
-                    _('Could not transition: ${title}', mapping={'title': self.objectTitle(obj)}))
+                    _('Could not transition: ${title}',
+                      mapping={'title': self.objectTitle(obj)}))

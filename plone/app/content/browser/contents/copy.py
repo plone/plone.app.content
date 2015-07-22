@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from OFS.CopySupport import CopyError
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
@@ -7,6 +8,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from cgi import escape
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -21,7 +23,7 @@ class CopyAction(object):
 
     def get_options(self):
         return {
-            'title': _('Copy'),
+            'title': translate(_('Copy'), context=self.request),
             'id': 'copy',
             'icon': 'copy',
             'url': self.context.absolute_url() + '/@@fc-copy'
