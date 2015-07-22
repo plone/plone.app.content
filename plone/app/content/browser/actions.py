@@ -40,6 +40,15 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     template = ViewPageTemplateFile('templates/delete_confirmation.pt')
     enableCSRFProtection = True
 
+    def view_url(self):
+        ''' Facade to the homonymous plone_context_state method
+        '''
+        context_state = getMultiAdapter(
+            (self.context, self.request),
+            name='plone_context_state'
+        )
+        return context_state.view_url()
+
     @property
     def items_to_delete(self):
         catalog = getToolByName(self.context, 'portal_catalog')
@@ -72,7 +81,12 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     @button.buttonAndHandler(
         _(u'label_cancel', default=u'Cancel'), name='Cancel')
     def handle_cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
+        environ = self.request.environ
+        if environ.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            target = self.context.absolute_url()
+        else:
+            target = self.view_url()
+        return self.request.response.redirect(target)
 
 
 def valid_id(self):

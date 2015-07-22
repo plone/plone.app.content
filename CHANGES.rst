@@ -5,6 +5,8 @@ Changelog
 ------------------
 
 - Fix i18n of '"title" has already been deleted'.
+- When clicking cancel on the delete_confirmation got to the view_url.
+  [ale-rt]
 
 
 3.0.7 (2015-07-18)
