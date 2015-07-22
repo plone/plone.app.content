@@ -99,7 +99,11 @@ class ActionsDXTestCase(unittest.TestCase):
 
         self.browser.open(folder.absolute_url() + '/delete_confirmation')
         self.browser.getControl(name='form.buttons.Cancel').click()
-        self.assertEqual(self.browser.url, folder.absolute_url())
+        context_state = getMultiAdapter(
+            (folder, self.request),
+            name='plone_context_state'
+        )
+        self.assertEqual(self.browser.url, context_state.view_url())
 
     def prepare_for_acquisition_tests(self):
         """create content and an alternate authenticated browser session
