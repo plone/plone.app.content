@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -5,6 +6,7 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.dexterity.interfaces import IDexterityContent
 from zope.component.hooks import getSite
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -23,7 +25,7 @@ class PropertiesAction(object):
         base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % base_url
         return {
-            'title': _('Properties'),
+            'title': translate(_('Properties'), context=self.request),
             'id': 'properties',
             'icon': 'edit',
             'url': self.context.absolute_url() + '/@@fc-properties',

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from OFS.CopySupport import CopyError
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
@@ -8,6 +9,7 @@ from cgi import escape
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from webdav.Lockable import ResourceLockedError
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -22,7 +24,7 @@ class CutAction(object):
 
     def get_options(self):
         return {
-            'title': _('Cut'),
+            'title': translate(_('Cut'), context=self.request),
             'id': 'cut',
             'icon': 'scissors',
             'url': self.context.absolute_url() + '/@@fc-cut'

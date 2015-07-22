@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from zope.i18n import translate
 from zope.interface import implements
 
 
@@ -19,7 +21,7 @@ class DeleteAction(object):
 
     def get_options(self):
         return {
-            'title': _('Delete'),
+            'title': translate(_('Delete'), context=self.request),
             'id': 'delete',
             'icon': 'trash',
             'context': 'danger',
