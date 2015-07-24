@@ -3,9 +3,9 @@
   <div class="item">
     <div class="form-group">
       <input name="UID_<%= index %>" type="hidden" value="<%- item.UID %>" />
-      <label i18n:translate="title">Title</label>
+      <label i18n:translate="label_title">Title</label>
       <input class="form-control" name="newtitle_<%= index %>" value="<%= item.Title %>" />
-      <label i18n:translate="short_name">Short name</label>
+      <label i18n:translate="label_short_name">Short name</label>
       <input class="form-control" name="newid_<%= index %>" value="<%= item.id %>" />
     </div>
   </div>
