@@ -38,7 +38,7 @@ class TagsAction(object):
 
 class TagsActionView(ContentsBaseAction):
     required_obj_permission = 'Modify portal content'
-    success_msg = _('Successly updated tags on items')
+    success_msg = _('Successfully updated tags on items')
     failure_msg = _('Failed to modify tags on items')
 
     def action(self, obj):

@@ -32,7 +32,7 @@ class CutAction(object):
 
 
 class CutActionView(ContentsBaseAction):
-    success_msg = _('Successly cut items')
+    success_msg = _('Successfully cut items')
     failure_msg = _('Failed to cut items')
 
     def action(self, obj):

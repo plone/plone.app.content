@@ -31,7 +31,7 @@ class CopyAction(object):
 
 
 class CopyActionView(ContentsBaseAction):
-    success_msg = _('Successly copied items')
+    success_msg = _('Successfully copied items')
     failure_msg = _('Failed to copy items')
 
     def action(self, obj):
