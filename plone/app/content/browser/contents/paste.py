@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
-from OFS.CopySupport import cookie_path
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
 from plone.app.content.browser.contents import ContentsBaseAction
@@ -53,9 +52,4 @@ class PasteActionView(ContentsBaseAction):
                 _(u'You are not authorized to paste ${title} here.',
                     mapping={u'title': self.objectTitle(self.dest)}))
 
-        resp = self.request.response
-        resp.setCookie('__cp', 'deleted',
-                       path='%s' % cookie_path(self.request),
-                       expires='Wed, 31-Dec-97 23:59:59 GMT')
-        self.request['__cp'] = None
         return self.message()

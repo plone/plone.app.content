@@ -4,7 +4,11 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- Do not clear clipboard when pasting content
+  [vangheem]
+
 - Fix i18n of '"title" has already been deleted'.
+
 - When clicking cancel on the delete_confirmation got to the view_url.
   [ale-rt]
 
