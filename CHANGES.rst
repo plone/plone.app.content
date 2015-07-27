@@ -4,6 +4,10 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- Do not setDefaultPage in rename handler, there is already an subscriber that
+  do so in `Products.CMFDynamicViewFTI`.
+  [jensens]
+
 - Do not clear clipboard when pasting content
   [vangheem]
 

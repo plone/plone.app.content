@@ -143,13 +143,18 @@ class RenameForm(form.Form):
         newid = data['new_id']
         newid = INameChooser(parent).chooseName(newid, self.context)
 
-        context_state = getMultiAdapter(
-            (self.context, self.request), name='plone_context_state')
-        if context_state.is_default_page():
-            parent.setDefaultPage(newid)
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
+
         # Requires zope2.CopyOrMove permission
+
+        # manage_renameObjects fires 3 events:
+        # 1. ObjectWillBeMovedEvent before anything happens
+        # 2. ObjectMovedEvent directly after rename
+        # 3. zope.container.contained.notifyContainerModified directly after 2
+        # for 2+3 there are subscribers in Products.CMFDynamicViewFTI
+        # responsible to change (2) or unset (3) the default_page.
+
         parent.manage_renameObjects([oldid, ], [str(newid), ])
 
         transaction.savepoint(optimistic=True)
