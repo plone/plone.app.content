@@ -35,6 +35,7 @@ possible_tus_options = {
 
 TUS_ENABLED = False
 if os.environ.get('TUS_ENABLED'):
+    # tus resumable upload standard, see http://tus.io
     try:
         from tus import Tus, Zope2RequestAdapter
         tus_settings = {}
