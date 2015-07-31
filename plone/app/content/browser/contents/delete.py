@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class DeleteAction(object):
-    implements(IStructureAction)
 
     template = ViewPageTemplateFile('templates/delete.pt')
     order = 4

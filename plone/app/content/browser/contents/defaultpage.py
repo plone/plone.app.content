@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.content.browser.contents import ContentsBaseAction
+from Products.CMFPlone import PloneMessageFactory as _
 
 
 class SetDefaultPageActionView(ContentsBaseAction):

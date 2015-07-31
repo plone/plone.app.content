@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
 from plone.app.content.browser.contents import ContentsBaseAction
-from plone.folder.interfaces import IExplicitOrdering
 from plone.app.content.utils import json_loads
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.folder.interfaces import IExplicitOrdering
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 
 class OrderContentsBaseAction(ContentsBaseAction):

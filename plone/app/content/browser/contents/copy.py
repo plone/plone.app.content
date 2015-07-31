@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-from OFS.CopySupport import CopyError
+from cgi import escape
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
+from OFS.CopySupport import CopyError
 from OFS.CopySupport import eNotSupported
 from OFS.Moniker import Moniker
-from Products.CMFPlone import PloneMessageFactory as _
-from cgi import escape
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from Products.CMFPlone import PloneMessageFactory as _
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class CopyAction(object):
-    implements(IStructureAction)
 
     order = 2
 

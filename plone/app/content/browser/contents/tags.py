@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component.hooks import getSite
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class TagsAction(object):
-    implements(IStructureAction)
 
     template = ViewPageTemplateFile('templates/tags.pt')
     order = 6

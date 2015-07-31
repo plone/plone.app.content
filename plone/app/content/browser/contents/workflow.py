@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class WorkflowAction(object):
-    implements(IStructureAction)
 
     template = ViewPageTemplateFile('templates/workflow.pt')
     order = 7

@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
-from Products.CMFPlone import PloneMessageFactory as _
-from ZODB.POSException import ConflictError
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from Products.CMFPlone import PloneMessageFactory as _
+from ZODB.POSException import ConflictError
 from zope.component.hooks import getSite
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class PasteAction(object):
-    implements(IStructureAction)
 
     order = 3
 

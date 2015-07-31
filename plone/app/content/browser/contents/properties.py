@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.dexterity.interfaces import IDexterityContent
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component.hooks import getSite
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IStructureAction)
 class PropertiesAction(object):
-    implements(IStructureAction)
 
     template = ViewPageTemplateFile('templates/properties.pt')
     order = 8
