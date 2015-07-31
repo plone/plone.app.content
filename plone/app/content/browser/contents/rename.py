@@ -2,23 +2,23 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from zope.component import getMultiAdapter
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.i18n import translate
-from zope.interface import implements
+from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
 import transaction
 
 
+@implementer(IStructureAction)
 class RenameAction(object):
-    implements(IStructureAction)
 
     template = ViewPageTemplateFile('templates/rename.pt')
     order = 5

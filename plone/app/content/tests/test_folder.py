@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
-from Products.CMFCore.utils import getToolByName
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
 from Testing.makerequest import makerequest
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
@@ -60,7 +60,7 @@ class DXBaseTest(BaseTest):
 class PropertiesDXTest(DXBaseTest):
 
     def testEffective(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['effectiveDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -68,7 +68,7 @@ class PropertiesDXTest(DXBaseTest):
                           DateTime('1999/01/01 09:00'))
 
     def testExpires(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['expirationDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -76,28 +76,28 @@ class PropertiesDXTest(DXBaseTest):
                           DateTime('1999/01/01 09:00'))
 
     def testSetDexterityExcludeFromNav(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['exclude-from-nav'] = 'yes'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.exclude_from_nav, True)
 
     def testRights(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['copyright'] = 'foobar'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.rights, 'foobar')
 
     def testContributors(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['contributors'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.contributors, ('one', 'two'))
 
     def testCreators(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['creators'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -111,14 +111,14 @@ class PropertiesArchetypesTest(BaseTest):
     layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 
     def testExcludeFromNav(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['exclude-from-nav'] = 'yes'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.getExcludeFromNav(), True)
 
     def testEffective(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['effectiveDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -127,7 +127,7 @@ class PropertiesArchetypesTest(BaseTest):
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
     def testExpires(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['expirationDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -136,21 +136,21 @@ class PropertiesArchetypesTest(BaseTest):
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
     def testRights(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['copyright'] = 'foobar'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.Rights(), 'foobar')
 
     def testContributors(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['contributors'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
         self.assertEquals(self.portal.page.Contributors(), ('one', 'two'))
 
     def testCreators(self):
-        from plone.app.content.browser.contents.properties import PropertiesActionView
+        from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['creators'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
@@ -162,7 +162,7 @@ class WorkflowTest(BaseTest):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def testStateChange(self):
-        from plone.app.content.browser.contents.workflow import WorkflowActionView
+        from plone.app.content.browser.contents.workflow import WorkflowActionView  # noqa
         self.request.form['transition'] = 'publish'
         view = WorkflowActionView(self.portal.page, self.request)
         view()
@@ -261,7 +261,11 @@ class DeleteDXTest(BaseTest):
         page_id = self.portal.page.id
         f1 = self.portal.invokeFactory('Folder', id="f1", title="folder one")
         # created a nested page with the same id as the one at the site root
-        p1 = self.portal[f1].invokeFactory('Document', id=page_id, title="page")
+        p1 = self.portal[f1].invokeFactory(
+            'Document',
+            id=page_id,
+            title="page"
+        )
         self.assertEquals(p1, page_id)
         request2 = self.make_request()
 
@@ -287,5 +291,139 @@ class DeleteDXTest(BaseTest):
 
 
 class DeleteATTest(DeleteDXTest):
+
+    layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
+
+
+class RearrangeDXTest(BaseTest):
+    """Verify rearrange feature from the folder contents view"""
+
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+        self.portal.invokeFactory(
+            'Folder',
+            id="basefolder",
+            title="Folder Base"
+        )
+        self.bf = self.portal.basefolder
+        self.bf.reindexObject()
+        for idx in range(0, 5):
+            newid = "f{0:}".format(idx)
+            self.bf.invokeFactory(
+                'Folder',
+                id=newid,
+                # title in reverse order
+                title="Folder {0:}".format(4-idx)
+            )
+            self.bf[newid].reindexObject()
+
+        self.env = {'HTTP_ACCEPT_LANGUAGE': 'en', 'REQUEST_METHOD': 'POST'}
+        self.request = makerequest(self.layer['app']).REQUEST
+        self.request.environ.update(self.env)
+        self.request.form = {
+            'selection': '["' + IUUID(self.bf) + '"]',
+            '_authenticator': createToken(),
+            'folder': '/basefolder'
+        }
+        self.request.REQUEST_METHOD = 'POST'
+
+    def test_initial_order(self):
+        # just to be sure preconditions are fine
+        #
+        # initial ids are forward
+        # and titles are set reversed!
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.bf.contentItems()],
+            [
+                ('f0', 'Folder 4'),
+                ('f1', 'Folder 3'),
+                ('f2', 'Folder 2'),
+                ('f3', 'Folder 1'),
+                ('f4', 'Folder 0'),
+            ]
+        )
+
+    def test_rearrange_by_title(self):
+        from plone.app.content.browser.contents.rearrange import RearrangeActionView  # noqa
+        self.request.form.update({
+            'rearrange_on': 'sortable_title',
+        })
+        view = RearrangeActionView(self.bf, self.request)
+        view()
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.bf.contentItems()],
+            [
+                ('f4', 'Folder 0'),
+                ('f3', 'Folder 1'),
+                ('f2', 'Folder 2'),
+                ('f1', 'Folder 3'),
+                ('f0', 'Folder 4'),
+            ],
+        )
+
+    def test_item_order_move_to_top(self):
+        from plone.app.content.browser.contents.rearrange import ItemOrderActionView  # noqa
+        self.request.form.update({
+            'id': 'f2',
+            'delta': 'top',
+        })
+        view = ItemOrderActionView(self.bf, self.request)
+        view()
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.bf.contentItems()],
+            [
+                ('f2', 'Folder 2'),
+                ('f0', 'Folder 4'),
+                ('f1', 'Folder 3'),
+                ('f3', 'Folder 1'),
+                ('f4', 'Folder 0'),
+            ]
+        )
+
+    def test_item_order_move_to_bottom(self):
+        from plone.app.content.browser.contents.rearrange import ItemOrderActionView  # noqa
+        self.request.form.update({
+            'id': 'f2',
+            'delta': 'bottom',
+        })
+        view = ItemOrderActionView(self.bf, self.request)
+        view()
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.bf.contentItems()],
+            [
+                ('f0', 'Folder 4'),
+                ('f1', 'Folder 3'),
+                ('f3', 'Folder 1'),
+                ('f4', 'Folder 0'),
+                ('f2', 'Folder 2'),
+            ]
+        )
+
+    def test_item_order_move_by_delta(self):
+        from plone.app.content.browser.contents.rearrange import ItemOrderActionView  # noqa
+        self.request.form.update({
+            'id': 'f2',
+            'delta': '-1',
+        })
+        view = ItemOrderActionView(self.bf, self.request)
+        view()
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.bf.contentItems()],
+            [
+                ('f0', 'Folder 4'),
+                ('f2', 'Folder 2'),
+                ('f1', 'Folder 3'),
+                ('f3', 'Folder 1'),
+                ('f4', 'Folder 0'),
+            ]
+        )
+
+
+class RearrangeATTest(RearrangeDXTest):
 
     layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING

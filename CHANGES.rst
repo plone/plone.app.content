@@ -4,6 +4,12 @@ Changelog
 3.0.8 (unreleased)
 ------------------
 
+- Added basic test for folder contents "rearrange" and "item order" features.
+  Minor restructuring of actions in own files to have a consistent structure
+  (bbb imports in place). Minor changes in touched area regarding pep8,
+  code-analysis, et al.
+  [jensens]
+
 - Do not setDefaultPage in rename handler, there is already an subscriber that
   do so in `Products.CMFDynamicViewFTI`.
   [jensens]

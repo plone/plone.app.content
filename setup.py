@@ -30,23 +30,24 @@ setup(
     zip_safe=False,
     extras_require=dict(
         test=[
-            'plone.app.testing',
             'plone.app.contenttypes',
+            'plone.app.testing',
         ]
     ),
     install_requires=[
         'Acquisition',
-        'Products.CMFCore>=2.2.0dev',
-        'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
-        'Products.CMFPlone',
-        'Zope2',
         'plone.app.widgets>=2.0.0.dev0',
         'plone.batching',
         'plone.i18n',
         'plone.memoize',
+        'plone.protect',
+        'Products.CMFCore>=2.2.0dev',
+        'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
+        'Products.CMFPlone',
         'setuptools',
         'zope.component',
         'zope.container',
+        'zope.deferredimport',
         'zope.event',
         'zope.i18n',
         'zope.i18nmessageid',
@@ -55,6 +56,6 @@ setup(
         'zope.publisher',
         'zope.schema',
         'zope.viewlet',
-        'plone.protect'
+        'Zope2',
     ],
 )
