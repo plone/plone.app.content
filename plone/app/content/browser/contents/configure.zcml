@@ -14,13 +14,6 @@
 
   <browser:page
     for="Products.CMFCore.interfaces._content.IFolderish"
-    name="fc-itemOrder"
-    class=".ItemOrder"
-    permission="cmf.ModifyPortalContent"
-    />
-
-  <browser:page
-    for="Products.CMFCore.interfaces._content.IFolderish"
     name="fc-contextInfo"
     class=".ContextInfo"
     permission="cmf.ListFolderContents"
@@ -29,14 +22,21 @@
   <browser:page
     for="Products.CMFCore.interfaces._content.IFolderish"
     name="fc-setDefaultPage"
-    class=".SetDefaultPage"
+    class=".defaultpage.SetDefaultPageActionView"
+    permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+    for="Products.CMFCore.interfaces._content.IFolderish"
+    name="fc-itemOrder"
+    class=".rearrange.ItemOrderActionView"
     permission="cmf.ModifyPortalContent"
     />
 
   <browser:page
     for="Products.CMFCore.interfaces._content.IFolderish"
     name="fc-rearrange"
-    class=".Rearrange"
+    class=".rearrange.RearrangeActionView"
     permission="cmf.ModifyPortalContent"
     />
 
