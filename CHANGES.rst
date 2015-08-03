@@ -22,6 +22,9 @@ Changelog
 - When clicking cancel on the delete_confirmation got to the view_url.
   [ale-rt]
 
+- Fix deletion of objects with unicode charaters in the title.
+  [cillianderoiste]
+
 
 3.0.7 (2015-07-18)
 ------------------

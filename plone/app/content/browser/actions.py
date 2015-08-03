@@ -5,6 +5,7 @@ from Acquisition import aq_parent
 from OFS.CopySupport import CopyError
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
@@ -61,7 +62,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
 
     @button.buttonAndHandler(_(u'Delete'), name='Delete')
     def handle_delete(self, action):
-        title = self.context.Title()
+        title = safe_unicode(self.context.Title())
         parent = aq_parent(aq_inner(self.context))
 
         # has the context object been acquired from a place it should not have
