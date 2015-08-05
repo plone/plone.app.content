@@ -162,7 +162,6 @@ class FolderContentsView(BrowserView):
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': {
                 'id': translate(_('ID'), context=self.request),
-                'Title': translate(_('Title'), context=self.request),
                 'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
                 'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
                 'CreationDate': translate(_('Created on'), context=self.request),  # noqa
