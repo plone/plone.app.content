@@ -82,11 +82,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     @button.buttonAndHandler(
         _(u'label_cancel', default=u'Cancel'), name='Cancel')
     def handle_cancel(self, action):
-        environ = self.request.environ
-        if environ.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            target = self.context.absolute_url()
-        else:
-            target = self.view_url()
+        target = self.view_url()
         return self.request.response.redirect(target)
 
 
