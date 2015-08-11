@@ -53,12 +53,10 @@ class DeleteActionView(ContentsBaseAction):
             selection = self.get_selection()
             catalog = getToolByName(self.context, 'portal_catalog')
             brains = catalog(UID=selection)
-            for brain in brains:
-                obj = brain.getObject()
-                confirm_view.checkObject(obj)
+            items = [i.getObject() for i in brains]
             self.request.response.setHeader('Content-Type', 'application/json')
             return json.dumps({
-                'html': confirm_view(True)
+                'html': confirm_view(items)
             })
         else:
             return super(DeleteActionView, self).__call__()
