@@ -124,6 +124,11 @@ class RenameForm(form.Form):
                     u'Each item has a Short Name and a Title, which you can ' +
                     u'change by entering the new details below.')
 
+    def view_url(self):
+        context_state = getMultiAdapter(
+            (self.context, self.request), name='plone_context_state')
+        return context_state.view_url()
+
     @button.buttonAndHandler(_(u'Rename'), name='Rename')
     def handle_rename(self, action):
         data, errors = self.extractData()
@@ -161,12 +166,12 @@ class RenameForm(form.Form):
             _(u"Renamed '${oldid}' to '${newid}'.", mapping={
                 u'oldid': oldid, u'newid': newid}))
 
-        self.request.response.redirect(self.context.absolute_url())
+        self.request.response.redirect(self.view_url())
 
     @button.buttonAndHandler(_(u'label_cancel', default=u'Cancel'),
                              name='Cancel')
     def handle_cancel(self, action):
-        self.request.response.redirect(self.context.absolute_url())
+        self.request.response.redirect(self.view_url())
 
 
 class ObjectCutView(LockingBase):
@@ -185,6 +190,12 @@ class ObjectCutView(LockingBase):
             (self.context, self.request), name='plone_context_state')
         return context_state.canonical_object_url()
 
+    @property
+    def view_url(self):
+        context_state = getMultiAdapter(
+            (self.context, self.request), name='plone_context_state')
+        return context_state.view_url()
+
     def do_redirect(self, url, message=None, message_type='info',
                     raise_exception=None):
         if message is not None:
@@ -196,19 +207,19 @@ class ObjectCutView(LockingBase):
 
     def do_action(self):
         if self.is_locked:
-            return self.do_redirect(self.canonical_object_url,
+            return self.do_redirect(self.view_url,
                                     _(u'${title} is locked and cannot be cut.',
                                         mapping={'title': self.title, }))
 
         try:
             self.parent.manage_cutObjects(self.context.getId(), self.request)
         except CopyError:
-            return self.do_redirect(self.canonical_object_url,
+            return self.do_redirect(self.view_url,
                                     _(u'${title} is not moveable.',
                                         mapping={'title': self.title}))
 
         return self.do_redirect(
-            self.canonical_object_url,
+            self.view_url,
             _(u'${title} cut.', mapping={'title': self.title}),
             'info'
         )
@@ -229,11 +240,11 @@ class ObjectCopyView(ObjectCutView):
         try:
             self.parent.manage_copyObjects(self.context.getId(), self.request)
         except CopyError:
-            return self.do_redirect(self.canonical_object_url,
+            return self.do_redirect(self.view_url,
                                     _(u'${title} is not copyable.',
                                         mapping={'title': self.title}))
 
-        return self.do_redirect(self.canonical_object_url,
+        return self.do_redirect(self.view_url,
                                 _(u'${title} copied.',
                                     mapping={'title': self.title}))
 

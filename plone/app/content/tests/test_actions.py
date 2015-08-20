@@ -171,6 +171,32 @@ class ActionsDXTestCase(unittest.TestCase):
         self.portal.manage_delObjects(ids='f2')
         transaction.commit()
 
+    def test_rename_form_with_view_action(self):
+        # can't be bothered to register blobs, instead we add documents to
+        # typesUseViewActionInListings
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(
+            typesUseViewActionInListings=['Image', 'File', 'Document'])
+
+        folder = self.portal['f1']
+        folder.invokeFactory('Document', 'document1')
+        document1 = folder['document1']
+        transaction.commit()
+        logout()
+
+        # We need zope2.CopyOrMove permission to rename content
+        self.browser.open(document1.absolute_url() + '/object_rename')
+        self.browser.getControl(name='form.widgets.new_id').value = 'f2'
+        self.browser.getControl(name='form.widgets.new_title').value = 'F2'
+        self.browser.getControl(name='form.buttons.Rename').click()
+        self.assertEqual(document1.getId(), 'f2')
+        self.assertEqual(document1.Title(), 'F2')
+        self.assertEqual(self.browser.url, document1.absolute_url() + '/view')
+
+        login(self.portal, TEST_USER_NAME)
+        self.portal.manage_delObjects(ids='f1')
+        transaction.commit()
+
     def test_create_safe_id_on_renaming(self):
         logout()
         folder = self.portal['f1']
@@ -219,6 +245,29 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertEqual(folder.getId(), _id)
         self.assertEqual(folder.Title(), _title)
 
+    def test_rename_form_cancel_with_view_action(self):
+        # can't be bothered to register blobs, instead we add documents to
+        # typesUseViewActionInListings
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(
+            typesUseViewActionInListings=['Image', 'File', 'Document'])
+
+        folder = self.portal['f1']
+        folder.invokeFactory('Document', 'document1')
+        document1 = folder['document1']
+        transaction.commit()
+
+        _id = document1.getId()
+        _title = document1.Title()
+
+        self.browser.open(document1.absolute_url() + '/object_rename')
+        self.browser.getControl(name='form.buttons.Cancel').click()
+        transaction.commit()
+
+        self.assertEqual(self.browser.url, document1.absolute_url() + '/view')
+        self.assertEqual(document1.getId(), _id)
+        self.assertEqual(document1.Title(), _title)
+
     def _get_token(self, context):
         authenticator = getMultiAdapter(
             (context, self.request), name='authenticator')
@@ -243,6 +292,34 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertIn(
             '{0:s} cut.'.format(folder.Title()), self.browser.contents)
 
+    def test_object_cut_view_with_view_action(self):
+        # can't be bothered to register blobs, instead we add documents to
+        # typesUseViewActionInListings
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(
+            typesUseViewActionInListings=['Image', 'File', 'Document'])
+
+        folder = self.portal['f1']
+        folder.invokeFactory('Document', 'document1')
+        document1 = folder['document1']
+        transaction.commit()
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_cut'.format(document1.absolute_url())
+        )
+
+        # We need to have Copy or Move permission to cut an object
+        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+            document1.absolute_url(), self._get_token(document1)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn(
+            '{0:s} cut.'.format(document1.Title()), self.browser.contents)
+        self.assertEqual(document1.absolute_url() + '/view', self.browser.url)
+
     def test_object_copy_view(self):
         folder = self.portal['f1']
 
@@ -259,6 +336,33 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertIn('__cp', self.browser.cookies)
         self.assertIn(
             '{0:s} copied.'.format(folder.Title()), self.browser.contents)
+
+    def test_object_copy_with_view_action(self):
+        # can't be bothered to register blobs, instead we add documents to
+        # typesUseViewActionInListings
+        props = self.portal.portal_properties.site_properties
+        props.manage_changeProperties(
+            typesUseViewActionInListings=['Image', 'File', 'Document'])
+
+        folder = self.portal['f1']
+        folder.invokeFactory('Document', 'document1')
+        document1 = folder['document1']
+        transaction.commit()
+
+        # We need pass an authenticator token to prevent Unauthorized
+        self.assertRaises(
+            Unauthorized,
+            self.browser.open,
+            '{0:s}/object_copy'.format(document1.absolute_url())
+        )
+
+        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+            document1.absolute_url(), self._get_token(document1)))
+
+        self.assertIn('__cp', self.browser.cookies)
+        self.assertIn(
+            '{0:s} copied.'.format(document1.Title()), self.browser.contents)
+        self.assertEqual(document1.absolute_url() + '/view', self.browser.url)
 
     def test_object_cut_and_paste(self):
         folder = self.portal['f1']
