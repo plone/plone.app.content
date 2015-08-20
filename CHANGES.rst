@@ -72,7 +72,7 @@ Changelog
   [fulv]
 
 - use 'as' syntax for exception
- [frentin]
+  [frentin]
 
 
 3.0.5 (2015-05-11)
