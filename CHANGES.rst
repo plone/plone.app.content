@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.8 (unreleased)
+3.0.8 (2015-08-20)
 ------------------
 
 - Added basic test for folder contents "rearrange" and "item order" features.
