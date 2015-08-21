@@ -4,15 +4,13 @@ Changelog
 3.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Respect view-action (e.g. for files and image) in rename, copy and cut.
+  Fixes https://github.com/plone/Products.CMFPlone/issues/829
+  [pbauer]
 
 
 3.0.8 (2015-08-20)
 ------------------
-
-- Respect view-action (e.g. for files and image) in rename, copy and cut.
-  Fixes https://github.com/plone/Products.CMFPlone/issues/829
-  [pbauer]
 
 - Added basic test for folder contents "rearrange" and "item order" features.
   Minor restructuring of actions in own files to have a consistent structure
