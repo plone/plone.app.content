@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.9 (unreleased)
+3.0.9 (2015-08-21)
 ------------------
 
 - Respect view-action (e.g. for files and image) in rename, copy and cut.
