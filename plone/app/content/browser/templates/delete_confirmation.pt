@@ -40,6 +40,9 @@
         </tal:block>
 
         <div id="content-core">
+            <tal:block replace="structure view/more_info">
+            </tal:block>
+
             <ul>
                 <li tal:content="context/@@plone_context_state/object_title">The item title (ID)</li>
             </ul>
