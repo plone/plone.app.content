@@ -4,7 +4,9 @@ Changelog
 3.0.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Display results of delete_confirmation_info in delete_confirmation and
+  fc-delete to warn about linkintegrity-breaches.
+  [bloodbare, vangheem, pbauer]
 
 
 3.0.9 (2015-08-21)
