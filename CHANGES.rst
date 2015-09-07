@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.10 (unreleased)
+3.0.10 (2015-09-07)
 -------------------
 
 - Display results of delete_confirmation_info in delete_confirmation and
