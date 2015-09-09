@@ -221,7 +221,7 @@ class ActionsDXTestCase(unittest.TestCase):
         doc = folder['d1']
         folder.setDefaultPage('d1')
         transaction.commit()
-        self.assertEqual(folder.default_page, 'd1')
+        self.assertEqual(folder.getDefaultPage(), 'd1')
 
         # We need zope2.CopyOrMove permission to rename content
         self.browser.open(doc.absolute_url() + '/object_rename')
@@ -229,7 +229,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser.getControl(name='form.widgets.new_title').value = 'Doc'
         self.browser.getControl(name='form.buttons.Rename').click()
         self.assertEqual(folder.getFolderContents()[0].id, 'renamed')
-        self.assertEqual(folder.default_page, 'renamed')
+        self.assertEqual(folder.getDefaultPage(), 'renamed')
 
     def test_rename_form_cancel(self):
         folder = self.portal['f1']

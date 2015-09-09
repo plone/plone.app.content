@@ -4,7 +4,9 @@ Changelog
 3.0.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix tests: API usage to get default page in order to prevent side effects in
+  other tests.
+  [jensens]
 
 
 3.0.10 (2015-09-07)

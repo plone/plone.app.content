@@ -205,7 +205,7 @@ class RenameTest(BaseTest):
         })
         view = RenameActionView(self.portal, self.request)
         view()
-        self.assertEqual(self.portal.default_page, 'page-renamed')
+        self.assertEqual(self.portal.getDefaultPage(), 'page-renamed')
 
 
 class ContextInfoTest(BaseTest):
