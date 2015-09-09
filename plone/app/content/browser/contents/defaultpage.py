@@ -8,14 +8,14 @@ class SetDefaultPageActionView(ContentsBaseAction):
     failure_msg = _(u'Failed to set default page')
 
     def __call__(self):
-        id = self.request.form.get('id')
+        cid = self.request.form.get('id')
         self.errors = []
 
-        if id not in self.context.objectIds():
+        if cid not in self.context.objectIds():
             self.errors.append(
                 _(u'There is no object with short name '
                   u'${name} in this folder.',
-                  mapping={u'name': id}))
+                  mapping={u'name': cid}))
         else:
-            self.context.setDefaultPage(id)
+            self.context.setDefaultPage(cid)
         return self.message()

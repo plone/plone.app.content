@@ -95,7 +95,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         cancel_button.click()
 
         self.assertEqual(self.browser.url, folder.absolute_url())
-        self.assertFalse(hasattr(folder, 'default_page'))
+        self.assertIs(folder.getDefaultPage(), None)
 
     def test_default_page_action_save(self):
         """Check the Save action."""
@@ -106,7 +106,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         submit_button.click()
 
         self.assertEqual(self.browser.url, folder.absolute_url())
-        self.assertEqual(folder.default_page, 'testdoc')
+        self.assertEqual(folder.getDefaultPage(), 'testdoc')
 
 
 class SelectDefaultPageATTestCase(SelectDefaultPageDXTestCase):
