@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.11 (unreleased)
+3.0.11 (2015-09-12)
 -------------------
 
 - Fix tests: API usage to get default page in order to prevent side effects in
