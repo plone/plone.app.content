@@ -34,7 +34,7 @@
         for="*"
         name="content_status_history"
         class=".content_status_history.ContentStatusHistoryView"
-        permission="zope2.View"
+        permission="cmf.ModifyPortalContent"
         />
 
     <!-- Folder factories -->

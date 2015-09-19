@@ -4,7 +4,8 @@ Changelog
 3.0.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Require cmf.ModifyPortalContent for content_status_history
+  [vangheem]
 
 
 3.0.11 (2015-09-12)
