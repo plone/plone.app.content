@@ -18,7 +18,7 @@
   <div class="checkbox">
     <label>
       <input type="checkbox" name="recurse" value="yes" />
-      <span i18n:translate="label_include_contained_objects">Include contained items?</span>
+      <span i18n:translate="label_include_contained_objects">Include contained items</span>
     </label>
     <p class="help-block" i18n:translate="help_include_contained_objects">
     If checked, this will attempt to modify the status of all content in any selected folders and their subfolders.
