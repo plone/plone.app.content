@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
+from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 
 
@@ -65,13 +67,13 @@ class DefaultPageSelectionView(BrowserView):
 
     def __call__(self):
         if 'form.buttons.Save' in self.request.form:
-            if not 'objectId' in self.request.form:
+            if 'objectId' not in self.request.form:
                 message = _(u'Please select an item to use.')
                 msgtype = 'error'
             else:
                 objectId = self.request.form['objectId']
 
-                if not objectId in self.context.objectIds():
+                if objectId not in self.context.objectIds():
                     message = _(u'There is no object with short name ${name} '
                                 u'in this folder.',
                                 mapping={u'name': objectId})
@@ -91,10 +93,10 @@ class DefaultPageSelectionView(BrowserView):
         """ Return brains in this container that can be used as default_pages
         """
         context = aq_inner(self.context)
-        portal_properties = getToolByName(context, 'portal_properties')
-        sp = portal_properties.site_properties
-        view_types = sp.getProperty('typesUseViewActionInListings', [])
-        default_page_types = sp.getProperty('default_page_types', [])
+        registry = getUtility(IRegistry)
+        view_types = registry.get(
+            'plone.types_use_view_action_in_listings', [])
+        default_page_types = registry.get('plone.default_page_types', [])
         portal_types = getToolByName(self.context, 'portal_types')
 
         results = []

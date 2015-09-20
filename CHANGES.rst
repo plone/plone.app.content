@@ -7,6 +7,9 @@ Changelog
 - Require cmf.ModifyPortalContent for content_status_history
   [vangheem]
 
+- Pull typesUseViewActionInListings settings from registry.
+  [esteele]
+
 
 3.0.11 (2015-09-12)
 -------------------

@@ -74,7 +74,7 @@
                 <label i18n:translate="label_affected_content">Affected content</label>
                 <div tal:content="error">Validation error output</div>
                 <div tal:define="dummy python:request.set('ids_checked', 1);
-                                 use_view_action site_properties/typesUseViewActionInListings|python:();">
+                                 use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', ());">
                   <table id="sortable"
                          class="listing"
                          summary="Affected content"

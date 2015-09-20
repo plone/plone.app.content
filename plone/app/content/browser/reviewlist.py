@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
+from plone.registry.interfaces import IRegistry
 from zope.component import getMultiAdapter
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
@@ -49,12 +51,12 @@ class ReviewListTable(object):
         plone_layout = getMultiAdapter((self.context, self.request),
                                        name=u'plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
-        portal_properties = getToolByName(self.context, 'portal_properties')
         portal_types = getToolByName(self.context, 'portal_types')
-        site_properties = portal_properties.site_properties
 
-        use_view_action = site_properties.getProperty(
-            'typesUseViewActionInListings', ())
+        registry = getUtility(IRegistry)
+        use_view_action = registry.get(
+            'plone.types_use_view_action_in_listings', ())
+
         browser_default = self.context.browserDefault()
 
         results = list()

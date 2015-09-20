@@ -174,9 +174,10 @@ class ActionsDXTestCase(unittest.TestCase):
     def test_rename_form_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(
-            typesUseViewActionInListings=['Image', 'File', 'Document'])
+        registry = self.portal.portal_registry
+        registry['plone.types_use_view_action_in_listings'] = [u'Image',
+                                                               u'File',
+                                                               u'Document']
 
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
@@ -248,10 +249,10 @@ class ActionsDXTestCase(unittest.TestCase):
     def test_rename_form_cancel_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(
-            typesUseViewActionInListings=['Image', 'File', 'Document'])
-
+        registry = self.portal.portal_registry
+        registry['plone.types_use_view_action_in_listings'] = [u'Image',
+                                                               u'File',
+                                                               u'Document']
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
         document1 = folder['document1']
@@ -295,10 +296,10 @@ class ActionsDXTestCase(unittest.TestCase):
     def test_object_cut_view_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(
-            typesUseViewActionInListings=['Image', 'File', 'Document'])
-
+        registry = self.portal.portal_registry
+        registry['plone.types_use_view_action_in_listings'] = [u'Image',
+                                                               u'File',
+                                                               u'Document']
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
         document1 = folder['document1']
@@ -340,9 +341,10 @@ class ActionsDXTestCase(unittest.TestCase):
     def test_object_copy_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
-        props = self.portal.portal_properties.site_properties
-        props.manage_changeProperties(
-            typesUseViewActionInListings=['Image', 'File', 'Document'])
+        registry = self.portal.portal_registry
+        registry['plone.types_use_view_action_in_listings'] = [u'Image',
+                                                               u'File',
+                                                               u'Document']
 
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
