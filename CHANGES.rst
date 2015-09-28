@@ -4,7 +4,8 @@ Changelog
 3.0.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Refactor FolderContentsView to allow reasy overwriting of options.
+  [Gagaro]
 
 
 3.0.12 (2015-09-20)

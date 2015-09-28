@@ -143,7 +143,7 @@ class FolderContentsView(BrowserView):
         actions.sort(key=lambda a: a.order)
         return [a.get_options() for a in actions]
 
-    def __call__(self):
+    def get_options(self):
         site = getSite()
         base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % base_url
@@ -192,9 +192,12 @@ class FolderContentsView(BrowserView):
                 'baseUrl': base_url,
                 'initialFolder': IUUID(self.context, None),
                 'useTus': TUS_ENABLED
-            }
+            },
         }
-        self.options = json_dumps(options)
+        return options
+
+    def __call__(self):
+        self.options = json_dumps(self.get_options())
         return super(FolderContentsView, self).__call__()
 
 
