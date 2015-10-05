@@ -4,6 +4,9 @@ Changelog
 3.0.13 (unreleased)
 -------------------
 
+- Fix vocabulary item path to remove INavigationRoot path.
+  [petschki]
+
 - Refactor FolderContentsView to allow reasy overwriting of options.
 - Fix the actions to allow unicode in titles.
   [Gagaro]

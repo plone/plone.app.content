@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from Products.CMFCore.utils import getToolByName
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.navigation.root import getNavigationRoot
 from Products.Five import BrowserView
 from logging import getLogger
 from plone.app.content.utils import json_dumps
@@ -131,8 +131,7 @@ class BaseVocabularyView(BrowserView):
             attributes = attributes.split(',')
 
         if attributes:
-            portal = getToolByName(context, 'portal_url').getPortalObject()
-            base_path = '/'.join(portal.getPhysicalPath())
+            base_path = getNavigationRoot(context)
             for vocab_item in results:
                 if not results_are_brains:
                     vocab_item = vocab_item.value
