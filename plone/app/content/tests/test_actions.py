@@ -33,7 +33,7 @@ class ActionsDXTestCase(unittest.TestCase):
 
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory(
-            type_name='Folder', id='f1', title='A Test Folder')
+            type_name='Folder', id='f1', title=u'A Tést Folder')
 
         transaction.commit()
         self.browser = Browser(self.layer['app'])
