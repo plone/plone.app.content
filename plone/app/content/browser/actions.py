@@ -185,7 +185,7 @@ class ObjectCutView(LockingBase):
 
     @property
     def title(self):
-        return self.context.Title()
+        return self.context.Title().decode('utf8')
 
     @property
     def parent(self):

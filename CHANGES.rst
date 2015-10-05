@@ -5,6 +5,7 @@ Changelog
 -------------------
 
 - Refactor FolderContentsView to allow reasy overwriting of options.
+- Fix the actions to allow unicode in titles.
   [Gagaro]
 
 
