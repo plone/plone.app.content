@@ -11,6 +11,9 @@ Changelog
 - Fix the actions to allow unicode in titles.
   [Gagaro]
 
+- Add option tho show thumbs for images in content listing and rename-popover
+  https://github.com/plone/Products.CMFPlone/issues/1074
+  [fgrcon]
 
 3.0.12 (2015-09-20)
 -------------------
