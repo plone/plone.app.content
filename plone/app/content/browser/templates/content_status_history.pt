@@ -114,7 +114,6 @@
                                        getRelativeContentURL nocall:url_tool/getRelativeContentURL;
                                        normalizeString nocall:plone_view/normalizeString;
                                        wtool portal/portal_workflow;
-                                       getIcon nocall:plone_layout/getIcon;
                                        ">
                         <tal:items tal:repeat="item batch">
                            <tr tal:define="oddrow               repeat/item/odd;
@@ -126,7 +125,6 @@
                                            item_type            item/portal_type;
                                            item_size            item/getObjSize;
                                            item_modified        item/ModificationDate;
-                                           item_icon            python:getIcon(item);
                                            item_type_class      python:'contenttype-' + normalizeString(item_type);
                                            item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
                                            item_state_title     python:wtool.getTitleForStateOnType(item_wf_state, item_type);
@@ -136,7 +134,8 @@
                                            item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
                                            browserDefaultResult context/browserDefault;
                                            isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == context.browserDefault()[1][0];
-                                           item_folderish       item/is_folderish|nothing"
+                                           item_folderish       item/is_folderish|nothing;
+                                           item_has_image       python:item.getIcon"
                                tal:attributes="class python:oddrow and 'draggable even' or 'draggable odd';
                                                id string:folder-contents-item-${item_id};" >
 
@@ -158,7 +157,10 @@
                             </td>
                             <td tal:define="url python:item_use_view and item_url+'/view' or
                                             (item_folderish and item_url+'/folder_contents'or item_url+'/');">
-                                    <img tal:replace="structure item_icon/html_tag" />
+                                <img class="image-tile"
+                                     tal:define="getIcon string:$item_url/@@images/image/tile'"
+                                     tal:condition="item_has_image"                          
+                                     tal:attributes="src  string:$getIcon">    
                                     <a href="#" tal:attributes="href  url;
                                                               title string:$item_type: $item_description;
                                                               class string:$item_wf_state_class $item_type_class;">

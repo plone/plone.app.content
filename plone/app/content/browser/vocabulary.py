@@ -2,6 +2,7 @@
 from AccessControl import getSecurityManager
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
+from Products.CMFPlone.utils import normalizeString
 from Products.Five import BrowserView
 from logging import getLogger
 from plone.app.content.utils import json_dumps
@@ -19,6 +20,7 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
 import inspect
 import itertools
+import os
 
 logger = getLogger(__name__)
 
@@ -42,7 +44,8 @@ def _parseJSON(s):
 
 
 _unsafe_metadata = ['Creator', 'listCreators', 'author_name', 'commentors']
-_safe_callable_metadata = ['getURL', 'getPath']
+_safe_callable_metadata = ['getURL', 'getPath','review_state',
+                            'getIcon', 'is_folderish']
 
 
 class VocabLookupException(Exception):
