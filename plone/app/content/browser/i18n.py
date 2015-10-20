@@ -15,8 +15,14 @@ class i18njs(BrowserView):
     @ram.cache(_cache_key)
     def _gettext_catalog(self, domain, language):
         td = queryUtility(ITranslationDomain, domain)
-        if td is None or language not in td._catalogs:
+        if td is None:
             return
+        if language not in td._catalogs:
+            baselanguage = language.split('-')[0]
+            if baselanguage not in td._catalogs:
+                return
+            else:
+                language = baselanguage
         mo_path = td._catalogs[language][0]
         catalog = td._data[mo_path]._catalog
         if catalog is None:
