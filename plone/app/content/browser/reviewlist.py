@@ -68,8 +68,6 @@ class ReviewListTable(object):
 
             url = obj.absolute_url()
             path = '/'.join(obj.getPhysicalPath())
-            icon = plone_layout.getIcon(obj)
-
             type_class = 'contenttype-' + plone_utils.normalizeString(
                 obj.portal_type)
 
@@ -82,9 +80,15 @@ class ReviewListTable(object):
             url_href_title = u'%s: %s' % (translate(type_title_msgid,
                                                     context=self.request),
                                           safe_unicode(obj.Description()))
-
-            modified = plone_view.toLocalizedTime(
-                obj.ModificationDate(), long_format=1)
+            getMember = getToolByName(obj, 'portal_membership').getMemberById
+            creator_id = obj.Creator()
+            creator = getMember(creator_id)            
+            if creator:
+                creator_name = creator.getProperty('fullname', '') or creator_id
+            else:
+                creator_name = creator_id
+            modified = creator_name + ' - ' + plone_view.toLocalizedTime(
+                           obj.ModificationDate(), long_format=1)
             is_structural_folder = obj.restrictedTraverse(
                 '@@plone').isStructuralFolder()
 
@@ -109,7 +113,6 @@ class ReviewListTable(object):
                 obj_type=obj.Type,
                 size=obj.getObjSize(),
                 modified=modified,
-                icon=icon.html_tag(),
                 type_class=type_class,
                 wf_state=review_state,
                 state_title=portal_workflow.getTitleForStateOnType(
