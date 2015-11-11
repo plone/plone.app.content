@@ -10,7 +10,10 @@ New:
 
 Fixes:
 
-- *add item here*
+- Cleanup and rework: contenttype-icons and showing thumbnails
+  for images/leadimages in listings
+  https://github.com/plone/Products.CMFPlone/issues/1226
+  [fgrcon]
 
 
 3.0.13 (2015-10-27)
@@ -28,6 +31,7 @@ Fixes:
 
 - Fixed the actions to allow unicode in titles.
   [Gagaro]
+
 
 
 3.0.12 (2015-09-20)
