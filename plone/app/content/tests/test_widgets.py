@@ -438,3 +438,17 @@ class BrowserTest(unittest.TestCase):
         # clean it up...
         self.portal.manage_delObjects(['test.xml'])
         transaction.commit()
+
+    def testFileUploadTxt(self):
+        view = FileUploadView(self.portal, self.request)
+        from plone.namedfile.file import FileChunk
+        chunk = FileChunk('foobar')
+        chunk.filename = 'test.txt'
+        self.request.form['file'] = chunk
+        self.request.REQUEST_METHOD = 'POST'
+        data = json.loads(view())
+        self.assertEqual(data['url'], 'http://nohost/plone/test.txt')
+        self.assertTrue(data['UID'] is not None)
+        # clean it up...
+        self.portal.manage_delObjects(['test.txt'])
+        transaction.commit()

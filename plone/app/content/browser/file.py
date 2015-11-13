@@ -135,14 +135,19 @@ class FileUploadView(BrowserView):
 
         # Now check that the object is not restricted to be added in the
         # current context
-        allowed_ids = [fti.getId() for fti in self.context.allowedContentTypes()]
+        allowed_ids = [
+            fti.getId() for fti in self.context.allowedContentTypes()
+        ]
         if type_ not in allowed_ids:
             response = self.request.RESPONSE
             response.setStatus(403)
             if type_ == 'File':
                 return "You cannot add a File to this folder, try another one"
             if type_ == 'Image':
-                return "You cannot add an Image to this folder, try another one"
+                return (
+                    "You cannot add an Image to this folder, "
+                    "try another one"
+                )
 
         dx_based = False
         pt = getToolByName(self.context, 'portal_types')
@@ -155,28 +160,24 @@ class FileUploadView(BrowserView):
 
         obj = factory(filename, content_type, filedata)
 
+        result = {
+            "type": '',
+            "size": 0
+        }
+
         if dx_based:
             if 'File' in obj.portal_type:
-                size = obj.file.getSize()
-                content_type = obj.file.contentType
+                result['size'] = obj.file.getSize()
+                result['type'] = obj.file.contentType
             elif 'Image' in obj.portal_type:
-                size = obj.image.getSize()
-                content_type = obj.image.contentType
-
-            result = {
-                "type": content_type,
-                "size": size
-            }
+                result['size'] = obj.image.getSize()
+                result['size'] = obj.image.contentType
         else:
+            result['type'] = obj.getContentType()
             try:
-                size = obj.getSize()
+                result['size'] = obj.getSize()
             except AttributeError:
-                size = obj.getObjSize()
-
-            result = {
-                "type": obj.getContentType(),
-                "size": size
-            }
+                result['size'] = obj.getObjSize()
 
         if tusrequest:
             tus.cleanup_file()
