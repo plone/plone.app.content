@@ -10,6 +10,9 @@ New:
 
 Fixes:
 
+- Fix upload of txt files in folder_contents (#33, #58)
+  [ale-rt]
+
 - Cleanup and rework: contenttype-icons and showing thumbnails
   for images/leadimages in listings
   https://github.com/plone/Products.CMFPlone/issues/1226
