@@ -171,7 +171,7 @@ class FileUploadView(BrowserView):
                 result['type'] = obj.file.contentType
             elif 'Image' in obj.portal_type:
                 result['size'] = obj.image.getSize()
-                result['size'] = obj.image.contentType
+                result['type'] = obj.image.contentType
         else:
             result['type'] = obj.getContentType()
             try:
