@@ -1,7 +1,7 @@
 <div class="itemstoremove" i18n:domain="plone">
 <% _.each(items, function(item, index) { %>
   <div class="item">
-  	<% if(item.getIcon ){ %><img src="<%= item.getURL %>/@@images/image/icon"><% } %>
+  	<% if(item.getIcon ){ %><img class="image-icon" src="<%= item.getURL %>/@@images/image/icon"><% } %>
     <div class="form-group">
 
       <input name="UID_<%= index %>" type="hidden" value="<%- item.UID %>" />
