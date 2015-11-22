@@ -18,6 +18,11 @@ Fixes:
   https://github.com/plone/Products.CMFPlone/issues/1226
   [fgrcon]
 
+- Fix @@getSource view to work with a text query
+  (as done by the ajax autocomplete widget)
+  in addition to a querystring widget query.
+  [davisagli]
+
 
 3.0.13 (2015-10-27)
 -------------------

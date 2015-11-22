@@ -2,7 +2,6 @@
 from AccessControl import getSecurityManager
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
-from Products.CMFPlone.utils import normalizeString
 from Products.Five import BrowserView
 from logging import getLogger
 from plone.app.content.utils import json_dumps
@@ -20,7 +19,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
 import inspect
 import itertools
-import os
 
 logger = getLogger(__name__)
 
@@ -170,8 +168,10 @@ class BaseVocabularyView(BrowserView):
         })
 
     def parsed_query(self, ):
-        query = _parseJSON(self.request.get('query', '')) or {}
-        if query:
+        query = _parseJSON(self.request.get('query', ''))
+        if isinstance(query, basestring):
+            query = {'SearchableText': {'query': query}}
+        elif query:
             parsed = queryparser.parseFormquery(
                 self.get_context(), query['criteria'])
             if 'sort_on' in query:
@@ -179,6 +179,8 @@ class BaseVocabularyView(BrowserView):
             if 'sort_order' in query:
                 parsed['sort_order'] = str(query['sort_order'])
             query = parsed
+        else:
+            query = {}
         return query
 
 
