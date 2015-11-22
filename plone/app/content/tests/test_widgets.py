@@ -15,7 +15,6 @@ from plone.app.widgets.testing import ExampleFunctionVocabulary
 from plone.app.widgets.testing import ExampleVocabulary
 from plone.app.widgets.testing import PLONEAPPWIDGETS_INTEGRATION_TESTING
 from plone.app.widgets.testing import TestRequest
-from zope.component import getMultiAdapter
 from zope.component import provideAdapter
 from zope.component import provideUtility
 from zope.component.globalregistry import base
@@ -175,29 +174,6 @@ class BrowserTest(unittest.TestCase):
         data = json.loads(view())
         self.assertEquals(len(data['results']), 10)
         self.assertEquals(data['total'], amount)
-
-    def testVocabularyEncoding(self):
-        """The vocabulary should not return the binary encoded token
-        ("N=C3=A5=C3=B8=C3=AF"), but instead the value as the id in the result
-        set. Fixes an encoding problem. See:
-        https://github.com/plone/Products.CMFPlone/issues/650
-        """
-        test_val = u'Nåøï'
-
-        self.portal.invokeFactory('Document', id="page", title="page")
-        self.portal.page.subject = (test_val,)
-        self.portal.page.reindexObject(idxs=['Subject'])
-
-        self.request.form['name'] = 'plone.app.vocabularies.Keywords'
-        results = getMultiAdapter(
-            (self.portal, self.request),
-            name='getVocabulary'
-        )()
-        results = json.loads(results)
-        result = results['results'][0]
-
-        self.assertEquals(result['text'], test_val)
-        self.assertEquals(result['id'], test_val)
 
     def testVocabularyUnauthorized(self):
         setRoles(self.portal, TEST_USER_ID, [])
