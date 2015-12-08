@@ -11,6 +11,9 @@ New:
 
 Fixes:
 
+- Fixed rearranging for archetypes.
+  [Gagaro]
+
 - Fixed error message displaying during rearranging.
   [Gagaro]
 
