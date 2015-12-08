@@ -6,7 +6,8 @@ Changelog
 
 New:
 
-- *add item here*
+- Ensure the base context allows ordering during rearranging.
+  [Gagaro]
 
 Fixes:
 

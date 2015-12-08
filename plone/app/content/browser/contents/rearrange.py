@@ -12,7 +12,10 @@ class OrderContentsBaseAction(ContentsBaseAction):
     def getOrdering(self):
         if IPloneSiteRoot.providedBy(self.context):
             return self.context
-        ordering = self.context.getOrdering()
+        try:
+            ordering = self.context.aq_base.getOrdering()
+        except AttributeError:
+            return None
         if not IExplicitOrdering.providedBy(ordering):
             return None
         return ordering
