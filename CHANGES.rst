@@ -6,11 +6,16 @@ Changelog
 
 New:
 
-- *add item here*
+- Ensure the base context allows ordering during rearranging.
+  [Gagaro]
 
 Fixes:
 
-- *add item here*
+- Fixed rearranging for archetypes.
+  [Gagaro]
+
+- Fixed error message displaying during rearranging.
+  [Gagaro]
 
 
 3.0.14 (2015-11-26)

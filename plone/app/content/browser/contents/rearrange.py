@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from OFS.interfaces import IOrderedContainer
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.utils import json_loads
 from plone.folder.interfaces import IExplicitOrdering
@@ -12,7 +13,13 @@ class OrderContentsBaseAction(ContentsBaseAction):
     def getOrdering(self):
         if IPloneSiteRoot.providedBy(self.context):
             return self.context
-        ordering = self.context.getOrdering()
+        try:
+            ordering = self.context.aq_base.getOrdering()
+        except AttributeError:
+            if IOrderedContainer.providedBy(self.context):
+                # Archetype
+                return IOrderedContainer(self.context)
+            return None
         if not IExplicitOrdering.providedBy(ordering):
             return None
         return ordering

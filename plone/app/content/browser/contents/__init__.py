@@ -121,9 +121,9 @@ class ContentsBaseAction(BrowserView):
             translated_errors = [
                 translate(error, context=self.request) for error in self.errors
             ]
-            translated_msg = '{0:s}: {0:s}'.format(
+            translated_msg = u'{0:s}: {1:s}'.format(
                 translated_msg,
-                '\n'.join(translated_errors)
+                u'\n'.join(translated_errors)
             )
 
         return self.json({
