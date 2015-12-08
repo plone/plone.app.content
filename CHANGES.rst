@@ -11,7 +11,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed error message displaying during rearranging.
+  [Gagaro]
 
 
 3.0.14 (2015-11-26)
