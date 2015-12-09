@@ -11,6 +11,9 @@ New:
 
 Fixes:
 
+- Fix case where non-dexterity object did not properties
+  [vangheem]
+
 - Fixed rearranging for archetypes.
   [Gagaro]
 

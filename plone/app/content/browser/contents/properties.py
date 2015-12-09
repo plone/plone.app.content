@@ -78,15 +78,33 @@ class PropertiesActionView(ContentsBaseAction):
             self.dx_action(obj)
         else:
             if self.effectiveDate:
-                obj.setEffectiveDate(DateTime(self.effectiveDate))
+                try:
+                    obj.setEffectiveDate(DateTime(self.effectiveDate))
+                except AttributeError:
+                    pass
             if self.expirationDate:
-                obj.setExpirationDate(DateTime(self.expirationDate))
+                try:
+                    obj.setExpirationDate(DateTime(self.expirationDate))
+                except AttributeError:
+                    pass
             if self.copyright:
-                obj.setRights(self.copyright)
+                try:
+                    obj.setRights(self.copyright)
+                except AttributeError:
+                    pass
             if self.contributors:
-                obj.setContributors(self.contributors)
+                try:
+                    obj.setContributors(self.contributors)
+                except AttributeError:
+                    pass
             if self.creators:
-                obj.setCreators(self.creators)
+                try:
+                    obj.setCreators(self.creators)
+                except AttributeError:
+                    pass
             if self.exclude:
-                obj.setExcludeFromNav(self.exclude == 'yes')
+                try:
+                    obj.setExcludeFromNav(self.exclude == 'yes')
+                except AttributeError:
+                    pass
         obj.reindexObject()
