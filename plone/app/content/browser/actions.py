@@ -148,23 +148,27 @@ class RenameForm(form.Form):
             raise Unauthorized(_(u'Permission denied to rename ${title}.',
                                  mapping={u'title': self.context.title}))
 
-        oldid = self.context.getId()
-        newid = data['new_id']
-        newid = INameChooser(parent).chooseName(newid, self.context)
-
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
 
-        # Requires zope2.CopyOrMove permission
+        oldid = self.context.getId()
+        newid = data['new_id']
+        if oldid != newid:
+            newid = INameChooser(parent).chooseName(newid, self.context)
 
-        # manage_renameObjects fires 3 events:
-        # 1. ObjectWillBeMovedEvent before anything happens
-        # 2. ObjectMovedEvent directly after rename
-        # 3. zope.container.contained.notifyContainerModified directly after 2
-        # for 2+3 there are subscribers in Products.CMFDynamicViewFTI
-        # responsible to change (2) or unset (3) the default_page.
+            # Requires zope2.CopyOrMove permission
 
-        parent.manage_renameObjects([oldid, ], [str(newid), ])
+            # manage_renameObjects fires 3 events:
+            # 1. ObjectWillBeMovedEvent before anything happens
+            # 2. ObjectMovedEvent directly after rename
+            # 3. zope.container.contained.notifyContainerModified directly after 2
+            # for 2+3 there are subscribers in Products.CMFDynamicViewFTI
+            # responsible to change (2) or unset (3) the default_page.
+
+            parent.manage_renameObjects([oldid, ], [str(newid), ])
+        else:
+            # Object is not reindex if manage_renameObjects is not called
+            self.context.reindexObject()
 
         transaction.savepoint(optimistic=True)
         notify(ObjectModifiedEvent(self.context))

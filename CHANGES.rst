@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed renaming when only changing title.
+  [Gagaro]
 
 
 3.0.15 (2015-12-15)
