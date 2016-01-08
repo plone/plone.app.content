@@ -4,10 +4,6 @@ Changelog
 3.0.16 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fixed renaming when only changing title.
