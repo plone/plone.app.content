@@ -143,12 +143,46 @@ class FolderContentsView(BrowserView):
         actions.sort(key=lambda a: a.order)
         return [a.get_options() for a in actions]
 
+    def get_columns(self):
+        # Base set of columns
+        columns = {
+            'id': translate(_('ID'), context=self.request),
+            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
+            'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
+            'ExpirationDate': translate(_('Expiration date'), context=self.request),  #noqa
+            'CreationDate': translate(_('Created on'), context=self.request),  # noqa
+            'review_state': translate(_('Review state'), context=self.request),  # noqa
+            'Subject': translate(_('Tags'), context=self.request),
+            'portal_type': translate(_('Type'), context=self.request),
+            'is_folderish': translate(_('Folder'), context=self.request),
+            'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
+            'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
+            'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
+            'total_comments': translate(_('Total comments'), context=self.request),  # noqa
+        }
+        # These columns either have alternatives or are probably not useful
+        ignored = [
+            'Creator', 'Date', 'Description', 'Title', 'Type', 'author_name',
+            'cmf_uid', 'commentators', 'created', 'effective', 'end',
+            'expires', 'getIcon', 'getId', 'getRemoteUrl', 'in_response_to',
+            'listCreators', 'location', 'meta_type', 'modified', 'start',
+            'sync_uid'
+        ]
+        # Add in extra metadata columns
+        catalog = getToolByName(self.context, 'portal_catalog')
+        metadata_columns = [column for column in catalog.schema()]
+        for column in metadata_columns:
+            if column not in columns and column not in ignored:
+                columns[column] = translate(_(column), context=self.request)
+        return columns
+
     def get_options(self):
         site = getSite()
         base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % base_url
         site_path = site.getPhysicalPath()
         context_path = self.context.getPhysicalPath()
+        columns = self.get_columns()
         options = {
             'vocabularyUrl': '%splone.app.vocabularies.Catalog' % (
                 base_vocabulary),
@@ -160,20 +194,8 @@ class FolderContentsView(BrowserView):
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
-            'availableColumns': {
-                'id': translate(_('ID'), context=self.request),
-                'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
-                'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
-                'CreationDate': translate(_('Created on'), context=self.request),  # noqa
-                'review_state': translate(_('Review state'), context=self.request),  # noqa
-                'Subject': translate(_('Tags'), context=self.request),
-                'Type': translate(_('Type'), context=self.request),
-                'is_folderish': translate(_('Folder'), context=self.request),
-                'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
-                'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
-                'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
-                'total_comments': translate(_('Total comments'), context=self.request),  # noqa
-            },
+            'availableColumns': columns,
+            'attributes': ['Title', 'path', 'getURL', 'getIcon'] + columns.keys(),
             'buttons': self.get_actions(),
             'rearrange': {
                 'properties': {
