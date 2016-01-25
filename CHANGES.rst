@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed error message unicode error in rename action.
+  [Gagaro]
 
 
 3.0.16 (2016-01-08)
