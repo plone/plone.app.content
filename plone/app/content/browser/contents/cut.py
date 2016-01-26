@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-from cgi import escape
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
-from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
 from OFS.Moniker import Moniker
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
-from webdav.Lockable import ResourceLockedError
 from zope.i18n import translate
 from zope.interface import implementer
 
@@ -42,11 +38,13 @@ class CutActionView(ContentsBaseAction):
         oblist = []
         for ob in self.oblist:
             if ob.wl_isLocked():
-                raise ResourceLockedError('Object "%s" is locked via WebDAV'
-                                          % ob.getId())
-
+                self.errors.append(_(u'${title} is being edited and cannot be cut.',
+                                     mapping={u'title': self.objectTitle(ob)}))
+                continue
             if not ob.cb_isMoveable():
-                raise CopyError(eNotSupported % escape(id))
+                self.errors.append(_(u'${title} is being edited and can not be cut.',
+                                     mapping={u'title': self.objectTitle(ob)}))
+                continue
             m = Moniker(ob)
             oblist.append(m.dump())
         cp = (1, oblist)
