@@ -16,6 +16,7 @@ from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
 import json
 import unittest
+from plone.locking.interfaces import IRefreshableLockable
 
 
 class BaseTest(unittest.TestCase):
@@ -220,6 +221,38 @@ class ContextInfoTest(BaseTest):
         self.assertTrue(len(result['breadcrumbs']) > 0)
 
 
+class CutCopyLockedTest(BaseTest):
+    """in folder contents """
+
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+        self.portal.invokeFactory('Document', id="page", title="page")
+        self.portal.page.reindexObject()
+
+        self.env = {'HTTP_ACCEPT_LANGUAGE': 'en', 'REQUEST_METHOD': 'POST'}
+        self.request = makerequest(self.layer['app']).REQUEST
+        self.request.environ.update(self.env)
+        self.request.form = {
+            'selection': '["' + IUUID(self.portal.page) + '"]',
+            '_authenticator': createToken(),
+            'folder': '/'
+        }
+        self.request.REQUEST_METHOD = 'POST'
+
+    def test_cut_object_when_locked(self):
+        from plone.app.content.browser.contents.cut import CutActionView
+        lockable = IRefreshableLockable(self.portal.page)
+        lockable.lock()
+        view = CutActionView(self.portal, self.request)
+        view()
+        self.assertEquals(len(view.errors), 1)
+
+
 class DeleteDXTest(BaseTest):
     """Verify delete behavior from the folder contents view"""
 
@@ -256,6 +289,14 @@ class DeleteDXTest(BaseTest):
         view = DeleteActionView(self.portal, self.request)
         view()
         self.assertTrue(page_id not in self.portal)
+
+    def test_delete_object_when_locked(self):
+        from plone.app.content.browser.contents.delete import DeleteActionView
+        lockable = IRefreshableLockable(self.portal.page)
+        lockable.lock()
+        view = DeleteActionView(self.portal, self.request)
+        view()
+        self.assertEquals(len(view.errors), 1)
 
     def test_delete_wrong_object_by_acquisition(self):
         page_id = self.portal.page.id

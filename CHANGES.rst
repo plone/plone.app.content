@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix errors when cutting and copying objects in folder contents
+  [vangheem]
 
 
 3.0.16 (2016-01-08)

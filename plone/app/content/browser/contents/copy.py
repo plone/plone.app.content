@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-from cgi import escape
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
-from OFS.CopySupport import CopyError
-from OFS.CopySupport import eNotSupported
 from OFS.Moniker import Moniker
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
@@ -41,7 +38,9 @@ class CopyActionView(ContentsBaseAction):
         oblist = []
         for ob in self.oblist:
             if not ob.cb_isCopyable():
-                raise CopyError(eNotSupported % escape(id))
+                self.errors.append(_(u'${title} cannot be copied.',
+                                     mapping={u'title': self.objectTitle(ob)}))
+                continue
             m = Moniker(ob)
             oblist.append(m.dump())
         cp = (0, oblist)
