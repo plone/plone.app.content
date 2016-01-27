@@ -41,6 +41,7 @@ setup(
         'plone.i18n',
         'plone.memoize',
         'plone.protect',
+        'plone.rfc822',
         'Products.CMFCore>=2.2.0dev',
         'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
         'Products.CMFPlone',

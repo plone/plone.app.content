@@ -5,6 +5,7 @@ from Products.CMFPlone.permissions import AddPortalContent
 from Products.Five.browser import BrowserView
 from plone.app.dexterity.interfaces import IDXFileFactory
 from plone.dexterity.interfaces import IDexterityFTI
+from plone.rfc822.interfaces import IPrimaryFieldInfo
 from plone.uuid.interfaces import IUUID
 import json
 import logging
@@ -166,12 +167,18 @@ class FileUploadView(BrowserView):
         }
 
         if dx_based:
-            if 'File' in obj.portal_type:
-                result['size'] = obj.file.getSize()
-                result['type'] = obj.file.contentType
-            elif 'Image' in obj.portal_type:
-                result['size'] = obj.image.getSize()
-                result['type'] = obj.image.contentType
+            try:
+                primary_field_info = IPrimaryFieldInfo(obj)
+                filedata = getattr(obj, primary_field_info.fieldname)
+                result['size'] = filedata.getSize()
+                result['type'] = filedata.contentType
+            except AttributeError:
+                if 'File' in obj.portal_type:
+                    result['size'] = obj.file.getSize()
+                    result['type'] = obj.file.contentType
+                elif 'Image' in obj.portal_type:
+                    result['size'] = obj.image.getSize()
+                    result['type'] = obj.image.contentType
         else:
             result['type'] = obj.getContentType()
             try:

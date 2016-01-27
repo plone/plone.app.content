@@ -6,7 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
+- FileUploadView will now attempt to use the primary field when saving 
+  to a contenttype.
+  [esteele]
 
 Fixes:
 
