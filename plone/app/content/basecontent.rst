@@ -108,6 +108,12 @@ ObjectManager one.
     >>> 'my-item' in container.objectIds()
     True
     >>> del container['my-item']
+    >>> try:
+    ...     from Products.CMFCore.indexing import processQueue
+    ... except ImportError:
+    ...     def processQueue():
+    ...         pass
+    >>> _ = processQueue()
     >>> 'my-item' in container
     False
     >>> container._setObject('my-item', item)

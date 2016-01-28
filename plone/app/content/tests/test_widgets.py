@@ -29,6 +29,12 @@ import mock
 import os
 import transaction
 
+try:
+    from Products.CMFCore.indexing import processQueue
+except ImportError:
+    def processQueue():
+        pass
+
 
 _dir = os.path.dirname(__file__)
 
@@ -252,6 +258,7 @@ class BrowserTest(unittest.TestCase):
         self.portal.invokeFactory('Document', id="page", title="page")
         self.portal.page.subject = (test_val,)
         self.portal.page.reindexObject(idxs=['Subject'])
+        processQueue()
 
         self.request.form['name'] = 'plone.app.vocabularies.Keywords'
         results = getMultiAdapter(
