@@ -2,6 +2,7 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+import logging
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
@@ -15,6 +16,9 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
 import transaction
+
+
+logger = logging.getLogger('plone.app.content')
 
 
 @implementer(IStructureAction)
@@ -96,9 +100,11 @@ class RenameActionView(ContentsBaseAction):
                     obj.reindexObject()
             except ConflictError:
                 raise
-            except Exception:
+            except Exception as e:
                 sp.rollback()
-                self.errors.append(_('Error renaming ${title}', mapping={
-                    'title': title}))
+                logger.error(u'Error renaming "{title}": "{exception}"'
+                    .format(title=title.decode('utf8'), exception=e))
+                self.errors.append(_(u'Error renaming ${title}', mapping={
+                    'title': title.decode('utf8')}))
 
         return self.message(missing)
