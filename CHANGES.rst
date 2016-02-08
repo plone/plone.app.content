@@ -4,16 +4,13 @@ Changelog
 3.0.17 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
-- Fix errors when cutting and copying objects in folder contents
-  [vangheem]
 - Fixed error message unicode error in rename action.
   [Gagaro]
+
+- Fixed errors when cutting and copying objects in folder contents.
+  [vangheem]
 
 
 3.0.16 (2016-01-08)
