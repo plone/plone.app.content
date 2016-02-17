@@ -10,7 +10,7 @@ New:
 
 Fixes:
 
-- *add item here*
+- added translation functionality to  folder content panel [terapyon]
 
 
 3.0.17 (2016-02-08)
