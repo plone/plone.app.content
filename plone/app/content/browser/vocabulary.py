@@ -17,6 +17,9 @@ from zope.component import queryUtility
 from zope.schema.interfaces import ICollection
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
+from Products.CMFPlone import PloneMessageFactory as _
+from zope.i18n import translate
+from Products.CMFPlone.utils import safe_unicode
 import inspect
 import itertools
 
@@ -153,7 +156,7 @@ class BaseVocabularyView(BrowserView):
                             continue
                     if key == 'path':
                         val = val[len(base_path):]
-                    item[key] = val
+                    item[key] = translate(_(safe_unicode(val)), context=self.request)
                 items.append(item)
         else:
             for item in results:
