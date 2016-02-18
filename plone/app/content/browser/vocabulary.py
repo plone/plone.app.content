@@ -134,6 +134,14 @@ class BaseVocabularyView(BrowserView):
         if isinstance(attributes, basestring) and attributes:
             attributes = attributes.split(',')
 
+        translate_ignored = [
+            'Creator', 'Date', 'Description', 'Title', 'author_name',
+            'cmf_uid', 'commentators', 'created', 'effective', 'end',
+            'expires', 'getIcon', 'getId', 'getRemoteUrl', 'in_response_to',
+            'listCreators', 'location', 'modified', 'start', 'sync_uid',
+            'path', 'getURL', 'EffectiveDate', 'getObjSize', 'id',
+            'UID', 'ExpirationDate', 'ModificationDate', 'CreationDate',
+        ]
         if attributes:
             base_path = getNavigationRoot(context)
             for vocab_item in results:
@@ -156,7 +164,10 @@ class BaseVocabularyView(BrowserView):
                             continue
                     if key == 'path':
                         val = val[len(base_path):]
-                    item[key] = translate(_(safe_unicode(val)), context=self.request)
+                    if key not in translate_ignored and isinstance(val, basestring):
+                        item[key] = translate(_(safe_unicode(val)), context=self.request)
+                    else:
+                        item[key] = val
                 items.append(item)
         else:
             for item in results:
