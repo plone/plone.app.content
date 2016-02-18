@@ -11,6 +11,7 @@ New:
 Fixes:
 
 - added translation functionality to  folder content panel [terapyon]
+  https://github.com/plone/Products.CMFPlone/issues/1398
 
 
 3.0.17 (2016-02-08)
