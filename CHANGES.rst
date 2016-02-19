@@ -4,14 +4,11 @@ Changelog
 3.0.18 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
-- added translation functionality to  folder content panel [terapyon]
+- Added translation functionality to  folder content panel.
   https://github.com/plone/Products.CMFPlone/issues/1398
+  [terapyon]
 
 
 3.0.17 (2016-02-08)
