@@ -10,7 +10,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Add fallback to global vocabulary permission check when permission
+  checker can't be found.
+  [alecm]
 
 
 3.0.18 (2016-02-19)

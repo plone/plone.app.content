@@ -223,8 +223,13 @@ class VocabularyView(BaseVocabularyView):
                 if permission_checker is not None:
                     authorized = permission_checker.validate(field_name,
                                                              factory_name)
+                elif sm.checkPermission(_permissions[factory_name], context):
+                    # If no checker, fall back to checking the global registry
+                    authorized = True
+
             if not authorized:
                 raise VocabLookupException('Vocabulary lookup not allowed')
+
         # Short circuit if we are on the site root and permission is
         # in global registry
         elif not sm.checkPermission(_permissions[factory_name], context):
