@@ -4,10 +4,6 @@ Changelog
 3.0.19 (unreleased)
 -------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Add fallback to global vocabulary permission check when permission
