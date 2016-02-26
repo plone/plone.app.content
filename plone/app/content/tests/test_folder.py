@@ -104,7 +104,7 @@ class PropertiesDXTest(DXBaseTest):
         view()
         self.assertEquals(
             self.portal.page.creators,
-            ('one', 'two', 'test_user_1_')
+            ('one', 'two')
         )
 
 
