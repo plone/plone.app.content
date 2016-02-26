@@ -4,7 +4,17 @@ Changelog
 3.0.20 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Incompatibilities:
+
+- *add item here*
+
+New:
+
+- *add item here*
+
+Fixes:
+
+- *add item here*
 
 
 3.0.19 (2016-02-26)
