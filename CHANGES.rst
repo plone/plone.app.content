@@ -4,17 +4,9 @@ Changelog
 3.0.20 (unreleased)
 -------------------
 
-Incompatibilities:
-
-- *add item here*
-
-New:
-
-- *add item here*
-
 Fixes:
 
-- *add item here*
+- Fixed tests for adding creators to content.  [vangheem]
 
 
 3.0.19 (2016-02-26)
