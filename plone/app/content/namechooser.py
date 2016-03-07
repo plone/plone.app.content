@@ -3,8 +3,8 @@ from Acquisition import aq_base
 from Acquisition import aq_inner
 from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer import FILENAME_REGEX
-from plone.i18n.normalizer.interfaces import IURLNormalizer
-from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
+from plone.i18n.normalizer.interfaces import IFileNameNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredFileNameNormalizer
 from zExceptions import BadRequest
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
@@ -46,9 +46,9 @@ class NormalizingNameChooser(object):
 
         request = getattr(obj.__of__(container), 'REQUEST', None)
         if request is not None:
-            name = IUserPreferredURLNormalizer(request).normalize(name)
+            name = IUserPreferredFileNameNormalizer(request).normalize(name)
         else:
-            name = getUtility(IURLNormalizer).normalize(name)
+            name = getUtility(IFileNameNormalizer).normalize(name)
 
         return self._findUniqueName(name, obj)
 

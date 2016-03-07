@@ -45,3 +45,14 @@ class NameChooserTest(unittest.TestCase):
             holder.invokeFactory("Document", id)
             transaction.savepoint(optimistic=True)
             holder.get(id)
+
+    def test_name_starting_with_underscore(self):
+        """Regression test
+
+        This test tests for this failure:
+        https://github.com/plone/plone.app.content/issues/74
+        """
+        chooser = INameChooser(self.portal)
+
+        self.assertEqual('cool_image',
+                         chooser.chooseName('_cool_image', self.portal))
