@@ -4,7 +4,10 @@ Changelog
 2.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix problem with proper name choosing for files starting
+  with an underscore.
+  https://github.com/plone/plone.app.content/issues/74
+  [do3cc]
 
 
 2.1.5 (2014-09-07)
