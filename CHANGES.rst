@@ -14,7 +14,10 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix problem with proper name choosing for files starting
+  with an underscore.
+  https://github.com/plone/plone.app.content/issues/74
+  [do3cc]
 
 
 3.0.20 (2016-02-27)
