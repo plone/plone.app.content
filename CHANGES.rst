@@ -14,7 +14,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix test isolation problem and remove an unnecessary test dependency on ``plone.app.widgets``.
+  [thet]
 
 
 3.0.20 (2016-02-27)
