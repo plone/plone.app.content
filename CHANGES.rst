@@ -10,7 +10,9 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Add ``Creator``, ``Description``, ``end``, ``start`` and ``location`` to the available columns and context attributes for folder_contents.
+  Exclude ``Creator`` from the list of ``_unsafe_metadata``.
+  [thet]
 
 Fixes:
 
