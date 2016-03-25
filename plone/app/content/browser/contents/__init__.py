@@ -172,26 +172,43 @@ class FolderContentsView(BrowserView):
     def get_columns(self):
         # Base set of columns
         columns = {
-            'id': translate(_('ID'), context=self.request),
-            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
-            'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
-            'ExpirationDate': translate(_('Expiration date'), context=self.request),  #noqa
             'CreationDate': translate(_('Created on'), context=self.request),  # noqa
+            'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
+            'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
+            'ExpirationDate': translate(_('Expiration date'), context=self.request),  # noqa
+            'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
+            'id': translate(_('ID'), context=self.request),
+            'is_folderish': translate(_('Folder'), context=self.request),
+            'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
+            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
+            'portal_type': translate(_('Type'), context=self.request),
             'review_state': translate(_('Review state'), context=self.request),  # noqa
             'Subject': translate(_('Tags'), context=self.request),
-            'portal_type': translate(_('Type'), context=self.request),
-            'is_folderish': translate(_('Folder'), context=self.request),
-            'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
-            'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
-            'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
             'total_comments': translate(_('Total comments'), context=self.request),  # noqa
         }
         # These columns either have alternatives or are probably not useful
         ignored = [
-            'Creator', 'Date', 'Description', 'Title', 'Type', 'author_name',
-            'cmf_uid', 'commentators', 'created', 'effective', 'end',
-            'expires', 'getIcon', 'getId', 'getRemoteUrl', 'in_response_to',
-            'listCreators', 'location', 'meta_type', 'modified', 'start',
+            'Creator',
+            'Date',
+            'Description',
+            'Title',
+            'Type',
+            'author_name',
+            'cmf_uid',
+            'commentators',
+            'created',
+            'effective',
+            'end',
+            'expires',
+            'getIcon',
+            'getId',
+            'getRemoteUrl',
+            'in_response_to',
+            'listCreators',
+            'location',
+            'meta_type',
+            'modified',
+            'start',
             'sync_uid'
         ]
         # Add in extra metadata columns
@@ -221,7 +238,7 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': columns,
-            'attributes': ['Title', 'path', 'getURL', 'getIcon'] + columns.keys(),
+            'attributes': ['Title', 'path', 'getURL', 'getIcon'] + columns.keys(),  # noqa
             'buttons': self.get_actions(),
             'rearrange': {
                 'properties': {
@@ -251,11 +268,25 @@ class FolderContentsView(BrowserView):
 
 class ContextInfo(BrowserView):
 
-    attributes = ['UID', 'Title', 'Type', 'path', 'review_state',
-                  'ModificationDate', 'EffectiveDate', 'CreationDate',
-                  'is_folderish', 'Subject', 'getURL', 'id',
-                  'exclude_from_nav', 'getObjSize', 'last_comment_date',
-                  'total_comments', 'portal_type']
+    attributes = [
+        'CreationDate',
+        'EffectiveDate',
+        'exclude_from_nav',
+        'getObjSize',
+        'getURL',
+        'id',
+        'is_folderish',
+        'last_comment_date',
+        'ModificationDate',
+        'path',
+        'portal_type',
+        'review_state',
+        'Subject',
+        'Title',
+        'total_comments',
+        'Type',
+        'UID'
+    ]
 
     def __call__(self):
         factories_menu = getUtility(
