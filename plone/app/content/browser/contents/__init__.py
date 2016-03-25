@@ -173,24 +173,27 @@ class FolderContentsView(BrowserView):
         # Base set of columns
         columns = {
             'CreationDate': translate(_('Created on'), context=self.request),  # noqa
+            'Creator': translate(_('Creator'), context=self.request),
+            'Description': translate(_('Description'), context=self.request),
             'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
+            'end': translate(_('End Date'), context=self.request),
             'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
             'ExpirationDate': translate(_('Expiration date'), context=self.request),  # noqa
             'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
             'id': translate(_('ID'), context=self.request),
             'is_folderish': translate(_('Folder'), context=self.request),
             'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
+            'location': translate(_('Location'), context=self.request),
             'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
             'portal_type': translate(_('Type'), context=self.request),
             'review_state': translate(_('Review state'), context=self.request),  # noqa
+            'start': translate(_('Start Date'), context=self.request),
             'Subject': translate(_('Tags'), context=self.request),
             'total_comments': translate(_('Total comments'), context=self.request),  # noqa
         }
         # These columns either have alternatives or are probably not useful
         ignored = [
-            'Creator',
             'Date',
-            'Description',
             'Title',
             'Type',
             'author_name',
@@ -198,17 +201,14 @@ class FolderContentsView(BrowserView):
             'commentators',
             'created',
             'effective',
-            'end',
             'expires',
             'getIcon',
             'getId',
             'getRemoteUrl',
             'in_response_to',
             'listCreators',
-            'location',
             'meta_type',
             'modified',
-            'start',
             'sync_uid'
         ]
         # Add in extra metadata columns
@@ -270,22 +270,27 @@ class ContextInfo(BrowserView):
 
     attributes = [
         'CreationDate',
+        'Creator',
+        'Description',
         'EffectiveDate',
+        'end',
         'exclude_from_nav',
         'getObjSize',
         'getURL',
         'id',
         'is_folderish',
         'last_comment_date',
+        'location'
         'ModificationDate',
         'path',
         'portal_type',
         'review_state',
+        'start',
         'Subject',
         'Title',
         'total_comments',
         'Type',
-        'UID'
+        'UID',
     ]
 
     def __call__(self):

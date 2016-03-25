@@ -54,7 +54,6 @@ def _parseJSON(s):
 _unsafe_metadata = [
     'author_name',
     'commentors',
-    'Creator',
     'listCreators',
 ]
 _safe_callable_metadata = [
