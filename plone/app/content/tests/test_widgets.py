@@ -1,33 +1,31 @@
 # -*- coding: utf-8 -*-
+import os
 from mock import Mock
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
 from plone.app.content.browser import vocabulary
 from plone.app.content.browser.file import FileUploadView
 from plone.app.content.browser.query import QueryStringIndexOptions
 from plone.app.content.browser.vocabulary import VocabularyView
-from plone.app.content.testing import ExampleFunctionVocabulary
-from plone.app.content.testing import ExampleVocabulary
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
-from plone.app.testing import login
-from plone.app.testing import logout
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
 from plone.app.widgets.interfaces import IFieldPermissionChecker
+from plone.app.widgets.testing import ExampleFunctionVocabulary
+from plone.app.widgets.testing import ExampleVocabulary
+from plone.app.widgets.testing import PLONEAPPWIDGETS_INTEGRATION_TESTING
+from plone.app.widgets.testing import TestRequest
 from zope.component import getMultiAdapter
 from zope.component import provideAdapter
 from zope.component import provideUtility
 from zope.component.globalregistry import base
 from zope.globalrequest import setRequest
-from zope.interface import alsoProvides
 from zope.interface import Interface
+from zope.interface import alsoProvides
 from zope.interface import noLongerProvides
-from zope.publisher.browser import TestRequest
 
 import json
-import os
 import transaction
-
 
 _dir = os.path.dirname(__file__)
 
@@ -69,7 +67,7 @@ def _disable_permission_checker(context):
 
 class BrowserTest(unittest.TestCase):
 
-    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+    layer = PLONEAPPWIDGETS_INTEGRATION_TESTING
 
     def setUp(self):
         self.request = TestRequest(environ={'HTTP_ACCEPT_LANGUAGE': 'en'})
@@ -454,18 +452,6 @@ class BrowserTest(unittest.TestCase):
         # just test one so we know it's working...
         self.assertEqual(data['indexes']['sortable_title']['sortable'], True)
 
-
-class FunctionalBrowserTest(unittest.TestCase):
-
-    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
-
-    def setUp(self):
-        self.request = TestRequest()
-        setRequest(self.request)
-        self.portal = self.layer['portal']
-        login(self.portal, TEST_USER_NAME)
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
-
     def testFileUpload(self):
         view = FileUploadView(self.portal, self.request)
         from plone.namedfile.file import FileChunk
@@ -473,8 +459,6 @@ class FunctionalBrowserTest(unittest.TestCase):
         chunk.filename = 'test.xml'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'
-        # the next calls plone.app.dexterity.factories and does a
-        # transaction.commit. Needs cleanup and FunctionalTesting layer.
         data = json.loads(view())
         self.assertEqual(data['url'], 'http://nohost/plone/test.xml')
         self.assertTrue(data['UID'] is not None)
@@ -489,8 +473,6 @@ class FunctionalBrowserTest(unittest.TestCase):
         chunk.filename = 'test.txt'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'
-        # the next calls plone.app.dexterity.factories and does a
-        # transaction.commit. Needs cleanup and FunctionalTesting layer.
         data = json.loads(view())
         self.assertEqual(data['url'], 'http://nohost/plone/test.txt')
         self.assertTrue(data['UID'] is not None)
