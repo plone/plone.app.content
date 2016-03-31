@@ -28,10 +28,10 @@ logger = getLogger(__name__)
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
 _permissions = {
-    'plone.app.vocabularies.Users': 'Modify portal content',
     'plone.app.vocabularies.Catalog': 'View',
     'plone.app.vocabularies.Keywords': 'Modify portal content',
-    'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content'
+    'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content',
+    'plone.app.vocabularies.Users': 'Modify portal content',
 }
 
 
@@ -44,9 +44,18 @@ def _parseJSON(s):
     return s
 
 
-_unsafe_metadata = ['Creator', 'listCreators', 'author_name', 'commentors']
-_safe_callable_metadata = ['getURL', 'getPath','review_state',
-                            'getIcon', 'is_folderish']
+_unsafe_metadata = [
+    'author_name',
+    'commentors',
+    'listCreators',
+]
+_safe_callable_metadata = [
+    'getIcon',
+    'getPath',
+    'getURL',
+    'is_folderish',
+    'review_state',
+]
 
 
 class VocabLookupException(Exception):
@@ -135,12 +144,35 @@ class BaseVocabularyView(BrowserView):
             attributes = attributes.split(',')
 
         translate_ignored = [
-            'Creator', 'Date', 'Description', 'Title', 'author_name',
-            'cmf_uid', 'commentators', 'created', 'effective', 'end',
-            'expires', 'getIcon', 'getId', 'getRemoteUrl', 'in_response_to',
-            'listCreators', 'location', 'modified', 'start', 'sync_uid',
-            'path', 'getURL', 'EffectiveDate', 'getObjSize', 'id',
-            'UID', 'ExpirationDate', 'ModificationDate', 'CreationDate',
+            'author_name',
+            'cmf_uid',
+            'commentators',
+            'created',
+            'CreationDate',
+            'Creator',
+            'Date',
+            'Description',
+            'effective',
+            'EffectiveDate',
+            'end',
+            'ExpirationDate',
+            'expires',
+            'getIcon',
+            'getId',
+            'getObjSize',
+            'getRemoteUrl',
+            'getURL',
+            'id',
+            'in_response_to',
+            'listCreators',
+            'location',
+            'ModificationDate',
+            'modified',
+            'path',
+            'start',
+            'sync_uid',
+            'Title',
+            'UID',
         ]
         if attributes:
             base_path = getNavigationRoot(context)
