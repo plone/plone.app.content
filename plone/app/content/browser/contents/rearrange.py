@@ -14,7 +14,10 @@ class OrderContentsBaseAction(ContentsBaseAction):
         if IPloneSiteRoot.providedBy(self.context):
             return self.context
         try:
-            ordering = self.context.aq_base.getOrdering()
+            if self.context.aq_base.getOrdering():
+                ordering = self.context.getOrdering()
+            else:
+                return None
         except AttributeError:
             if IOrderedContainer.providedBy(self.context):
                 # Archetype
