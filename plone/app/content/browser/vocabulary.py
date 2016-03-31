@@ -171,7 +171,7 @@ class BaseVocabularyView(BrowserView):
                 items.append(item)
         else:
             for item in results:
-                items.append({'id': item.value, 'text': item.title})
+                items.append({'id': item.token, 'text': item.title})
 
         if total == 0:
             total = len(items)

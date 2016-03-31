@@ -216,6 +216,7 @@ Fixes:
   list in a select2 based widget.
   Fixes: https://github.com/plone/Products.CMFPlone/issues/650
   [thet]
+- Nothing changed yet.
 
 
 3.0.6 (2015-06-05)
