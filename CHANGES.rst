@@ -14,6 +14,9 @@ New:
 
 Fixes:
 
+- Fix folder contents path and breadcrumbs settings to show correct paths and render the toolbar correctly in navigation root subsites and virtual hosting environments pointing to subsites.
+  [thet]
+
 - Fix test isolation problem and remove an unnecessary test dependency on ``plone.app.widgets``.
   [thet]
 

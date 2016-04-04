@@ -11,17 +11,19 @@ from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import utils
-from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.Five import BrowserView
+from urlparse import urlparse
 from zope.browsermenu.interfaces import IBrowserMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.component.hooks import getSite
+from zope.component.interfaces import ISite
 from zope.i18n import translate
 from zope.interface import implementer
 
 import zope.deferredimport
+
 
 zope.deferredimport.deprecated(
     # remove in Plone 5.1
@@ -34,6 +36,30 @@ zope.deferredimport.deprecated(
     ItemOrder='plone.app.content.browser.content.rearrange:ItemOrderActionView',  # noqa
     Rearrange='plone.app.content.browser.content.rearrange:RearrangeOrderActionView',  # noqa
 )
+
+
+def get_top_site_from_url(context, request):
+    """Find the top-most site, which is in the url path.
+    For this given content structure:
+
+    /Plone/Subsite
+
+    It should return the following in these cases:
+
+    - Naked Plone without virtual hosting, /Plone: Plone
+    - Naked Plone without virtual hosting, /Plone/Subsite: Plone
+    - Virtual hosting which roots to the subsite: Subsite
+    """
+    url_path = urlparse(context.absolute_url()).path.split('/')
+
+    site = getSite()
+    for idx in range(len(url_path)):
+        _path = '/'.join(url_path[:idx + 1]) or '/'
+        site_path = request.physicalPathFromURL(_path)
+        site = context.restrictedTraverse('/'.join(site_path) or '/')
+        if ISite.providedBy(site):
+            break
+    return site
 
 
 class ContentsBaseAction(BrowserView):
@@ -177,7 +203,7 @@ class FolderContentsView(BrowserView):
         return columns
 
     def get_options(self):
-        site = getSite()
+        site = get_top_site_from_url(self.context, self.request)
         base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % base_url
         site_path = site.getPhysicalPath()
@@ -248,7 +274,8 @@ class ContextInfo(BrowserView):
 
         context = aq_inner(self.context)
         crumbs = []
-        while not IPloneSiteRoot.providedBy(context):
+        top_site = get_top_site_from_url(self.context, self.request)
+        while not context == top_site:
             crumbs.append({
                 'id': context.getId(),
                 'title': utils.pretty_title_or_id(context, context)
