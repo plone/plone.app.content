@@ -54,6 +54,7 @@ def _parseJSON(s):
 _unsafe_metadata = [
     'author_name',
     'commentors',
+    'Creator',
     'listCreators',
 ]
 _safe_callable_metadata = [
@@ -183,6 +184,8 @@ class BaseVocabularyView(BrowserView):
         ]
         if attributes:
             base_path = getNavigationRoot(context)
+            sm = getSecurityManager()
+            can_edit = sm.checkPermission('Modify portal content', context)
             for vocab_item in results:
                 if not results_are_brains:
                     vocab_item = vocab_item.value
@@ -191,7 +194,7 @@ class BaseVocabularyView(BrowserView):
                     key = attr
                     if ':' in attr:
                         key, attr = attr.split(':', 1)
-                    if attr in _unsafe_metadata:
+                    if attr in _unsafe_metadata and not can_edit:
                         continue
                     if key == 'path':
                         attr = 'getPath'
