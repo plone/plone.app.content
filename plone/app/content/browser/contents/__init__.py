@@ -185,17 +185,16 @@ class FolderContentsView(BrowserView):
             'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
             'location': translate(_('Location'), context=self.request),
             'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
-            'portal_type': translate(_('Type'), context=self.request),
             'review_state': translate(_('Review state'), context=self.request),  # noqa
             'start': translate(_('Start Date'), context=self.request),
             'Subject': translate(_('Tags'), context=self.request),
+            'Type': translate(_('Type'), context=self.request),
             'total_comments': translate(_('Total comments'), context=self.request),  # noqa
         }
         # These columns either have alternatives or are probably not useful
         ignored = [
             'Date',
             'Title',
-            'Type',
             'author_name',
             'cmf_uid',
             'commentators',
@@ -209,6 +208,7 @@ class FolderContentsView(BrowserView):
             'listCreators',
             'meta_type',
             'modified',
+            'portal_type',
             'sync_uid'
         ]
         # Add in extra metadata columns
@@ -238,7 +238,7 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': columns,
-            'attributes': ['Title', 'path', 'getURL', 'getIcon'] + columns.keys(),  # noqa
+            'attributes': ['Title', 'path', 'getURL', 'getIcon', 'portal_type'] + columns.keys(),  # noqa
             'buttons': self.get_actions(),
             'rearrange': {
                 'properties': {

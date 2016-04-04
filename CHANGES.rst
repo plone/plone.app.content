@@ -12,6 +12,8 @@ New:
 
 - Add ``Creator``, ``Description``, ``end``, ``start`` and ``location`` to the available columns and context attributes for folder_contents.
   Show attributes from ``_unsafe_metadata`` if user has "Modify Portal Content" permissions.
+  Remove ``portal_type`` from available columns and use the translated ``Type`` instead.
+  ``portal_type`` is now available on the attributes object.
   [thet]
 
 Fixes:
