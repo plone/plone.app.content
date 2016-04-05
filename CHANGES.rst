@@ -14,7 +14,7 @@ New:
 
 Fixes:
 
-- *add item here*
+- Restore acquisition context in orderings, which had been dropped by accident in 3.0.15 [pysailor]
 
 
 3.0.20 (2016-02-27)
