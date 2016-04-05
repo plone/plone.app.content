@@ -7,16 +7,18 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
+from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Testing.makerequest import makerequest
+from urlparse import urlparse
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
+
 import json
 import unittest
-from plone.locking.interfaces import IRefreshableLockable
 
 
 class BaseTest(unittest.TestCase):
@@ -41,6 +43,9 @@ class BaseTest(unittest.TestCase):
             }
         )
         self.request.REQUEST_METHOD = 'POST'
+        # Mock physicalPathFromURL
+        # NOTE: won't return the right path in virtual hosting environments
+        self.request.physicalPathFromURL = lambda url: urlparse(url).path.split('/')  # noqa
         alsoProvides(self.request, IAttributeAnnotatable)
         self.userList = 'one,two'
 
