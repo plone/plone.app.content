@@ -1,13 +1,44 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
+from plone.app.testing import FunctionalTesting
+from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import IntegrationTesting
-from plone.app.testing import FunctionalTesting
-from zope.configuration import xmlconfig
 from plone.testing import z2
+from Products.CMFCore.utils import getToolByName
+from zope.configuration import xmlconfig
+from zope.interface import implementer
+from zope.interface import provider
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+
+
+@implementer(IVocabularyFactory)
+class ExampleVocabulary(object):
+
+    def __call__(self, context, query=None):
+        items = [u'One', u'Two', u'Three']
+        tmp = SimpleVocabulary([
+            SimpleTerm(it.lower(), it.lower(), it)
+            for it in items
+            if query is None
+            or query.lower() in it.lower()
+        ])
+        tmp.test = 1
+        return tmp
+
+
+@provider(IVocabularyFactory)
+def ExampleFunctionVocabulary(context, query=None):
+    items = [u'First', u'Second', u'Third']
+    tmp = SimpleVocabulary([
+        SimpleTerm(it.lower(), it.lower(), it)
+        for it in items
+        if query is None
+        or query.lower() in it.lower()
+    ])
+    return tmp
 
 
 class PloneAppContent(PloneSandboxLayer):
@@ -27,9 +58,11 @@ class PloneAppContent(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # Load ZCML
         import plone.app.content
-        xmlconfig.file('configure.zcml',
-                       plone.app.content,
-                       context=configurationContext)
+        xmlconfig.file(
+            'configure.zcml',
+            plone.app.content,
+            context=configurationContext
+        )
 
     def setUpPloneSite(self, portal):
         # Creates some users
@@ -80,6 +113,7 @@ class PloneAppContentAT(PloneAppContent):
         super(PloneAppContentAT, self).setUpPloneSite(portal)
         self.applyProfile(portal, 'Products.ATContentTypes:default')
 
+
 PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE, ),
@@ -88,6 +122,7 @@ PLONE_APP_CONTENT_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE, ),
     name="PloneAppContent:Functional")
 
+
 # Dexterity test layers
 PLONE_APP_CONTENT_DX_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENTTYPES_FIXTURE, ),
@@ -95,6 +130,7 @@ PLONE_APP_CONTENT_DX_INTEGRATION_TESTING = IntegrationTesting(
 PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENTTYPES_FIXTURE, ),
     name="PloneAppContentDX:Functional")
+
 
 # AT test layers
 PLONE_APP_CONTENT_AT_FIXTURE = PloneAppContentAT()

@@ -14,7 +14,11 @@ New:
 
 Fixes:
 
-- Restore acquisition context in orderings, which had been dropped by accident in 3.0.15 [pysailor]
+- Fix test isolation problem and remove an unnecessary test dependency on ``plone.app.widgets``.
+  [thet]
+
+- Restore acquisition context in orderings, which had been dropped by accident in 3.0.15
+  [pysailor]
 
 
 3.0.20 (2016-02-27)
