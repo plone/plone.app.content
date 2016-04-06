@@ -229,8 +229,8 @@ class VocabularyView(BaseVocabularyView):
         authorized = None
         sm = getSecurityManager()
         if (
-            PERMISSIONS or
-            not INavigationRoot.providedBy(context)
+            factory_name not in PERMISSIONS
+            or not INavigationRoot.providedBy(context)
         ):
             # Check field specific permission
             if field_name:
@@ -255,7 +255,8 @@ class VocabularyView(BaseVocabularyView):
 
         # Short circuit if we are on the site root and permission is
         # in global registry
-        elif not sm.checkPermission(PERMISSIONS[factory_name], context):
+        elif not sm.checkPermission(
+                PERMISSIONS.get(factory_name, DEFAULT_PERMISSION), context):
             raise VocabLookupException('Vocabulary lookup not allowed')
 
         factory = queryUtility(IVocabularyFactory, factory_name)
