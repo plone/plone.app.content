@@ -1,41 +1,48 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.layout.navigation.root import getNavigationRoot
-from Products.Five import BrowserView
 from logging import getLogger
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
 from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.supermodel.utils import mergedTaggedValueDict
+from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five import BrowserView
 from types import FunctionType
 from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryUtility
+from zope.deprecation import deprecated
+from zope.i18n import translate
 from zope.schema.interfaces import ICollection
 from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
-from Products.CMFPlone import PloneMessageFactory as _
-from zope.i18n import translate
-from Products.CMFPlone.utils import safe_unicode
+
 import inspect
 import itertools
+
 
 logger = getLogger(__name__)
 
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
-_permissions = {
+DEFAULT_PERMISSION = 'View'
+PERMISSIONS = {
     'plone.app.vocabularies.Users': 'Modify portal content',
     'plone.app.vocabularies.Catalog': 'View',
     'plone.app.vocabularies.Keywords': 'Modify portal content',
     'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content'
 }
 
+_permissions = deprecated(PERMISSIONS, 'Use PERMISSION variable instead')
+
 
 def _parseJSON(s):
+    # XXX this should be changed to a try loads except return s
     if isinstance(s, basestring):
         s = s.strip()
         if (s.startswith('{') and s.endswith('}')) or \
@@ -45,8 +52,9 @@ def _parseJSON(s):
 
 
 _unsafe_metadata = ['Creator', 'listCreators', 'author_name', 'commentors']
-_safe_callable_metadata = ['getURL', 'getPath','review_state',
-                            'getIcon', 'is_folderish']
+_safe_callable_metadata = [
+    'getURL', 'getPath', 'review_state', 'getIcon', 'is_folderish',
+]
 
 
 class VocabLookupException(Exception):
@@ -164,8 +172,14 @@ class BaseVocabularyView(BrowserView):
                             continue
                     if key == 'path':
                         val = val[len(base_path):]
-                    if key not in translate_ignored and isinstance(val, basestring):
-                        item[key] = translate(_(safe_unicode(val)), context=self.request)
+                    if (
+                        key not in translate_ignored and
+                        isinstance(val, basestring)
+                    ):
+                        item[key] = translate(
+                            _(safe_unicode(val)),
+                            context=self.request
+                        )
                     else:
                         item[key] = val
                 items.append(item)
@@ -214,16 +228,25 @@ class VocabularyView(BaseVocabularyView):
             raise VocabLookupException('No factory provided.')
         authorized = None
         sm = getSecurityManager()
-        if (factory_name not in _permissions or
-                not INavigationRoot.providedBy(context)):
+        if (
+            factory_name not in PERMISSIONS
+            or not INavigationRoot.providedBy(context)
+        ):
             # Check field specific permission
             if field_name:
-                permission_checker = queryAdapter(context,
-                                                  IFieldPermissionChecker)
+                permission_checker = queryAdapter(
+                    context,
+                    IFieldPermissionChecker
+                )
                 if permission_checker is not None:
-                    authorized = permission_checker.validate(field_name,
-                                                             factory_name)
-                elif sm.checkPermission(_permissions[factory_name], context):
+                    authorized = permission_checker.validate(
+                        field_name,
+                        factory_name
+                    )
+                elif sm.checkPermission(
+                    PERMISSIONS.get(factory_name, DEFAULT_PERMISSION),
+                    context
+                ):
                     # If no checker, fall back to checking the global registry
                     authorized = True
 
@@ -232,7 +255,8 @@ class VocabularyView(BaseVocabularyView):
 
         # Short circuit if we are on the site root and permission is
         # in global registry
-        elif not sm.checkPermission(_permissions[factory_name], context):
+        elif not sm.checkPermission(
+                PERMISSIONS.get(factory_name, DEFAULT_PERMISSION), context):
             raise VocabLookupException('Vocabulary lookup not allowed')
 
         factory = queryUtility(IVocabularyFactory, factory_name)
@@ -274,12 +298,15 @@ class SourceView(BaseVocabularyView):
         permission = queryUtility(IPermission, name=permission_name)
         if permission is None:
             permission = getUtility(
-                IPermission, name='cmf.ModifyPortalContent')
+                IPermission,
+                name='cmf.ModifyPortalContent'
+            )
         if not getSecurityManager().checkPermission(
-                permission.title, self.get_context()):
+            permission.title,
+            self.get_context()
+        ):
             raise VocabLookupException('Vocabulary lookup not allowed.')
 
         if ICollection.providedBy(field):
             return field.value_type.vocabulary
-        else:
-            return field.vocabulary
+        return field.vocabulary

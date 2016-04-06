@@ -79,7 +79,7 @@ class BrowserTest(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         provideUtility(ExampleVocabulary(), name=u'vocab_class')
         provideUtility(ExampleFunctionVocabulary, name=u'vocab_function')
-        vocabulary._permissions.update({
+        vocabulary.PERMISSIONS.update({
             'vocab_class': 'Modify portal content',
             'vocab_function': 'Modify portal content',
         })
