@@ -14,6 +14,11 @@ New:
 
 Fixes:
 
+- Vocabulary permissions are considered View permission by default, if not 
+  stated different in PERMISSION global. Renamed _permissions to PERMISSIONS,
+  Deprecated BBB name in place. Also minor code-style changes
+  [jensens, thet]
+
 - Fix folder contents path and breadcrumbs settings to show correct paths and render the toolbar correctly in navigation root subsites and virtual hosting environments pointing to subsites.
   [thet]
 
