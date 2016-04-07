@@ -68,6 +68,10 @@ class ContentsBaseAction(BrowserView):
     failure_msg = _('Failure')
     required_obj_permission = None
 
+    @property
+    def site(self):
+        return get_top_site_from_url(self.context, self.request)
+
     def objectTitle(self, obj):
         context = aq_inner(obj)
         title = utils.pretty_title_or_id(context, context)
@@ -100,11 +104,10 @@ class ContentsBaseAction(BrowserView):
     def __call__(self):
         self.protect()
         self.errors = []
-        site = getSite()
         context = aq_inner(self.context)
         selection = self.get_selection()
 
-        self.dest = site.restrictedTraverse(
+        self.dest = self.site.restrictedTraverse(
             str(self.request.form['folder'].lstrip('/')))
 
         self.catalog = getToolByName(context, 'portal_catalog')

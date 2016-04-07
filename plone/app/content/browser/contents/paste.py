@@ -4,7 +4,6 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
-from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 
@@ -35,9 +34,8 @@ class PasteActionView(ContentsBaseAction):
     def __call__(self):
         self.protect()
         self.errors = []
-        site = getSite()
 
-        self.dest = site.restrictedTraverse(
+        self.dest = self.site.restrictedTraverse(
             str(self.request.form['folder'].lstrip('/')))
 
         try:
