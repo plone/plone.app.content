@@ -49,5 +49,13 @@ class PasteActionView(ContentsBaseAction):
             self.errors.append(
                 _(u'You are not authorized to paste ${title} here.',
                     mapping={u'title': self.objectTitle(self.dest)}))
+        except ValueError as e:
+            if 'Disallowed subobject type: ' in e.message:
+                msg_parts = e.message.split(':')
+                self.errors.append(
+                    _(u'Disallowed subobject type: ${type}',
+                        mapping={u'type': msg_parts[1].strip()}))
+            else:
+                raise e
 
         return self.message()

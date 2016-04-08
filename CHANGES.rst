@@ -18,9 +18,14 @@ New:
 
 Fixes:
 
+- Folder contents: When pasting, handle "Disallowed subobject type" ValueError and present a helpful error message.
+  Fixes: plone/mockup#657
+  [thet]
+
 - Folder contents: Acquire the top most visible portal object to operate on.
   Fixes some issues in INavigationRoot or ISite based subsites and virtual hosting environments pointing to subsites.
   Fixes include: show correct breadcrumb paths, paste to correct location.
+  Fixes: #86
   [thet]
 
   Fixes folder contents path and breadcrumbs settings to show correct paths and render the toolbar correctly in navigation root subsites and virtual hosting environments pointing to subsites.
