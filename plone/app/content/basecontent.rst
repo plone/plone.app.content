@@ -4,6 +4,7 @@ Basic content
 
 plone.app.content provides some helper base classes for content. Here are
 some simple examples of using them.
+.. code-block:: python
 
     >>> from plone.app.content import container, item
 
@@ -15,12 +16,14 @@ available from Plone's "add item" menu. Factories are registered as named
 utilities.
 
 Note that we need to define a portal_type to keep CMF happy.
+.. code-block:: python
 
     >>> from zope.interface import implements, Interface
     >>> from zope import schema
     >>> from zope.component.factory import Factory
 
 First, a container:
+.. code-block:: python
 
     >>> class IMyContainer(Interface):
     ...     title = schema.TextLine(title=u"My title")
@@ -35,6 +38,7 @@ First, a container:
     >>> containerFactory = Factory(MyContainer)
 
 Then, an item:
+.. code-block:: python
 
     >>> class IMyType(Interface):
     ...     title = schema.TextLine(title=u"My title")
@@ -49,6 +53,7 @@ Then, an item:
     >>> itemFactory = Factory(MyType)
 
 We can now create the items.
+.. code-block:: python
 
     >>> container = containerFactory("my-container")
     >>> container.id
@@ -56,11 +61,13 @@ We can now create the items.
     >>> container.title = "A sample container"
 
 We need to add it to an object manager for acquisition to do its magic.
+.. code-block:: python
 
     >>> newid = self.portal._setObject(container.id, container)
     >>> container = getattr(self.portal, newid)
 
 We will add the item directly to the container later.
+.. code-block:: python
 
     >>> item = itemFactory("my-item")
     >>> item.id
@@ -70,6 +77,7 @@ We will add the item directly to the container later.
 Note that both the container type and the item type are contentish. This is
 important, because CMF provides event handlers that automatically index
 objects that are IContentish.
+.. code-block:: python
 
     >>> from Products.CMFCore.interfaces import IContentish
     >>> IContentish.providedBy(container)
@@ -78,6 +86,7 @@ objects that are IContentish.
     True
 
 Only the container is folderish, though:
+.. code-block:: python
 
     >>> from Products.CMFCore.interfaces import IFolderish
     >>> bool(container.isPrincipiaFolderish)
@@ -91,6 +100,7 @@ Only the container is folderish, though:
 
 We can use the more natural Zope3-style container API, or the traditional
 ObjectManager one.
+.. code-block:: python
 
     >>> container['my-item'] = item
     >>> 'my-item' in container
@@ -106,6 +116,7 @@ ObjectManager one.
     True
 
 Both pieces of content should have been cataloged.
+.. code-block:: python
 
     >>> container = self.portal['my-container']
     >>> item = container['my-item']
@@ -118,6 +129,7 @@ Both pieces of content should have been cataloged.
     ['A non-folderish item']
 
 If we modify an object and trigger a modified event, it should be updated.
+.. code-block:: python
 
     >>> from zope.lifecycleevent import ObjectModifiedEvent
     >>> from zope.event import notify
