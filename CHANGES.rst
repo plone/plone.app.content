@@ -10,9 +10,22 @@ Incompatibilities:
 
 New:
 
-- *add item here*
+- Add ``Creator``, ``Description``, ``end``, ``start`` and ``location`` to the available columns and context attributes for folder_contents.
+  [thet]
+
+  Show attributes from ``_unsafe_metadata`` if user has "Modify Portal Content" permissions.
+  [thet]
 
 Fixes:
+
+- Remove ``portal_type`` from available columns and use ``Type`` instead, which is meant to be read by humans.
+  ``portal_type`` is now available on the attributes object.
+  [thet]
+
+- Added most notably `portal_type`, `review_state` and `Subject` but also `exclude_from_nav`, `is_folderish`, `last_comment_date`, `meta_type` and `total_comments` to ``BaseVocabularyView`` ``translate_ignored`` list.
+  Some of them are necessary for frontend logic and others cannot be translated.
+  Fixes https://github.com/plone/plone.app.content/issues/77
+  [thet]
 
 - Vocabulary permissions are considered View permission by default, if not 
   stated different in PERMISSION global. Renamed _permissions to PERMISSIONS,

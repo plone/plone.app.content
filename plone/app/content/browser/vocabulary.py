@@ -32,10 +32,10 @@ MAX_BATCH_SIZE = 500  # prevent overloading server
 
 DEFAULT_PERMISSION = 'View'
 PERMISSIONS = {
-    'plone.app.vocabularies.Users': 'Modify portal content',
     'plone.app.vocabularies.Catalog': 'View',
     'plone.app.vocabularies.Keywords': 'Modify portal content',
-    'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content'
+    'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content',
+    'plone.app.vocabularies.Users': 'Modify portal content',
 }
 
 _permissions = deprecated(PERMISSIONS, 'Use PERMISSION variable instead')
@@ -51,9 +51,18 @@ def _parseJSON(s):
     return s
 
 
-_unsafe_metadata = ['Creator', 'listCreators', 'author_name', 'commentors']
+_unsafe_metadata = [
+    'author_name',
+    'commentors',
+    'Creator',
+    'listCreators',
+]
 _safe_callable_metadata = [
-    'getURL', 'getPath', 'review_state', 'getIcon', 'is_folderish',
+    'getIcon',
+    'getPath',
+    'getURL',
+    'is_folderish',
+    'review_state',
 ]
 
 
@@ -143,15 +152,48 @@ class BaseVocabularyView(BrowserView):
             attributes = attributes.split(',')
 
         translate_ignored = [
-            'Creator', 'Date', 'Description', 'Title', 'author_name',
-            'cmf_uid', 'commentators', 'created', 'effective', 'end',
-            'expires', 'getIcon', 'getId', 'getRemoteUrl', 'in_response_to',
-            'listCreators', 'location', 'modified', 'start', 'sync_uid',
-            'path', 'getURL', 'EffectiveDate', 'getObjSize', 'id',
-            'UID', 'ExpirationDate', 'ModificationDate', 'CreationDate',
+            'author_name',
+            'cmf_uid',
+            'commentators',
+            'created',
+            'CreationDate',
+            'Creator',
+            'Date',
+            'Description',
+            'effective',
+            'EffectiveDate',
+            'end',
+            'exclude_from_nav',
+            'ExpirationDate',
+            'expires',
+            'getIcon',
+            'getId',
+            'getObjSize',
+            'getRemoteUrl',
+            'getURL',
+            'id',
+            'in_response_to',
+            'is_folderish',
+            'last_comment_date',
+            'listCreators',
+            'location',
+            'meta_type',
+            'ModificationDate',
+            'modified',
+            'path',
+            'portal_type',
+            'review_state',
+            'start',
+            'Subject',
+            'sync_uid',
+            'Title',
+            'total_comments'
+            'UID',
         ]
         if attributes:
             base_path = getNavigationRoot(context)
+            sm = getSecurityManager()
+            can_edit = sm.checkPermission('Modify portal content', context)
             for vocab_item in results:
                 if not results_are_brains:
                     vocab_item = vocab_item.value
@@ -160,7 +202,7 @@ class BaseVocabularyView(BrowserView):
                     key = attr
                     if ':' in attr:
                         key, attr = attr.split(':', 1)
-                    if attr in _unsafe_metadata:
+                    if attr in _unsafe_metadata and not can_edit:
                         continue
                     if key == 'path':
                         attr = 'getPath'
