@@ -28,9 +28,6 @@ Fixes:
   Fixes: #86
   [thet]
 
-  Fixes folder contents path and breadcrumbs settings to show correct paths and render the toolbar correctly in navigation root subsites and virtual hosting environments pointing to subsites.
-  [thet]
-
 - Added most notably `portal_type`, `review_state` and `Subject` but also `exclude_from_nav`, `is_folderish`, `last_comment_date`, `meta_type` and `total_comments` to ``BaseVocabularyView`` ``translate_ignored`` list.
   Some of them are necessary for frontend logic and others cannot be translated.
   Fixes https://github.com/plone/plone.app.content/issues/77

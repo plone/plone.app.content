@@ -39,7 +39,14 @@ zope.deferredimport.deprecated(
 
 
 def get_top_site_from_url(context, request):
-    """Find the top-most site, which is in the url path.
+    """Find the top-most site, which is still in the url path.
+
+    If the current context is within a subsite within a PloneSiteRoot and no
+    virtual hosting is in place, the PloneSiteRoot is returned.
+    When at the same context but in a virtual hosting environment with the
+    virtual host root pointing to the subsites, it returns the subsite instead
+    of the PloneSiteRoot.
+
     For this given content structure:
 
     /Plone/Subsite
