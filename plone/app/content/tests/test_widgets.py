@@ -146,7 +146,69 @@ class BrowserTest(unittest.TestCase):
         })
         data = json.loads(view())
         self.assertEquals(len(data['results']), 1)
-        self.portal.manage_delObjects(['page'])
+
+    def testVocabularyCatalogUnsafeMetadataAllowed(self):
+        """Users with permission "Modify portal content" are allowed to see
+        ``_unsafe_metadata``.
+        """
+        self.portal.invokeFactory('Document', id="page", title="page")
+        self.portal.page.reindexObject()
+        view = VocabularyView(self.portal, self.request)
+        query = {
+            'criteria': [
+                {
+                    'i': 'path',
+                    'o': 'plone.app.querystring.operation.string.path',
+                    'v': '/plone/page'
+                }
+            ]
+        }
+        self.request.form.update({
+            'name': 'plone.app.vocabularies.Catalog',
+            'query': json.dumps(query),
+            'attributes': [
+                'id',
+                'commentors',
+                'Creator',
+                'listCreators',
+            ]
+        })
+        data = json.loads(view())
+        self.assertEquals(len(data['results'][0].keys()), 4)
+
+    def testVocabularyCatalogUnsafeMetadataDisallowed(self):
+        """Users without permission "Modify portal content" are not allowed to
+        see ``_unsafe_metadata``.
+        """
+        self.portal.invokeFactory('Document', id="page", title="page")
+        self.portal.page.reindexObject()
+        # Downgrade permissions
+        setRoles(self.portal, TEST_USER_ID, [])
+        view = VocabularyView(self.portal, self.request)
+        query = {
+            'criteria': [
+                {
+                    'i': 'path',
+                    'o': 'plone.app.querystring.operation.string.path',
+                    'v': '/plone/page'
+                }
+            ]
+        }
+        self.request.form.update({
+            'name': 'plone.app.vocabularies.Catalog',
+            'query': json.dumps(query),
+            'attributes': [
+                'id',
+                'commentors',
+                'Creator',
+                'listCreators',
+            ]
+        })
+        data = json.loads(view())
+        # Only one result key should be returned, as ``commentors``,
+        # ``Creator`` and ``listCreators`` is considered unsafe and thus
+        # skipped.
+        self.assertEquals(len(data['results'][0].keys()), 1)
 
     def testVocabularyBatching(self):
         amount = 30

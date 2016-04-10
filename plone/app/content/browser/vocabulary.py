@@ -31,6 +31,7 @@ logger = getLogger(__name__)
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
 DEFAULT_PERMISSION = 'View'
+DEFAULT_PERMISSION_SECURE = 'Modify portal content'
 PERMISSIONS = {
     'plone.app.vocabularies.Catalog': 'View',
     'plone.app.vocabularies.Keywords': 'Modify portal content',
@@ -193,7 +194,7 @@ class BaseVocabularyView(BrowserView):
         if attributes:
             base_path = getNavigationRoot(context)
             sm = getSecurityManager()
-            can_edit = sm.checkPermission('Modify portal content', context)
+            can_edit = sm.checkPermission(DEFAULT_PERMISSION_SECURE, context)
             for vocab_item in results:
                 if not results_are_brains:
                     vocab_item = vocab_item.value
