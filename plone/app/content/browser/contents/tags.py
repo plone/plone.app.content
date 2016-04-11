@@ -19,9 +19,7 @@ class TagsAction(object):
         self.request = request
 
     def get_options(self):
-        site = getSite()
-        base_url = site.absolute_url()
-        base_vocabulary = '%s/@@getVocabulary?name=' % base_url
+        base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
             'title': translate(_('Tags'), context=self.request),
             'id': 'tags',
@@ -31,7 +29,7 @@ class TagsAction(object):
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Keywords' % (
                         base_vocabulary)
-                    )
+                )
             }
         }
 

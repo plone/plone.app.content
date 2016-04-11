@@ -39,7 +39,14 @@ zope.deferredimport.deprecated(
 
 
 def get_top_site_from_url(context, request):
-    """Find the top-most site, which is in the url path.
+    """Find the top-most site, which is still in the url path.
+
+    If the current context is within a subsite within a PloneSiteRoot and no
+    virtual hosting is in place, the PloneSiteRoot is returned.
+    When at the same context but in a virtual hosting environment with the
+    virtual host root pointing to the subsites, it returns the subsite instead
+    of the PloneSiteRoot.
+
     For this given content structure:
 
     /Plone/Subsite
@@ -67,6 +74,10 @@ class ContentsBaseAction(BrowserView):
     success_msg = _('Success')
     failure_msg = _('Failure')
     required_obj_permission = None
+
+    @property
+    def site(self):
+        return get_top_site_from_url(self.context, self.request)
 
     def objectTitle(self, obj):
         context = aq_inner(obj)
@@ -100,11 +111,10 @@ class ContentsBaseAction(BrowserView):
     def __call__(self):
         self.protect()
         self.errors = []
-        site = getSite()
         context = aq_inner(self.context)
         selection = self.get_selection()
 
-        self.dest = site.restrictedTraverse(
+        self.dest = self.site.restrictedTraverse(
             str(self.request.form['folder'].lstrip('/')))
 
         self.catalog = getToolByName(context, 'portal_catalog')
@@ -153,7 +163,7 @@ class ContentsBaseAction(BrowserView):
             )
 
         return self.json({
-            'status': 'success',
+            'status': 'warning' if self.errors else 'success',
             'msg': translated_msg
         })
 

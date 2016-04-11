@@ -10,16 +10,22 @@ Incompatibilities:
 
 New:
 
-- Add ``Creator``, ``Description``, ``end``, ``start`` and ``location`` to the available columns and context attributes for folder_contents.
+- Show attributes from ``_unsafe_metadata`` if user has "Modify Portal Content" permissions.
   [thet]
 
-  Show attributes from ``_unsafe_metadata`` if user has "Modify Portal Content" permissions.
+- Add ``Creator``, ``Description``, ``end``, ``start`` and ``location`` to the available columns and context attributes for folder_contents.
   [thet]
 
 Fixes:
 
-- Remove ``portal_type`` from available columns and use ``Type`` instead, which is meant to be read by humans.
-  ``portal_type`` is now available on the attributes object.
+- Folder contents: When pasting, handle "Disallowed subobject type" ValueError and present a helpful error message.
+  Fixes: plone/mockup#657
+  [thet]
+
+- Folder contents: Acquire the top most visible portal object to operate on.
+  Fixes some issues in INavigationRoot or ISite based subsites and virtual hosting environments pointing to subsites.
+  Fixes include: show correct breadcrumb paths, paste to correct location.
+  Fixes: #86
   [thet]
 
 - Added most notably `portal_type`, `review_state` and `Subject` but also `exclude_from_nav`, `is_folderish`, `last_comment_date`, `meta_type` and `total_comments` to ``BaseVocabularyView`` ``translate_ignored`` list.
@@ -27,13 +33,14 @@ Fixes:
   Fixes https://github.com/plone/plone.app.content/issues/77
   [thet]
 
+- Remove ``portal_type`` from available columns and use ``Type`` instead, which is meant to be read by humans.
+  ``portal_type`` is now available on the attributes object.
+  [thet]
+
 - Vocabulary permissions are considered View permission by default, if not 
   stated different in PERMISSION global. Renamed _permissions to PERMISSIONS,
   Deprecated BBB name in place. Also minor code-style changes
   [jensens, thet]
-
-- Fix folder contents path and breadcrumbs settings to show correct paths and render the toolbar correctly in navigation root subsites and virtual hosting environments pointing to subsites.
-  [thet]
 
 - Fix test isolation problem and remove an unnecessary test dependency on ``plone.app.widgets``.
   [thet]

@@ -4,7 +4,6 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
 from ZODB.POSException import ConflictError
-from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 
@@ -35,9 +34,8 @@ class PasteActionView(ContentsBaseAction):
     def __call__(self):
         self.protect()
         self.errors = []
-        site = getSite()
 
-        self.dest = site.restrictedTraverse(
+        self.dest = self.site.restrictedTraverse(
             str(self.request.form['folder'].lstrip('/')))
 
         try:
@@ -51,5 +49,13 @@ class PasteActionView(ContentsBaseAction):
             self.errors.append(
                 _(u'You are not authorized to paste ${title} here.',
                     mapping={u'title': self.objectTitle(self.dest)}))
+        except ValueError as e:
+            if 'Disallowed subobject type: ' in e.message:
+                msg_parts = e.message.split(':')
+                self.errors.append(
+                    _(u'Disallowed subobject type "${type}"',
+                        mapping={u'type': msg_parts[1].strip()}))
+            else:
+                raise e
 
         return self.message()

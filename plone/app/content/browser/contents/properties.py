@@ -21,9 +21,7 @@ class PropertiesAction(object):
         self.request = request
 
     def get_options(self):
-        site = getSite()
-        base_url = site.absolute_url()
-        base_vocabulary = '%s/@@getVocabulary?name=' % base_url
+        base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
             'title': translate(_('Properties'), context=self.request),
             'id': 'properties',
@@ -34,7 +32,7 @@ class PropertiesAction(object):
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Users' % (
                         base_vocabulary)
-                    )
+                )
             }
         }
 
