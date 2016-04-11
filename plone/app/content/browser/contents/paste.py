@@ -53,7 +53,7 @@ class PasteActionView(ContentsBaseAction):
             if 'Disallowed subobject type: ' in e.message:
                 msg_parts = e.message.split(':')
                 self.errors.append(
-                    _(u'Disallowed subobject type: ${type}',
+                    _(u'Disallowed subobject type "${type}"',
                         mapping={u'type': msg_parts[1].strip()}))
             else:
                 raise e
