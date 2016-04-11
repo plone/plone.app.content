@@ -163,7 +163,7 @@ class ContentsBaseAction(BrowserView):
             )
 
         return self.json({
-            'status': 'success',
+            'status': 'warning' if self.errors else 'success',
             'msg': translated_msg
         })
 
