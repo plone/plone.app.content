@@ -25,6 +25,7 @@ from zope.interface import noLongerProvides
 from zope.publisher.browser import TestRequest
 
 import json
+import mock
 import os
 import transaction
 
@@ -515,6 +516,45 @@ class BrowserTest(unittest.TestCase):
         data = json.loads(view())
         # just test one so we know it's working...
         self.assertEqual(data['indexes']['sortable_title']['sortable'], True)
+
+    @mock.patch('zope.i18n.negotiate', new=lambda ctx: 'de')
+    def testUntranslatableMetadata(self):
+        """Test translation of ``@@getVocabulary`` view results.
+        From the standard metadata columns, only ``Type`` is translated.
+        """
+        # Language is set via language negotiaton patch.
+
+        self.portal.invokeFactory('Document', id="page", title="page")
+        self.portal.page.reindexObject()
+        view = VocabularyView(self.portal, self.request)
+        query = {
+            'criteria': [
+                {
+                    'i': 'path',
+                    'o': 'plone.app.querystring.operation.string.path',
+                    'v': '/plone/page'
+                }
+            ]
+        }
+        self.request.form.update({
+            'name': 'plone.app.vocabularies.Catalog',
+            'query': json.dumps(query),
+            'attributes': [
+                'id',
+                'portal_type',
+                'Type',
+            ]
+        })
+
+        # data['results'] should return one item, which represents the document
+        # created before.
+        data = json.loads(view())
+
+        # Type is translated
+        self.assertEqual(data['results'][0]['Type'], u'Seite')
+
+        # portal_type is never translated
+        self.assertEqual(data['results'][0]['portal_type'], u'Document')
 
 
 class FunctionalBrowserTest(unittest.TestCase):
