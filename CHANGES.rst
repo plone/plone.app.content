@@ -4,10 +4,6 @@ Changelog
 3.1 (unreleased)
 ----------------
 
-Incompatibilities:
-
-- *add item here*
-
 New:
 
 - Show attributes from ``_unsafe_metadata`` if user has "Modify Portal Content" permissions.
