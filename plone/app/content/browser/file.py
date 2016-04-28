@@ -129,9 +129,8 @@ class FileUploadView(BrowserView):
         if not filedata:
             return
 
-        # Determine if the default file/image types are DX or AT based
         ctr = getToolByName(self.context, 'content_type_registry')
-        type_ = ctr.findTypeName(filename.lower(), '', '') or 'File'
+        type_ = ctr.findTypeName(filename.lower(), content_type, '') or 'File'
 
         # Now check that the object is not restricted to be added in the
         # current context
@@ -149,6 +148,7 @@ class FileUploadView(BrowserView):
                     "try another one"
                 )
 
+        # Determine if the default file/image types are DX or AT based
         dx_based = False
         pt = getToolByName(self.context, 'portal_types')
         if IDexterityFTI.providedBy(getattr(pt, type_)):

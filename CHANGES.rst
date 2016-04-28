@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Lookup of Content Type for passing in Content Type Factory improved, so that all Images (especially Tiff) are stored as Images not Files.
+  [loechel]
+
 - *add item here*
 
 
@@ -49,7 +52,7 @@ Fixes:
   ``portal_type`` is now available on the attributes object.
   [thet]
 
-- Vocabulary permissions are considered View permission by default, if not 
+- Vocabulary permissions are considered View permission by default, if not
   stated different in PERMISSION global. Renamed _permissions to PERMISSIONS,
   Deprecated BBB name in place. Also minor code-style changes
   [jensens, thet]
