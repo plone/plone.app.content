@@ -4,20 +4,11 @@ Changelog
 3.1.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
-- Lookup of Content Type for passing in Content Type Factory improved, so that all Images (especially Tiff) are stored as Images not Files.
+- Lookup of Content Type for passing in Content Type Factory improved,
+  so that all Images (especially Tiff) are stored as Images not Files.
   [loechel]
-
-- *add item here*
 
 
 3.1 (2016-04-26)
