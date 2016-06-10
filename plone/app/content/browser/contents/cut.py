@@ -42,7 +42,7 @@ class CutActionView(ContentsBaseAction):
                                      mapping={u'title': self.objectTitle(ob)}))
                 continue
             if not ob.cb_isMoveable():
-                self.errors.append(_(u'${title} is being edited and can not be cut.',
+                self.errors.append(_(u'${title} is being edited and cannot be cut.',
                                      mapping={u'title': self.objectTitle(ob)}))
                 continue
             m = Moniker(ob)
