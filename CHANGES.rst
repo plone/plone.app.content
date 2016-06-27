@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- fix a circular dependency error originating from custom_json_handler method by making provision for zope dates and set objects [witekdev]
 
 
 3.1.1 (2016-05-02)
