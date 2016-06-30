@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Bind view ``plonejsi18n`` to INavigationRoot in order to enable non-portal-root published sites to deliver the translations for javascript.
+  [jensens]
 
 
 3.1.1 (2016-05-02)
