@@ -174,7 +174,7 @@
         />
 
     <browser:view
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
         name="plonejsi18n"
         class=".i18n.i18njs"
         permission="zope2.View"
