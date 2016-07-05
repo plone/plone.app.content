@@ -4,14 +4,6 @@ Changelog
 3.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Bind view ``plonejsi18n`` to INavigationRoot in order to enable non-portal-root published sites to deliver the translations for javascript.
