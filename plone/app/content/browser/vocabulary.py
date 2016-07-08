@@ -39,7 +39,8 @@ PERMISSIONS = {
     'plone.app.vocabularies.Users': 'Modify portal content',
 }
 
-_permissions = deprecated(PERMISSIONS, 'Use PERMISSION variable instead')
+_permissions = PERMISSIONS
+deprecated('_permissions', 'Use PERMISSIONS variable instead.')
 
 
 def _parseJSON(s):
