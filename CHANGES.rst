@@ -14,7 +14,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Properly deprecated ``_permissions`` in favor of ``PERMISSIONS``.
+  Since 3.1, the ``_permissions`` variable was ``None`` instead of a
+  backwards compatibility alias for ``PERMISSIONS`` due to a wrong
+  deprecation.  [maurits]
 
 
 3.1.2 (2016-07-05)
@@ -69,7 +72,7 @@ Fixes:
   [thet]
 
 - Vocabulary permissions are considered View permission by default, if not
-  stated different in PERMISSION global. Renamed _permissions to PERMISSIONS,
+  stated different in PERMISSIONS global. Renamed _permissions to PERMISSIONS,
   Deprecated BBB name in place. Also minor code-style changes
   [jensens, thet]
 
