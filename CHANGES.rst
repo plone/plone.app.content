@@ -19,6 +19,10 @@ Bug fixes:
   backwards compatibility alias for ``PERMISSIONS`` due to a wrong
   deprecation.  [maurits]
 
+- Fix recursive workflow actions. The ``isDefaultPage`` check acquired
+  the wrong parent context. Also bypass the recurse flag for default page
+  workflow state change. [petschki]
+
 
 3.1.2 (2016-07-05)
 ------------------
