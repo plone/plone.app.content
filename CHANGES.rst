@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Factor out the available columns ignored list which can be used to narrow down the available columns list to a user friendly set.
+  [thet]
 
 Bug fixes:
 

@@ -179,6 +179,32 @@ class FolderContentsView(BrowserView):
         actions.sort(key=lambda a: a.order)
         return [a.get_options() for a in actions]
 
+    @property
+    def ignored_columns(self):
+        """Return columns, which should be ignored in folder contents.
+        """
+        # These columns either have alternatives or are probably not useful
+        ignored = [
+            'Date',
+            'Title',
+            'author_name',
+            'cmf_uid',
+            'commentators',
+            'created',
+            'effective',
+            'expires',
+            'getIcon',
+            'getId',
+            'getRemoteUrl',
+            'in_response_to',
+            'listCreators',
+            'meta_type',
+            'modified',
+            'portal_type',
+            'sync_uid'
+        ]
+        return ignored
+
     def get_columns(self):
         # Base set of columns
         columns = {
@@ -201,31 +227,16 @@ class FolderContentsView(BrowserView):
             'Type': translate(_('Type'), context=self.request),
             'total_comments': translate(_('Total comments'), context=self.request),  # noqa
         }
-        # These columns either have alternatives or are probably not useful
-        ignored = [
-            'Date',
-            'Title',
-            'author_name',
-            'cmf_uid',
-            'commentators',
-            'created',
-            'effective',
-            'expires',
-            'getIcon',
-            'getId',
-            'getRemoteUrl',
-            'in_response_to',
-            'listCreators',
-            'meta_type',
-            'modified',
-            'portal_type',
-            'sync_uid'
-        ]
+        # Filter out ignored
+        columns = {
+            k: v for k, v in columns.iteritems()
+            if k not in self.ignored_columns
+        }
         # Add in extra metadata columns
         catalog = getToolByName(self.context, 'portal_catalog')
         metadata_columns = [column for column in catalog.schema()]
         for column in metadata_columns:
-            if column not in columns and column not in ignored:
+            if column not in columns and column not in self.ignored_columns:
                 columns[column] = translate(_(column), context=self.request)
         return columns
 
