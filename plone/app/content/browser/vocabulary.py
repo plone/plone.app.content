@@ -93,7 +93,9 @@ class BaseVocabularyView(BrowserView):
         }
         """
         context = self.get_context()
-        self.request.response.setHeader("Content-type", "application/json")
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
 
         try:
             vocabulary = self.get_vocabulary()

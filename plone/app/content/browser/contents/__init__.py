@@ -92,7 +92,9 @@ class ContentsBaseAction(BrowserView):
         checkpost(self.request)
 
     def json(self, data):
-        self.request.response.setHeader("Content-Type", "application/json")
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
         return json_dumps(data)
 
     def get_selection(self):
@@ -283,6 +285,9 @@ class FolderContentsView(BrowserView):
         return options
 
     def __call__(self):
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
         self.options = json_dumps(self.get_options())
         return super(FolderContentsView, self).__call__()
 
@@ -360,6 +365,10 @@ class ContextInfo(BrowserView):
                 if key == 'path':
                     val = val[len(base_path):]
                 item[key] = val
+
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
         return json_dumps({
             'addButtons': factories,
             'defaultPage': self.context.getDefaultPage(),

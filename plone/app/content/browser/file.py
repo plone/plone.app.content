@@ -187,4 +187,8 @@ class FileUploadView(BrowserView):
             'UID': IUUID(obj),
             'filename': filename
         })
+
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
         return json.dumps(result)

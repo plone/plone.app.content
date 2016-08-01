@@ -15,6 +15,9 @@ New features:
 
 Bug fixes:
 
+- Explicitly set ``application/json`` content type for JSON responses and declare an ``utf-8`` charset.
+  [thet]
+
 - Properly deprecated ``_permissions`` in favor of ``PERMISSIONS``.
   Since 3.1, the ``_permissions`` variable was ``None`` instead of a
   backwards compatibility alias for ``PERMISSIONS`` due to a wrong
