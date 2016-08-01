@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.permissions import AddPortalContent
-from Products.Five.browser import BrowserView
 from plone.app.dexterity.interfaces import IDXFileFactory
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.permissions import AddPortalContent
+from Products.Five.browser import BrowserView
+
 import json
 import logging
 import mimetypes
 import os
+
 
 logger = logging.getLogger('plone')
 
