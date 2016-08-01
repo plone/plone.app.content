@@ -153,3 +153,48 @@ class ContentsPasteTests(unittest.TestCase):
         res = json.loads(res)
         self.assertEqual(res['status'], 'warning')
         self.assertEqual(len(self.portal.it1.contentIds()), 0)
+
+
+class AllowedTypesInContextTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+        # TYPE 1
+        type1_fti = DexterityFTI('type1')
+        type1_fti.klass = 'plone.dexterity.content.Container'
+        type1_fti.filter_content_types = True
+        type1_fti.allowed_content_types = ['type1']
+        type1_fti.behaviors = (
+            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
+            'plone.app.dexterity.behaviors.metadata.IBasic'
+        )
+        self.portal.portal_types._setObject('type1', type1_fti)
+        self.type1_fti = type1_fti
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+        self.portal.invokeFactory('type1', id='it1', title='Item 1')
+
+    def test_allowed_types_in_context_view(self):
+
+        # Test root object
+        allowed_types = self.portal.restrictedTraverse('@@allowed_types_in_context')  # noqa
+        allowed_types = json.loads(allowed_types())
+
+        self.assertEqual(
+            sorted(allowed_types['allowed_types']),
+            [u'Collection', u'Document', u'Event', u'File', u'Folder', u'Image', u'Link', u'News Item', u'type1']  # noqa
+        )
+
+        # Test subfolder
+        allowed_types = self.portal.it1.restrictedTraverse('@@allowed_types_in_context')  # noqa
+        allowed_types = json.loads(allowed_types())
+
+        self.assertEqual(
+            sorted(allowed_types['allowed_types']),
+            [u'type1']
+        )

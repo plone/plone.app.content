@@ -10,6 +10,9 @@ Breaking changes:
 
 New features:
 
+- Add ``@@allowed_types_in_context`` JSON view in ``plone.app.content.browser.allowed_types_in_context``, which returns a list of all FTI ids, which can be added in the current container.
+  [thet]
+
 - Factor out the available columns ignored list which can be used to narrow down the available columns list to a user friendly set.
   [thet]
 
