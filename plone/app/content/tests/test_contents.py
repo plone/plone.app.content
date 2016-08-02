@@ -218,3 +218,19 @@ class AllowUploadViewTests(unittest.TestCase):
         self.assertEqual(allow_upload['allowUpload'], True)
         self.assertEqual(allow_upload['allowImages'], True)
         self.assertEqual(allow_upload['allowFiles'], True)
+
+        # Test files allowed, path via request variable
+        self.type1_fti.allowed_content_types = ['File']
+        # First, test on Portal root to see the difference
+        allow_upload = self.portal.restrictedTraverse('@@allow_upload')
+        allow_upload = json.loads(allow_upload())
+        self.assertEqual(allow_upload['allowUpload'], True)
+        self.assertEqual(allow_upload['allowImages'], True)
+        self.assertEqual(allow_upload['allowFiles'], True)
+        # Then, with path set to sub item
+        allow_upload = self.portal.restrictedTraverse('@@allow_upload')
+        allow_upload.request.form['path'] = '/plone/it1'
+        allow_upload = json.loads(allow_upload())
+        self.assertEqual(allow_upload['allowUpload'], True)
+        self.assertEqual(allow_upload['allowImages'], False)
+        self.assertEqual(allow_upload['allowFiles'], True)

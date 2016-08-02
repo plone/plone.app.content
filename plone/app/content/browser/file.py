@@ -205,7 +205,10 @@ class AllowUploadView(BrowserView):
         self.request.response.setHeader(
             'Content-Type', 'application/json; charset=utf-8'
         )
-        allowed_types = [t.getId() for t in self.context.allowedContentTypes()]
+        context = self.context
+        if self.request.form.get('path'):
+            context = context.restrictedTraverse(self.request.form.get('path'))
+        allowed_types = [t.getId() for t in context.allowedContentTypes()]
         allow_images = u'Image' in allowed_types
         allow_files = u'File' in allowed_types
         return json.dumps({

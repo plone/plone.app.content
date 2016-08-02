@@ -11,6 +11,7 @@ Breaking changes:
 New features:
 
 - Add ``@@allow_upload`` view, which returns a JSON string to indicate if File or Image uploads are allowed in the current container.
+  When the view is called with a ``path`` request parameter, then content at this path is used instead the content where the view is called.
   [thet]
 
 - Factor out the available columns ignored list which can be used to narrow down the available columns list to a user friendly set.
