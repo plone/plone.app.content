@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.permissions import AddPortalContent
-from Products.Five.browser import BrowserView
 from plone.app.dexterity.interfaces import IDXFileFactory
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.permissions import AddPortalContent
+from Products.Five.browser import BrowserView
+
 import json
 import logging
 import mimetypes
 import os
+
 
 logger = logging.getLogger('plone')
 
@@ -187,4 +189,27 @@ class FileUploadView(BrowserView):
             'UID': IUUID(obj),
             'filename': filename
         })
+
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
         return json.dumps(result)
+
+
+class AllowUploadView(BrowserView):
+
+    def __call__(self):
+        """Return JSON structure to indicate if File or Image uploads are
+        allowed in the current container.
+        """
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
+        allowed_types = [t.getId() for t in self.context.allowedContentTypes()]
+        allow_images = u'Image' in allowed_types
+        allow_files = u'File' in allowed_types
+        return json.dumps({
+            'allowUpload': allow_images or allow_files,
+            'allowImages': allow_images,
+            'allowFiles': allow_files
+        })

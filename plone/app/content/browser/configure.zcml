@@ -180,4 +180,11 @@
         permission="zope2.View"
         />
 
+    <browser:page
+        for="*"
+        name="allow_upload"
+        class=".file.AllowUploadView"
+        permission="cmf.AddPortalContent"
+        />
+
 </configure>

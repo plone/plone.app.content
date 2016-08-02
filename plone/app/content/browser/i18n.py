@@ -38,6 +38,6 @@ class i18njs(BrowserView):
 
         catalog = self._gettext_catalog(domain, language)
         response = self.request.response
-        response.setHeader('content-type', 'application/json')
+        response.setHeader('Content-Type', 'application/json; charset=utf-8')
         response.setBody(json.dumps(catalog))
         return response

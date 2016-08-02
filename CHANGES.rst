@@ -10,10 +10,16 @@ Breaking changes:
 
 New features:
 
+- Add ``@@allow_upload`` view, which returns a JSON string to indicate if File or Image uploads are allowed in the current container.
+  [thet]
+
 - Factor out the available columns ignored list which can be used to narrow down the available columns list to a user friendly set.
   [thet]
 
 Bug fixes:
+
+- Explicitly set ``application/json`` content type for JSON responses and declare an ``utf-8`` charset.
+  [thet]
 
 - Properly deprecated ``_permissions`` in favor of ``PERMISSIONS``.
   Since 3.1, the ``_permissions`` variable was ``None`` instead of a
