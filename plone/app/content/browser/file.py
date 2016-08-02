@@ -194,3 +194,22 @@ class FileUploadView(BrowserView):
             'Content-Type', 'application/json; charset=utf-8'
         )
         return json.dumps(result)
+
+
+class AllowUploadView(BrowserView):
+
+    def __call__(self):
+        """Return JSON structure to indicate if File or Image uploads are
+        allowed in the current container.
+        """
+        self.request.response.setHeader(
+            'Content-Type', 'application/json; charset=utf-8'
+        )
+        allowed_types = [t.getId() for t in self.context.allowedContentTypes()]
+        allow_images = u'Image' in allowed_types
+        allow_files = u'File' in allowed_types
+        return json.dumps({
+            'allowUpload': allow_images or allow_files,
+            'allowImages': allow_images,
+            'allowFiles': allow_files
+        })

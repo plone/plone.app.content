@@ -180,11 +180,10 @@
         permission="zope2.View"
         />
 
-    <!-- ajax views -->
     <browser:page
         for="*"
-        name="allowed_types_in_context"
-        class=".AllowedTypesInContext"
+        name="allow_upload"
+        class=".file.AllowUploadView"
         permission="cmf.AddPortalContent"
         />
 

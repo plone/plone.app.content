@@ -155,7 +155,7 @@ class ContentsPasteTests(unittest.TestCase):
         self.assertEqual(len(self.portal.it1.contentIds()), 0)
 
 
-class AllowedTypesInContextTests(unittest.TestCase):
+class AllowUploadViewTests(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def setUp(self):
@@ -166,9 +166,8 @@ class AllowedTypesInContextTests(unittest.TestCase):
         type1_fti = DexterityFTI('type1')
         type1_fti.klass = 'plone.dexterity.content.Container'
         type1_fti.filter_content_types = True
-        type1_fti.allowed_content_types = ['type1']
+        type1_fti.allowed_content_types = []
         type1_fti.behaviors = (
-            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
             'plone.app.dexterity.behaviors.metadata.IBasic'
         )
         self.portal.portal_types._setObject('type1', type1_fti)
@@ -179,22 +178,43 @@ class AllowedTypesInContextTests(unittest.TestCase):
 
         self.portal.invokeFactory('type1', id='it1', title='Item 1')
 
-    def test_allowed_types_in_context_view(self):
+    def test_allow_upload(self):
+        """Test, if file or images are allowed in a container in different FTI
+        configurations.
+        """
 
-        # Test root object
-        allowed_types = self.portal.restrictedTraverse('@@allowed_types_in_context')  # noqa
-        allowed_types = json.loads(allowed_types())
+        # Test none allowed
+        self.type1_fti.allowed_content_types = []
+        allow_upload = self.portal.it1.restrictedTraverse('@@allow_upload')
+        allow_upload = json.loads(allow_upload())
 
-        self.assertEqual(
-            sorted(allowed_types['allowed_types']),
-            [u'Collection', u'Document', u'Event', u'File', u'Folder', u'Image', u'Link', u'News Item', u'type1']  # noqa
-        )
+        self.assertEqual(allow_upload['allowUpload'], False)
+        self.assertEqual(allow_upload['allowImages'], False)
+        self.assertEqual(allow_upload['allowFiles'], False)
 
-        # Test subfolder
-        allowed_types = self.portal.it1.restrictedTraverse('@@allowed_types_in_context')  # noqa
-        allowed_types = json.loads(allowed_types())
+        # Test images allowed
+        self.type1_fti.allowed_content_types = ['Image']
+        allow_upload = self.portal.it1.restrictedTraverse('@@allow_upload')
+        allow_upload = json.loads(allow_upload())
 
-        self.assertEqual(
-            sorted(allowed_types['allowed_types']),
-            [u'type1']
-        )
+        self.assertEqual(allow_upload['allowUpload'], True)
+        self.assertEqual(allow_upload['allowImages'], True)
+        self.assertEqual(allow_upload['allowFiles'], False)
+
+        # Test files allowed
+        self.type1_fti.allowed_content_types = ['File']
+        allow_upload = self.portal.it1.restrictedTraverse('@@allow_upload')
+        allow_upload = json.loads(allow_upload())
+
+        self.assertEqual(allow_upload['allowUpload'], True)
+        self.assertEqual(allow_upload['allowImages'], False)
+        self.assertEqual(allow_upload['allowFiles'], True)
+
+        # Test images and files allowed
+        self.type1_fti.allowed_content_types = ['Image', 'File']
+        allow_upload = self.portal.it1.restrictedTraverse('@@allow_upload')
+        allow_upload = json.loads(allow_upload())
+
+        self.assertEqual(allow_upload['allowUpload'], True)
+        self.assertEqual(allow_upload['allowImages'], True)
+        self.assertEqual(allow_upload['allowFiles'], True)
