@@ -23,6 +23,10 @@ Bug fixes:
 
 New features:
 
+- In the rename dialog, show image thumbnails in ``thumb`` scale instead of ``icon``.
+  Plones standard ``icon`` scale is way to small to be useful for images.
+  [thet]
+
 - Add ``@@allow_upload`` view, which returns a JSON string to indicate if File or Image uploads are allowed in the current container.
   When the view is called with a ``path`` request parameter, then content at this path is used instead the content where the view is called.
   [thet]
