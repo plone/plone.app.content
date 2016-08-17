@@ -4,10 +4,6 @@ Changelog
 3.2 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Add ``@@allow_upload`` view, which returns a JSON string to indicate if File or Image uploads are allowed in the current container.
