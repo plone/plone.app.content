@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix a json "circular reference detected" error which happened when the json dumper got unparsable data types.
+  [pcdummy]
 
 
 3.2 (2016-08-18)
