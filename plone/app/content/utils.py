@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from DateTime import DateTime
+
 import Missing
 import datetime
 import json
@@ -9,6 +11,11 @@ def custom_json_handler(obj):
         return None
     if type(obj) in (datetime.datetime, datetime.date):
         return obj.isoformat()
+    if type(obj) == DateTime:
+        dt = DateTime(obj)
+        return dt.ISO()
+    if type(obj) == set:
+        return list(obj)
     return obj
 
 
