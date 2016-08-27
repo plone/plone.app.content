@@ -11,7 +11,6 @@
   <body>
 
     <metal:main fill-slot="main">
-
       <h1 class="documentFirstHeading"
           i18n:translate="heading_select_default_page">Select default page</h1>
 
@@ -36,14 +35,11 @@
                 <dl>
                     <tal:item repeat="item items">
                         <dt tal:define="normalized_type python:plone_view.normalizeString(item.portal_type);
-                                        item_icon python:plone_layout.getIcon(item);
                                         item_id python:'(%s)' % item.getId if (portal_visible_ids and member_visible_ids) else ''">
                             <input type="radio" name="objectId" value=""
                                 tal:attributes="value item/getId;
                                                 id item/getId;
                                                 checked python: (n_items==1 or item.getId==cur_page) and 'checked' or None;"/>
-                            <img tal:condition="nocall:item_icon"
-                                 tal:replace="structure item_icon/html_tag" />
                             <label tal:attributes="for item/getId;
                                                    class string:contenttype-${normalized_type}"
                                    tal:content="string:${item/pretty_title_or_id} $item_id">

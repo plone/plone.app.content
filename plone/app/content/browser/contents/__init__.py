@@ -7,8 +7,10 @@ from plone.app.content.interfaces import IStructureAction
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
 from plone.protect.postonly import check as checkpost
+from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import utils
 from Products.CMFPlone.utils import get_top_site_from_url
@@ -170,6 +172,7 @@ class FolderContentsView(BrowserView):
             'effective',
             'expires',
             'getIcon',
+			'getMimeIcon',
             'getId',
             'getRemoteUrl',
             'in_response_to',
@@ -215,6 +218,16 @@ class FolderContentsView(BrowserView):
             if column not in columns and column not in self.ignored_columns:
                 columns[column] = translate(_(column), context=self.request)
         return columns
+
+    def get_thumbSize(self):
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False)
+        if settings.no_thumbs_tables:
+            # thumbs to be supressed
+            return 'none'
+        thumb_size_table = settings.thumb_size_table
+        return thumb_size_table
 
     @property
     def ignored_indexes(self):
@@ -290,7 +303,7 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': columns,
-            'attributes': ['Title', 'path', 'getURL', 'getIcon', 'portal_type'] + columns.keys(),  # noqa
+            'attributes': ['Title', 'path', 'getURL', 'getIcon', 'getMimeIcon', 'portal_type'] + columns.keys(),  # noqa
             'buttons': self.get_actions(),
             'rearrange': {
                 'properties': self.get_indexes(),
@@ -303,6 +316,7 @@ class FolderContentsView(BrowserView):
                 'initialFolder': IUUID(self.context, None),
                 'useTus': TUS_ENABLED
             },
+            'thumbSize' : self.get_thumbSize(),
         }
         return options
 

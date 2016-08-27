@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+import os
 from AccessControl import getSecurityManager
 from logging import getLogger
+from plone import api
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
 from plone.app.layout.navigation.interfaces import INavigationRoot
@@ -12,6 +14,7 @@ from plone.supermodel.utils import mergedTaggedValueDict
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
+from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from types import FunctionType
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -54,6 +57,7 @@ TRANSLATED_IGNORED = [
     'ExpirationDate',
     'expires',
     'getIcon',
+    'getMimeIcon',
     'getId',
     'getObjSize',
     'getRemoteUrl',
@@ -233,8 +237,22 @@ class BaseVocabularyView(BrowserView):
                             _(safe_unicode(val)),
                             context=self.request
                         )
+
                     else:
                         item[key] = val
+                    if key == 'getMimeIcon':
+                        item[key] = None
+                        if  vocab_item.portal_type =='File':
+                            #get mime type icon url from mimetype registry'
+                            portal_url = api.portal.get().absolute_url()
+                            mtt = api.portal.get_tool(
+                                        name='mimetypes_registry')
+                            if vocab_item.getObject().file.contentType:
+                                ctype = mtt.lookup(
+                                    vocab_item.getObject().file.contentType)
+                                item[key] = os.path.join(
+                                    portal_url,
+                                    guess_icon_path(ctype[0]))
                 items.append(item)
         else:
             for item in results:
