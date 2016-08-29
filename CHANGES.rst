@@ -10,9 +10,14 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Folder contents rename dialog: In the rename dialog, show image thumbnails in ``thumb`` scale instead of ``icon``.
+  Plones standard ``icon`` scale is way to small to be useful for images.
+  [thet]
 
 Bug fixes:
+
+- Folder contents properties dialog: Fix form request variables for ``effectiveDate`` and ``expirationDate`` dates.
+  [thet]
 
 - Fix a json "circular reference detected" error which happened when the json dumper got unparsable data types.
   [pcdummy]

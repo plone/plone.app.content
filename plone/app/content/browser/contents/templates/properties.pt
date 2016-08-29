@@ -1,11 +1,11 @@
 <div i18n:domain="plone">
   <div class="form-group">
     <label i18n:translate="publiciation_date">Publication Date</label>
-    <input class="form-control pat-pickadate" name="effective" />
+    <input class="form-control pat-pickadate" name="effectiveDate" />
   </div>
   <div class="form-group">
     <label i18n:translate="expiration_date">Expiration Date</label>
-    <input class="form-control pat-pickadate" name="expiration" />
+    <input class="form-control pat-pickadate" name="expirationDate" />
   </div>
   <div class="form-group">
     <label i18n:translate="copyright">Copyright</label>
