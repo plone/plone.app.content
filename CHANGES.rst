@@ -4,10 +4,6 @@ Changelog
 3.3 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Folder contents rename dialog: In the rename dialog, show image thumbnails in ``thumb`` scale instead of ``icon``.
