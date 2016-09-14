@@ -87,8 +87,10 @@ class ReviewListTable(object):
                 creator_name = creator.getProperty('fullname', '') or creator_id
             else:
                 creator_name = creator_id
-            modified = creator_name + ' - ' + plone_view.toLocalizedTime(
-                           obj.ModificationDate(), long_format=1)
+            modified = ''.join(map(safe_unicode, [
+                creator_name, ' - ',
+                plone_view.toLocalizedTime(obj.ModificationDate(),
+                                           long_format=1)]))
             is_structural_folder = obj.restrictedTraverse(
                 '@@plone').isStructuralFolder()
 
