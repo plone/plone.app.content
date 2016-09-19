@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Apply security hotfix 20160830 for folder factories redirection.  [maurits]
 
 
 3.3 (2016-09-14)
