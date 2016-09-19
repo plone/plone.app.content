@@ -4,7 +4,9 @@ Changelog
 2.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Apply security hotfix 20160830 for folder factories redirection.  [maurits]
 
 
 2.1.5 (2014-09-07)
