@@ -27,7 +27,10 @@ class FolderFactoriesView(BrowserView):
 
     def __call__(self):
         if 'form.button.Add' in self.request.form:
+            urltool = getToolByName(self.context, 'portal_url')
             url = self.request.form.get('url')
+            if not urltool.isURLInPortal(url):
+                url = self.context.absolute_url()
             self.request.response.redirect(url)
             return ''
         else:
