@@ -10,8 +10,11 @@ setup(
                       open("CHANGES.rst").read()),
     classifiers=[
         "Framework :: Plone",
+        "Framework :: Plone :: 4.3",
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
     ],
     keywords='plone content views viewlet',
     author='Plone Foundation',
