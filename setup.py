@@ -6,8 +6,8 @@ setup(
     name='plone.app.content',
     version=version,
     description="Content Views for Plone",
-    long_description=open("README.txt").read() + "\n" +
-    open("CHANGES.txt").read(),
+    long_description=(open("README.rst").read() + "\n" +
+                      open("CHANGES.rst").read()),
     classifiers=[
         "Framework :: Plone",
         "License :: OSI Approved :: GNU General Public License (GPL)",
