@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix issue with ``get_top_site_from_url``, where in some circumstances a ValueError was thrown.
+  If that happens, just return ``getSite``.
+  You will only notice, if you have subsites, access them non-VirtualHost-rooted and an error is thrown.
+  Then folder contents won't be able to navigate up to the root Plone site.
+  [thet]
 
 
 3.3.1 (2016-09-23)
