@@ -60,12 +60,17 @@ def get_top_site_from_url(context, request):
     url_path = urlparse(context.absolute_url()).path.split('/')
 
     site = getSite()
-    for idx in range(len(url_path)):
-        _path = '/'.join(url_path[:idx + 1]) or '/'
-        site_path = request.physicalPathFromURL(_path)
-        site = context.restrictedTraverse('/'.join(site_path) or '/')
-        if ISite.providedBy(site):
-            break
+    try:
+        for idx in range(len(url_path)):
+            _path = '/'.join(url_path[:idx + 1]) or '/'
+            site_path = request.physicalPathFromURL(_path)
+            site = context.restrictedTraverse('/'.join(site_path) or '/')
+            if ISite.providedBy(site):
+                break
+    except ValueError:
+        # Refs: https://github.com/plone/plone.app.content/issues/103
+        # On error, just return getSite.
+        return getSite()
     return site
 
 
