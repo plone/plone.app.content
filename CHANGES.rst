@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Fix ``folder_contents`` view incorrectly returning an ``application/json`` response instead of a ``text/html`` response.
+  [thet]
+
 - Fix issue with ``get_top_site_from_url``, where in some circumstances a ValueError was thrown.
   If that happens, just return ``getSite``.
   You will only notice, if you have subsites, access them non-VirtualHost-rooted and an error is thrown.

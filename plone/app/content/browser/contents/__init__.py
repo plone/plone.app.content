@@ -290,9 +290,6 @@ class FolderContentsView(BrowserView):
         return options
 
     def __call__(self):
-        self.request.response.setHeader(
-            'Content-Type', 'application/json; charset=utf-8'
-        )
         self.options = json_dumps(self.get_options())
         return super(FolderContentsView, self).__call__()
 
