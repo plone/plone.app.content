@@ -38,7 +38,7 @@ setup(
     ),
     install_requires=[
         'Acquisition',
-        'plone.app.widgets>=2.0.0.dev0',
+        'plone.app.widgets',
         'plone.batching',
         'plone.i18n',
         'plone.memoize',
