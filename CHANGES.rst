@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-3.3.2 (unreleased)
+3.3.2 (2016-11-10)
 ------------------
 
 New features:
