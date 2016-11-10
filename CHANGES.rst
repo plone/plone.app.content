@@ -1,34 +1,15 @@
 Changelog
 =========
 
-3.3.3 (unreleased)
+
+3.3.2 (unreleased)
 ------------------
-
-Breaking changes:
-
-- *add item here*
 
 New features:
 
 - Move ``get_top_site_from_url`` out from here into ``Products.CMFPlone.utils``.
   Deprecate old import.
   [thet]
-
-Bug fixes:
-
-- *add item here*
-
-
-3.3.2 (unreleased)
-------------------
-
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
 
 Bug fixes:
 
