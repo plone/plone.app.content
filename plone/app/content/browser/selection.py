@@ -14,6 +14,11 @@ class DefaultViewSelectionView(BrowserView):
     def isValidTemplate(self, templateId):
         return templateId in [a[0] for a in self.vocab]
 
+    def canSelectDefaultPage(self):
+        if not self.context.isPrincipiaFolderish:
+            return False
+        return self.context.canSetDefaultPage()
+
     @property
     def vocab(self):
         return self.context.getAvailableLayouts()

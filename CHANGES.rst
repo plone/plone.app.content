@@ -15,7 +15,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Stop using ``canSelectDefaultPage`` Python script from CMFPlone.
+  [davisagli]
 
 
 3.3.2 (2016-11-10)
