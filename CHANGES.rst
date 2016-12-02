@@ -5,14 +5,6 @@ Changelog
 3.3.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Stop using ``canSelectDefaultPage`` Python script from CMFPlone.
