@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Add a missing comma between two strings in a list,
+  python merges them into a single string if not.
+  [keul, ekulos, gforcada]
 
 
 3.3.3 (2016-12-02)
