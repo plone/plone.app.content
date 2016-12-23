@@ -275,7 +275,7 @@ class ContextInfo(BrowserView):
         'id',
         'is_folderish',
         'last_comment_date',
-        'location'
+        'location',
         'ModificationDate',
         'path',
         'portal_type',
