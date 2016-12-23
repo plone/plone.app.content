@@ -15,7 +15,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Properly deprecated ``_permissions`` in favor of ``PERMISSIONS``.
+  Since 3.1, the ``_permissions`` variable was ``None`` instead of a
+  backwards compatibility alias for ``PERMISSIONS`` due to a wrong
+  deprecation.  [maurits]
 
 
 3.3.3 (2016-12-02)
