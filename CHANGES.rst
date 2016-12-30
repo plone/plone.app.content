@@ -5,14 +5,6 @@ Changelog
 3.3.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Add a missing comma between two strings in a list,
