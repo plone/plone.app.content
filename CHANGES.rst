@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Check for containerish behavior in ``@@allow_upload``.
+  Fixes a case, where ``@allow_upload`` reported ``True`` for content of type ``File``.
+  [thet]
 
 
 3.3.4 (2016-12-30)
