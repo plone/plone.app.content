@@ -11,7 +11,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Allow for easier overriding of some BaseVocabularyView settings
+  [Gagaro]
 
 Bug fixes:
 
