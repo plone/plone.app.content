@@ -38,6 +38,45 @@ PERMISSIONS = {
     'plone.app.vocabularies.SyndicatableFeedItems': 'Modify portal content',
     'plone.app.vocabularies.Users': 'Modify portal content',
 }
+TRANSLATED_IGNORED = [
+    'author_name',
+    'cmf_uid',
+    'commentators',
+    'created',
+    'CreationDate',
+    'Creator',
+    'Date',
+    'Description',
+    'effective',
+    'EffectiveDate',
+    'end',
+    'exclude_from_nav',
+    'ExpirationDate',
+    'expires',
+    'getIcon',
+    'getId',
+    'getObjSize',
+    'getRemoteUrl',
+    'getURL',
+    'id',
+    'in_response_to',
+    'is_folderish',
+    'last_comment_date',
+    'listCreators',
+    'location',
+    'meta_type',
+    'ModificationDate',
+    'modified',
+    'path',
+    'portal_type',
+    'review_state',
+    'start',
+    'Subject',
+    'sync_uid',
+    'Title',
+    'total_comments'
+    'UID',
+]
 
 _permissions = PERMISSIONS
 deprecated('_permissions', 'Use PERMISSIONS variable instead.')
@@ -73,6 +112,12 @@ class VocabLookupException(Exception):
 
 
 class BaseVocabularyView(BrowserView):
+
+    def get_translated_ignored(self):
+        return TRANSLATED_IGNORED
+
+    def get_base_path(self, context):
+        return getNavigationRoot(context)
 
     def __call__(self):
         """
@@ -155,47 +200,9 @@ class BaseVocabularyView(BrowserView):
         if isinstance(attributes, basestring) and attributes:
             attributes = attributes.split(',')
 
-        translate_ignored = [
-            'author_name',
-            'cmf_uid',
-            'commentators',
-            'created',
-            'CreationDate',
-            'Creator',
-            'Date',
-            'Description',
-            'effective',
-            'EffectiveDate',
-            'end',
-            'exclude_from_nav',
-            'ExpirationDate',
-            'expires',
-            'getIcon',
-            'getId',
-            'getObjSize',
-            'getRemoteUrl',
-            'getURL',
-            'id',
-            'in_response_to',
-            'is_folderish',
-            'last_comment_date',
-            'listCreators',
-            'location',
-            'meta_type',
-            'ModificationDate',
-            'modified',
-            'path',
-            'portal_type',
-            'review_state',
-            'start',
-            'Subject',
-            'sync_uid',
-            'Title',
-            'total_comments'
-            'UID',
-        ]
+        translate_ignored = self.get_translated_ignored()
         if attributes:
-            base_path = getNavigationRoot(context)
+            base_path = self.get_base_path(context)
             sm = getSecurityManager()
             can_edit = sm.checkPermission(DEFAULT_PERMISSION_SECURE, context)
             for vocab_item in results:
