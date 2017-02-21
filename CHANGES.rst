@@ -15,7 +15,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Adapt tests to the new indexing operations queueing.
+  Part of PLIP 1343: https://github.com/plone/Products.CMFPlone/issues/1343
+  [gforcada]
 
 
 3.3.5 (2017-02-12)
