@@ -24,6 +24,8 @@ Bug fixes:
 
 - Apply security hotfix 20160830 for folder factories redirection.  [maurits]
 
+- Added registry settings for download behaviour of blobs based on mimetype patterns.  [djay]
+
 
 2.1.5 (2014-09-07)
 ------------------
@@ -50,7 +52,6 @@ Bug fixes:
   content types any longer.
   [timo]
 
-- Added registry settings for download behaviour of blobs based on mimetype patterns [djay].
 
 2.1.3 (2013-08-13)
 ------------------
