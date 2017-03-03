@@ -14,7 +14,11 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Removed registry settings for download behaviour of blobs based on mimetype patterns.
+  This was missing support in upgrades, and was not used in core,
+  and did not end up in Plone 5.0 or 5.1.  So let's not use it in a version for Plone 4.3.
+  See `issue 119 <https://github.com/plone/plone.app.content/issues/119>`_.
+  [maurits]
 
 
 2.1.6 (2016-09-20)
