@@ -4,14 +4,6 @@ Changelog
 2.1.7 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Removed registry settings for download behaviour of blobs based on mimetype patterns.
