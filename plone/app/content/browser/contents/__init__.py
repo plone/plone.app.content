@@ -216,6 +216,61 @@ class FolderContentsView(BrowserView):
                 columns[column] = translate(_(column), context=self.request)
         return columns
 
+    @property
+    def ignored_indexes(self):
+        ignored = [
+            'Date',
+            'Description',
+            'Title',
+            'allowedRolesAndUsers',
+            'author_name',
+            'cmf_uid',
+            'commentators',
+            'effectiveRange',
+            'getId',
+            'getObjectPositionInParent',
+            'getRawRelatedItems',
+            'in_reply_to',
+            'meta_type',
+            'modified',
+            'object_provides',
+            'portal_type',
+            'SearchableText',
+            'sync_uid'
+        ]
+        return ignored
+
+    def get_indexes(self):
+        # Base set of indexes
+        indexes = {
+            'created': translate(_('Created on'), context=self.request),
+            'Creator': translate(_('Creator'), context=self.request),
+            'effective': translate(_('Publication date'), context=self.request),  # noqa
+            'end': translate(_('End Date'), context=self.request),
+            'expires': translate(_('Expiration date'), context=self.request),
+            'id': translate(_('ID'), context=self.request),
+            'is_folderish': translate(_('Folder'), context=self.request),
+            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
+            'review_state': translate(_('Review state'), context=self.request),
+            'sortable_title': translate(_('Title'), context=self.request),
+            'start': translate(_('Start Date'), context=self.request),
+            'Subject': translate(_('Tags'), context=self.request),
+            'total_comments': translate(_('Total comments'), context=self.request),  # noqa
+            'Type': translate(_('Type'), context=self.request),
+        }
+        # Filter out ignored
+        indexes = {
+            k: v for k, v in indexes.iteritems()
+            if k not in self.ignored_indexes
+        }
+        # Add in extra metadata indexes
+        catalog = getToolByName(self.context, 'portal_catalog')
+        cat_indexes = [idx for idx in catalog.indexes()]
+        for index in cat_indexes:
+            if index not in indexes and index not in self.ignored_indexes:
+                indexes[index] = translate(_(index), context=self.request)
+        return indexes
+
     def get_options(self):
         site = get_top_site_from_url(self.context, self.request)
         base_url = site.absolute_url()
@@ -238,14 +293,7 @@ class FolderContentsView(BrowserView):
             'attributes': ['Title', 'path', 'getURL', 'getIcon', 'portal_type'] + columns.keys(),  # noqa
             'buttons': self.get_actions(),
             'rearrange': {
-                'properties': {
-                    'id': translate(_('Id'), context=self.request),
-                    'sortable_title': translate(_('Title'), context=self.request),  # noqa
-                    'modified': translate(_('Last modified'), context=self.request),  # noqa
-                    'created': translate(_('Created on'), context=self.request),  # noqa
-                    'effective': translate(_('Publication date'), context=self.request),  # noqa
-                    'Type': translate(_('Type'), context=self.request)
-                },
+                'properties': self.get_indexes(),
                 'url': '%s{path}/@@fc-rearrange' % base_url
             },
             'basePath': '/' + '/'.join(context_path[len(site_path):]),

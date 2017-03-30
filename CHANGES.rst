@@ -11,7 +11,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Folder Contents: Construct the list of sortable indexes from the available catalog indexes, using a blacklist and a default set - likewise as it's done with metadata columns.
+  [thet]
 
 Bug fixes:
 
