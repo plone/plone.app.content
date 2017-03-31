@@ -5,10 +5,6 @@ Changelog
 3.4 (unreleased)
 ----------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Allow for easier overriding of some BaseVocabularyView settings
