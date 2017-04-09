@@ -10,6 +10,7 @@ Breaking changes:
 - *add item here*
 
 New features:
+
 - make thumbsize in folder contents listing adjustable/supressable 
   (uses site control panel settings: thumb_size_tables ...)
   clean up deprecated icon related code
