@@ -1,14 +1,69 @@
 # -*- coding: utf-8 -*-
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
+from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import SITE_OWNER_NAME
 from plone.dexterity.fti import DexterityFTI
 
 import json
 import mock
 import unittest
+
+
+class ContentsDeleteTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+        # TYPE 1
+        type1_fti = DexterityFTI('type1')
+        type1_fti.klass = 'plone.dexterity.content.Container'
+        type1_fti.filter_content_types = True
+        type1_fti.allowed_content_types = ['type1']
+        type1_fti.behaviors = (
+            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
+            'plone.app.dexterity.behaviors.metadata.IBasic'
+        )
+        self.portal.portal_types._setObject('type1', type1_fti)
+        self.type1_fti = type1_fti
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_delete_success_with_private_anchestor(self):
+        """Delete content item from a folder with private anchestor
+        """
+        # Create test content /it1/it2/it3
+        self.portal.invokeFactory('type1', id='it1', title='Item 1')
+        self.portal.it1.invokeFactory('type1', id='it2', title='Item 2')
+        self.portal.it1.it2.invokeFactory('type1', id='it3', title='Item 3')
+        self.assertEqual(len(self.portal.it1.it2.contentIds()), 1)
+
+        # Block user access to it1m but leave access to its children
+        self.portal.it1.__ac_local_roles_block__ = True
+        del self.portal.it1.__ac_local_roles__[TEST_USER_ID]
+        self.portal.it1.reindexObjectSecurity()
+        self.portal.it1.it2.reindexObjectSecurity()
+
+        # Remove test user global roles (leaving only local owner roles on it2)
+        setRoles(self.portal, TEST_USER_ID, [])
+
+        # Execute delete request
+        selection = [self.portal.it1.it2.it3.UID()]
+        self.request.form['folder'] = '/it1/it2'
+        self.request.form['selection'] = json.dumps(selection)
+        res = self.portal.it1.it2.restrictedTraverse('@@fc-delete')()
+
+        # Check for successful deletion
+        res = json.loads(res)
+        self.assertEqual(res['status'], 'success')
+        self.assertEqual(len(self.portal.it1.it2.contentIds()), 0)
 
 
 class ContentsPasteTests(unittest.TestCase):
@@ -77,6 +132,34 @@ class ContentsPasteTests(unittest.TestCase):
         res = json.loads(res)
         self.assertEqual(res['status'], 'warning')
         self.assertEqual(len(self.portal.it1.contentIds()), 0)
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_paste_success_with_private_anchestor(self):
+        """Copy content item and paste into a folder with private anchestor
+        """
+        # Create test content /it2/it3
+        self.portal.invokeFactory('type1', id='it2', title='Item 2')
+        self.portal.it2.invokeFactory('type1', id='it3', title='Item 3')
+        self.assertEqual(len(self.portal.it2.it3.contentIds()), 0)
+
+        # Block user access to it2, but leave access to its children
+        self.portal.it2.__ac_local_roles_block__ = True
+        del self.portal.it2.__ac_local_roles__[TEST_USER_ID]
+        self.portal.it2.reindexObjectSecurity()
+        self.portal.it2.it3.reindexObjectSecurity()
+
+        # Remove test user global roles (leaving only local owner roles on it2)
+        setRoles(self.portal, TEST_USER_ID, [])
+
+        # Execute paste
+        self.request['__cp'] = self.portal.manage_copyObjects(['it1'])
+        self.request.form['folder'] = '/it2/it3'
+        res = self.portal.it2.it3.restrictedTraverse('@@fc-paste')()
+
+        # Check for successful paste
+        res = json.loads(res)
+        self.assertEqual(res['status'], 'success')
+        self.assertEqual(len(self.portal.it2.it3.contentIds()), 1)
 
 
 class AllowUploadViewTests(unittest.TestCase):

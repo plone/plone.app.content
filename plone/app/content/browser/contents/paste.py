@@ -35,8 +35,9 @@ class PasteActionView(ContentsBaseAction):
         self.protect()
         self.errors = []
 
-        self.dest = self.site.restrictedTraverse(
-            str(self.request.form['folder'].lstrip('/')))
+        parts = str(self.request.form['folder'].lstrip('/')).split('/')
+        parent = self.site.unrestrictedTraverse('/'.join(parts[:-1]))
+        self.dest = parent.restrictedTraverse(parts[-1])
 
         try:
             self.dest.manage_pasteObjects(self.request['__cp'])
