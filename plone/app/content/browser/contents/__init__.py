@@ -88,8 +88,9 @@ class ContentsBaseAction(BrowserView):
         context = aq_inner(self.context)
         selection = self.get_selection()
 
-        self.dest = self.site.restrictedTraverse(
-            str(self.request.form['folder'].lstrip('/')))
+        parts = str(self.request.form['folder'].lstrip('/')).split('/')
+        parent = self.site.unrestrictedTraverse('/'.join(parts[:-1]))
+        self.dest = parent.restrictedTraverse(parts[-1])
 
         self.catalog = getToolByName(context, 'portal_catalog')
         self.mtool = getToolByName(self.context, 'portal_membership')
