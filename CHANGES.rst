@@ -15,7 +15,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix issue where some actions (copy, delete, paste) on contents view did not
+  work if there were any private (innaccessible for the current user) levels the
+  current path
+  [datakurre]
 
 
 3.4 (2017-04-01)
