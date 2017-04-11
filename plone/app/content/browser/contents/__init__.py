@@ -172,7 +172,7 @@ class FolderContentsView(BrowserView):
             'effective',
             'expires',
             'getIcon',
-			'getMimeIcon',
+            'getMimeIcon',
             'getId',
             'getRemoteUrl',
             'in_response_to',
