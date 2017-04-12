@@ -95,7 +95,8 @@ class ContentsBaseAction(BrowserView):
         self.catalog = getToolByName(context, 'portal_catalog')
         self.mtool = getToolByName(self.context, 'portal_membership')
 
-        for brain in self.catalog(UID=selection):
+        brains = self.catalog(UID=selection, show_inactive=True)
+        for brain in brains:
             # remove everyone so we know if we missed any
             selection.remove(brain.UID)
             obj = brain.getObject()
@@ -316,7 +317,7 @@ class ContextInfo(BrowserView):
 
         catalog = getToolByName(self.context, 'portal_catalog')
         try:
-            brains = catalog(UID=IUUID(self.context))
+            brains = catalog(UID=IUUID(self.context), show_inactive=True)
         except TypeError:
             brains = []
         item = None

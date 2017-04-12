@@ -15,6 +15,10 @@ New features:
 
 Bug fixes:
 
+- Allow operation on inactive content for all folder content actions.
+  This allows deleting, renaming, rearranging and changing workflow of content which expiration date has already been met or which effective date hasn't met yet.
+  [thet]
+
 - Fix issue where some actions (copy, delete, paste) on contents view did not
   work if there were any private (innaccessible for the current user) levels the
   current path

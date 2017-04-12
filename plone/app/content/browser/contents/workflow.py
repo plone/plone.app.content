@@ -50,7 +50,7 @@ class WorkflowActionView(ContentsBaseAction):
             # asking for render information
             selection = self.get_selection()
             catalog = getToolByName(self.context, 'portal_catalog')
-            brains = catalog(UID=selection)
+            brains = catalog(UID=selection, show_inactive=True)
             transitions = []
             for brain in brains:
                 obj = brain.getObject()
