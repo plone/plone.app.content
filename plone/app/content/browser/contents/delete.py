@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
+
 import json
 
 
@@ -52,7 +53,7 @@ class DeleteActionView(ContentsBaseAction):
                                            name='delete_confirmation_info')
             selection = self.get_selection()
             catalog = getToolByName(self.context, 'portal_catalog')
-            brains = catalog(UID=selection)
+            brains = catalog(UID=selection, show_inactive=True)
             items = [i.getObject() for i in brains]
             self.request.response.setHeader(
                 'Content-Type', 'application/json; charset=utf-8'

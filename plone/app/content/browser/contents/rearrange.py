@@ -82,7 +82,8 @@ class RearrangeActionView(OrderContentsBaseAction):
                     'query': '/'.join(self.context.getPhysicalPath()),
                     'depth': 1
                 },
-                'sort_on': self.request.form.get('rearrange_on')
+                'sort_on': self.request.form.get('rearrange_on'),
+                'show_inactive': True
             }
             brains = catalog(**query)
             if self.request.form.get('reversed') == 'true':

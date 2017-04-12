@@ -61,7 +61,7 @@ class RenameActionView(ContentsBaseAction):
                 continue
             index = key.split('_')[-1]
             uid = self.request.form[key]
-            brains = catalog(UID=uid)
+            brains = catalog(UID=uid, show_inactive=True)
             if len(brains) == 0:
                 missing.append(uid)
                 continue
