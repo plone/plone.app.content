@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+from datetime import timedelta
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
-from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.app.testing import SITE_OWNER_NAME
 from plone.dexterity.fti import DexterityFTI
 
 import json
@@ -64,6 +64,34 @@ class ContentsDeleteTests(unittest.TestCase):
         res = json.loads(res)
         self.assertEqual(res['status'], 'success')
         self.assertEqual(len(self.portal.it1.it2.contentIds()), 0)
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_delete_success_on_inactive_content(self):
+        """Delete an expired content item from a folder.
+        """
+        # Create content
+        self.portal.invokeFactory('type1', id='it1', title='Item 1')
+        self.portal.it1.invokeFactory('type1', id='it2', title='Item 2')
+
+        # Expire it2
+        exp = datetime.now() - timedelta(days=10)
+        self.portal.it1.it2.expiration_date = exp
+        self.portal.it1.it2.reindexObject()
+
+        # Remove test user global roles (leaving only local owner roles on it1
+        # and below)
+        setRoles(self.portal, TEST_USER_ID, [])
+
+        # Execute delete request
+        selection = [self.portal.it1.it2.UID()]
+        self.request.form['folder'] = '/it1'
+        self.request.form['selection'] = json.dumps(selection)
+        res = self.portal.it1.restrictedTraverse('@@fc-delete')()
+
+        # Check for successful deletion
+        res = json.loads(res)
+        self.assertEqual(res['status'], 'success')
+        self.assertEqual(len(self.portal.it1.contentIds()), 0)
 
 
 class ContentsPasteTests(unittest.TestCase):
@@ -160,6 +188,89 @@ class ContentsPasteTests(unittest.TestCase):
         res = json.loads(res)
         self.assertEqual(res['status'], 'success')
         self.assertEqual(len(self.portal.it2.it3.contentIds()), 1)
+
+
+class ContentsRenameTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+        # TYPE 1
+        type1_fti = DexterityFTI('type1')
+        type1_fti.klass = 'plone.dexterity.content.Container'
+        type1_fti.filter_content_types = True
+        type1_fti.allowed_content_types = ['type1']
+        type1_fti.behaviors = (
+            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
+            'plone.app.dexterity.behaviors.metadata.IBasic'
+        )
+        self.portal.portal_types._setObject('type1', type1_fti)
+        self.type1_fti = type1_fti
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_rename_success_with_private_anchestor(self):
+        """Rename content item from a folder with private anchestor
+        """
+        # Create test content /it1/it2/it3
+        self.portal.invokeFactory('type1', id='it1', title='Item 1')
+        self.portal.it1.invokeFactory('type1', id='it2', title='Item 2')
+        self.portal.it1.it2.invokeFactory('type1', id='it3', title='Item 3')
+        self.assertEqual(len(self.portal.it1.it2.contentIds()), 1)
+
+        # Block user access to it1m but leave access to its children
+        self.portal.it1.__ac_local_roles_block__ = True
+        del self.portal.it1.__ac_local_roles__[TEST_USER_ID]
+        self.portal.it1.reindexObjectSecurity()
+        self.portal.it1.it2.reindexObjectSecurity()
+
+        # Remove test user global roles (leaving only local owner roles on it2)
+        setRoles(self.portal, TEST_USER_ID, [])
+
+        # Execute rename request
+        self.request.form['UID_1'] = self.portal.it1.it2.it3.UID()
+        self.request.form['newid_1'] = 'it3bak'
+        self.request.form['newtitle_1'] = 'Item 3 BAK'
+        res = self.portal.it1.it2.restrictedTraverse('@@fc-rename')()
+
+        # Check for successful deletion
+        res = json.loads(res)
+        self.assertEqual(res['status'], 'success')
+        self.assertEqual(self.portal.it1.it2.it3bak.id, 'it3bak')
+        self.assertEqual(self.portal.it1.it2.it3bak.title, 'Item 3 BAK')
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_rename_success_on_inactive_content(self):
+        """Rename an expired content item from a folder.
+        """
+        # Create content
+        self.portal.invokeFactory('type1', id='it1', title='Item 1')
+        self.portal.it1.invokeFactory('type1', id='it2', title='Item 2')
+
+        # Expire it2
+        exp = datetime.now() - timedelta(days=10)
+        self.portal.it1.it2.expiration_date = exp
+        self.portal.it1.it2.reindexObject()
+
+        # Remove test user global roles (leaving only local owner roles on it1
+        # and below)
+        setRoles(self.portal, TEST_USER_ID, [])
+
+        # Execute rename request
+        self.request.form['UID_1'] = self.portal.it1.it2.UID()
+        self.request.form['newid_1'] = 'it2bak'
+        self.request.form['newtitle_1'] = 'Item 2 BAK'
+        res = self.portal.it1.restrictedTraverse('@@fc-rename')()
+
+        # Check for successful deletion
+        res = json.loads(res)
+        self.assertEqual(res['status'], 'success')
+        self.assertEqual(self.portal.it1.it2bak.id, 'it2bak')
+        self.assertEqual(self.portal.it1.it2bak.title, 'Item 2 BAK')
 
 
 class AllowUploadViewTests(unittest.TestCase):
