@@ -514,6 +514,10 @@ Fixes:
 - PEP8
   [tomgross]
 
+- Added registry settings for IContentSettings. Includes download behaviour 
+  of blobs based on mimetype patterns. (code in plone.app.blob) 
+  [djay].
+
 3.0.0 (2014-04-13)
 ------------------
 
