@@ -25,7 +25,9 @@ Bug fixes:
   current path
   [datakurre]
 
-
+- removed unittest2 dependency.
+  [kakshay21]
+  
 3.4 (2017-04-01)
 ----------------
 
