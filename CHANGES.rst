@@ -5,10 +5,6 @@ Changelog
 3.4.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Folder Contents: Construct the list of sortable indexes from the available catalog indexes, using a blacklist and a default set - likewise as it's done with metadata columns.
