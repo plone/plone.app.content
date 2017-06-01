@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
 from AccessControl import getSecurityManager
+from Acquisition import aq_base
 from logging import getLogger
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
@@ -9,9 +11,11 @@ from plone.app.querystring import queryparser
 from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.supermodel.utils import mergedTaggedValueDict
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
+from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from types import FunctionType
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -54,6 +58,7 @@ TRANSLATED_IGNORED = [
     'ExpirationDate',
     'expires',
     'getIcon',
+    'getMimeIcon',
     'getId',
     'getObjSize',
     'getRemoteUrl',
@@ -144,7 +149,7 @@ class BaseVocabularyView(BrowserView):
 
         try:
             vocabulary = self.get_vocabulary()
-        except VocabLookupException, e:
+        except VocabLookupException as e:
             return json_dumps({'error': e.message})
 
         results_are_brains = False
@@ -235,6 +240,19 @@ class BaseVocabularyView(BrowserView):
                         )
                     else:
                         item[key] = val
+                    if key == 'getMimeIcon':
+                        item[key] = None
+                        # get mime type icon url from mimetype registry'
+                        navroot = self.get_base_path(vocab_item)
+                        contenttype = aq_base(
+                            getattr(vocab_item, 'mime_type', None))
+                        if contenttype:
+                            mtt = getToolByName(
+                                self.context, 'mimetypes_registry')
+                            ctype = mtt.lookup(contenttype)
+                            item[key] = os.path.join(
+                                navroot,
+                                guess_icon_path(ctype[0]))
                 items.append(item)
         else:
             for item in results:
@@ -321,7 +339,7 @@ class VocabularyView(BaseVocabularyView):
         # generation of vocabularies created for plone.app.widgets,
         # which take the (unparsed) query as a parameter of the vocab
         # factory rather than as a separate search method.
-        if type(factory) is FunctionType:
+        if isinstance(factory, FunctionType):
             factory_spec = inspect.getargspec(factory)
         else:
             factory_spec = inspect.getargspec(factory.__call__)
