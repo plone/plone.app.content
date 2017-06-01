@@ -8,7 +8,7 @@ from plone.app.testing import setRoles
 from plone.dexterity.fti import DexterityFTI
 from zope.container.interfaces import INameChooser
 import transaction
-import unittest2 as unittest
+import unittest
 
 
 class NameChooserTest(unittest.TestCase):

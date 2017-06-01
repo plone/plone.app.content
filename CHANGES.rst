@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-3.4.1 (unreleased)
+3.4.2 (unreleased)
 ------------------
 
 Breaking changes:
@@ -18,6 +18,16 @@ New features:
   https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
 
+Bug fixes:
+
+- *add item here*
+
+
+3.4.1 (2017-05-16)
+------------------
+
+New features:
+
 - Folder Contents: Construct the list of sortable indexes from the available catalog indexes, using a blacklist and a default set - likewise as it's done with metadata columns.
   [thet]
 
@@ -32,7 +42,9 @@ Bug fixes:
   current path
   [datakurre]
 
-
+- removed unittest2 dependency.
+  [kakshay21]
+  
 3.4 (2017-04-01)
 ----------------
 
