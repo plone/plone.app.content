@@ -219,15 +219,15 @@ class FolderContentsView(BrowserView):
                 columns[column] = translate(_(column), context=self.request)
         return columns
 
-    def get_thumbSize(self):
+    def get_thumb_scale(self):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(
             ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_tables:
             # thumbs to be supressed
-            return 'none'
-        thumb_size_table = settings.thumb_size_table
-        return thumb_size_table
+            return None
+        thumb_scale_table = settings.thumb_scale_table
+        return thumb_scale_table
 
     @property
     def ignored_indexes(self):
@@ -316,7 +316,7 @@ class FolderContentsView(BrowserView):
                 'initialFolder': IUUID(self.context, None),
                 'useTus': TUS_ENABLED
             },
-            'thumbSize' : self.get_thumbSize(),
+            'thumb_scale': self.get_thumb_scale(),
         }
         return options
 
