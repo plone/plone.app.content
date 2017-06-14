@@ -11,10 +11,9 @@ Breaking changes:
 
 New features:
 
-- make thumbsize in folder contents listing adjustable/supressable 
-  (uses site control panel settings: thumb_size_tables ...)
-  clean up deprecated icon related code
-  replace paperclip icon with mime type icons
+- Make thumb_scale in folder contents listing adjustable/supressable (uses site control panel settings: thumb_scale_tables ...).
+  Clean up deprecated icon related code.
+  Replace paperclip icon with mime type icons.
   https://github.com/plone/Products.CMFPlone/issues/1734
   [fgrcon]
 
@@ -44,7 +43,7 @@ Bug fixes:
 
 - removed unittest2 dependency.
   [kakshay21]
-  
+
 3.4 (2017-04-01)
 ----------------
 
