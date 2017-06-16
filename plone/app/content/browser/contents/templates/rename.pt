@@ -10,7 +10,7 @@
       <input class="form-control" name="newid_<%= index %>" value="<%= item.id %>" />
     </div>
 
-    <% if(item.getIcon ){ %><img class="image-thumb" src="<%= item.getURL %>/@@images/image/thumb"><% } %>
+    <% if(item.getIcon ){ %><img class="thumb-thumb" src="<%= item.getURL %>/@@images/image/thumb"><% } %>
 
   </div>
 <% }) %>
