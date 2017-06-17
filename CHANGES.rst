@@ -54,6 +54,10 @@ New features:
 
 Bug fixes:
 
+- fixed css-classes for thumb scales ...
+  https://github.com/plone/Products.CMFPlone/issues/2077
+  [fgrcon]
+
 - Adapt tests to the new indexing operations queueing.
   Part of PLIP 1343: https://github.com/plone/Products.CMFPlone/issues/1343
   [gforcada]

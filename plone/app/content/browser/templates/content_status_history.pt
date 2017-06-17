@@ -157,7 +157,7 @@
                             </td>
                             <td tal:define="url python:item_use_view and item_url+'/view' or
                                             (item_folderish and item_url+'/folder_contents'or item_url+'/');">
-                                <img class="image-tile"
+                                <img class="thumb-tile"
                                      tal:define="getIcon string:$item_url/@@images/image/tile'"
                                      tal:condition="item_has_image"                          
                                      tal:attributes="src  string:$getIcon">    
