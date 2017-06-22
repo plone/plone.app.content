@@ -11,6 +11,12 @@ Breaking changes:
 
 New features:
 
+- Folder contents properties: Add settings to change the content language.
+  [thet]
+
+- Folder contents properties: Add a recursion feature to apply all changes recursively.
+  [thet]
+
 - Make thumb_scale in folder contents listing adjustable/supressable (uses site control panel settings: thumb_scale_tables ...).
   Clean up deprecated icon related code.
   Replace paperclip icon with mime type icons.

@@ -1,16 +1,20 @@
 <div i18n:domain="plone">
+
   <div class="form-group">
     <label i18n:translate="publiciation_date">Publication Date</label>
     <input class="form-control pat-pickadate" name="effectiveDate" />
   </div>
+
   <div class="form-group">
     <label i18n:translate="expiration_date">Expiration Date</label>
     <input class="form-control pat-pickadate" name="expirationDate" />
   </div>
+
   <div class="form-group">
     <label i18n:translate="copyright">Copyright</label>
     <textarea class="form-control" name="copyright"></textarea>
   </div>
+
   <label i18n:translate="creators">Creators</label>
   <div class="form-group">
     <input name="creators" style="width: 300px"
@@ -18,6 +22,7 @@
            data-pat-select2="multiple: true;
                              vocabularyUrl: ${python: options['vocabulary_url']}"/>
   </div>
+
   <label i18n:translate="contributors">Contributors</label>
   <div class="form-group">
     <input name="contributors" style="width: 300px"
@@ -25,6 +30,7 @@
            data-pat-select2="multiple: true;
                              vocabularyUrl: ${python: options['vocabulary_url']}"/>
   </div>
+
   <label i18n:translate="exclude_from_nav">Exclude from navigation</label>
   <div class="radio">
     <label>
@@ -38,4 +44,24 @@
       <span i18n:translate="no">No</span>
     </label>
   </div>
+
+  <% if (data.languages) { %>
+    <label i18n:translate="label_language">Language</label>
+    <select class="form-control" name="language">
+      <% _.each(data.languages, function (lang) { %>
+        <option value="<%= lang.value %>"><%= lang.title %></option>
+      <% }); %>
+    </select>
+  <% } %>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" name="recurse" value="yes" />
+      <span i18n:translate="label_include_contained_objects">Include contained items</span>
+    </label>
+    <p class="help-block" i18n:translate="help_include_contained_objects">
+    If checked, this will attempt to modify the status of all content in any selected folders and their subfolders.
+    </p>
+  </div>
+
 </div>

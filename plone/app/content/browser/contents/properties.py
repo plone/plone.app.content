@@ -2,12 +2,17 @@
 from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.dexterity.interfaces import IDexterityContent
+from Products.CMFCore.interfaces._content import IFolderish
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 
 
 @implementer(IStructureAction)
@@ -32,7 +37,8 @@ class PropertiesAction(object):
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Users' % (
                         base_vocabulary)
-                )
+                ),
+                'dataUrl': self.context.absolute_url() + '/@@fc-properties',
             }
         }
 
@@ -43,6 +49,30 @@ class PropertiesActionView(ContentsBaseAction):
     required_obj_permission = 'Modify portal content'
 
     def __call__(self):
+
+        if self.request.form.get('render') == 'yes':
+            lang_factory = getUtility(
+                IVocabularyFactory,
+                'plone.app.vocabularies.SupportedContentLanguages'
+            )
+            lang_vocabulary = lang_factory(self.context)
+            languages = [
+                {
+                    'title': term.title,
+                    'value': term.value
+                }
+                for term in lang_vocabulary
+            ]
+            return self.json({
+                'languages': [{
+                    'title': translate(
+                        _('label_no_change', default='No change')
+                    ),
+                    'value': ''
+                }] + languages
+            })
+
+        self.putils = getToolByName(self.context, 'plone_utils')
         self.effectiveDate = self.request.form.get('effectiveDate')
         self.expirationDate = self.request.form.get('expirationDate')
         self.copyright = self.request.form.get('copyright')
@@ -55,6 +85,8 @@ class PropertiesActionView(ContentsBaseAction):
         if self.creators:
             self.creators = self.creators.split(',')
         self.exclude = self.request.form.get('exclude-from-nav')
+        self.language = self.request.form.get('language')
+        self.recurse = self.request.form.get('recurse', 'no') == 'yes'
         return super(PropertiesActionView, self).__call__()
 
     def dx_action(self, obj):
@@ -71,7 +103,19 @@ class PropertiesActionView(ContentsBaseAction):
         if self.exclude and hasattr(obj, 'exclude_from_nav'):
             obj.exclude_from_nav = self.exclude == 'yes'
 
-    def action(self, obj):
+        behavior_categorization = ICategorization(obj)
+        if self.language and behavior_categorization:
+            behavior_categorization.language = self.language
+
+    def action(self, obj, bypass_recurse=False):
+
+        if self.putils.isDefaultPage(obj):
+            self.action(obj.aq_parent, bypass_recurse=True)
+        recurse = self.recurse and not bypass_recurse
+        if recurse and IFolderish.providedBy(obj):
+            for sub in obj.values():
+                self.action(sub)
+
         if IDexterityContent.providedBy(obj):
             self.dx_action(obj)
         else:
@@ -105,4 +149,10 @@ class PropertiesActionView(ContentsBaseAction):
                     obj.setExcludeFromNav(self.exclude == 'yes')
                 except AttributeError:
                     pass
+            if self.language:
+                try:
+                    obj.setLanguage(self.language)
+                except AttributeError:
+                    pass
+
         obj.reindexObject()
