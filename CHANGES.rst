@@ -19,7 +19,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Use simplejson because it's ahead of stdlib and supports more types
+  fixes https://github.com/plone/plone.app.content/issues/134
+  [agitator]
 
 
 3.4.1 (2017-05-16)
