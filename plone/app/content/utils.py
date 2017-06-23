@@ -3,7 +3,8 @@ from DateTime import DateTime
 
 import Missing
 import datetime
-import json
+# use simplejson because it's ahead of stdlib and supports more types
+import simplejson
 
 
 def custom_json_handler(obj):
@@ -20,8 +21,8 @@ def custom_json_handler(obj):
 
 
 def json_dumps(data):
-    return json.dumps(data, default=custom_json_handler)
+    return simplejson.dumps(data, default=custom_json_handler)
 
 
 # can eventually provide custom handling here if we want
-json_loads = json.loads
+json_loads = simplejson.loads

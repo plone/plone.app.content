@@ -47,6 +47,7 @@ setup(
         'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
         'Products.CMFPlone',
         'setuptools',
+        'simplejson',
         'zope.component',
         'zope.container',
         'zope.deferredimport',
