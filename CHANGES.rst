@@ -5,10 +5,6 @@ Changelog
 3.4.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Make thumb_scale in folder contents listing adjustable/supressable (uses site control panel settings: thumb_scale_tables ...).
