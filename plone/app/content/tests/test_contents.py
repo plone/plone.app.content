@@ -7,6 +7,11 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
+from plone.protect.authenticator import createToken
+from plone.registry.interfaces import IRegistry
+from plone.uuid.interfaces import IUUID
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 import json
 import mock
@@ -372,3 +377,99 @@ class AllowUploadViewTests(unittest.TestCase):
         self.assertEqual(allow_upload['allowUpload'], True)
         self.assertEqual(allow_upload['allowImages'], False)
         self.assertEqual(allow_upload['allowFiles'], True)
+
+
+class FCPropertiesTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+        # Disable plone.protect for these tests
+        self.request.environ['REQUEST_METHOD'] = 'POST'
+        self.request.form['_authenticator'] = createToken()
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+        # set available languages
+        registry = getUtility(IRegistry)
+        registry['plone.available_languages'] = ['en', 'de']
+
+        self.portal.invokeFactory('Folder', 'main1')
+        self.portal.main1.invokeFactory('Folder', 'sub1')
+        self.portal.main1.sub1.invokeFactory('Folder', 'subsub1')
+        self.portal.main1.invokeFactory('Document', 'sub2')
+        self.portal.invokeFactory('Document', 'main2')
+
+        self.setup_initial()
+
+    def setup_initial(self):
+        # Initial Settings
+        self.portal.main1.exclude_from_nav = True
+        self.portal.main1.sub1.exclude_from_nav = True
+        self.portal.main1.sub1.subsub1.exclude_from_nav = True
+        self.portal.main1.sub2.exclude_from_nav = True
+        self.portal.main2.exclude_from_nav = True
+
+        self.portal.main1.language = 'en'
+        self.portal.main1.sub1.language = 'en'
+        self.portal.main1.sub1.subsub1.language = 'en'
+        self.portal.main1.sub2.language = 'en'
+        self.portal.main2.language = 'en'
+
+    def test_fc_properties__changes__no_recurse(self):
+        """Test changing properties without recursion.
+        """
+        req = self.request
+        req.form['language'] = 'de'
+        req.form['exclude-from-nav'] = 'no'
+        req.form['selection'] = '["{0}", "{1}"]'.format(
+            IUUID(self.portal.main1),
+            IUUID(self.portal.main2)
+        )
+
+        view = getMultiAdapter((self.portal, req), name=u'fc-properties')
+
+        # Call the view and execute the actions
+        view()
+
+        self.assertEqual(self.portal.main1.language, 'de')
+        self.assertEqual(self.portal.main2.language, 'de')
+        self.assertEqual(self.portal.main1.sub1.language, 'en')
+        self.assertEqual(self.portal.main1.sub1.subsub1.language, 'en')
+        self.assertEqual(self.portal.main1.sub2.language, 'en')
+
+        self.assertEqual(self.portal.main1.exclude_from_nav, False)
+        self.assertEqual(self.portal.main2.exclude_from_nav, False)
+        self.assertEqual(self.portal.main1.sub1.exclude_from_nav, True)
+        self.assertEqual(self.portal.main1.sub1.subsub1.exclude_from_nav, True)
+        self.assertEqual(self.portal.main1.sub2.exclude_from_nav, True)
+
+    def test_fc_properties__changes__with_recurse(self):
+        """Test changing properties without recursion.
+        """
+        req = self.request
+        req.form['language'] = 'de'
+        req.form['exclude-from-nav'] = 'no'
+        req.form['recurse'] = 'yes'
+        req.form['selection'] = '["{0}", "{1}"]'.format(
+            IUUID(self.portal.main1),
+            IUUID(self.portal.main2)
+        )
+
+        view = getMultiAdapter((self.portal, req), name=u'fc-properties')
+
+        # Call the view and execute the actions
+        view()
+
+        self.assertEqual(self.portal.main1.language, 'de')
+        self.assertEqual(self.portal.main2.language, 'de')
+        self.assertEqual(self.portal.main1.sub1.language, 'de')
+        self.assertEqual(self.portal.main1.sub1.subsub1.language, 'de')
+        self.assertEqual(self.portal.main1.sub2.language, 'de')
+
+        self.assertEqual(self.portal.main1.exclude_from_nav, False)
+        self.assertEqual(self.portal.main2.exclude_from_nav, False)
+        self.assertEqual(self.portal.main1.sub1.exclude_from_nav, False)
+        self.assertEqual(self.portal.main1.sub1.subsub1.exclude_from_nav, False)  # noqa
+        self.assertEqual(self.portal.main1.sub2.exclude_from_nav, False)

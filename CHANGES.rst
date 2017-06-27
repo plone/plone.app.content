@@ -11,7 +11,11 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Folder contents properties: Add settings to change the content language.
+  [thet]
+
+- Folder contents properties: Add a recursion feature to apply all changes recursively.
+  [thet]
 
 Bug fixes:
 
