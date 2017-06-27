@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-3.4.2 (unreleased)
+3.4.3 (unreleased)
 ------------------
 
 Breaking changes:
@@ -17,6 +17,16 @@ New features:
 - Folder contents properties: Add a recursion feature to apply all changes recursively.
   [thet]
 
+Bug fixes:
+
+- *add item here*
+
+
+3.4.2 (2017-06-26)
+------------------
+
+New features:
+
 - Make thumb_scale in folder contents listing adjustable/supressable (uses site control panel settings: thumb_scale_tables ...).
   Clean up deprecated icon related code.
   Replace paperclip icon with mime type icons.
@@ -25,7 +35,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Use simplejson because it's ahead of stdlib and supports more types
+  fixes https://github.com/plone/plone.app.content/issues/134
+  [agitator]
 
 
 3.4.1 (2017-05-16)

@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '3.4.2.dev0'
+version = '3.4.3.dev0'
 
 setup(
     name='plone.app.content',
@@ -47,6 +47,7 @@ setup(
         'Products.CMFDynamicViewFTI',  # required for cmf.ModifyViewTemplate
         'Products.CMFPlone',
         'setuptools',
+        'simplejson',
         'zope.component',
         'zope.container',
         'zope.deferredimport',
