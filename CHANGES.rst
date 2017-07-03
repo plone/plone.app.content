@@ -5,10 +5,6 @@ Changelog
 3.4.3 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Folder contents properties: Add settings to change the content language.
@@ -16,10 +12,6 @@ New features:
 
 - Folder contents properties: Add a recursion feature to apply all changes recursively.
   [thet]
-
-Bug fixes:
-
-- *add item here*
 
 
 3.4.2 (2017-06-26)
