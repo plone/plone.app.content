@@ -57,7 +57,7 @@ class WorkflowActionView(ContentsBaseAction):
                 for transition in self.pworkflow.getTransitionsFor(obj):
                     tdata = {
                         'id': transition['id'],
-                        'title': transition['name']
+                        'title': self.context.translate(transition['name'])
                     }
                     if tdata not in transitions:
                         transitions.append(tdata)
