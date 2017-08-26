@@ -15,7 +15,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Translate workflow transition names [cillianderoiste]
 
 
 3.4.3 (2017-07-03)
