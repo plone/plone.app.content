@@ -5,14 +5,6 @@ Changelog
 3.4.4 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Translate workflow transition names [cillianderoiste]
