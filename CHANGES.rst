@@ -2,6 +2,22 @@ Changelog
 =========
 
 
+3.4.5 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 3.4.4 (2017-08-27)
 ------------------
 
