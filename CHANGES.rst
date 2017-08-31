@@ -15,7 +15,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Translate the delete popover buttons [cillianderoiste]
 
 
 3.4.4 (2017-08-27)
