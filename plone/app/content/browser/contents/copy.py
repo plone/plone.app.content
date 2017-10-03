@@ -20,9 +20,9 @@ class CopyAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('Copy'), context=self.request),
+            'tooltip': translate(_('Copy'), context=self.request),
             'id': 'copy',
-            'icon': 'copy',
+            'icon': 'duplicate',
             'url': self.context.absolute_url() + '/@@fc-copy'
         }
 

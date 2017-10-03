@@ -23,7 +23,7 @@ class WorkflowAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('State'), context=self.request),
+            'tooltip': translate(_('State'), context=self.request),
             'id': 'workflow',
             'icon': 'lock',
             'url': self.context.absolute_url() + '/@@fc-workflow',

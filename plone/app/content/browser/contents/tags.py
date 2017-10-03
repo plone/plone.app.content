@@ -21,7 +21,7 @@ class TagsAction(object):
     def get_options(self):
         base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
-            'title': translate(_('Tags'), context=self.request),
+            'tooltip': translate(_('Tags'), context=self.request),
             'id': 'tags',
             'icon': 'tags',
             'url': self.context.absolute_url() + '/@@fc-tags',

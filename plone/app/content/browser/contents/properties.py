@@ -28,7 +28,7 @@ class PropertiesAction(object):
     def get_options(self):
         base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
-            'title': translate(_('Properties'), context=self.request),
+            'tooltip': translate(_('Properties'), context=self.request),
             'id': 'properties',
             'icon': 'edit',
             'url': self.context.absolute_url() + '/@@fc-properties',

@@ -19,9 +19,9 @@ class PasteAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('Paste'), context=self.request),
+            'tooltip': translate(_('Paste'), context=self.request),
             'id': 'paste',
-            'icon': 'paste',
+            'icon': 'open-file',
             'url': self.context.absolute_url() + '/@@fc-paste'
         }
 

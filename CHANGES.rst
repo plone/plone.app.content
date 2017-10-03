@@ -11,7 +11,12 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Folder Contents: More compact toolbar
+  Instead of showing titles in the menu bar action buttons, show only icons and add a tooltip.
+  This makes the menu bar more compact and avoids breaking into two lines.
+  Also: Better icons for copy and paste.
+  [thet]
+
 
 Bug fixes:
 

@@ -20,7 +20,7 @@ class CutAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('Cut'), context=self.request),
+            'tooltip': translate(_('Cut'), context=self.request),
             'id': 'cut',
             'icon': 'scissors',
             'url': self.context.absolute_url() + '/@@fc-cut'
