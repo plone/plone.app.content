@@ -20,7 +20,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix translations in the delete pop-over
+  [arsenico13]
 
 
 3.4.4 (2017-08-27)
