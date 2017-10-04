@@ -26,7 +26,7 @@ class DeleteAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('Delete'), context=self.request),
+            'tooltip': translate(_('Delete'), context=self.request),
             'id': 'delete',
             'icon': 'trash',
             'context': 'danger',

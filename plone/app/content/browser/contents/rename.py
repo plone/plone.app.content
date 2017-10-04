@@ -33,7 +33,7 @@ class RenameAction(object):
 
     def get_options(self):
         return {
-            'title': translate(_('Rename'), context=self.request),
+            'tooltip': translate(_('Rename'), context=self.request),
             'id': 'rename',
             'icon': 'random',
             'url': self.context.absolute_url() + '/@@fc-rename',
