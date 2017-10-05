@@ -32,11 +32,11 @@ class DeleteAction(object):
             'context': 'danger',
             'url': self.context.absolute_url() + '/@@fc-delete',
             'form': {
-                'title': _('Delete selected items'),
-                'submitText': _('Yes'),
+                'title': translate(_('Delete selected items'), context=self.request),
+                'submitText': translate(_('Yes'), context=self.request),
                 'submitContext': 'danger',
                 'template': self.template(),
-                'closeText': _('No'),
+                'closeText': translate(_('No'), context=self.request),
                 'dataUrl': self.context.absolute_url() + '/@@fc-delete'
             }
         }
