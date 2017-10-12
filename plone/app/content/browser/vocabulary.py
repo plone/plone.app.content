@@ -210,6 +210,7 @@ class BaseVocabularyView(BrowserView):
             base_path = self.get_base_path(context)
             sm = getSecurityManager()
             can_edit = sm.checkPermission(DEFAULT_PERMISSION_SECURE, context)
+            mtt = getToolByName(self.context, 'mimetypes_registry')
             for vocab_item in results:
                 if not results_are_brains:
                     vocab_item = vocab_item.value
@@ -243,20 +244,17 @@ class BaseVocabularyView(BrowserView):
                     if key == 'getMimeIcon':
                         item[key] = None
                         # get mime type icon url from mimetype registry'
-                        navroot = self.get_base_path(vocab_item)
                         contenttype = aq_base(
                             getattr(vocab_item, 'mime_type', None))
                         if contenttype:
-                            mtt = getToolByName(
-                                self.context, 'mimetypes_registry')
                             ctype = mtt.lookup(contenttype)
-                            item[key] = os.path.join(
-                                navroot,
-                                guess_icon_path(ctype[0]))
+                            item[key] = '/'.join([
+                                base_path,
+                                guess_icon_path(ctype[0])])
                 items.append(item)
         else:
-            for item in results:
-                items.append({'id': item.value, 'text': item.title})
+            items = [{'id': item.value,
+                      'text': item.title} for item in results]
 
         if total == 0:
             total = len(items)
