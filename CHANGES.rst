@@ -23,6 +23,10 @@ Bug fixes:
 - Fix translations in the delete pop-over
   [arsenico13]
 
+- Fix and optimize *getVocabulary*-view to work with alternate fulltext
+  indexes, which don't return brains as search results
+  https://github.com/plone/Products.CMFPlone/issues/2174
+  [tomgross]
 
 3.4.4 (2017-08-27)
 ------------------
