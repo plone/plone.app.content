@@ -22,6 +22,9 @@ Bug fixes:
 
 - Fix translations in the delete pop-over
   [arsenico13]
+- Allow ``plonejsi18n`` accept empty domains when calling.
+  This avoids ``BadRequest`` errors, when being called without a domain url query string.
+  [thet]
 
 - Fix and optimize *getVocabulary*-view to work with alternate fulltext
   indexes, which don't return brains as search results

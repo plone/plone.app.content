@@ -30,13 +30,15 @@ class i18njs(BrowserView):
             catalog = td._data[mo_path]._catalog
         return catalog._catalog
 
-    def __call__(self, domain, language=None):
-        if domain is None:
-            return
-        if language is None:
-            language = self.request['LANGUAGE']
+    def __call__(self, domain=None, language=None):
 
-        catalog = self._gettext_catalog(domain, language)
+        if domain is None:
+            catalog = {}
+        else:
+            if language is None:
+                language = self.request['LANGUAGE']
+            catalog = self._gettext_catalog(domain, language)
+
         response = self.request.response
         response.setHeader('Content-Type', 'application/json; charset=utf-8')
         response.setBody(json.dumps(catalog))
