@@ -16,7 +16,9 @@ New features:
   This makes the menu bar more compact and avoids breaking into two lines.
   Also: Better icons for copy and paste.
   [thet]
-
+  
+- Move AT specific code in PropertiesActionView in its own method.
+  [Gagaro]
 
 Bug fixes:
 
