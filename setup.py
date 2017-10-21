@@ -48,6 +48,7 @@ setup(
         'Products.CMFPlone',
         'setuptools',
         'simplejson',
+        'six',
         'zope.component',
         'zope.container',
         'zope.deferredimport',
@@ -58,7 +59,6 @@ setup(
         'zope.lifecycleevent',
         'zope.publisher',
         'zope.schema',
-        'zope.viewlet',
         'Zope2',
     ],
 )
