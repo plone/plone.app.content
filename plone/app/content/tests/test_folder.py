@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
@@ -12,8 +12,8 @@ from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
+from six.moves.urllib.parse import urlparse
 from Testing.makerequest import makerequest
-from urlparse import urlparse
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
