@@ -5,10 +5,6 @@ Changelog
 3.4.5 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Folder Contents: More compact toolbar
