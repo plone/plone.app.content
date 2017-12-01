@@ -15,7 +15,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- fix drag & drop in folder listing on plone root
+  [huub_bouma]
 
 
 3.4.5 (2017-11-24)
