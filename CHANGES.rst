@@ -11,7 +11,9 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Folder contents: When copying items keep the order in which they were selected.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/1875
+  [thet]
 
 Bug fixes:
 
