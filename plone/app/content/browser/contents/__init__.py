@@ -6,13 +6,14 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.interfaces import IStructureAction
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.protect.postonly import check as checkpost
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five import BrowserView
 from zope.browsermenu.interfaces import IBrowserMenu
@@ -84,7 +85,7 @@ class ContentsBaseAction(BrowserView):
     def finish(self):
         pass
 
-    def __call__(self):
+    def __call__(self, keep_selection_order=False):
         self.protect()
         self.errors = []
         context = aq_inner(self.context)
@@ -98,8 +99,15 @@ class ContentsBaseAction(BrowserView):
         self.catalog = getToolByName(context, 'portal_catalog')
         self.mtool = getToolByName(self.context, 'portal_membership')
 
-        brains = self.catalog(UID=selection, show_inactive=True)
+        brains = []
+        if keep_selection_order:
+            brains = [uuidToCatalogBrain(uid) for uid in selection]
+        else:
+            brains = self.catalog(UID=selection, show_inactive=True)
+
         for brain in brains:
+            if not brain:
+                continue
             # remove everyone so we know if we missed any
             selection.remove(brain.UID)
             obj = brain.getObject()

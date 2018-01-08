@@ -51,4 +51,4 @@ class CopyActionView(ContentsBaseAction):
 
     def __call__(self):
         self.oblist = []
-        return super(CopyActionView, self).__call__()
+        return super(CopyActionView, self).__call__(keep_selection_order=True)
