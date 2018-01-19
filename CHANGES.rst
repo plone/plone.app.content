@@ -17,7 +17,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix sorting by last modified.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/2199
+  [ale-rt]
 
 
 3.4.5 (2017-11-24)
