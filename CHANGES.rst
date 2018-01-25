@@ -17,6 +17,10 @@ New features:
 
 Bug fixes:
 
+- Fix sorting by last modified.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/2199
+  [ale-rt]
+
 - Added support for multiple po file on same i18n domain for plonejsi18n view.
   [mamico]
 

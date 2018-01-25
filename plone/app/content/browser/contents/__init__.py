@@ -196,14 +196,14 @@ class FolderContentsView(BrowserView):
     def get_columns(self):
         # Base set of columns
         columns = {
-            'CreationDate': translate(_('Created on'), context=self.request),  # noqa
+            'CreationDate': translate(_('Created on'), context=self.request),
             'Creator': translate(_('Creator'), context=self.request),
             'Description': translate(_('Description'), context=self.request),
             'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
             'end': translate(_('End Date'), context=self.request),
             'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
             'ExpirationDate': translate(_('Expiration date'), context=self.request),  # noqa
-            'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
+            'getObjSize': translate(_('Object Size'), context=self.request),
             'id': translate(_('ID'), context=self.request),
             'is_folderish': translate(_('Folder'), context=self.request),
             'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
@@ -254,7 +254,6 @@ class FolderContentsView(BrowserView):
             'getRawRelatedItems',
             'in_reply_to',
             'meta_type',
-            'modified',
             'object_provides',
             'portal_type',
             'SearchableText',
@@ -272,7 +271,7 @@ class FolderContentsView(BrowserView):
             'expires': translate(_('Expiration date'), context=self.request),
             'id': translate(_('ID'), context=self.request),
             'is_folderish': translate(_('Folder'), context=self.request),
-            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
+            'modified': translate(_('Last modified'), context=self.request),  # noqa
             'review_state': translate(_('Review state'), context=self.request),
             'sortable_title': translate(_('Title'), context=self.request),
             'start': translate(_('Start Date'), context=self.request),
