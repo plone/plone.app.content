@@ -17,7 +17,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Added support for multiple po file on same i18n domain for plonejsi18n view.
+  [mamico]
 
 
 3.4.5 (2017-11-24)

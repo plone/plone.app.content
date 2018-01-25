@@ -23,12 +23,14 @@ class i18njs(BrowserView):
                 return
             else:
                 language = baselanguage
-        mo_path = td._catalogs[language][0]
-        catalog = td._data[mo_path]._catalog
-        if catalog is None:
-            td._data[mo_path].reload()
+        _catalog = {}
+        for mo_path in td._catalogs[language]:
             catalog = td._data[mo_path]._catalog
-        return catalog._catalog
+            if catalog is None:
+                td._data[mo_path].reload()
+                catalog = td._data[mo_path]._catalog
+            _catalog.update(catalog._catalog)
+        return _catalog
 
     def __call__(self, domain=None, language=None):
 
