@@ -21,6 +21,9 @@ Bug fixes:
   Fixes: https://github.com/plone/Products.CMFPlone/issues/2199
   [ale-rt]
 
+- Added support for multiple po file on same i18n domain for plonejsi18n view.
+  [mamico]
+
 
 3.4.5 (2017-11-24)
 ------------------
