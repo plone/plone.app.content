@@ -9,7 +9,10 @@ from zExceptions import BadRequest
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
+
+import six
 import time
+
 
 ATTEMPTS = 100
 
@@ -41,8 +44,8 @@ class NormalizingNameChooser(object):
             if not name:
                 name = obj.__class__.__name__
 
-        if not isinstance(name, unicode):
-            name = unicode(name, 'utf-8')
+        if not isinstance(name, six.text_type):
+            name = six.text_type(name, 'utf-8')
 
         request = getattr(obj.__of__(container), 'REQUEST', None)
         if request is not None:

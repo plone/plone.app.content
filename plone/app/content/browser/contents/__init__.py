@@ -23,6 +23,7 @@ from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 
+import six
 import zope.deferredimport
 
 
@@ -217,7 +218,7 @@ class FolderContentsView(BrowserView):
         }
         # Filter out ignored
         columns = {
-            k: v for k, v in columns.iteritems()
+            k: v for k, v in six.iteritems(columns)
             if k not in self.ignored_columns
         }
         # Add in extra metadata columns
@@ -281,7 +282,7 @@ class FolderContentsView(BrowserView):
         }
         # Filter out ignored
         indexes = {
-            k: v for k, v in indexes.iteritems()
+            k: v for k, v in six.iteritems(indexes)
             if k not in self.ignored_indexes
         }
         # Add in extra metadata indexes
