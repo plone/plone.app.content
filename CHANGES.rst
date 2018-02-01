@@ -15,6 +15,9 @@ New features:
   Fixes: https://github.com/plone/Products.CMFPlone/issues/1875
   [thet]
 
+- Prepare for Python 2 / 3 compatibility
+  [davilima6]
+
 Bug fixes:
 
 - Fix sorting by last modified.
@@ -54,6 +57,7 @@ Bug fixes:
   indexes, which don't return brains as search results
   https://github.com/plone/Products.CMFPlone/issues/2174
   [tomgross]
+
 
 3.4.4 (2017-08-27)
 ------------------
@@ -114,6 +118,7 @@ Bug fixes:
 
 - removed unittest2 dependency.
   [kakshay21]
+
 
 3.4 (2017-04-01)
 ----------------
@@ -527,6 +532,7 @@ Fixes:
   regressions (see https://github.com/plone/Products.CMFPlone/issues/383)
   [cewing]
 
+
 3.0.4 (2015-05-04)
 ------------------
 
@@ -556,6 +562,7 @@ Fixes:
   use lambdas.
   [jensens]
 
+
 3.0.2 (2015-03-13)
 ------------------
 
@@ -582,6 +589,7 @@ Fixes:
 - fix removing tags with non-ascii characters in folder_contents
   [petschki]
 
+
 3.0.1 (2014-10-23)
 ------------------
 
@@ -606,6 +614,7 @@ Fixes:
 
 - PEP8
   [tomgross]
+
 
 3.0.0 (2014-04-13)
 ------------------

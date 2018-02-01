@@ -14,6 +14,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.widgets.interfaces import IFieldPermissionChecker
+from six.moves import range
 from zope.component import getMultiAdapter
 from zope.component import provideAdapter
 from zope.component import provideUtility
@@ -28,6 +29,7 @@ import json
 import mock
 import os
 import transaction
+
 
 try:
     from Products.CMFCore.indexing import processQueue
@@ -219,7 +221,7 @@ class BrowserTest(unittest.TestCase):
 
     def testVocabularyBatching(self):
         amount = 30
-        for i in xrange(amount):
+        for i in range(amount):
             self.portal.invokeFactory('Document', id="page" + str(i),
                                       title="Page" + str(i))
             self.portal['page' + str(i)].reindexObject()

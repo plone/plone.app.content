@@ -9,7 +9,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
 from plone.protect.authenticator import createToken
-from urllib import quote_plus
+from six.moves.urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.i18n import translate

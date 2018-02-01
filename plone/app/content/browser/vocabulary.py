@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
 from logging import getLogger
@@ -28,6 +27,8 @@ from zope.security.interfaces import IPermission
 
 import inspect
 import itertools
+import os
+import six
 
 
 logger = getLogger(__name__)
@@ -89,7 +90,7 @@ deprecated('_permissions', 'Use PERMISSIONS variable instead.')
 
 def _parseJSON(s):
     # XXX this should be changed to a try loads except return s
-    if isinstance(s, basestring):
+    if isinstance(s, six.string_types):
         s = s.strip()
         if (s.startswith('{') and s.endswith('}')) or \
                 (s.startswith('[') and s.endswith(']')):  # detect if json
@@ -202,7 +203,7 @@ class BaseVocabularyView(BrowserView):
         items = []
 
         attributes = _parseJSON(self.request.get('attributes', ''))
-        if isinstance(attributes, basestring) and attributes:
+        if isinstance(attributes, six.string_types) and attributes:
             attributes = attributes.split(',')
 
         translate_ignored = self.get_translated_ignored()
@@ -233,7 +234,7 @@ class BaseVocabularyView(BrowserView):
                         val = val[len(base_path):]
                     if (
                         key not in translate_ignored and
-                        isinstance(val, basestring)
+                        isinstance(val, six.string_types)
                     ):
                         item[key] = translate(
                             _(safe_unicode(val)),
@@ -266,7 +267,7 @@ class BaseVocabularyView(BrowserView):
 
     def parsed_query(self, ):
         query = _parseJSON(self.request.get('query', ''))
-        if isinstance(query, basestring):
+        if isinstance(query, six.string_types):
             query = {'SearchableText': {'query': query}}
         elif query:
             parsed = queryparser.parseFormquery(
