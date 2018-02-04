@@ -5,10 +5,6 @@ Changelog
 3.4.6 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
 New features:
 
 - Folder contents: When copying items keep the order in which they were selected.
