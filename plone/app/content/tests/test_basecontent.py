@@ -1,15 +1,28 @@
 # -*- coding: utf-8 -*-
-from Testing import ZopeTestCase as ztc
-from plone.app.content.tests.base import ContentFunctionalTestCase
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.content.testing import optionflags
+from plone.testing import layered
 import doctest
 import unittest
 
 
+doctests = (
+    'basecontent.rst',
+)
+
+
 def test_suite():
-    return unittest.TestSuite((
-        ztc.ZopeDocFileSuite(
-            'basecontent.rst',
-            package='plone.app.content',
-            test_class=ContentFunctionalTestCase,
-            optionflags=(doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)),
-    ))
+    suite = unittest.TestSuite()
+    tests = [
+        layered(
+            doctest.DocFileSuite(
+                test_file,
+                package='plone.app.content',
+                optionflags=optionflags,
+            ),
+            layer=PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING,
+        )
+        for test_file in doctests
+    ]
+    suite.addTests(tests)
+    return suite
