@@ -13,6 +13,8 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
+import doctest
+
 
 @implementer(IVocabularyFactory)
 class ExampleVocabulary(object):
@@ -140,3 +142,10 @@ PLONE_APP_CONTENT_AT_INTEGRATION_TESTING = IntegrationTesting(
 PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENT_AT_FIXTURE, ),
     name="PloneAppContentAT:Functional")
+
+
+optionflags = (
+    doctest.REPORT_ONLY_FIRST_FAILURE
+    | doctest.ELLIPSIS
+    | doctest.NORMALIZE_WHITESPACE
+)

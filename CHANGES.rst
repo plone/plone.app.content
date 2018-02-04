@@ -27,6 +27,10 @@ Bug fixes:
 - Added support for multiple po file on same i18n domain for plonejsi18n view.
   [mamico]
 
+- Remove usage of plone.app.testing.bbb code,
+  this removes test isolation problems.
+  [gforcada]
+
 
 3.4.5 (2017-11-24)
 ------------------

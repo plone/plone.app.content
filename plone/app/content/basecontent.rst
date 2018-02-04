@@ -2,6 +2,10 @@
 Basic content
 =============
 
+.. code-block:: python
+
+    >>> portal = layer['portal']
+
 plone.app.content provides some helper base classes for content. Here are
 some simple examples of using them.
 .. code-block:: python
@@ -63,8 +67,8 @@ We can now create the items.
 We need to add it to an object manager for acquisition to do its magic.
 .. code-block:: python
 
-    >>> newid = self.portal._setObject(container.id, container)
-    >>> container = getattr(self.portal, newid)
+    >>> newid = portal._setObject(container.id, container)
+    >>> container = getattr(portal, newid)
 
 We will add the item directly to the container later.
 .. code-block:: python
@@ -124,11 +128,11 @@ ObjectManager one.
 Both pieces of content should have been cataloged.
 .. code-block:: python
 
-    >>> container = self.portal['my-container']
+    >>> container = portal['my-container']
     >>> item = container['my-item']
 
     >>> from Products.CMFCore.utils import getToolByName
-    >>> catalog = getToolByName(self.portal, 'portal_catalog')
+    >>> catalog = getToolByName(portal, 'portal_catalog')
     >>> [b.Title for b in catalog(getId = 'my-container')]
     ['A sample container']
     >>> [b.Title for b in catalog(getId = 'my-item')]
