@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.autoform.form import AutoExtensibleForm
-from Products.CMFPlone import PloneMessageFactory as PC_
+from Products.CMFPlone import PloneMessageFactory as  _
 from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
@@ -29,7 +29,7 @@ ENABLED = 1
 
 
 ST = lambda key, txt, default: SimpleTerm(value=key,
-                                          title=PC_(txt, default=default))
+                                          title=_(txt, default=default))
 
 possible_constrain_types = SimpleVocabulary([
     ST(ACQUIRE,
@@ -60,8 +60,8 @@ ValidTypesFactory = ValidTypes()
 class IConstrainForm(Interface):
 
     constrain_types_mode = Choice(
-        title=PC_("label_type_restrictions", default="Type restrictions"),
-        description=PC_("help_add_restriction_mode",
+        title=_("label_type_restrictions", default="Type restrictions"),
+        description=_("help_add_restriction_mode",
                         default="Select the restriction policy "
                         "in this location"),
         vocabulary=possible_constrain_types,
@@ -69,8 +69,8 @@ class IConstrainForm(Interface):
     )
 
     allowed_types = List(
-        title=PC_("label_immediately_addable_types", default="Allowed types"),
-        description=PC_("help_immediately_addable_types",
+        title=_("label_immediately_addable_types", default="Allowed types"),
+        description=_("help_immediately_addable_types",
                         default="Controls what types are addable "
                         "in this location"),
         value_type=Choice(
@@ -79,8 +79,8 @@ class IConstrainForm(Interface):
     )
 
     secondary_types = List(
-        title=PC_("label_locally_allowed_types", default="Secondary types"),
-        description=PC_("help_locally_allowed_types", default=""
+        title=_("label_locally_allowed_types", default="Secondary types"),
+        description=_("help_locally_allowed_types", default=""
                         "Select which types should be available in the "
                         "'More&hellip;' submenu <em>instead</em> of in the "
                         "main pulldown. "
@@ -102,7 +102,7 @@ class IConstrainForm(Interface):
                 missing.append(one_allowed)
         if missing:
             raise Invalid(
-                PC_("You cannot have a type as a secondary type without "
+                _("You cannot have a type as a secondary type without "
                     "having it allowed. You have selected ${types}s.",
                     mapping=dict(types=", ".join(missing))))
         return True
@@ -132,7 +132,7 @@ class FormContentAdapter(object):
 class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
 
     schema = IConstrainForm
-    label = PC_("heading_set_content_type_restrictions",
+    label = _("heading_set_content_type_restrictions",
                 default="Restrict what types of content can be added")
     template = ViewPageTemplateFile("constraintypes.pt")
 
