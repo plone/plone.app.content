@@ -1,9 +1,6 @@
 Changelog
 =========
 
-3.5 (2018-03-10)
-- changed PC_ to _ in constraintypes.py
-
 3.5.1 (unreleased)
 ------------------
 
