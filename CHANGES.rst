@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Use _ instead of PC_ in constraintypes.py so the messages are extracted for
+  translation.
+  [malikrohit16]
 
 
 3.5 (2018-02-04)
