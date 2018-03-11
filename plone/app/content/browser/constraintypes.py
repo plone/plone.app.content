@@ -103,7 +103,7 @@ class IConstrainForm(Interface):
         if missing:
             raise Invalid(
                 _("You cannot have a type as a secondary type without "
-                    "having it allowed. You have selected ${types}s.",
+                    "having it allowed. You have selected ${types}.",
                     mapping=dict(types=", ".join(missing))))
         return True
 
