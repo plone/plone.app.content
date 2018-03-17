@@ -183,7 +183,7 @@ class BrowserTest(unittest.TestCase):
             ]
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results'][0].keys()), 4)
+        self.assertEquals(len(list(data['results'][0].keys())), 4)
 
     def testVocabularyCatalogUnsafeMetadataDisallowed(self):
         """Users without permission "Modify portal content" are not allowed to
@@ -217,7 +217,7 @@ class BrowserTest(unittest.TestCase):
         # Only one result key should be returned, as ``commentors``,
         # ``Creator`` and ``listCreators`` is considered unsafe and thus
         # skipped.
-        self.assertEquals(len(data['results'][0].keys()), 1)
+        self.assertEquals(len(list(data['results'][0].keys())), 1)
 
     def testVocabularyBatching(self):
         amount = 30

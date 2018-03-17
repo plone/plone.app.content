@@ -12,6 +12,7 @@ from zope.interface import implementer
 
 import six
 import time
+import six
 
 
 ATTEMPTS = 100

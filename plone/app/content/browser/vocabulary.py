@@ -27,7 +27,6 @@ from zope.security.interfaces import IPermission
 
 import inspect
 import itertools
-import os
 import six
 
 
