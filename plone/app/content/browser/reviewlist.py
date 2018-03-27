@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
-from zope.component import getUtility
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
 from plone.registry.interfaces import IRegistry
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+from six.moves import urllib
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
-import urllib
 
 
 class FullReviewListView(BrowserView):
@@ -82,7 +82,7 @@ class ReviewListTable(object):
                                           safe_unicode(obj.Description()))
             getMember = getToolByName(obj, 'portal_membership').getMemberById
             creator_id = obj.Creator()
-            creator = getMember(creator_id)            
+            creator = getMember(creator_id)
             if creator:
                 creator_name = creator.getProperty('fullname', '') or creator_id
             else:
@@ -108,7 +108,7 @@ class ReviewListTable(object):
                 url=url,
                 url_href_title=url_href_title,
                 id=obj.getId(),
-                quoted_id=urllib.quote_plus(obj.getId()),
+                quoted_id=urllib.parse.quote_plus(obj.getId()),
                 path=path,
                 title_or_id=obj.pretty_title_or_id(),
                 description=obj.Description(),

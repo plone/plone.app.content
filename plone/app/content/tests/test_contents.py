@@ -18,6 +18,55 @@ import mock
 import unittest
 
 
+class ContentsCopyTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+        # TYPE 1
+        type1_fti = DexterityFTI('type1')
+        type1_fti.klass = 'plone.dexterity.content.Container'
+        type1_fti.filter_content_types = True
+        type1_fti.allowed_content_types = ['type1']
+        type1_fti.behaviors = (
+            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
+            'plone.app.dexterity.behaviors.metadata.IBasic'
+        )
+        self.portal.portal_types._setObject('type1', type1_fti)
+        self.type1_fti = type1_fti
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    @mock.patch('plone.app.content.browser.contents.ContentsBaseAction.protect', lambda x: True)  # noqa
+    def test_keep_selection_order(self):
+        """Keep the order of items the same as they were selected.
+        """
+        self.portal.invokeFactory('type1', id='f1', title='Folder 1')
+        f1 = self.portal.f1
+        f1.invokeFactory('type1', id='it1', title='Item 1')
+        f1.invokeFactory('type1', id='it2', title='Item 2')
+        f1.invokeFactory('type1', id='it3', title='Item 3')
+
+        def _test_order(sel):
+            self.request.form['selection'] = json.dumps([
+                IUUID(f1[id_])
+                for id_
+                in sel
+            ])
+            view = f1.restrictedTraverse('@@fc-copy')
+            view()
+            self.assertEqual(
+                [ob.id for ob in view.oblist],
+                sel
+            )
+        
+        _test_order(['it1', 'it2', 'it3'])
+        _test_order(['it3', 'it1', 'it2'])
+
+
 class ContentsDeleteTests(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 

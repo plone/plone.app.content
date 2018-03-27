@@ -6,13 +6,14 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.content.interfaces import IStructureAction
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.protect.postonly import check as checkpost
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone import utils
+from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five import BrowserView
 from zope.browsermenu.interfaces import IBrowserMenu
@@ -22,6 +23,7 @@ from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 
+import six
 import zope.deferredimport
 
 
@@ -84,7 +86,7 @@ class ContentsBaseAction(BrowserView):
     def finish(self):
         pass
 
-    def __call__(self):
+    def __call__(self, keep_selection_order=False):
         self.protect()
         self.errors = []
         context = aq_inner(self.context)
@@ -98,8 +100,15 @@ class ContentsBaseAction(BrowserView):
         self.catalog = getToolByName(context, 'portal_catalog')
         self.mtool = getToolByName(self.context, 'portal_membership')
 
-        brains = self.catalog(UID=selection, show_inactive=True)
+        brains = []
+        if keep_selection_order:
+            brains = [uuidToCatalogBrain(uid) for uid in selection]
+        else:
+            brains = self.catalog(UID=selection, show_inactive=True)
+
         for brain in brains:
+            if not brain:
+                continue
             # remove everyone so we know if we missed any
             selection.remove(brain.UID)
             obj = brain.getObject()
@@ -188,14 +197,14 @@ class FolderContentsView(BrowserView):
     def get_columns(self):
         # Base set of columns
         columns = {
-            'CreationDate': translate(_('Created on'), context=self.request),  # noqa
+            'CreationDate': translate(_('Created on'), context=self.request),
             'Creator': translate(_('Creator'), context=self.request),
             'Description': translate(_('Description'), context=self.request),
             'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
             'end': translate(_('End Date'), context=self.request),
             'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
             'ExpirationDate': translate(_('Expiration date'), context=self.request),  # noqa
-            'getObjSize': translate(_('Object Size'), context=self.request),  # noqa
+            'getObjSize': translate(_('Object Size'), context=self.request),
             'id': translate(_('ID'), context=self.request),
             'is_folderish': translate(_('Folder'), context=self.request),
             'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
@@ -209,7 +218,7 @@ class FolderContentsView(BrowserView):
         }
         # Filter out ignored
         columns = {
-            k: v for k, v in columns.iteritems()
+            k: v for k, v in six.iteritems(columns)
             if k not in self.ignored_columns
         }
         # Add in extra metadata columns
@@ -246,7 +255,6 @@ class FolderContentsView(BrowserView):
             'getRawRelatedItems',
             'in_reply_to',
             'meta_type',
-            'modified',
             'object_provides',
             'portal_type',
             'SearchableText',
@@ -264,7 +272,7 @@ class FolderContentsView(BrowserView):
             'expires': translate(_('Expiration date'), context=self.request),
             'id': translate(_('ID'), context=self.request),
             'is_folderish': translate(_('Folder'), context=self.request),
-            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
+            'modified': translate(_('Last modified'), context=self.request),  # noqa
             'review_state': translate(_('Review state'), context=self.request),
             'sortable_title': translate(_('Title'), context=self.request),
             'start': translate(_('Start Date'), context=self.request),
@@ -274,7 +282,7 @@ class FolderContentsView(BrowserView):
         }
         # Filter out ignored
         indexes = {
-            k: v for k, v in indexes.iteritems()
+            k: v for k, v in six.iteritems(indexes)
             if k not in self.ignored_indexes
         }
         # Add in extra metadata indexes

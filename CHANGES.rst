@@ -1,8 +1,7 @@
 Changelog
 =========
 
-
-3.4.6 (unreleased)
+3.5.1 (unreleased)
 ------------------
 
 Breaking changes:
@@ -16,7 +15,37 @@ New features:
 Bug fixes:
 
 - fix drag & drop in folder listing on plone root
-  [huub_bouma]
+  [huubbouma]
+
+- Use _ instead of PC_ in constraintypes.py so the messages are extracted for
+  translation.
+  [malikrohit16]
+
+
+3.5 (2018-02-04)
+----------------
+
+New features:
+
+- Folder contents: When copying items keep the order in which they were selected.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/1875
+  [thet]
+
+- Prepare for Python 2 / 3 compatibility
+  [davilima6]
+
+Bug fixes:
+
+- Fix sorting by last modified.
+  Fixes: https://github.com/plone/Products.CMFPlone/issues/2199
+  [ale-rt]
+
+- Added support for multiple po file on same i18n domain for plonejsi18n view.
+  [mamico]
+
+- Remove usage of plone.app.testing.bbb code,
+  this removes test isolation problems.
+  [gforcada]
 
 
 3.4.5 (2017-11-24)
@@ -48,6 +77,7 @@ Bug fixes:
   indexes, which don't return brains as search results
   https://github.com/plone/Products.CMFPlone/issues/2174
   [tomgross]
+
 
 3.4.4 (2017-08-27)
 ------------------
@@ -108,6 +138,7 @@ Bug fixes:
 
 - removed unittest2 dependency.
   [kakshay21]
+
 
 3.4 (2017-04-01)
 ----------------
@@ -521,6 +552,7 @@ Fixes:
   regressions (see https://github.com/plone/Products.CMFPlone/issues/383)
   [cewing]
 
+
 3.0.4 (2015-05-04)
 ------------------
 
@@ -550,6 +582,7 @@ Fixes:
   use lambdas.
   [jensens]
 
+
 3.0.2 (2015-03-13)
 ------------------
 
@@ -576,6 +609,7 @@ Fixes:
 - fix removing tags with non-ascii characters in folder_contents
   [petschki]
 
+
 3.0.1 (2014-10-23)
 ------------------
 
@@ -600,6 +634,7 @@ Fixes:
 
 - PEP8
   [tomgross]
+
 
 3.0.0 (2014-04-13)
 ------------------
