@@ -12,7 +12,6 @@ from zope.interface import implementer
 
 import six
 import time
-import six
 
 
 ATTEMPTS = 100
@@ -46,7 +45,7 @@ class NormalizingNameChooser(object):
                 name = obj.__class__.__name__
 
         if not isinstance(name, six.text_type):
-            name = six.text_type(name, 'utf-8')
+            name = name.encode('utf-8')
 
         request = getattr(obj.__of__(container), 'REQUEST', None)
         if request is not None:
