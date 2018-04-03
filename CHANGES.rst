@@ -4,14 +4,6 @@ Changelog
 3.5.1 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Use ``_`` instead of ``PC_`` in ``constraintypes.py`` so the messages are extracted for translation.
