@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.5.1 (unreleased)
+3.5.2 (unreleased)
 ------------------
 
 Breaking changes:
@@ -17,8 +17,15 @@ Bug fixes:
 - fix drag & drop in folder listing on plone root
   [huubbouma]
 
-- Use _ instead of PC_ in constraintypes.py so the messages are extracted for
-  translation.
+- *add item here*
+
+
+3.5.1 (2018-04-03)
+------------------
+
+Bug fixes:
+
+- Use ``_`` instead of ``PC_`` in ``constraintypes.py`` so the messages are extracted for translation.
   [malikrohit16]
 
 
