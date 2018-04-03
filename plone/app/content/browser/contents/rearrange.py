@@ -53,7 +53,7 @@ class ItemOrderActionView(OrderContentsBaseAction):
             return self.message()
 
         delta = int(delta)
-        subset_ids = json_loads(self.request.form.get('subset_ids', '[]'))
+        subset_ids = json_loads(self.request.form.get('subsetIds', 'null'))
         if subset_ids:
             position_id = [
                 (ordering.getObjectPosition(i), i) for i in subset_ids
@@ -63,7 +63,7 @@ class ItemOrderActionView(OrderContentsBaseAction):
                 self.errors.append(_('Client/server ordering mismatch'))
                 return self.message()
 
-        ordering.moveObjectsByDelta([id], delta)
+        ordering.moveObjectsByDelta([id], delta, subset_ids)
         return self.message()
 
 

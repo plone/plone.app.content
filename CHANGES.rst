@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- fix drag & drop in folder listing on plone root
+  [huubbouma]
+
 - *add item here*
 
 
