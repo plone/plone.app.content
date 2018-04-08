@@ -1,15 +1,13 @@
 Changelog
 =========
 
-3.5.2 (unreleased)
+3.5.2 (2018-04-08)
 ------------------
 
 Bug fixes:
 
 - fix drag & drop in folder listing on plone root
   [huubbouma]
-
-- *add item here*
 
 
 3.5.1 (2018-04-03)
