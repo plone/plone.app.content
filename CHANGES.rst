@@ -4,14 +4,6 @@ Changelog
 3.5.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - fix drag & drop in folder listing on plone root
