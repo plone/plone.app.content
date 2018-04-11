@@ -4,11 +4,10 @@ from plone.batching.browser import BatchView
 from plone.memoize import instance
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from six.moves import urllib
+from six.moves.urllib.parse import quote_plus
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
-
 
 _ = MessageFactory('plone')
 
@@ -161,7 +160,7 @@ class Table(object):
         return self.view_url.split('?')[0].split('/')[-1]
 
     def quote_plus(self, string):
-        return urllib.parse.quote_plus(string)
+        return quote_plus(string)
 
 
 class TableBrowserView(BrowserView):

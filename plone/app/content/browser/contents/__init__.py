@@ -312,7 +312,7 @@ class FolderContentsView(BrowserView):
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
             'availableColumns': columns,
-            'attributes': ['Title', 'path', 'getURL', 'getIcon', 'getMimeIcon', 'portal_type'] + columns.keys(),  # noqa
+            'attributes': ['Title', 'path', 'getURL', 'getIcon', 'getMimeIcon', 'portal_type'] + list(columns.keys()),  # noqa
             'buttons': self.get_actions(),
             'rearrange': {
                 'properties': self.get_indexes(),

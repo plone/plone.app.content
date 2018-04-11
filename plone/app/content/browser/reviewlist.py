@@ -5,7 +5,8 @@ from plone.app.content.browser.tableview import TableBrowserView
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
-from six.moves import urllib
+from six.moves import map
+from six.moves.urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n import translate
@@ -108,7 +109,7 @@ class ReviewListTable(object):
                 url=url,
                 url_href_title=url_href_title,
                 id=obj.getId(),
-                quoted_id=urllib.parse.quote_plus(obj.getId()),
+                quoted_id=quote_plus(obj.getId()),
                 path=path,
                 title_or_id=obj.pretty_title_or_id(),
                 description=obj.Description(),
