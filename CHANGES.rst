@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Python 3 fixes.
+  [pbauer]
+
 - Use _ instead of PC_ in constraintypes.py so the messages are extracted for
   translation.
   [malikrohit16]
