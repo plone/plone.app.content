@@ -369,6 +369,16 @@ class RearrangeDXTest(BaseTest):
             )
             self.bf[newid].reindexObject()
 
+        # create 3 documents in plone root
+        for idx in range(0, 3):
+            _id = "page_{}".format(idx)
+            self.portal.invokeFactory(
+                'Document',
+                id=_id,
+                title="Page {}".format(idx)
+            )
+            self.portal[_id].reindexObject()
+
         self.env = {'HTTP_ACCEPT_LANGUAGE': 'en', 'REQUEST_METHOD': 'POST'}
         self.request = makerequest(self.layer['app']).REQUEST
         self.request.environ.update(self.env)
@@ -467,6 +477,36 @@ class RearrangeDXTest(BaseTest):
                 ('f1', 'Folder 3'),
                 ('f3', 'Folder 1'),
                 ('f4', 'Folder 0'),
+            ]
+        )
+
+    def test_item_order_move_by_delta_in_plone_root(self):
+        from plone.app.content.browser.contents.rearrange import ItemOrderActionView  # noqa
+
+        # first move the 'basefolder' to the top
+        self.request.form.update({
+            'id': 'basefolder',
+            'delta': 'top',
+        })
+        view = ItemOrderActionView(self.portal, self.request)
+        view()
+
+        # move 'basefolder' two positions down
+        self.request.form.update({
+            'id': 'basefolder',
+            'delta': '2',
+            'subsetIds': '["basefolder", "page_0", "page_1", "page_2"]',
+        })
+        view = ItemOrderActionView(self.portal, self.request)
+        view()
+
+        self.assertEqual(
+            [(c[0], c[1].Title()) for c in self.portal.contentItems()],
+            [
+                ('page_0', 'Page 0'),
+                ('page_1', 'Page 1'),
+                ('basefolder', 'Folder Base'),
+                ('page_2', 'Page 2'),
             ]
         )
 
