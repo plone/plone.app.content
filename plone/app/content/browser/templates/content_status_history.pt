@@ -159,8 +159,8 @@
                                             (item_folderish and item_url+'/folder_contents'or item_url+'/');">
                                 <img class="thumb-tile"
                                      tal:define="getIcon string:$item_url/@@images/image/tile'"
-                                     tal:condition="item_has_image"                          
-                                     tal:attributes="src  string:$getIcon">    
+                                     tal:condition="item_has_image"
+                                     tal:attributes="src  string:$getIcon">
                                     <a href="#" tal:attributes="href  url;
                                                               title string:$item_type: $item_description;
                                                               class string:$item_wf_state_class $item_type_class;">
@@ -179,7 +179,7 @@
 
                             <td>
                               <span tal:condition="not: item_size"> &nbsp; </span>
-                              <span tal:condition="python:item_size>0"
+                              <span tal:condition="python:item_size"
                                     tal:content="item_size"
                                     tal:attributes="class item_wf_state_class"> size </span>
                             </td>
