@@ -151,7 +151,7 @@ class BaseVocabularyView(BrowserView):
         try:
             vocabulary = self.get_vocabulary()
         except VocabLookupException as e:
-            return json_dumps({'error': e.message})
+            return json_dumps({'error': e.args[0]})
 
         results_are_brains = False
         if hasattr(vocabulary, 'search_catalog'):
