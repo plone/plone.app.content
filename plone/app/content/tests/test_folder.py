@@ -72,7 +72,7 @@ class PropertiesDXTest(DXBaseTest):
         self.request.form['effectiveDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.effective_date,
+        self.assertEqual(self.portal.page.effective_date,
                           DateTime('1999/01/01 09:00'))
 
     def testExpires(self):
@@ -80,7 +80,7 @@ class PropertiesDXTest(DXBaseTest):
         self.request.form['expirationDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.expiration_date,
+        self.assertEqual(self.portal.page.expiration_date,
                           DateTime('1999/01/01 09:00'))
 
     def testSetDexterityExcludeFromNav(self):
@@ -88,28 +88,28 @@ class PropertiesDXTest(DXBaseTest):
         self.request.form['exclude-from-nav'] = 'yes'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.exclude_from_nav, True)
+        self.assertEqual(self.portal.page.exclude_from_nav, True)
 
     def testRights(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['copyright'] = 'foobar'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.rights, 'foobar')
+        self.assertEqual(self.portal.page.rights, 'foobar')
 
     def testContributors(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['contributors'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.contributors, ('one', 'two'))
+        self.assertEqual(self.portal.page.contributors, ('one', 'two'))
 
     def testCreators(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['creators'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(
+        self.assertEqual(
             self.portal.page.creators,
             ('one', 'two')
         )
@@ -123,14 +123,14 @@ class PropertiesArchetypesTest(BaseTest):
         self.request.form['exclude-from-nav'] = 'yes'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.getExcludeFromNav(), True)
+        self.assertEqual(self.portal.page.getExcludeFromNav(), True)
 
     def testEffective(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['effectiveDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(
+        self.assertEqual(
             DateTime(self.portal.page.EffectiveDate()).toZone('UTC'),
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
@@ -139,7 +139,7 @@ class PropertiesArchetypesTest(BaseTest):
         self.request.form['expirationDate'] = '1999/01/01 09:00'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(
+        self.assertEqual(
             DateTime(self.portal.page.ExpirationDate()).toZone('UTC'),
             DateTime('1999/01/01 09:00').toZone('UTC'))
 
@@ -148,21 +148,21 @@ class PropertiesArchetypesTest(BaseTest):
         self.request.form['copyright'] = 'foobar'
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.Rights(), 'foobar')
+        self.assertEqual(self.portal.page.Rights(), 'foobar')
 
     def testContributors(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['contributors'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.Contributors(), ('one', 'two'))
+        self.assertEqual(self.portal.page.Contributors(), ('one', 'two'))
 
     def testCreators(self):
         from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
         self.request.form['creators'] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
         view()
-        self.assertEquals(self.portal.page.Creators(), ('one', 'two'))
+        self.assertEqual(self.portal.page.Creators(), ('one', 'two'))
 
 
 class WorkflowTest(BaseTest):
@@ -197,7 +197,7 @@ class WorkflowTest(BaseTest):
         view = WorkflowActionView(self.portal.page, self.request)
         view()
         workflowTool = getToolByName(self.portal, "portal_workflow")
-        self.assertEquals(
+        self.assertEqual(
             workflowTool.getInfoFor(self.portal.page, 'review_state'),
             'published')
         # commit to update indexes in catalog
@@ -254,7 +254,7 @@ class ContextInfoTest(BaseTest):
         from plone.app.content.browser.contents import ContextInfo
         view = ContextInfo(self.portal.page, self.request)
         result = json.loads(view())
-        self.assertEquals(result['object']['Title'], 'page')
+        self.assertEqual(result['object']['Title'], 'page')
         self.assertTrue(len(result['breadcrumbs']) > 0)
 
 
@@ -287,7 +287,7 @@ class CutCopyLockedTest(BaseTest):
         lockable.lock()
         view = CutActionView(self.portal, self.request)
         view()
-        self.assertEquals(len(view.errors), 1)
+        self.assertEqual(len(view.errors), 1)
 
 
 class DeleteDXTest(BaseTest):
@@ -333,7 +333,7 @@ class DeleteDXTest(BaseTest):
         lockable.lock()
         view = DeleteActionView(self.portal, self.request)
         view()
-        self.assertEquals(len(view.errors), 1)
+        self.assertEqual(len(view.errors), 1)
 
     def test_delete_wrong_object_by_acquisition(self):
         page_id = self.portal.page.id
@@ -344,7 +344,7 @@ class DeleteDXTest(BaseTest):
             id=page_id,
             title="page"
         )
-        self.assertEquals(p1, page_id)
+        self.assertEqual(p1, page_id)
         request2 = self.make_request()
 
         # both pages exist before we delete on
