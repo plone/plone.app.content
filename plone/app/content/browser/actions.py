@@ -189,7 +189,9 @@ class ObjectCutView(LockingBase):
 
     @property
     def title(self):
-        return self.context.Title().decode('utf8')
+        if six.PY2:
+            return self.context.Title().decode('utf8')
+        return self.context.Title()
 
     @property
     def parent(self):
