@@ -22,6 +22,8 @@ from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import Interface
 from zope.lifecycleevent import ObjectModifiedEvent
+
+import six
 import transaction
 
 
