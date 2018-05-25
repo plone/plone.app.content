@@ -2,7 +2,6 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-import logging
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
@@ -15,6 +14,10 @@ from zope.event import notify
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
+
+
+import logging
+import six
 import transaction
 
 
@@ -74,7 +77,9 @@ class RenameActionView(ContentsBaseAction):
 
             sp = transaction.savepoint(optimistic=True)
 
-            newid = self.request.form['newid_' + index].encode('utf8')
+            newid = self.request.form['newid_' + index]
+            if six.PY2:
+                newid = newid.encode('utf8')
             newtitle = self.request.form['newtitle_' + index]
             try:
                 obid = obj.getId()
@@ -102,9 +107,11 @@ class RenameActionView(ContentsBaseAction):
                 raise
             except Exception as e:
                 sp.rollback()
+                if six.PY2:
+                    title = title.decode('utf8')
                 logger.error(u'Error renaming "{title}": "{exception}"'
-                    .format(title=title.decode('utf8'), exception=e))
+                    .format(title=title, exception=e))
                 self.errors.append(_(u'Error renaming ${title}', mapping={
-                    'title': title.decode('utf8')}))
+                    'title': title}))
 
         return self.message(missing)

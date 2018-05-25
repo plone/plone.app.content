@@ -1,28 +1,36 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
-from plone.app.testing.bbb import PloneTestCase
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+
 import transaction
+import unittest
 
 
-class ReviewListTestCase(PloneTestCase):
+class ReviewListTestCase(unittest.TestCase):
     """dsfsdaf"""
 
-    def afterSetUp(self):
+    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
         self.uf = self.portal.acl_users
         self.uf.userFolderAddUser('reviewer', 'secret', ['Reviewer'], [])
         transaction.commit()
         self.browser = Browser(self.layer['app'])
+        self.browser.handleErrors = True
         self.wftool = getToolByName(self.portal, 'portal_workflow')
 
     def createDocument(self, id, title, description):
-        self.setRoles(['Manager', ])
+        setRoles(self.portal, TEST_USER_ID, ['Manager', ])
         self.portal.invokeFactory(id=id, type_name='Document')
         doc = getattr(self.portal, id)
-        doc.setTitle(title)
-        doc.setDescription(description)
+        doc.title = title
+        doc.description = description
         # we don't want it in the navigation
-        doc.setExcludeFromNav(True)
+        doc.exclude_from_nav = True
         doc.reindexObject()
         transaction.commit()
         return doc

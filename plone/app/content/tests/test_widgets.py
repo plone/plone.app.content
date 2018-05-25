@@ -580,7 +580,7 @@ class FunctionalBrowserTest(unittest.TestCase):
     def testFileUpload(self):
         view = FileUploadView(self.portal, self.request)
         from plone.namedfile.file import FileChunk
-        chunk = FileChunk('foobar')
+        chunk = FileChunk(b'foobar')
         chunk.filename = 'test.xml'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'
@@ -596,7 +596,7 @@ class FunctionalBrowserTest(unittest.TestCase):
     def testFileUploadTxt(self):
         view = FileUploadView(self.portal, self.request)
         from plone.namedfile.file import FileChunk
-        chunk = FileChunk('foobar')
+        chunk = FileChunk(b'foobar')
         chunk.filename = 'test.txt'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'

@@ -9,15 +9,15 @@ and can provide uniqueness.
 Let's create some dummy content.
 
     >>> from plone.app.content import container, item
-    >>> from zope.interface import implements, Interface, alsoProvides
+    >>> from zope.interface import implementer, Interface, alsoProvides
     >>> from zope import schema
 
     >>> class IMyContainer(Interface):
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
 
-    >>> class MyContainer(container.Container):
-    ...     implements(IMyContainer)
+    >>> @implementer(IMyContainer)
+    ... class MyContainer(container.Container):
     ...     portal_type = "My container"
     ...     title = IMyContainer['title']
     ...     description = IMyContainer['description']
@@ -26,8 +26,8 @@ Let's create some dummy content.
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
 
-    >>> class MyType(item.Item):
-    ...     implements(IMyType)
+    >>> @implementer(IMyType)
+    ... class MyType(item.Item):
     ...     portal_type = "My portal type"
     ...     title = IMyType['title']
     ...     description = IMyType['description']
@@ -37,7 +37,7 @@ Let's create some dummy content.
 Then wire up the name chooser (this is normally done in this package's
 configure.zcml file).
 
-    >>> from zope.component import adapts, provideAdapter, provideUtility
+    >>> from zope.component import adapter, provideAdapter, provideUtility
     >>> from Products.CMFCore.interfaces import IFolderish
     >>> from plone.app.content.namechooser import NormalizingNameChooser
     >>> provideAdapter(adapts=(IFolderish,), factory=NormalizingNameChooser)
@@ -105,7 +105,7 @@ When a filename is used as an id, the extension is preserved.
     >>> chooser.checkName(name, object)
     True
 
-If the chooser is used with a container that implements the
+If the chooser is used with a container that implementer the
 IObjectManager interface from OFS, the checkValidId method
 of that interface will be used to check for validity of the
 chosen name. This catches various edge cases.
@@ -141,9 +141,9 @@ must implement or be adaptable to INameFromTitle.
 
     >>> from plone.app.content.interfaces import INameFromTitle
 
-    >>> class TitleAdapter(object):
-    ...     implements(INameFromTitle)
-    ...     adapts(IMyType)
+    >>> @implementer(INameFromTitle)
+    ... @adapter(IMyType)
+    ... class TitleAdapter(object):
     ...     def __init__(self, context):
     ...         self.context = context
     ...     @property
