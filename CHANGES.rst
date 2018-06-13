@@ -6,7 +6,7 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- add translate function for folder_contents page [terapyon]
 
 New features:
 
