@@ -6,7 +6,8 @@ Changelog
 
 Breaking changes:
 
-- add translate function for folder_contents page [terapyon]
+- *add item here*
+
 
 New features:
 
@@ -16,6 +17,9 @@ Bug fixes:
 
 - Python 3 fixes.
   [pbauer]
+
+- add translate function for folder_contents page
+  [terapyon]
 
 3.5.2 (2018-04-08)
 ------------------
