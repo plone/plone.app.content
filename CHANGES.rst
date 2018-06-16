@@ -17,6 +17,9 @@ Bug fixes:
 - Python 3 fixes.
   [pbauer]
 
+- Allow `getSources` vocabulary view to be called in subforms
+  [tomgross]
+
 3.5.2 (2018-04-08)
 ------------------
 
