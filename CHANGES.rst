@@ -1,6 +1,22 @@
 Changelog
 =========
 
+3.5.4 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 3.5.3 (2018-06-18)
 ------------------
 
