@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.5.3 (unreleased)
+3.5.4 (unreleased)
 ------------------
 
 Breaking changes:
@@ -15,11 +15,21 @@ New features:
 
 Bug fixes:
 
+- add translate function for folder_contents page
+  [terapyon]
+
+
+3.5.3 (2018-06-18)
+------------------
+
+Bug fixes:
+
 - Python 3 fixes.
   [pbauer]
 
-- add translate function for folder_contents page
-  [terapyon]
+- Allow `getSources` vocabulary view to be called in subforms
+  [tomgross]
+
 
 3.5.2 (2018-04-08)
 ------------------

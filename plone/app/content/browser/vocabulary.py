@@ -16,6 +16,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from types import FunctionType
+from z3c.form.interfaces import ISubForm
 from zope.component import getUtility
 from zope.component import queryAdapter
 from zope.component import queryUtility
@@ -355,7 +356,11 @@ class SourceView(BaseVocabularyView):
     """Queries a field's source and returns JSON-formatted results."""
 
     def get_context(self):
-        return self.context.context
+        if ISubForm.providedBy(self.context.form):
+            context = self.context.form.parentForm.context
+        else:
+            context = self.context.context
+        return context
 
     def get_vocabulary(self):
         widget = self.context
