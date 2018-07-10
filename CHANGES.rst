@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix namechooser encoding issue
+  [tomgross]
 
 
 3.5.3 (2018-06-18)
