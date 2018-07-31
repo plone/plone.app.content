@@ -14,8 +14,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
-
+- fc_workflow view now reindex the object after state change.
+  This fix the problem that some index dates (effective and modified for example) was
+  updated only when the state was changed from the toolbar.
+  [cekk]
 
 3.5.3 (2018-06-18)
 ------------------
