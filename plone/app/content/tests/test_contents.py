@@ -62,7 +62,7 @@ class ContentsCopyTests(unittest.TestCase):
                 [ob.id for ob in view.oblist],
                 sel
             )
-        
+
         _test_order(['it1', 'it2', 'it3'])
         _test_order(['it3', 'it1', 'it2'])
 
@@ -340,7 +340,7 @@ class AllowUploadViewTests(unittest.TestCase):
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = []
         type1_fti.behaviors = (
-            'plone.app.dexterity.behaviors.metadata.IBasic'
+            'plone.app.dexterity.behaviors.metadata.IBasic',
         )
         self.portal.portal_types._setObject('type1', type1_fti)
         self.type1_fti = type1_fti
@@ -351,7 +351,7 @@ class AllowUploadViewTests(unittest.TestCase):
         type2_fti.filter_content_types = True
         type2_fti.allowed_content_types = []
         type2_fti.behaviors = (
-            'plone.app.dexterity.behaviors.metadata.IBasic'
+            'plone.app.dexterity.behaviors.metadata.IBasic',
         )
         self.portal.portal_types._setObject('type2', type2_fti)
         self.type2_fti = type2_fti
