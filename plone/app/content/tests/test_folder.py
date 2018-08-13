@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
-from plone import api
 from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
@@ -168,7 +167,7 @@ class PropertiesArchetypesTest(BaseTest):
 
 class WorkflowTest(BaseTest):
 
-    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def convertDateTimeToIndexRepr(self, date):
         t_tup = date.toZone('UTC').parts()
@@ -189,7 +188,7 @@ class WorkflowTest(BaseTest):
         default_effective_index = self.convertDateTimeToIndexRepr(
             default_effective
         )
-        pc = api.portal.get_tool(name='portal_catalog')
+        pc = getToolByName(self.portal, "portal_catalog")
         # i need to call it, to populate catalog indexes
         pc()
         self.assertEquals(
