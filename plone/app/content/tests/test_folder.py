@@ -14,6 +14,7 @@ from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from six.moves.urllib.parse import urlparse
 from Testing.makerequest import makerequest
+from transaction import commit
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
@@ -166,17 +167,47 @@ class PropertiesArchetypesTest(BaseTest):
 
 class WorkflowTest(BaseTest):
 
-    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+
+    def convertDateTimeToIndexRepr(self, date):
+        t_tup = date.toZone('UTC').parts()
+        yr = t_tup[0]
+        mo = t_tup[1]
+        dy = t_tup[2]
+        hr = t_tup[3]
+        mn = t_tup[4]
+
+        return ((((yr * 12 + mo) * 31 + dy) * 24 + hr) * 60 + mn)
 
     def testStateChange(self):
         from plone.app.content.browser.contents.workflow import WorkflowActionView  # noqa
         self.request.form['transition'] = 'publish'
+        default_effective = DateTime('1969/12/31 00:00:00 {0}'.format(
+            DateTime().timezone()
+        ))
+        default_effective_index = self.convertDateTimeToIndexRepr(
+            default_effective
+        )
+        pc = getToolByName(self.portal, "portal_catalog")
+        # i need to call it, to populate catalog indexes
+        pc()
+        self.assertEquals(
+            pc.uniqueValuesFor('effective'),
+            (default_effective_index,))
         view = WorkflowActionView(self.portal.page, self.request)
         view()
         workflowTool = getToolByName(self.portal, "portal_workflow")
         self.assertEquals(
             workflowTool.getInfoFor(self.portal.page, 'review_state'),
             'published')
+        # commit to update indexes in catalog
+        commit()
+        effective_index = self.convertDateTimeToIndexRepr(
+            self.portal.page.effective_date
+        )
+        self.assertEquals(
+            pc.uniqueValuesFor('effective'),
+            (effective_index,))
 
 
 class RenameTest(BaseTest):

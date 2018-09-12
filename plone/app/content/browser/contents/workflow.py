@@ -83,6 +83,7 @@ class WorkflowActionView(ContentsBaseAction):
                 if recurse and IFolderish.providedBy(obj):
                     for sub in obj.values():
                         self.action(sub)
+                obj.reindexObject()
             except ConflictError:
                 raise
             except Exception:
