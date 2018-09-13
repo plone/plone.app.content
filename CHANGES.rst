@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Fix namechooser encoding issue
+  [tomgross]
+
 - fc_workflow view now reindex the object after state change.
   This fix the problem that some index dates (effective and modified for example) was
   updated only when the state was changed from the toolbar.
