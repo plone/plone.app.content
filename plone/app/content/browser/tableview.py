@@ -87,7 +87,7 @@ class Table(object):
         b = Batch.fromPagenumber(self.items,
                                  pagesize=pagesize,
                                  pagenumber=self.pagenumber)
-        map(self.set_checked, b)
+        list(map(self.set_checked, b))
         return b
 
     render = ViewPageTemplateFile("table.pt")

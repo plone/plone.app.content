@@ -22,7 +22,7 @@ utilities.
 Note that we need to define a portal_type to keep CMF happy.
 .. code-block:: python
 
-    >>> from zope.interface import implements, Interface
+    >>> from zope.interface import implementer, Interface
     >>> from zope import schema
     >>> from zope.component.factory import Factory
 
@@ -33,8 +33,8 @@ First, a container:
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
 
-    >>> class MyContainer(container.Container):
-    ...     implements(IMyContainer)
+    >>> @implementer(IMyContainer)
+    ... class MyContainer(container.Container):
     ...     portal_type = "My container"
     ...     title = u""
     ...     description = u""
@@ -48,8 +48,8 @@ Then, an item:
     ...     title = schema.TextLine(title=u"My title")
     ...     description = schema.TextLine(title=u"My other title")
 
-    >>> class MyType(item.Item):
-    ...     implements(IMyType)
+    >>> @implementer(IMyType)
+    ... class MyType(item.Item):
     ...     portal_type = "My type"
     ...     title = u""
     ...     description = u""

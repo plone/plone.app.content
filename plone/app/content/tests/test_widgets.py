@@ -102,7 +102,7 @@ class BrowserTest(unittest.TestCase):
             'query': 'three'
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
+        self.assertEqual(len(data['results']), 1)
 
     def testVocabularyFunctionQueryString(self):
         """Test querying a function based vocabulary with a search string.
@@ -113,7 +113,7 @@ class BrowserTest(unittest.TestCase):
             'query': 'third'
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
+        self.assertEqual(len(data['results']), 1)
 
     def testVocabularyNoResults(self):
         """Tests that the widgets displays correctly
@@ -133,7 +133,7 @@ class BrowserTest(unittest.TestCase):
             'query': json.dumps(query)
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 0)
+        self.assertEqual(len(data['results']), 0)
 
     def testVocabularyCatalogResults(self):
         self.portal.invokeFactory('Document', id="page", title="page")
@@ -154,7 +154,7 @@ class BrowserTest(unittest.TestCase):
             'attributes': ['UID', 'id', 'title', 'path']
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
+        self.assertEqual(len(data['results']), 1)
 
     def testVocabularyCatalogUnsafeMetadataAllowed(self):
         """Users with permission "Modify portal content" are allowed to see
@@ -183,7 +183,7 @@ class BrowserTest(unittest.TestCase):
             ]
         })
         data = json.loads(view())
-        self.assertEquals(len(list(data['results'][0].keys())), 4)
+        self.assertEqual(len(list(data['results'][0].keys())), 4)
 
     def testVocabularyCatalogUnsafeMetadataDisallowed(self):
         """Users without permission "Modify portal content" are not allowed to
@@ -217,7 +217,7 @@ class BrowserTest(unittest.TestCase):
         # Only one result key should be returned, as ``commentors``,
         # ``Creator`` and ``listCreators`` is considered unsafe and thus
         # skipped.
-        self.assertEquals(len(list(data['results'][0].keys())), 1)
+        self.assertEqual(len(list(data['results'][0].keys())), 1)
 
     def testVocabularyBatching(self):
         amount = 30
@@ -246,8 +246,8 @@ class BrowserTest(unittest.TestCase):
             }
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 10)
-        self.assertEquals(data['total'], amount)
+        self.assertEqual(len(data['results']), 10)
+        self.assertEqual(data['total'], amount)
 
     def testVocabularyEncoding(self):
         """The vocabulary should not return the binary encoded token
@@ -270,8 +270,8 @@ class BrowserTest(unittest.TestCase):
         results = json.loads(results)
         result = results['results'][0]
 
-        self.assertEquals(result['text'], test_val)
-        self.assertEquals(result['id'], test_val)
+        self.assertEqual(result['text'], test_val)
+        self.assertEqual(result['id'], test_val)
 
     def testVocabularyUnauthorized(self):
         setRoles(self.portal, TEST_USER_ID, [])
@@ -281,7 +281,7 @@ class BrowserTest(unittest.TestCase):
             'query': TEST_USER_NAME
         })
         data = json.loads(view())
-        self.assertEquals(data['error'], 'Vocabulary lookup not allowed')
+        self.assertEqual(data['error'], 'Vocabulary lookup not allowed')
 
     def testVocabularyMissing(self):
         view = VocabularyView(self.portal, self.request)
@@ -289,7 +289,7 @@ class BrowserTest(unittest.TestCase):
             'name': 'vocabulary.that.does.not.exist',
         })
         data = json.loads(view())
-        self.assertEquals(data['error'], 'Vocabulary lookup not allowed')
+        self.assertEqual(data['error'], 'Vocabulary lookup not allowed')
 
     def testPermissionCheckerAllowed(self):
         # Setup a custom permission checker on the portal
@@ -302,7 +302,7 @@ class BrowserTest(unittest.TestCase):
             'field': 'allowed_field',
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']),
+        self.assertEqual(len(data['results']),
                           len(self.portal.portal_types.objectIds()))
         _disable_permission_checker(self.portal)
 
@@ -315,7 +315,7 @@ class BrowserTest(unittest.TestCase):
             'field': 'allowed_field',
         })
         data = json.loads(view())
-        self.assertEquals(
+        self.assertEqual(
             data['error'],
             'No factory with name "{}" exists.'.format(
                 'vocab.does.not.exist'))
@@ -331,7 +331,7 @@ class BrowserTest(unittest.TestCase):
             'field': 'disallowed_field',
         })
         data = json.loads(view())
-        self.assertEquals(data['error'], 'Vocabulary lookup not allowed')
+        self.assertEqual(data['error'], 'Vocabulary lookup not allowed')
         _disable_permission_checker(self.portal)
 
     def testPermissionCheckerShortCircuit(self):
@@ -345,7 +345,7 @@ class BrowserTest(unittest.TestCase):
             'field': 'disallowed_field',
         })
         data = json.loads(view())
-        self.assertEquals(data['results'], [])
+        self.assertEqual(data['results'], [])
         _disable_permission_checker(self.portal)
 
     def testPermissionCheckerUnknownField(self):
@@ -411,8 +411,8 @@ class BrowserTest(unittest.TestCase):
             'attributes': 'id',
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
-        self.assertEquals(data['results'][0]['id'], 'foo')
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['id'], 'foo')
 
     def testSourceCollectionField(self):
         # This test uses a collection field
@@ -454,8 +454,8 @@ class BrowserTest(unittest.TestCase):
             'batch': json.dumps({'size': 10, 'page': 1}),
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
-        self.assertEquals(data['results'][0]['id'], 'foo')
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['id'], 'foo')
 
     def testSourcePermissionDenied(self):
         from z3c.form.browser.text import TextWidget
@@ -491,7 +491,7 @@ class BrowserTest(unittest.TestCase):
         })
         logout()
         data = json.loads(view())
-        self.assertEquals(data['error'], 'Vocabulary lookup not allowed.')
+        self.assertEqual(data['error'], 'Vocabulary lookup not allowed.')
 
     def testSourceTextQuery(self):
         from z3c.form.browser.text import TextWidget
@@ -517,8 +517,8 @@ class BrowserTest(unittest.TestCase):
             'attributes': 'id',
         })
         data = json.loads(view())
-        self.assertEquals(len(data['results']), 1)
-        self.assertEquals(data['results'][0]['id'], 'foo')
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['id'], 'foo')
 
     def testQueryStringConfiguration(self):
         view = QueryStringIndexOptions(self.portal, self.request)
@@ -580,7 +580,7 @@ class FunctionalBrowserTest(unittest.TestCase):
     def testFileUpload(self):
         view = FileUploadView(self.portal, self.request)
         from plone.namedfile.file import FileChunk
-        chunk = FileChunk('foobar')
+        chunk = FileChunk(b'foobar')
         chunk.filename = 'test.xml'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'
@@ -596,7 +596,7 @@ class FunctionalBrowserTest(unittest.TestCase):
     def testFileUploadTxt(self):
         view = FileUploadView(self.portal, self.request)
         from plone.namedfile.file import FileChunk
-        chunk = FileChunk('foobar')
+        chunk = FileChunk(b'foobar')
         chunk.filename = 'test.txt'
         self.request.form['file'] = chunk
         self.request.REQUEST_METHOD = 'POST'

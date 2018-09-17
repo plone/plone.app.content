@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.app.content.testing import PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
+from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 from plone.testing.z2 import Browser
 import transaction
 import unittest
+
+if HAS_AT:
+    from plone.app.content.testing import PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
 
 FOLDER = {'id': 'testfolder',
           'title': 'Test Folder',
@@ -109,6 +112,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         self.assertEqual(folder.getDefaultPage(), 'testdoc')
 
 
-class SelectDefaultPageATTestCase(SelectDefaultPageDXTestCase):
+if HAS_AT:
+    class SelectDefaultPageATTestCase(SelectDefaultPageDXTestCase):
 
-    layer = PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
+        layer = PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING

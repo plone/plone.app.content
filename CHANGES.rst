@@ -22,6 +22,9 @@ Bug fixes:
   updated only when the state was changed from the toolbar.
   [cekk]
 
+- Fix various issues in with py3.
+  [pbauer]
+
 3.5.3 (2018-06-18)
 ------------------
 
