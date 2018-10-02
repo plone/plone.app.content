@@ -49,7 +49,7 @@ class ReviewListTestCase(unittest.TestCase):
 
     def test_authenticated(self):
         '''
-        unauthenticated users do not have the necessary permissions to view
+        authenticated users do have the necessary permissions to view
         the review list
         '''
         self.browser.addHeader('Authorization',
@@ -59,7 +59,7 @@ class ReviewListTestCase(unittest.TestCase):
 
     def test_with_content(self):
         '''
-        unauthenticated users do not have the necessary permissions to view
+        authenticated users do have the necessary permissions to view
         the review list
         '''
         doc = self.createDocument(

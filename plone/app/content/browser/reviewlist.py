@@ -58,7 +58,7 @@ class ReviewListTable(object):
         use_view_action = registry.get(
             'plone.types_use_view_action_in_listings', ())
 
-        browser_default = self.context.browserDefault()
+        browser_default = plone_utils.browserDefault(self.context)
 
         results = list()
         for i, obj in enumerate(self.context.my_worklist()):
