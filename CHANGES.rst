@@ -10,7 +10,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Added get_objects_from_path_list to replace skin script. #1801
+  [reinhardt]
 
 Bug fixes:
 
