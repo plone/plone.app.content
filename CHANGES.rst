@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.5.5 (unreleased)
+3.6.0 (unreleased)
 ------------------
 
 Breaking changes:
@@ -10,7 +10,10 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Use obj.get_size() instead of getObjSize skin script.
+  Allows removing the script and also returns a numerical value.
+  #1801
+  [reinhardt]
 
 Bug fixes:
 

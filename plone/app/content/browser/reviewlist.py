@@ -5,6 +5,7 @@ from plone.app.content.browser.tableview import TableBrowserView
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import human_readable_size
 from six.moves import map
 from six.moves.urllib.parse import quote_plus
 from zope.component import getMultiAdapter
@@ -114,7 +115,7 @@ class ReviewListTable(object):
                 title_or_id=obj.pretty_title_or_id(),
                 description=obj.Description(),
                 obj_type=obj.Type,
-                size=obj.getObjSize(),
+                size=human_readable_size(obj.get_size()),
                 modified=modified,
                 type_class=type_class,
                 wf_state=review_state,
