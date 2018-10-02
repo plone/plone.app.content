@@ -119,3 +119,12 @@ class ContentStatusHistoryView(BrowserView):
             # Set paths using orgi_paths, otherwise users are getting confused
             orig_paths = self.request.get('orig_paths')
             self.request.set('paths', orig_paths)
+
+    def get_objects_from_path_list(self, paths=[]):
+        contents = []
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        for path in paths:
+            obj = portal.restrictedTraverse(str(path), None)
+            if obj is not None:
+                contents.append(obj)
+        return contents
