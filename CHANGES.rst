@@ -18,6 +18,8 @@ New features:
 Bug fixes:
 
 - *add item here*
+- Added get_objects_from_path_list to replace skin script. #1801
+  [reinhardt]
 
 
 3.5.4 (2018-09-23)

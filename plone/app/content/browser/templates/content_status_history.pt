@@ -39,7 +39,7 @@
            tal:define="errors view/errors;
                        review_state context_state/workflow_state;
                        paths python:request.get('paths', ['/'.join(context.getPhysicalPath())]);
-                       batch python:context.getObjectsFromPathList(paths, batch=False);
+                       batch python:view.get_objects_from_path_list(paths);
                        folders_in_publishing python:[o.getId for o in batch if o.isPrincipiaFolderish];
                        came_from python:request.get('HTTP_REFERER', context.absolute_url()).split('?')[0];
                        dummy python:request.set('orig_template', came_from);
