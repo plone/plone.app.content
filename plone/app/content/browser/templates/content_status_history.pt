@@ -45,7 +45,7 @@
                        dummy python:request.set('orig_template', came_from);
                      ">
       <metal:block tal:condition="python: paths and not batch"
-                   tal:replace="python:context.redirectToReferrer('The item(s) you selected are no longer available.')"/>
+                   tal:replace="view/redirect_to_referrer"/>
 
       <h1 class="documentFirstHeading"
           i18n:translate="heading_publishing_process">Publishing process</h1>

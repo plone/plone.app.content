@@ -128,3 +128,8 @@ class ContentStatusHistoryView(BrowserView):
             if obj is not None:
                 contents.append(obj)
         return contents
+
+    def redirect_to_referrer(self):
+        referer = self.request.get('HTTP_REFERER', '')
+        target_url = referer.split('?', 1)[0]
+        return self.request.RESPONSE.redirect(target_url)
