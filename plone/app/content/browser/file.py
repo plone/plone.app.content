@@ -180,7 +180,7 @@ class FileUploadView(BrowserView):
             try:
                 result['size'] = obj.getSize()
             except AttributeError:
-                result['size'] = obj.getObjSize()
+                result['size'] = obj.get_size()
 
         if tusrequest:
             tus.cleanup_file()
