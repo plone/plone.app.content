@@ -5,6 +5,7 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
@@ -25,19 +26,21 @@ class DeleteAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         return {
             'tooltip': translate(_('Delete'), context=self.request),
             'id': 'delete',
             'icon': 'trash',
             'context': 'danger',
-            'url': self.context.absolute_url() + '/@@fc-delete',
+            'url': '%s{path}/@@fc-delete' % base_url,
             'form': {
                 'title': translate(_('Delete selected items'), context=self.request),
                 'submitText': translate(_('Yes'), context=self.request),
                 'submitContext': 'danger',
                 'template': self.template(),
                 'closeText': translate(_('No'), context=self.request),
-                'dataUrl': self.context.absolute_url() + '/@@fc-delete'
+                'dataUrl': '%s{path}/@@fc-delete' % base_url,
             }
         }
 

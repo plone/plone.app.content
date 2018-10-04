@@ -7,6 +7,7 @@ from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -26,19 +27,21 @@ class PropertiesAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
             'tooltip': translate(_('Properties'), context=self.request),
             'id': 'properties',
             'icon': 'edit',
-            'url': self.context.absolute_url() + '/@@fc-properties',
+            'url': '%s{path}/@@fc-properties' % base_url,
             'form': {
                 'title': _('Modify properties on items'),
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Users' % (
                         base_vocabulary)
                 ),
-                'dataUrl': self.context.absolute_url() + '/@@fc-properties',
+                'dataUrl': '%s{path}/@@fc-properties' % base_url,
             }
         }
 
