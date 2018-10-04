@@ -6,6 +6,7 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
@@ -14,7 +15,6 @@ from zope.event import notify
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
-
 
 import logging
 import six
@@ -35,11 +35,13 @@ class RenameAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         return {
             'tooltip': translate(_('Rename'), context=self.request),
             'id': 'rename',
             'icon': 'random',
-            'url': self.context.absolute_url() + '/@@fc-rename',
+            'url': '%s{path}/@@fc-rename' % base_url,
             'form': {
                 'template': self.template()
             }

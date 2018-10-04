@@ -18,6 +18,47 @@ import mock
 import unittest
 
 
+class FolderContentsTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.request = self.layer['request']
+
+        # TYPE 1
+        type1_fti = DexterityFTI('type1')
+        type1_fti.klass = 'plone.dexterity.content.Container'
+        type1_fti.filter_content_types = True
+        type1_fti.allowed_content_types = ['type1']
+        type1_fti.behaviors = (
+            'Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',  # noqa
+            'plone.app.dexterity.behaviors.metadata.IBasic'
+        )
+        self.portal.portal_types._setObject('type1', type1_fti)
+        self.type1_fti = type1_fti
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+
+    def test_fc_buttonurls(self):
+        """Test for correct URLs in folder_contents action buttons.
+        Refs: https://github.com/plone/plone.app.content/pull/166
+        """
+        self.portal.invokeFactory('type1', id='f1', title='Folder 1')
+
+        fc = self.portal.f1.restrictedTraverse('@@folder_contents')
+
+        options = fc.get_options()
+        for button in options['buttons']:
+            url = button['url']
+            self.assertTrue('f1' not in url)
+            self.assertTrue('plone{path}/@@fc-' in url)
+            if button.get('form', {}).get('dataUrl', None):
+                url = button['form']['dataUrl']
+                self.assertTrue('f1' not in url)
+                self.assertTrue('plone{path}/@@fc-' in url)
+
+
 class ContentsCopyTests(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
