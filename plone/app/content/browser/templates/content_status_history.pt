@@ -173,7 +173,7 @@
                                     </a>
 
                                 <span class="state-expired"
-                                      tal:condition="python:context.isExpired(item)"
+                                      tal:condition="python:view.isExpired(item)"
                                       i18n:translate="time_expired">expired</span>
                             </td>
 
