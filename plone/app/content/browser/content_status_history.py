@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import isExpired
 from Products.CMFPlone.utils import human_readable_size
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import field
@@ -135,5 +136,8 @@ class ContentStatusHistoryView(BrowserView):
         target_url = referer.split('?', 1)[0]
         return self.request.RESPONSE.redirect(target_url)
 
-    def human_readable_size(self, size):
+    def isExpired(self, content):
+        return isExpired(content)
+
+      def human_readable_size(self, size):
         return human_readable_size(size)

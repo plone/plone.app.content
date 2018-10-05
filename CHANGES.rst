@@ -18,6 +18,10 @@ New features:
   #1801
   [reinhardt]
 
+- Use isExpired util method instead of isExpired.py skin script.
+  https://github.com/plone/Products.CMFPlone/issues/1801
+  [reinhardt]
+
 Bug fixes:
 
 - *add item here*
