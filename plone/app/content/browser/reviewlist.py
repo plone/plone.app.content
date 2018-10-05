@@ -17,7 +17,12 @@ from zope.publisher.browser import BrowserView
 class FullReviewListView(BrowserView):
 
     def revlist(self):
-        return self.context.my_worklist()
+        portal_membership = getToolByName(self.context, 'portal_membership')
+        portal_workflow = getToolByName(self.context, 'portal_workflow')
+        if portal_membership.isAnonymousUser():
+            return []
+
+        return portal_workflow.getWorklistsResults()
 
     def url(self):
         return self.context.absolute_url() + '/full_review_list'
@@ -54,6 +59,7 @@ class ReviewListTable(object):
                                        name=u'plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_types = getToolByName(self.context, 'portal_types')
+        portal_membership = getToolByName(self.context, 'portal_membership')
 
         registry = getUtility(IRegistry)
         use_view_action = registry.get(
@@ -62,7 +68,12 @@ class ReviewListTable(object):
         browser_default = plone_utils.browserDefault(self.context)
 
         results = list()
-        for i, obj in enumerate(self.context.my_worklist()):
+        if portal_membership.isAnonymousUser():
+            worklist = []
+        else:
+            worklist = portal_workflow.getWorklistsResults()
+
+        for i, obj in enumerate(worklist):
             if i % 2 == 0:
                 table_row_class = "even"
             else:
