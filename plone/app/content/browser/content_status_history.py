@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import human_readable_size
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import field
 from z3c.form import form
@@ -133,3 +134,6 @@ class ContentStatusHistoryView(BrowserView):
         referer = self.request.get('HTTP_REFERER', '')
         target_url = referer.split('?', 1)[0]
         return self.request.RESPONSE.redirect(target_url)
+
+    def human_readable_size(self, size):
+        return human_readable_size(size)

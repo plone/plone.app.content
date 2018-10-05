@@ -123,7 +123,7 @@
                                            item_title_or_id     item/pretty_title_or_id;
                                            item_description     item/Description;
                                            item_type            item/portal_type;
-                                           item_size            item/getObjSize;
+                                           item_size            python:view.human_readable_size(item.get_size());
                                            item_modified        item/ModificationDate;
                                            item_type_class      python:'contenttype-' + normalizeString(item_type);
                                            item_wf_state        item/review_state|python: wtool.getInfoFor(item, 'review_state', '');
