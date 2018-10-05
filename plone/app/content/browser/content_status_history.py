@@ -17,25 +17,25 @@ class IContentStatusHistoryDates(Interface):
     """
 
     effective_date = Datetime(
-        title=_(u"label_effective_date",
-                default=u"Publishing Date"),
+        title=_(u"label_effective_date", default=u"Publishing Date"),
         description=_(
             u"help_effective_date",
             default=u"The date when the item will be published. If no "
-                    u"date is selected the item will be published immediately."
+            u"date is selected the item will be published immediately.",
         ),
-        required=False)
+        required=False,
+    )
 
     expiration_date = Datetime(
-        title=_(u"label_expiration_date",
-                default=u"Expiration Date"),
+        title=_(u"label_expiration_date", default=u"Expiration Date"),
         description=_(
             u"help_expiration_date",
             default=u"The date when the item expires. This will automatically "
-                    u"make the item invisible for others at the given date. "
-                    u"If no date is chosen, it will never expire."
-            ),
-        required=False)
+            u"make the item invisible for others at the given date. "
+            u"If no date is chosen, it will never expire.",
+        ),
+        required=False,
+    )
 
 
 class ContentStatusHistoryDatesForm(form.Form):
@@ -63,32 +63,45 @@ class ContentStatusHistoryView(BrowserView):
         self.plone_utils = getToolByName(context, 'plone_utils')
         self.errors = {}
 
-    def __call__(self, workflow_action=None, paths=[], comment="",
-                 effective_date=None, expiration_date=None,
-                 include_children=False, *args):
+    def __call__(
+        self,
+        workflow_action=None,
+        paths=[],
+        comment="",
+        effective_date=None,
+        expiration_date=None,
+        include_children=False,
+        *args
+    ):
 
         data = self.dates_form.extractData()
-        if self.request.get('form.widgets.effective_date-calendar', None) \
-           and data:
+        if (
+            self.request.get('form.widgets.effective_date-calendar', None)
+            and data
+        ):
             effective_date = data[0]['effective_date'].strftime(
                 "%Y-%m-%d %H:%M"
             )
 
-        if self.request.get('form.widgets.expiration_date-calendar', None) \
-           and data:
+        if (
+            self.request.get('form.widgets.expiration_date-calendar', None)
+            and data
+        ):
             expiration_date = data[0]['expiration_date'].strftime(
                 "%Y-%m-%d %H:%M"
             )
 
         if self.request.get('form.button.Cancel', None):
             return self.request.RESPONSE.redirect(
-                "%s/view" % self.context.absolute_url())
+                "%s/view" % self.context.absolute_url()
+            )
 
         if self.request.get('form.submitted', None):
             self.validate(workflow_action=workflow_action, paths=paths)
             if self.errors:
                 self.plone_utils.addPortalMessage(
-                    _(u'Please correct the indicated errors.'), 'error')
+                    _(u'Please correct the indicated errors.'), 'error'
+                )
                 return self.template()
 
         if self.request.get('form.button.Publish', None):
@@ -96,7 +109,8 @@ class ContentStatusHistoryView(BrowserView):
                 workflow_action=workflow_action,
                 comment=comment,
                 effective_date=effective_date,
-                expiration_date=expiration_date)
+                expiration_date=expiration_date,
+            )
 
         if self.request.get('form.button.FolderPublish', None):
             self.context.restrictedTraverse('folder_publish')(
@@ -105,18 +119,19 @@ class ContentStatusHistoryView(BrowserView):
                 comment=comment,
                 expiration_date=expiration_date,
                 effective_date=effective_date,
-                include_children=include_children)
+                include_children=include_children,
+            )
 
         return self.template()
 
     def validate(self, workflow_action=None, paths=[]):
         if workflow_action is None:
             self.errors['workflow_action'] = _(
-                u'You must select a publishing action.')
+                u'You must select a publishing action.'
+            )
 
         if not paths:
-            self.errors['paths'] = _(
-                u'You must select content to change.')
+            self.errors['paths'] = _(u'You must select content to change.')
             # If there are no paths, it's mostly a mistake
             # Set paths using orgi_paths, otherwise users are getting confused
             orig_paths = self.request.get('orig_paths')
@@ -139,5 +154,5 @@ class ContentStatusHistoryView(BrowserView):
     def isExpired(self, content):
         return isExpired(content)
 
-      def human_readable_size(self, size):
+    def human_readable_size(self, size):
         return human_readable_size(size)
