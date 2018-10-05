@@ -2,6 +2,7 @@
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component.hooks import getSite
 from zope.i18n import translate
@@ -19,12 +20,14 @@ class TagsAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
         return {
             'tooltip': translate(_('Tags'), context=self.request),
             'id': 'tags',
             'icon': 'tags',
-            'url': self.context.absolute_url() + '/@@fc-tags',
+            'url': '%s{path}/@@fc-tags' % base_url,
             'form': {
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Keywords' % (

@@ -14,7 +14,10 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix URLs in folder_contents action buttons.
+  They need to be relative to the site root (resp. top site from url due to path handling in the structure pattern) and contain a {path} placeholder.
+  Fixes: https://github.com/plone/mockup/issues/857
+  [thet]
 
 
 3.5.4 (2018-09-23)

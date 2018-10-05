@@ -5,6 +5,7 @@ from OFS.Moniker import Moniker
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from zope.i18n import translate
 from zope.interface import implementer
 
@@ -19,11 +20,13 @@ class CutAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         return {
             'tooltip': translate(_('Cut'), context=self.request),
             'id': 'cut',
             'icon': 'scissors',
-            'url': self.context.absolute_url() + '/@@fc-cut'
+            'url': '%s{path}/@@fc-cut' % base_url,
         }
 
 

@@ -5,6 +5,7 @@ from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from zope.i18n import translate
@@ -22,15 +23,17 @@ class WorkflowAction(object):
         self.request = request
 
     def get_options(self):
+        site = get_top_site_from_url(self.context, self.request)
+        base_url = site.absolute_url()
         return {
             'tooltip': translate(_('State'), context=self.request),
             'id': 'workflow',
             'icon': 'lock',
-            'url': self.context.absolute_url() + '/@@fc-workflow',
+            'url': '%s{path}/@@fc-workflow' % base_url,
             'form': {
                 'title': _('Change workflow of selected items'),
                 'template': self.template(),
-                'dataUrl': self.context.absolute_url() + '/@@fc-workflow'
+                'dataUrl': '%s{path}/@@fc-workflow' % base_url,
             }
         }
 
