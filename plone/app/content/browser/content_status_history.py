@@ -2,6 +2,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import isExpired
+from Products.CMFPlone.utils import human_readable_size
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import field
 from z3c.form import form
@@ -137,3 +138,6 @@ class ContentStatusHistoryView(BrowserView):
 
     def isExpired(self, content):
         return isExpired(content)
+
+      def human_readable_size(self, size):
+        return human_readable_size(size)

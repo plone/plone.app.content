@@ -10,6 +10,9 @@ Breaking changes:
 
 New features:
 
+- Replaced usages of my_worklist.py skin script.
+  https://github.com/plone/Products.CMFPlone/issues/1801
+  [reinhardt]
 - Use obj.get_size() instead of getObjSize skin script.
   Allows removing the script and also returns a numerical value.
   #1801
