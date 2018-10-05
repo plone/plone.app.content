@@ -34,6 +34,11 @@ Let's create some dummy content.
 
     >>> container = MyContainer("my-container")
 
+Allow anyone to access the contents information on the container.
+This allows to check for existing content with the same id.
+
+    >>> container.manage_permission('Access contents information', ['Anonymous'], acquire=1)
+
 Then wire up the name chooser (this is normally done in this package's
 configure.zcml file).
 
@@ -105,18 +110,25 @@ When a filename is used as an id, the extension is preserved.
     >>> chooser.checkName(name, object)
     True
 
-If the chooser is used with a container that implementer the
+If the chooser is used with a container that implements the
 IObjectManager interface from OFS, the checkValidId method
 of that interface will be used to check for validity of the
 chosen name. This catches various edge cases.
+We need to force an ImportError for the check_id function in Plone.
 
     >>> from OFS.ObjectManager import ObjectManager
     >>> om = ObjectManager()
     >>> om.title = 'foo'
     >>> alsoProvides(om, IFolderish)
     >>> chooser2 = INameChooser(om)
+    >>> from Products.CMFPlone import utils
+    >>> orig_check_id = utils.check_id
+    >>> def dummy_check_id(*args, **kwargs):
+    ...     raise ImportError
+    >>> utils.check_id = dummy_check_id
     >>> chooser2.chooseName('title', item)
     'title-1'
+    >>> utils.check_id = orig_check_id
 
 
 Choosing names based on type
