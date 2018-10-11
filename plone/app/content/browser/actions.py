@@ -234,6 +234,7 @@ class ObjectCutView(LockingBase):
                                         mapping={'title': self.title}))
         self.request.response.setCookie(
             '__cp', cp, path=self.request['BASEPATH1'] or '/')
+        self.request['__cp'] = cp
 
         return self.do_redirect(
             self.view_url,
@@ -262,6 +263,7 @@ class ObjectCopyView(ObjectCutView):
                                         mapping={'title': self.title}))
         self.request.response.setCookie(
             '__cp', cp, path=self.request['BASEPATH1'] or '/')
+        self.request['__cp'] = cp
 
         return self.do_redirect(self.view_url,
                                 _(u'${title} copied.',
