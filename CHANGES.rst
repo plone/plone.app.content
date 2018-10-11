@@ -22,8 +22,11 @@ Bug fixes:
   updated only when the state was changed from the toolbar.
   [cekk]
 
-- Fix various issues in with py3.
+- Fix various issues in py3.
   [pbauer]
+
+- Fix cut, copy, and delete actions in Zope 4.
+  [davisagli]
 
 3.5.3 (2018-06-18)
 ------------------
