@@ -79,7 +79,7 @@ class DeleteActionView(ContentsBaseAction):
             return
         else:
             try:
-                parent.manage_delObjects(obj.getId(), self.request)
+                parent.manage_delObjects(obj.getId())
             except Unauthorized:
                 self.errors.append(
                     _(u'You are not authorized to delete ${title}.',

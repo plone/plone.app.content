@@ -77,7 +77,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         # has the context object been acquired from a place it should not have
         # been?
         if self.context.aq_chain == self.context.aq_inner.aq_chain:
-            parent.manage_delObjects(self.context.getId(), self.request)
+            parent.manage_delObjects(self.context.getId())
             IStatusMessage(self.request).add(
                 _(u'${title} has been deleted.', mapping={u'title': title}))
         else:
@@ -227,11 +227,14 @@ class ObjectCutView(LockingBase):
                                         mapping={'title': self.title, }))
 
         try:
-            self.parent.manage_cutObjects(self.context.getId(), self.request)
+            cp = self.parent.manage_cutObjects(self.context.getId())
         except CopyError:
             return self.do_redirect(self.view_url,
                                     _(u'${title} is not moveable.',
                                         mapping={'title': self.title}))
+        self.request.response.setCookie(
+            '__cp', cp, path=self.request['BASEPATH1'] or '/')
+        self.request['__cp'] = cp
 
         return self.do_redirect(
             self.view_url,
@@ -253,11 +256,14 @@ class ObjectCopyView(ObjectCutView):
 
     def do_action(self):
         try:
-            self.parent.manage_copyObjects(self.context.getId(), self.request)
+            cp = self.parent.manage_copyObjects(self.context.getId())
         except CopyError:
             return self.do_redirect(self.view_url,
                                     _(u'${title} is not copyable.',
                                         mapping={'title': self.title}))
+        self.request.response.setCookie(
+            '__cp', cp, path=self.request['BASEPATH1'] or '/')
+        self.request['__cp'] = cp
 
         return self.do_redirect(self.view_url,
                                 _(u'${title} copied.',
