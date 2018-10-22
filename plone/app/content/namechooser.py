@@ -95,6 +95,8 @@ class NormalizingNameChooser(object):
         """Return a function that can act as the check_id script.
         """
         parent = aq_inner(self.context)
+        # Check for a method or a skin script, like
+        # Products/CMFPlone/skins/plone_scripts/check_id.py until Plone 5.1.
         _check_id = getattr(obj, 'check_id', None)
 
         def do_Plone_check(newid, required):
@@ -104,6 +106,16 @@ class NormalizingNameChooser(object):
                     required=required,
                     contained_by=parent
                 )
+
+            # Function in CMFPlone added in 5.1.4/5,
+            # which replaces the skin script that will be removed in 5.2.
+            try:
+                from Products.CMFPlone.utils import check_id
+                return check_id(
+                    obj, newid, required=required, contained_by=parent)
+            except ImportError:
+                pass
+
             # fallback to OFS
             try:
                 parent._checkId(newid)
