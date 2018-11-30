@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+3.5.5 (2018-11-29)
+------------------
+
+Bug fixes:
+
+
+- Use check_id function from CMFPlone.utils. Still use check_id method or skin
+  script first. [maurits] (#170)
+- Fix URLs in folder_contents action buttons. They need to be relative to the
+  site root (resp. top site from url due to path handling in the structure
+  pattern) and contain a ``{path}`` placeholder. Fixes `mockup issue 857
+  <https://github.com/plone/mockup/issues/857>`_. [thet] (#857)
+
 
 3.5.4 (2018-09-23)
 ------------------
