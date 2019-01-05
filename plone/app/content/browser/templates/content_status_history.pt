@@ -24,7 +24,7 @@
   <body>
 
     <tal:comment tal:condition="nothing">
-      <div class="portalMessage info">
+      <div class="portalMessage info" role="status">
         <strong>Note</strong>
         <span>This form is used in two different ways - from folder_contents,
         allowing you to publish several things at once, and from the state
