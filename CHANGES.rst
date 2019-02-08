@@ -8,6 +8,27 @@ Changelog
 
 .. towncrier release notes start
 
+3.7.0 (2019-02-08)
+------------------
+
+New features:
+
+
+- Replaced usages of ``my_worklist.py`` skin script. Use ``obj.get_size()``
+  instead of ``getObjSize`` skin script. Allows removing the script and also
+  returns a numerical value. Use ``isExpired`` util method instead of
+  ``isExpired.py`` skin script. [reinhardt] (#1801)
+
+
+Bug fixes:
+
+
+- Use check_id function from CMFPlone.utils. Still use check_id method or skin
+  script first. [maurits] (#170)
+- Added ``get_objects_from_path_list`` and ``redirect_to_referrer`` to replace
+  skin scripts. [reinhardt, tlotze] (#1801)
+- a11y: Added role attribute for portalMessage [nzambello] (#2675)
+
 
 3.5.4 (2018-09-23)
 ------------------
