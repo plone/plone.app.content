@@ -39,6 +39,9 @@ class i18njs(BrowserView):
         else:
             if language is None:
                 language = self.request['LANGUAGE']
+            tp = language.split("-")
+            if len(tp) > 1:
+                language = "%s_%s" % (tp[0],tp[1].upper())            
             catalog = self._gettext_catalog(domain, language)
 
         response = self.request.response
