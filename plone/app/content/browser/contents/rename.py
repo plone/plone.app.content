@@ -71,7 +71,7 @@ class RenameActionView(ContentsBaseAction):
             obj = brains[0].getObject()
             title = self.objectTitle(obj)
             if not mtool.checkPermission('Copy or Move', obj):
-                self.errors(_(u'Permission denied to rename ${title}.',
+                self.errors.append(_(u'Permission denied to rename ${title}.',
                               mapping={u'title': title}))
                 continue
 
