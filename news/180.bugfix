@@ -1,3 +1,0 @@
-Fixed plonejsi18n view's language code function:
-for input ``zh-cn`` the output should be ``zh_CN``.
-[adam139]

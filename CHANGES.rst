@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+3.5.6 (2019-08-29)
+------------------
+
+Bug fixes:
+
+
+- Fixed plonejsi18n view's language code function:
+  for input ``zh-cn`` the output should be ``zh_CN``.
+  [adam139] (#180)
+
+
 3.5.5 (2018-11-29)
 ------------------
 
