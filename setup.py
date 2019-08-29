@@ -13,6 +13,7 @@ setup(
         open("CHANGES.rst").read(),
     ]),
     classifiers=[
+        "Development Status :: 6 - Mature",
         "Framework :: Plone",
         "Framework :: Plone :: 5.1",
         "Framework :: Plone :: 5.2",
