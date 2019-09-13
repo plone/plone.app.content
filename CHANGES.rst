@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+3.7.1 (2019-09-13)
+------------------
+
+Bug fixes:
+
+
+- Support plone.app.multilingual.RootCatalog.
+  [jaroel] (#1)
+- ``self.errors`` is a list, so ``.append()`` should be used.
+  [frapell] (#2)
+
+
 3.7.0 (2019-02-08)
 ------------------
 
