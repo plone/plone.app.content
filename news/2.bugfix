@@ -1,0 +1,2 @@
+``self.errors`` is a list, so ``.append()`` should be used.
+[frapell]
