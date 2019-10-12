@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.7.2 (2019-10-12)
+------------------
+
+Bug fixes:
+
+
+- Description duplicated in object_rename form
+  [mamico] (#186)
+
+
 3.7.1 (2019-09-13)
 ------------------
 
