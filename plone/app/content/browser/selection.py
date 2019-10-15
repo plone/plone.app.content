@@ -125,5 +125,6 @@ class DefaultPageSelectionView(BrowserView):
                     # Disallow folderish types if you can't add any content.
                     # To override you have to add type to default_page_types
                     continue
-            results.append(brain)
+
+                results.append(brain)
         return results

@@ -18,6 +18,10 @@ DOCUMENT = {'id': 'testdoc',
             'title': 'Test Document',
             'description': 'Test Document Description'}
 
+NEWSITEM = {'id': 'testnews',
+            'title': 'Test News Item',
+            'description': 'Test News Item Description'}
+
 
 class SelectDefaultPageDXTestCase(unittest.TestCase):
 
@@ -54,6 +58,16 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         doc = getattr(context, DOCUMENT['id'])
         doc.setTitle(DOCUMENT['title'])
         doc.setDescription(DOCUMENT['description'])
+        doc.reindexObject()
+        # we don't want it in the navigation
+        # doc.setExcludeFromNav(True)
+        return doc
+
+    def _createNewsItem(self, context):
+        context.invokeFactory(id=NEWSITEM['id'], type_name='News Item')
+        doc = getattr(context, NEWSITEM['id'])
+        doc.setTitle(NEWSITEM['title'])
+        doc.setDescription(NEWSITEM['description'])
         doc.reindexObject()
         # we don't want it in the navigation
         # doc.setExcludeFromNav(True)
@@ -110,6 +124,16 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
 
         self.assertEqual(self.browser.url, folder.absolute_url())
         self.assertEqual(folder.getDefaultPage(), 'testdoc')
+
+    def test_selectable_types_filter(self):
+        self.portal.portal_registry['plone.default_page_types'] = [u'News Item']
+        folder = self.portal.testfolder
+        self._createNewsItem(folder)
+
+        view = folder.restrictedTraverse('@@select_default_page')()
+        self.assertTrue('id="testdoc"' not in view)
+        self.assertTrue('id="testnews"' in view)
+
 
 
 if HAS_AT:
