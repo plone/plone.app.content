@@ -24,7 +24,7 @@ class i18njs(BrowserView):
             else:
                 language = baselanguage
         _catalog = {}
-        for mo_path in td._catalogs[language]:
+        for mo_path in reversed(td._catalogs[language]):
             catalog = td._data[mo_path]._catalog
             if catalog is None:
                 td._data[mo_path].reload()
