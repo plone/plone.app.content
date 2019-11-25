@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.7.4 (2019-11-25)
+------------------
+
+Bug fixes:
+
+
+- Reversed the order of the translations list in plonejsi18n so custom ones come before defaults one (#187)
+
+
 3.7.3 (2019-10-21)
 ------------------
 
