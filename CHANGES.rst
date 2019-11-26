@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.5.7 (2019-11-26)
+------------------
+
+Bug fixes:
+
+
+- Follow default_page_types setting when showing the items that can be selected as default page [erral] (#182)
+
+
 3.5.6 (2019-08-29)
 ------------------
 
