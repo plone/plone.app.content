@@ -311,6 +311,7 @@ class FolderContentsView(BrowserView):
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
+            'searchParam': 'Title',
             'availableColumns': columns,
             'attributes': ['Title', 'path', 'getURL', 'getIcon', 'getMimeIcon', 'portal_type'] + list(columns.keys()),  # noqa
             'buttons': self.get_actions(),
