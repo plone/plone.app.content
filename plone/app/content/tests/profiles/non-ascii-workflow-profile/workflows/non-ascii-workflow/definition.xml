@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<dc-workflow xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+             i18n:domain="plone.app.content.tests"
+             workflow_id="non-ascii-workflow"
+             title="Workflow for non-ascii characters"
+             description=""
+             state_variable="review_state"
+             initial_state="initial"
+             i18n:attributes="title">
+
+ <permission>View</permission>
+
+ <state state_id="initial" title="Ïnitial" i18n:attributes="title">
+  <exit-transition transition_id="to_after"/>
+  <permission-map name="View permission for testing non-ascii title"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ </state>
+
+ <state state_id="after" title="Äfter" i18n:attributes="title">
+  <exit-transition transition_id="to_initial"/>
+  <permission-map name="View permission for testing non-ascii title"
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+  </permission-map>
+ </state>
+
+ <transition transition_id="to_after" new_state="after"
+             title="To Äfter!"
+             trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <action url="%(content_url)s/content_status_modify?workflow_action=to_after"
+          category="workflow"
+          i18n:translate="">To Äfter!</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+
+ <transition transition_id="to_initial" new_state="initial"
+             title="To Ïnitial!"
+             trigger="USER"
+             before_script="" after_script=""
+             i18n:attributes="title">
+  <action url="%(content_url)s/content_status_modify?workflow_action=to_initial"
+          category="workflow"
+          i18n:translate="">To Ïnitial!</action>
+  <guard>
+   <guard-permission>Modify portal content</guard-permission>
+  </guard>
+ </transition>
+
+</dc-workflow>

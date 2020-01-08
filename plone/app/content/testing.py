@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
+from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
@@ -107,6 +108,20 @@ class PloneAppContent(PloneSandboxLayer):
         portal.portal_workflow.setDefaultChain("simple_publication_workflow")
 
 
+class NonAsciiLayer(PloneSandboxLayer):
+
+    def setUpZope(self, app, configurationContext):
+        import plone.app.content.tests
+
+        xmlconfig.file('profiles/non-ascii-workflow.zcml',
+                       plone.app.content.tests,
+                       context=configurationContext)
+
+    def setUpPloneSite(self, portal):
+        # applyProfile which has non-ascii characters in state titles
+        applyProfile(portal, 'plone.app.content.tests:non-ascii-workflow')
+
+
 if HAS_AT:
     class PloneAppContentAT(PloneAppContent):
 
@@ -139,6 +154,13 @@ PLONE_APP_CONTENT_DX_INTEGRATION_TESTING = IntegrationTesting(
 PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PLONE_APP_CONTENTTYPES_FIXTURE, ),
     name="PloneAppContentDX:Functional")
+
+
+# Test layer with a workflow containing non-ascii characters in state titles.
+PLONE_APP_CONTENT_NON_ASCII_LAYER = NonAsciiLayer()
+PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PLONE_APP_CONTENT_NON_ASCII_LAYER, ),
+    name="PloneAppContentNonAscii:Integration")
 
 
 if HAS_AT:
