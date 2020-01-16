@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="plone.app.content.tests">
+
+    <genericsetup:registerProfile
+        name="non-ascii-workflow"
+        title="plone.app.content.tests: non-ascii-workflow"
+        directory="non-ascii-workflow-profile"
+        description=""
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+</configure>
+

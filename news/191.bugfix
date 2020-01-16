@@ -1,0 +1,1 @@
+Fix error when having non-ASCII characters in workflow state titles. [busykoala]
