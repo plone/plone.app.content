@@ -2,6 +2,7 @@
 from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from plone.dexterity.utils import safe_unicode
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -60,7 +61,8 @@ class WorkflowActionView(ContentsBaseAction):
                 for transition in self.pworkflow.getTransitionsFor(obj):
                     tdata = {
                         'id': transition['id'],
-                        'title': self.context.translate(transition['name'])
+                        'title': self.context.translate(
+                            safe_unicode(transition['name']))
                     }
                     if tdata not in transitions:
                         transitions.append(tdata)
