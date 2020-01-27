@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.0 (2020-01-27)
+------------------
+
+New features:
+
+
+- Switch the default index used for filtering in folder_contents from 
+  SearchableText to Title
+  [frapell] (#189)
+
+
+Bug fixes:
+
+
+- Fix error when having non-ASCII characters in workflow state titles. [busykoala] (#191)
+
+
 3.7.4 (2019-11-25)
 ------------------
 
