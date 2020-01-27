@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.5.8 (2020-01-27)
+------------------
+
+Bug fixes:
+
+
+- Fix error when having non-ASCII characters in workflow state titles. [busykoala] (#191)
+
+
 3.5.7 (2019-11-26)
 ------------------
 

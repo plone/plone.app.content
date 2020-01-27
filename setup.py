@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '3.5.8.dev0'
+version = '3.5.8'
 
 setup(
     name='plone.app.content',
