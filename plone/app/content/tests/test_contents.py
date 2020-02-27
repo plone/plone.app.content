@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
 from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
 from plone.uuid.interfaces import IUUID
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 import json
 import mock
+import transaction
 import unittest
 
 
@@ -522,3 +527,89 @@ class FCPropertiesTests(unittest.TestCase):
         self.assertEqual(self.portal.main1.sub1.exclude_from_nav, False)
         self.assertEqual(self.portal.main1.sub1.subsub1.exclude_from_nav, False)  # noqa
         self.assertEqual(self.portal.main1.sub2.exclude_from_nav, False)
+
+
+# Text for testing that the title is escaped.
+ESCAPED = "&lt;script&gt;"
+HACKED = '<script>alert("hacked")</script>'
+
+
+class TestTitleEscape(unittest.TestCase):
+    """Test that the title in the folder contents is escaped.
+
+    From PloneHotfix20200121, see
+    https://plone.org/security/hotfix/20200121/xss-in-the-title-field-on-plone-5-0-and-higher
+    """
+    layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+
+    def setUp(self):
+        self.portal = self.layer["portal"]
+        self.app = self.layer["app"]
+
+    def get_browser(self):
+        browser = Browser(self.layer["app"])
+        browser.handleErrors = False
+        browser.addHeader(
+            "Authorization",
+            "Basic {0}:{1}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+        )
+        return browser
+
+    def assert_not_hacked(self, browser):
+        body = browser.contents
+        hacked = HACKED
+        if not browser.isHtml:
+            # Assume json.
+            hacked = json.dumps(HACKED)
+
+        # This gives a too verbose error message, showing the entire body:
+        # self.assertNotIn(HACKED, body)
+        # So we roll our own less verbose version.
+        if hacked in body:
+            index = body.index(hacked)
+            start = max(0, index - 50)
+            end = min(index + len(hacked) + 50, len(body))
+            assert False, "Hacked script found in body: ... {0} ...".format(
+                body[start:end]
+            )
+
+        # The escaped version of the HACKED text should be in the response text.
+        self.assertIn(ESCAPED, body)
+
+    def test_normal_title(self):
+        # Create a folder and page with normal title.
+        normal = "'Normal title"
+        setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
+        self.portal.invokeFactory("Folder", id="folder1", title=normal)
+        folder1 = self.portal.folder1
+        self.assertEqual(folder1.Title(), normal)
+        folder1.invokeFactory("Document", id="page1", title=normal)
+        page1 = folder1.page1
+        self.assertEqual(page1.Title(), normal)
+        transaction.commit()
+
+        # Check the output of the normal case for comparison.
+        browser = self.get_browser()
+        browser.open(folder1.absolute_url() + "/@@fc-contextInfo")
+        self.assertNotIn(ESCAPED, browser.contents)
+
+    def test_xss_from_title(self):
+        # Does a script tag as title show up anywhere in the html?
+        # It might end up in the main menu.
+
+        # Create a folder and page with a hacked title.
+        setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
+        self.portal.invokeFactory("Folder", id="folder2", title=HACKED)
+        folder2 = self.portal.folder2
+        self.assertEqual(folder2.Title(), HACKED)
+        folder2.invokeFactory("Document", id="page2", title=HACKED)
+        page2 = folder2.page2
+        self.assertEqual(page2.Title(), HACKED)
+        transaction.commit()
+
+        # Check the output of this hacked case.
+        browser = self.get_browser()
+        # Note: the content of the normal page, or /folder_contents
+        # is checked in the plone.app.layout tests.
+        browser.open(folder2.absolute_url() + "/@@fc-contextInfo")
+        self.assert_not_hacked(browser)
