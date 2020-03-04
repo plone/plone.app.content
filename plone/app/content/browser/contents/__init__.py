@@ -26,6 +26,11 @@ from zope.interface import implementer
 import six
 import zope.deferredimport
 
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
+
 
 zope.deferredimport.deprecated(
     # remove in Plone 5.1
@@ -382,7 +387,7 @@ class ContextInfo(BrowserView):
         while not context == top_site:
             crumbs.append({
                 'id': context.getId(),
-                'title': utils.pretty_title_or_id(context, context)
+                'title': escape(utils.pretty_title_or_id(context, context))
             })
             context = utils.parent(context)
 
@@ -406,6 +411,8 @@ class ContextInfo(BrowserView):
                     val = val()
                 if key == 'path':
                     val = val[len(base_path):]
+                if key == 'Title':
+                    val = escape(val)
                 item[key] = val
 
         self.request.response.setHeader(
