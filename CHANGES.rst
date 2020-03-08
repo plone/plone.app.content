@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.1 (2020-03-09)
+------------------
+
+Bug fixes:
+
+
+- Integrate Plone20200121 hotfix: prevent XSS in title.
+  Part of https://plone.org/security/hotfix/20200121/xss-in-the-title-field-on-plone-5-0-and-higher
+  [maurits] (#3021)
+
+
 3.8.0 (2020-01-27)
 ------------------
 
