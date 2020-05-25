@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from mock import Mock
 from plone.app.content.browser import vocabulary
 from plone.app.content.browser.file import FileUploadView
 from plone.app.content.browser.query import QueryStringIndexOptions
@@ -26,7 +25,6 @@ from zope.interface import noLongerProvides
 from zope.publisher.browser import TestRequest
 
 import json
-import mock
 import os
 import transaction
 
@@ -36,6 +34,11 @@ try:
 except ImportError:
     def processQueue():
         pass
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 
 _dir = os.path.dirname(__file__)
@@ -388,7 +391,7 @@ class BrowserTest(unittest.TestCase):
         class DummyCatalogSource(object):
             def search_catalog(self, query):
                 querytext = query['SearchableText']['query']
-                return [Mock(id=querytext)]
+                return [mock.Mock(id=querytext)]
 
         widget = TextWidget(self.request)
         widget.context = self.portal
@@ -468,7 +471,7 @@ class BrowserTest(unittest.TestCase):
         class DummyCatalogSource(object):
             def search_catalog(self, query):
                 querytext = query['SearchableText']['query']
-                return [Mock(id=querytext)]
+                return [mock.Mock(id=querytext)]
 
         widget = TextWidget(self.request)
         widget.context = self.portal
@@ -503,7 +506,7 @@ class BrowserTest(unittest.TestCase):
         @implementer(ISource)
         class DummyCatalogSource(object):
             def search(self, query):
-                return [Mock(value=Mock(id=query))]
+                return [mock.Mock(value=mock.Mock(id=query))]
 
         widget = TextWidget(self.request)
         widget.context = self.portal
