@@ -568,6 +568,41 @@ class BrowserTest(unittest.TestCase):
         # portal_type is never translated
         self.assertEqual(data['results'][0]['portal_type'], u'Document')
 
+    def testGetMimeIcon(self):
+        """ Check if the returned icon is correct
+        """
+        self.request.form.update(
+            {
+                "name": "plone.app.vocabularies.Catalog",
+                "attributes": ["getMimeIcon"],
+            }
+        )
+        view = VocabularyView(self.portal, self.request)
+
+        # Check an empty file
+        self.portal.invokeFactory("File", id="my-file", title="My file")
+        obj = self.portal["my-file"]
+        obj.reindexObject()
+
+        self.assertListEqual(
+            json.loads(view())["results"], [{"getMimeIcon": None}]
+        )
+
+        # mock a pdf
+        obj.file = mock.Mock(contentType="application/pdf")
+        obj.reindexObject()
+        self.assertListEqual(
+            json.loads(view())["results"],
+            [{"getMimeIcon": "/plone/++resource++mimetype.icons/pdf.png"}],
+        )
+
+        # mock something unknown
+        obj.file = mock.Mock(contentType="x-foo/x-bar")
+        obj.reindexObject()
+        self.assertListEqual(
+            json.loads(view())["results"],
+            [{"getMimeIcon": "/plone/++resource++mimetype.icons/unknown.png"}],
+        )
 
 class FunctionalBrowserTest(unittest.TestCase):
 

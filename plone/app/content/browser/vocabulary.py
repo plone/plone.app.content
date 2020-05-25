@@ -15,6 +15,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
+from Products.MimetypesRegistry.MimeTypeItem import PREFIX
 from types import FunctionType
 from z3c.form.interfaces import ISubForm
 from zope.component import getUtility
@@ -250,9 +251,18 @@ class BaseVocabularyView(BrowserView):
                             getattr(vocab_item, 'mime_type', None))
                         if contenttype:
                             ctype = mtt.lookup(contenttype)
-                            item[key] = '/'.join([
-                                base_path,
-                                guess_icon_path(ctype[0])])
+                            if ctype:
+                                item[key] = '/'.join([
+                                    base_path,
+                                    guess_icon_path(ctype[0])])
+                            else:
+                                item[key] = "/".join(
+                                    [
+                                        base_path,
+                                        PREFIX.rstrip("/"),
+                                        "unknown.png",
+                                    ]
+                                )
                 items.append(item)
         else:
             items = [{'id': item.value,
