@@ -18,9 +18,13 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 import json
-import mock
 import transaction
 import unittest
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 
 class ContentsCopyTests(unittest.TestCase):

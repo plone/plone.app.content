@@ -37,7 +37,7 @@ setup(
         test=[
             'plone.app.contenttypes',
             'plone.app.testing',
-            'mock'
+            'mock;python_version<"3.3"'
         ]
     ),
     install_requires=[
