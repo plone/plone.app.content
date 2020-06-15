@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.3 (2020-06-16)
+------------------
+
+Bug fixes:
+
+
+- Do not break with unknown MIME types [ale-rt] (#197)
+- Require mock only on Python 2.7 [ale-rt] (#198)
+
+
 3.8.2 (2020-04-20)
 ------------------
 
