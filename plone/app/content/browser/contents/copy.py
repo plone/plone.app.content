@@ -45,9 +45,9 @@ class CopyActionView(ContentsBaseAction):
             oblist.append(m.dump())
         cp = (0, oblist)
         cp = _cb_encode(cp)
-        resp = self.request.response
-        resp.setCookie('__cp', cp, path='%s' % cookie_path(self.request))
-        self.request['__cp'] = cp
+        self.request.SESSION.set('__cp', cp)
+        # set cookie only for pat-structure actions
+        self.request.response.setCookie('__cp', '1', path='%s' % cookie_path(self.request))  # noqa: E501
 
     def __call__(self):
         self.oblist = []

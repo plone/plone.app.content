@@ -40,7 +40,7 @@ class PasteActionView(ContentsBaseAction):
         self.dest = parent.restrictedTraverse(parts[-1])
 
         try:
-            self.dest.manage_pasteObjects(self.request['__cp'])
+            self.dest.manage_pasteObjects(self.request.SESSION.get('__cp'))
         except ConflictError:
             raise
         except Unauthorized:
@@ -59,4 +59,5 @@ class PasteActionView(ContentsBaseAction):
             else:
                 raise e
 
+        self.request.SESSION.set('__cp', None)
         return self.message()
