@@ -1,0 +1,3 @@
+Fix i18n of Save and Cancel buttons and the constrain types select values in the folder_constraintypes_form view.
+This closes https://github.com/plone/Products.CMFPlone/issues/3127
+[vincentfretin]

@@ -6,6 +6,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
+from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.interface import invariant
@@ -28,19 +29,21 @@ DISABLED = 0
 ENABLED = 1
 
 
-ST = lambda key, txt, default: SimpleTerm(value=key,
-                                          title=_(txt, default=default))
+ST = lambda key, title: SimpleTerm(value=key, title=title)
+
+# reuse the translations that we had in atcontenttypes
+AMF = MessageFactory('atcontenttypes')
 
 possible_constrain_types = SimpleVocabulary([
     ST(ACQUIRE,
-       u'constraintypes_mode_acquire',
-       u'Use parent folder settings'),
+       AMF(u'constraintypes_acquire_label',
+         default=u'Use parent folder settings')),
     ST(DISABLED,
-       'label_constraintypes_allow_standard',
-       u'Use portal default'),
+       AMF(u'constraintypes_disable_label',
+         default=u'Use portal default')),
     ST(ENABLED,
-       u'label_constraintypes_specify_manually',
-       u'Select manually')
+       AMF(u'constraintypes_enable_label',
+         default=u'Select manually'))
 ])
 
 
@@ -155,7 +158,7 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         super(ConstrainsFormView, self).updateActions()
         self.actions['save'].addClass('context')
 
-    @button.buttonAndHandler(u'Save')
+    @button.buttonAndHandler(_('label_save', default=u"Save"), name='save')
     def handleSave(self, action):
         data, errors = self.extractData()
         if errors:
@@ -174,7 +177,7 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         contextURL = self.context.absolute_url()
         self.request.response.redirect(contextURL)
 
-    @button.buttonAndHandler(u'Cancel')
+    @button.buttonAndHandler(_('label_cancel', default=u"Cancel"), name='cancel')
     def handleCancel(self, action):
         contextURL = self.context.absolute_url()
         self.request.response.redirect(contextURL)
