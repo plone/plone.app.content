@@ -22,6 +22,7 @@ from zope.component import getUtilitiesFor
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 
 import six
 import zope.deferredimport
@@ -200,38 +201,12 @@ class FolderContentsView(BrowserView):
         return ignored
 
     def get_columns(self):
-        # Base set of columns
-        columns = {
-            'CreationDate': translate(_('Created on'), context=self.request),
-            'Creator': translate(_('Creator'), context=self.request),
-            'Description': translate(_('Description'), context=self.request),
-            'EffectiveDate': translate(_('Publication date'), context=self.request),  # noqa
-            'end': translate(_('End Date'), context=self.request),
-            'exclude_from_nav': translate(_('Excluded from navigation'), context=self.request),  # noqa
-            'ExpirationDate': translate(_('Expiration date'), context=self.request),  # noqa
-            'getObjSize': translate(_('Object Size'), context=self.request),
-            'id': translate(_('ID'), context=self.request),
-            'is_folderish': translate(_('Folder'), context=self.request),
-            'last_comment_date': translate(_('Last comment date'), context=self.request),  # noqa
-            'location': translate(_('Location'), context=self.request),
-            'ModificationDate': translate(_('Last modified'), context=self.request),  # noqa
-            'review_state': translate(_('Review state'), context=self.request),  # noqa
-            'start': translate(_('Start Date'), context=self.request),
-            'Subject': translate(_('Tags'), context=self.request),
-            'Type': translate(_('Type'), context=self.request),
-            'total_comments': translate(_('Total comments'), context=self.request),  # noqa
-        }
-        # Filter out ignored
-        columns = {
-            k: v for k, v in six.iteritems(columns)
-            if k not in self.ignored_columns
-        }
-        # Add in extra metadata columns
-        catalog = getToolByName(self.context, 'portal_catalog')
-        metadata_columns = [column for column in catalog.schema()]
-        for column in metadata_columns:
-            if column not in columns and column not in self.ignored_columns:
-                columns[column] = translate(_(column), context=self.request)
+        columns = {}
+        voc = getUtility(IVocabularyFactory, 'plone.app.vocabularies.MetadataFields')(self.context)
+        for term in voc:
+            if term.value not in self.ignored_columns:
+                columns[term.value] = translate(term.title, context=self.request)
+
         return columns
 
     def get_thumb_scale(self):
