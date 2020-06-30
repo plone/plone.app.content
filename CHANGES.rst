@@ -8,6 +8,20 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.4 (2020-06-30)
+------------------
+
+Bug fixes:
+
+
+- Fix i18n of Save and Cancel buttons and the constrain types select values in the folder_constraintypes_form view.
+  This closes https://github.com/plone/Products.CMFPlone/issues/3127
+  [vincentfretin] (#202)
+- Use new MetadataFields vocabulary from plone.app.vocabularies to get the translated columns in folder contents.
+  The mime_type column is now properly internationalized as "MIME Type".
+  [vincentfretin] (#203)
+
+
 3.8.3 (2020-06-16)
 ------------------
 

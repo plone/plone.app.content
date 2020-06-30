@@ -1,3 +1,0 @@
-Use new MetadataFields vocabulary from plone.app.vocabularies to get the translated columns in folder contents.
-The mime_type column is now properly internationalized as "MIME Type".
-[vincentfretin]
