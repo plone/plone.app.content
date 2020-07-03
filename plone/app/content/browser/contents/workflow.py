@@ -29,7 +29,7 @@ class WorkflowAction(object):
             'icon': 'lock',
             'url': self.context.absolute_url() + '/@@fc-workflow',
             'form': {
-                'title': _('Change workflow of selected items'),
+                'title': translate(_('Change workflow of selected items'), context=self.request),
                 'template': self.template(),
                 'dataUrl': self.context.absolute_url() + '/@@fc-workflow'
             }

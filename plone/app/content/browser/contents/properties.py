@@ -33,7 +33,7 @@ class PropertiesAction(object):
             'icon': 'edit',
             'url': self.context.absolute_url() + '/@@fc-properties',
             'form': {
-                'title': _('Modify properties on items'),
+                'title': translate(_('Modify properties on items'), context=self.request),
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Users' % (
                         base_vocabulary)
@@ -66,7 +66,8 @@ class PropertiesActionView(ContentsBaseAction):
             return self.json({
                 'languages': [{
                     'title': translate(
-                        _('label_no_change', default='No change')
+                        _('label_no_change', default='No change'),
+                        context=self.request,
                     ),
                     'value': ''
                 }] + languages
