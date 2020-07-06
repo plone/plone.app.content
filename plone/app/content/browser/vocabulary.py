@@ -121,6 +121,10 @@ class VocabLookupException(Exception):
 
 class BaseVocabularyView(BrowserView):
 
+    @property
+    def wftool(self):
+        return getToolByName(self.context, 'portal_workflow')
+
     def get_translated_ignored(self):
         return TRANSLATED_IGNORED
 
@@ -263,6 +267,15 @@ class BaseVocabularyView(BrowserView):
                                         "unknown.png",
                                     ]
                                 )
+
+                    if key == 'translated_review_state':
+                        val = getattr(vocab_item, 'review_state', None)
+                        title = self.wftool.getTitleForStateOnType(val, getattr(vocab_item, 'portal_type'))
+
+                        if isinstance(title, six.binary_type):
+                            title = title.decode("utf8")
+                        item[key] = translate(title, domain='plone', context=self.request)
+
                 items.append(item)
         else:
             items = [{'id': item.value,
