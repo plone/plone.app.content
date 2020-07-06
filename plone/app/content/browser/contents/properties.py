@@ -3,6 +3,7 @@ from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
+from plone.app.widgets.utils import get_datetime_options
 from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
@@ -13,6 +14,8 @@ from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
+
+import json
 
 
 @implementer(IStructureAction)
@@ -36,12 +39,12 @@ class PropertiesAction(object):
                 'title': translate(_('Modify properties on items'), context=self.request),
                 'template': self.template(
                     vocabulary_url='%splone.app.vocabularies.Users' % (
-                        base_vocabulary)
+                        base_vocabulary),
+                    pattern_options=json.dumps(get_datetime_options(self.request))
                 ),
                 'dataUrl': self.context.absolute_url() + '/@@fc-properties',
             }
         }
-
 
 class PropertiesActionView(ContentsBaseAction):
     success_msg = _(u'Successfully updated metadata')
