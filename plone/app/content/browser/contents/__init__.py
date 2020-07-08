@@ -280,6 +280,8 @@ class FolderContentsView(BrowserView):
         site_path = site.getPhysicalPath()
         context_path = self.context.getPhysicalPath()
         columns = self.get_columns()
+        columns['translated_review_state'] = translate(_('Review state'), context=self.request)
+
         options = {
             'vocabularyUrl': '%splone.app.vocabularies.Catalog' % (
                 base_vocabulary),
