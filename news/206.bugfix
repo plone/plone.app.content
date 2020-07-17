@@ -1,2 +1,0 @@
-Expose pickadate configuration in folder_contents properties dialog to properly localize the date. This fixes https://github.com/plone/Products.CMFPlone/issues/850
-[erral]

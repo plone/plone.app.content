@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.5 (2020-07-17)
+------------------
+
+Bug fixes:
+
+
+- Pass messages to the translate function to get them translated for folder_contents view
+  [erral] (#204)
+- Expose pickadate configuration in folder_contents properties dialog to properly localize the date. This fixes https://github.com/plone/Products.CMFPlone/issues/850
+  [erral] (#206)
+
+
 3.8.4 (2020-06-30)
 ------------------
 
