@@ -244,6 +244,10 @@ class FolderContentsView(BrowserView):
         thumb_scale_table = settings.thumb_scale_table
         return thumb_scale_table
 
+    def default_page_types(self):
+        registry = getUtility(IRegistry)
+        return registry.get('plone.default_page_types', [])
+
     @property
     def ignored_indexes(self):
         ignored = [
@@ -316,6 +320,7 @@ class FolderContentsView(BrowserView):
             'indexOptionsUrl': '%s/@@qsOptions' % base_url,
             'contextInfoUrl': '%s{path}/@@fc-contextInfo' % base_url,
             'setDefaultPageUrl': '%s{path}/@@fc-setDefaultPage' % base_url,
+            'defaultPageTypes': self.default_page_types(),
             'availableColumns': columns,
             'attributes': ['Title', 'path', 'getURL', 'getIcon', 'getMimeIcon', 'portal_type'] + list(columns.keys()),  # noqa
             'buttons': self.get_actions(),
