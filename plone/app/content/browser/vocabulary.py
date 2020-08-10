@@ -7,7 +7,6 @@ from plone.app.content.utils import json_loads
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
-from plone.app.widgets.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.supermodel.utils import mergedTaggedValueDict
 from Products.CMFCore.utils import getToolByName
@@ -31,6 +30,12 @@ import inspect
 import itertools
 import six
 
+# BBB the p.a.widgets import is the deprecated one, 
+# if the newer location is not found, try the old one
+try:
+    from plone.app.z3cform.interfaces import IFieldPermissionChecker
+except ImportError:
+    from plone.app.widgets.interfaces import IFieldPermissionChecker
 
 logger = getLogger(__name__)
 
