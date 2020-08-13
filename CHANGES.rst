@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.6 (2020-08-14)
+------------------
+
+Bug fixes:
+
+
+- Pass default_page_types to allow respecting default_pages_types.
+  [pbauer] (#147)
+
+
 3.8.5 (2020-07-17)
 ------------------
 
