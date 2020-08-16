@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.5.10 (2020-08-16)
+-------------------
+
+Bug fixes:
+
+
+- Pass default_page_types to allow respecting default_pages_types. (backport #208 to Plone 5.1.x)
+  [pbauer] (#209)
+
+
 3.5.9 (2020-03-08)
 ------------------
 

@@ -1,2 +1,0 @@
-Pass default_page_types to allow respecting default_pages_types. (backport #208 to Plone 5.1.x)
-[pbauer]
