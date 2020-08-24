@@ -12,7 +12,7 @@ from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
-from plone.app.widgets.interfaces import IFieldPermissionChecker
+from plone.app.z3cform.interfaces import IFieldPermissionChecker
 from six.moves import range
 from zope.component import getMultiAdapter
 from zope.component import provideAdapter
