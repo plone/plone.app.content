@@ -1,0 +1,3 @@
+Added ``folder_publish`` browser view.
+This replaces the ``folder_publish.cpy`` script from ``Products.CMFPlone``.
+[maurits]
