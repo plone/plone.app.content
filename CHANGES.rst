@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.7 (2020-09-26)
+------------------
+
+Bug fixes:
+
+
+- Fixed deprecation warning for ``IFieldPermissionChecker``.
+  [maurits] (#3130)
+
+
 3.8.6 (2020-08-14)
 ------------------
 
