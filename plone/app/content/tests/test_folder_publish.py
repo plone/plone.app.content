@@ -75,7 +75,7 @@ class TestContentPublishing(unittest.TestCase):
         for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, "review_state"), "published")
         self.assertEqual(self.request.response.getStatus(), 302)
-        self.assertEqual(self.request.response.getHeader("Location"), "view")
+        self.assertEqual(self.request.response.getHeader("Location"), self.folder.absolute_url())
 
     def test_publishing_subobjects_and_expire_them(self):
         paths = []
@@ -122,4 +122,4 @@ class TestContentPublishing(unittest.TestCase):
 
         self.request.form["orig_template"] = "https://attacker.com"
         self.folder_publish(workflow_action="publish", paths=paths)
-        self.assertEqual(self.request.response.getHeader("Location"), "view")
+        self.assertEqual(self.request.response.getHeader("Location"), self.folder.absolute_url())

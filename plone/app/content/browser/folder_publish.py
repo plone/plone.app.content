@@ -102,8 +102,9 @@ class FolderPublishView(BrowserView):
         return failure
 
     def redirect(self):
-        target = "view"
-        orig = self.request.get("orig_template", "")
-        if orig and getToolByName(self.context, "portal_url").isURLInPortal(orig):
-            target = orig
+        target = self.request.get("orig_template", "")
+        if target and not getToolByName(self.context, "portal_url").isURLInPortal(target):
+            target = ""
+        if not target:
+            target = self.context.absolute_url()
         self.request.response.redirect(target)
