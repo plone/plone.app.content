@@ -37,6 +37,13 @@
         permission="cmf.ModifyPortalContent"
         />
 
+    <browser:page
+        for="*"
+        name="folder_publish"
+        class=".folder_publish.FolderPublishView"
+        permission="cmf.ModifyPortalContent"
+        />
+
     <!-- Folder factories -->
     <browser:page
         for="*"
