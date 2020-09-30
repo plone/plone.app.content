@@ -59,6 +59,6 @@ setup(
         'zope.lifecycleevent',
         'zope.publisher',
         'zope.schema',
-        'Zope2',
+        'Zope',
     ],
 )
