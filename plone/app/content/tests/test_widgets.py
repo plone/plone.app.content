@@ -26,6 +26,7 @@ from zope.publisher.browser import TestRequest
 import json
 import os
 import transaction
+import unittest
 
 
 try:
@@ -36,12 +37,6 @@ except ImportError:
 
 
 _dir = os.path.dirname(__file__)
-
-try:
-    import unittest2 as unittest
-except ImportError:  # pragma: nocover
-    import unittest  # pragma: nocover
-    assert unittest  # pragma: nocover
 
 
 class PermissionChecker:
