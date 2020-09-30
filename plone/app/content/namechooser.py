@@ -9,7 +9,6 @@ from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
 
-import six
 import time
 
 

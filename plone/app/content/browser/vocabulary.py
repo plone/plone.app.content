@@ -28,7 +28,6 @@ from zope.security.interfaces import IPermission
 
 import inspect
 import itertools
-import six
 
 
 logger = getLogger(__name__)

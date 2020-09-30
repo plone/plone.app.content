@@ -4,7 +4,6 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.testing import zope
 from Products.CMFCore.utils import getToolByName
 from zope.configuration import xmlconfig
 from zope.interface import implementer

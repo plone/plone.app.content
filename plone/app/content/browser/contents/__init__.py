@@ -23,7 +23,6 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-import six
 import zope.deferredimport
 
 try:
