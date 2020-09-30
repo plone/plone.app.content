@@ -1,13 +1,10 @@
-from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 import transaction
 import unittest
 
-if HAS_AT:
-    from plone.app.content.testing import PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
 
 FOLDER = {'id': 'testfolder',
           'title': 'Test Folder',
@@ -132,10 +129,3 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         view = folder.restrictedTraverse('@@select_default_page')()
         self.assertTrue('id="testdoc"' not in view)
         self.assertTrue('id="testnews"' in view)
-
-
-
-if HAS_AT:
-    class SelectDefaultPageATTestCase(SelectDefaultPageDXTestCase):
-
-        layer = PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING

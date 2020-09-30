@@ -3,7 +3,7 @@ from plone.batching.browser import BatchView
 from plone.memoize import instance
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from six.moves.urllib.parse import quote_plus
+from urllib.parse import quote_plus
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query

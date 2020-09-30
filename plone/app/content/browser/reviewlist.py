@@ -6,7 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import isExpired
 from Products.CMFPlone.utils import safe_unicode
-from six.moves.urllib.parse import quote_plus
+from urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n import translate
@@ -54,8 +54,6 @@ class ReviewListTable:
         portal_url = getToolByName(self.context, 'portal_url')
         plone_view = getMultiAdapter((self.context, self.request),
                                      name='plone')
-        plone_layout = getMultiAdapter((self.context, self.request),
-                                       name='plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_types = getToolByName(self.context, 'portal_types')
         portal_membership = getToolByName(self.context, 'portal_membership')

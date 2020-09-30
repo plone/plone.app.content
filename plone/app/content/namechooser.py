@@ -4,12 +4,10 @@ from plone.app.content.interfaces import INameFromTitle
 from plone.i18n.normalizer import FILENAME_REGEX
 from plone.i18n.normalizer.interfaces import IURLNormalizer
 from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
-from zExceptions import BadRequest
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
 
-import six
 import time
 
 
@@ -106,19 +104,9 @@ class NormalizingNameChooser:
                     contained_by=parent
                 )
 
-            # Function in CMFPlone added in 5.1.4/5,
-            # which replaces the skin script that will be removed in 5.2.
-            try:
-                from Products.CMFPlone.utils import check_id
-                return check_id(
-                    obj, newid, required=required, contained_by=parent)
-            except ImportError:
-                pass
+            from Products.CMFPlone.utils import check_id
 
-            # fallback to OFS
-            try:
-                parent._checkId(newid)
-            except BadRequest:
-                return True
+            return check_id(
+                obj, newid, required=required, contained_by=parent)
 
         return do_Plone_check

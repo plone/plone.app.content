@@ -50,10 +50,8 @@ setup(
         'plone.app.vocabularies>4.1.2',
         'setuptools',
         'simplejson',
-        'six',
         'zope.component',
         'zope.container',
-        'zope.deferredimport',
         'zope.event',
         'zope.i18n',
         'zope.i18nmessageid',
@@ -61,6 +59,6 @@ setup(
         'zope.lifecycleevent',
         'zope.publisher',
         'zope.schema',
-        'Zope2',
+        'Zope',
     ],
 )

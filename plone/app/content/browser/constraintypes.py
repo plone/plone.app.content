@@ -28,7 +28,9 @@ DISABLED = 0
 ENABLED = 1
 
 
-ST = lambda key, title: SimpleTerm(value=key, title=title)
+def ST(key, title):
+    return SimpleTerm(value=key, title=title)
+
 
 # reuse the translations that we had in atcontenttypes
 AMF = MessageFactory('atcontenttypes')

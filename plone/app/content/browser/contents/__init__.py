@@ -23,31 +23,7 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-import six
-import zope.deferredimport
-
-try:
-    from html import escape
-except ImportError:
-    from cgi import escape
-
-
-zope.deferredimport.deprecated(
-    # remove in Plone 5.1
-    'Import from plone.app.content.browser.content.defaultpage instead',
-    DefaultPage='plone.app.content.browser.content.defaultpage:SetDefaultPageActionView',  # noqa
-)
-zope.deferredimport.deprecated(
-    # remove in Plone 5.1
-    'Import from plone.app.content.browser.content.rearrange instead',
-    ItemOrder='plone.app.content.browser.content.rearrange:ItemOrderActionView',  # noqa
-    Rearrange='plone.app.content.browser.content.rearrange:RearrangeOrderActionView',  # noqa
-)
-
-zope.deferredimport.deprecated(
-    "Import from Products.CMFPlone.utils instead",
-    get_top_site_from_url='Products.CMFPlone:utils.get_top_site_from_url',
-)
+from html import escape
 
 
 class ContentsBaseAction(BrowserView):

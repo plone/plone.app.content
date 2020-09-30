@@ -4,7 +4,6 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from plone.testing import z2
 from Products.CMFCore.utils import getToolByName
 from zope.configuration import xmlconfig
 from zope.interface import implementer
@@ -14,12 +13,6 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 import doctest
-
-try:
-    import Products.Archetypes
-    HAS_AT= True
-except ImportError:
-    HAS_AT = False
 
 
 @implementer(IVocabularyFactory)
@@ -121,22 +114,6 @@ class NonAsciiLayer(PloneSandboxLayer):
         applyProfile(portal, 'plone.app.content.tests:non-ascii-workflow')
 
 
-if HAS_AT:
-    class PloneAppContentAT(PloneAppContent):
-
-        def setUpZope(self, app, configurationContext):
-            super().setUpZope(app, configurationContext)
-            import Products.ATContentTypes
-            xmlconfig.file('configure.zcml',
-                           Products.ATContentTypes,
-                           context=configurationContext)
-            z2.installProduct(app, 'Products.ATContentTypes')
-
-        def setUpPloneSite(self, portal):
-            super().setUpPloneSite(portal)
-            self.applyProfile(portal, 'Products.ATContentTypes:default')
-
-
 PLONE_APP_CONTENT_FIXTURE = PloneAppContent()
 PLONE_APP_CONTENT_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_FIXTURE, ),
@@ -160,17 +137,6 @@ PLONE_APP_CONTENT_NON_ASCII_LAYER = NonAsciiLayer()
 PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING = IntegrationTesting(
     bases=(PLONE_APP_CONTENT_NON_ASCII_LAYER, ),
     name="PloneAppContentNonAscii:Integration")
-
-
-if HAS_AT:
-    # AT test layers
-    PLONE_APP_CONTENT_AT_FIXTURE = PloneAppContentAT()
-    PLONE_APP_CONTENT_AT_INTEGRATION_TESTING = IntegrationTesting(
-        bases=(PLONE_APP_CONTENT_AT_FIXTURE, ),
-        name="PloneAppContentAT:Integration")
-    PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING = FunctionalTesting(
-        bases=(PLONE_APP_CONTENT_AT_FIXTURE, ),
-        name="PloneAppContentAT:Functional")
 
 
 optionflags = (

@@ -1,11 +1,10 @@
-from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import login
 from plone.app.testing import logout
 from plone.app.testing import setRoles
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from plone.locking.interfaces import ILockable
 from zExceptions import Unauthorized
 from z3c.form.interfaces import IFormLayer
@@ -15,8 +14,7 @@ from zope.interface import alsoProvides
 import transaction
 import unittest
 
-if HAS_AT:
-    from plone.app.content.testing import PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING
+
 
 class ActionsDXTestCase(unittest.TestCase):
 
@@ -446,9 +444,3 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertIn('copy_of_d1', folder.objectIds())
         self.assertIn('copy2_of_d1', folder.objectIds())
         self.assertIn('Item(s) pasted.', self.browser.contents)
-
-
-if HAS_AT:
-    class ActionsATTestCase(ActionsDXTestCase):
-
-        layer = PLONE_APP_CONTENT_AT_FUNCTIONAL_TESTING

@@ -60,7 +60,7 @@
                        value="Save"
                        i18n:attributes="value label_save;"
                        />
-                <input 
+                <input
                        type="submit"
                        name="form.buttons.Cancel"
                        value="Cancel"

@@ -1,5 +1,4 @@
 from DateTime import DateTime
-from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
@@ -11,7 +10,7 @@ from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from Testing.makerequest import makerequest
 from transaction import commit
 from zope.annotation.interfaces import IAttributeAnnotatable
@@ -20,9 +19,6 @@ from zope.publisher.browser import TestRequest
 
 import json
 import unittest
-
-if HAS_AT:
-    from plone.app.content.testing import PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 
 
 class BaseTest(unittest.TestCase):
@@ -116,56 +112,6 @@ class PropertiesDXTest(DXBaseTest):
             ('one', 'two')
         )
 
-if HAS_AT:
-    class PropertiesArchetypesTest(BaseTest):
-        layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
-
-        def testExcludeFromNav(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['exclude-from-nav'] = 'yes'
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(self.portal.page.getExcludeFromNav(), True)
-
-        def testEffective(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['effectiveDate'] = '1999/01/01 09:00'
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(
-                DateTime(self.portal.page.EffectiveDate()).toZone('UTC'),
-                DateTime('1999/01/01 09:00').toZone('UTC'))
-
-        def testExpires(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['expirationDate'] = '1999/01/01 09:00'
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(
-                DateTime(self.portal.page.ExpirationDate()).toZone('UTC'),
-                DateTime('1999/01/01 09:00').toZone('UTC'))
-
-        def testRights(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['copyright'] = 'foobar'
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(self.portal.page.Rights(), 'foobar')
-
-        def testContributors(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['contributors'] = self.userList
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(self.portal.page.Contributors(), ('one', 'two'))
-
-        def testCreators(self):
-            from plone.app.content.browser.contents.properties import PropertiesActionView  # noqa
-            self.request.form['creators'] = self.userList
-            view = PropertiesActionView(self.portal.page, self.request)
-            view()
-            self.assertEqual(self.portal.page.Creators(), ('one', 'two'))
-
 
 class WorkflowTest(BaseTest):
 
@@ -193,7 +139,7 @@ class WorkflowTest(BaseTest):
         pc = getToolByName(self.portal, "portal_catalog")
         # i need to call it, to populate catalog indexes
         pc()
-        self.assertEquals(
+        self.assertEqual(
             pc.uniqueValuesFor('effective'),
             (default_effective_index,))
         view = WorkflowActionView(self.portal.page, self.request)
@@ -207,7 +153,7 @@ class WorkflowTest(BaseTest):
         effective_index = self.convertDateTimeToIndexRepr(
             self.portal.page.effective_date
         )
-        self.assertEquals(
+        self.assertEqual(
             pc.uniqueValuesFor('effective'),
             (effective_index,))
 
@@ -368,12 +314,6 @@ class DeleteDXTest(BaseTest):
         # the root page exists, the nested one is gone
         self.assertTrue(p1 in self.portal)
         self.assertFalse(p1 in self.portal[f1])
-
-
-if HAS_AT:
-    class DeleteATTest(DeleteDXTest):
-
-        layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 
 
 class RearrangeDXTest(BaseTest):
@@ -543,11 +483,6 @@ class RearrangeDXTest(BaseTest):
                 ('page_2', 'Page 2'),
             ]
         )
-
-if HAS_AT:
-    class RearrangeATTest(RearrangeDXTest):
-
-        layer = PLONE_APP_CONTENT_AT_INTEGRATION_TESTING
 
 
 class FolderFactoriesTest(unittest.TestCase):

@@ -1,6 +1,5 @@
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
-from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
@@ -59,7 +58,7 @@ class TestContentPublishing(unittest.TestCase):
         return view(**kwargs)
 
     def test_initial_state(self):
-        # Depending on Plone version, dexterity, archetypes,
+        # Depending on the Plone version,
         # the review state may be visible or private.  Check which one it is.
         for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, "review_state"), "private")
