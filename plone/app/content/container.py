@@ -7,8 +7,6 @@ from zope.container.contained import Contained
 from zope.container.interfaces import IContainer
 from zope.interface import implementer
 
-import six
-
 
 @implementer(IContainer)
 class OFSContainer:
@@ -38,8 +36,6 @@ class OFSContainer:
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
-        if six.PY2 and isinstance(name, str):
-            name = name.encode('ascii')  # may raise if there's a bugus id
         self._setObject(name, obj)
 
     def __delitem__(self, name):

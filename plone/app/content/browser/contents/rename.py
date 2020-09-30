@@ -16,7 +16,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 
 
 import logging
-import six
 import transaction
 
 
@@ -77,8 +76,6 @@ class RenameActionView(ContentsBaseAction):
             sp = transaction.savepoint(optimistic=True)
 
             newid = self.request.form['newid_' + index]
-            if six.PY2:
-                newid = newid.encode('utf8')
             newtitle = self.request.form['newtitle_' + index]
             try:
                 obid = obj.getId()
@@ -106,8 +103,6 @@ class RenameActionView(ContentsBaseAction):
                 raise
             except Exception as e:
                 sp.rollback()
-                if six.PY2:
-                    title = title.decode('utf8')
                 logger.error('Error renaming "{title}": "{exception}"'
                     .format(title=title, exception=e))
                 self.errors.append(_('Error renaming ${title}', mapping={

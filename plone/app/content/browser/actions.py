@@ -22,7 +22,6 @@ from zope.event import notify
 from zope.interface import Interface
 from zope.lifecycleevent import ObjectModifiedEvent
 
-import six
 import transaction
 
 
@@ -190,8 +189,6 @@ class ObjectCutView(LockingBase):
 
     @property
     def title(self):
-        if six.PY2:
-            return self.context.Title().decode('utf8')
         return self.context.Title()
 
     @property
