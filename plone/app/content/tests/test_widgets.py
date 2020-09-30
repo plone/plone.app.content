@@ -12,6 +12,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
+from Products.CMFCore.indexing import processQueue
 from unittest import mock
 from zope.component import getMultiAdapter
 from zope.component import provideAdapter
@@ -27,13 +28,6 @@ import json
 import os
 import transaction
 import unittest
-
-
-try:
-    from Products.CMFCore.indexing import processQueue
-except ImportError:
-    def processQueue():
-        pass
 
 
 _dir = os.path.dirname(__file__)
