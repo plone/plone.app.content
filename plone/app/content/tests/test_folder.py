@@ -139,7 +139,7 @@ class WorkflowTest(BaseTest):
         pc = getToolByName(self.portal, "portal_catalog")
         # i need to call it, to populate catalog indexes
         pc()
-        self.assertEquals(
+        self.assertEqual(
             pc.uniqueValuesFor('effective'),
             (default_effective_index,))
         view = WorkflowActionView(self.portal.page, self.request)
@@ -153,7 +153,7 @@ class WorkflowTest(BaseTest):
         effective_index = self.convertDateTimeToIndexRepr(
             self.portal.page.effective_date
         )
-        self.assertEquals(
+        self.assertEqual(
             pc.uniqueValuesFor('effective'),
             (effective_index,))
 
