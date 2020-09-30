@@ -25,7 +25,7 @@ def _bool(val):
 def _tus_int(val):
     try:
         return int(val)
-    except:
+    except (ValueError, TypeError, AttributeError):
         return 60 * 60  # default here...
 
 
