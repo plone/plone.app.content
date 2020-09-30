@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.content.testing import optionflags
 from plone.testing import layered

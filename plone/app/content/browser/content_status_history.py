@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import isExpired
@@ -17,22 +16,22 @@ class IContentStatusHistoryDates(Interface):
     """
 
     effective_date = Datetime(
-        title=_(u"label_effective_date", default=u"Publishing Date"),
+        title=_("label_effective_date", default="Publishing Date"),
         description=_(
-            u"help_effective_date",
-            default=u"The date when the item will be published. If no "
-            u"date is selected the item will be published immediately.",
+            "help_effective_date",
+            default="The date when the item will be published. If no "
+            "date is selected the item will be published immediately.",
         ),
         required=False,
     )
 
     expiration_date = Datetime(
-        title=_(u"label_expiration_date", default=u"Expiration Date"),
+        title=_("label_expiration_date", default="Expiration Date"),
         description=_(
-            u"help_expiration_date",
-            default=u"The date when the item expires. This will automatically "
-            u"make the item invisible for others at the given date. "
-            u"If no date is chosen, it will never expire.",
+            "help_expiration_date",
+            default="The date when the item expires. This will automatically "
+            "make the item invisible for others at the given date. "
+            "If no date is chosen, it will never expire.",
         ),
         required=False,
     )
@@ -56,7 +55,7 @@ class ContentStatusHistoryView(BrowserView):
     template = ViewPageTemplateFile('templates/content_status_history.pt')
 
     def __init__(self, context, request):
-        super(ContentStatusHistoryView, self).__init__(context, request)
+        super().__init__(context, request)
 
         self.dates_form = ContentStatusHistoryDatesForm(context, request)
         self.dates_form.updateWidgets()
@@ -100,7 +99,7 @@ class ContentStatusHistoryView(BrowserView):
             self.validate(workflow_action=workflow_action, paths=paths)
             if self.errors:
                 self.plone_utils.addPortalMessage(
-                    _(u'Please correct the indicated errors.'), 'error'
+                    _('Please correct the indicated errors.'), 'error'
                 )
                 return self.template()
 
@@ -127,11 +126,11 @@ class ContentStatusHistoryView(BrowserView):
     def validate(self, workflow_action=None, paths=[]):
         if workflow_action is None:
             self.errors['workflow_action'] = _(
-                u'You must select a publishing action.'
+                'You must select a publishing action.'
             )
 
         if not paths:
-            self.errors['paths'] = _(u'You must select content to change.')
+            self.errors['paths'] = _('You must select content to change.')
             # If there are no paths, it's mostly a mistake
             # Set paths using orgi_paths, otherwise users are getting confused
             orig_paths = self.request.get('orig_paths')

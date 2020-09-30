@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from plone.app.content.interfaces import INameFromTitle
@@ -18,7 +17,7 @@ ATTEMPTS = 100
 
 
 @implementer(INameChooser)
-class NormalizingNameChooser(object):
+class NormalizingNameChooser:
     """A name chooser for a Zope object manager.
 
     If the object is adaptable to or provides INameFromTitle, use the
@@ -44,8 +43,8 @@ class NormalizingNameChooser(object):
             if not name:
                 name = obj.__class__.__name__
 
-        if not isinstance(name, six.text_type):
-            name = six.text_type(name, 'utf-8')
+        if not isinstance(name, str):
+            name = str(name, 'utf-8')
             #name = name.encode('utf-8')
 
         request = getattr(obj.__of__(container), 'REQUEST', None)
@@ -80,7 +79,7 @@ class NormalizingNameChooser(object):
             idx += 1
 
         # give one last attempt using the current date time before giving up
-        new_name = "%s-%s%s" % (name, time.time(), ext)
+        new_name = f"{name}-{time.time()}{ext}"
         if not check_id(new_name, required=1):
             return new_name
 

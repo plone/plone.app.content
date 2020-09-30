@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.batching import Batch
 from plone.batching.browser import BatchView
 from plone.memoize import instance
@@ -16,12 +15,12 @@ class TableBatchView(BatchView):
 
     def make_link(self, pagenumber):
         batchlinkparams = self.request.form.copy()
-        return '%s?%s' % (self.request.ACTUAL_URL,
+        return '{}?{}'.format(self.request.ACTUAL_URL,
                           make_query(batchlinkparams,
                                      {'pagenumber': pagenumber}))
 
 
-class Table(object):
+class Table:
     """
     The table renders a table with sortable columns etc.
 
@@ -63,8 +62,8 @@ class Table(object):
     def msg_select_item(self, item):
         title_or_id = (item.get('title_or_id') or item.get('title') or
                        item.get('Title') or item.get('id') or item['getId'])
-        return _(u'checkbox_select_item',
-                 default=u"Select ${title}",
+        return _('checkbox_select_item',
+                 default="Select ${title}",
                  mapping={'title': safe_unicode(title_or_id)})
 
     @property
@@ -140,7 +139,7 @@ class Table(object):
 
     @property
     def selectnone_url(self):
-        base = self.view_url + '?pagenumber=%s&pagesize=%s' % (
+        base = self.view_url + '?pagenumber={}&pagesize={}'.format(
             self.pagenumber, self.pagesize)
         if self.show_all:
             base += '&show_all=true'

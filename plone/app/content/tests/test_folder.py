@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
@@ -65,7 +64,7 @@ class DXBaseTest(BaseTest):
         if 'Document' not in portal_types.objectIds():
             fti = DexterityFTI('Document')
             portal_types._setObject('Document', fti)
-        super(DXBaseTest, self).setUp()
+        super().setUp()
 
 
 class PropertiesDXTest(DXBaseTest):
@@ -185,7 +184,7 @@ class WorkflowTest(BaseTest):
     def testStateChange(self):
         from plone.app.content.browser.contents.workflow import WorkflowActionView  # noqa
         self.request.form['transition'] = 'publish'
-        default_effective = DateTime('1969/12/31 00:00:00 {0}'.format(
+        default_effective = DateTime('1969/12/31 00:00:00 {}'.format(
             DateTime().timezone()
         ))
         default_effective_index = self.convertDateTimeToIndexRepr(
@@ -359,9 +358,9 @@ class DeleteDXTest(BaseTest):
         object_uuid = IUUID(self.portal[f1][p1])
         for req in [self.request, request2]:
             req.form = {
-                'selection': '["{}"]'.format(object_uuid),
+                'selection': f'["{object_uuid}"]',
                 '_authenticator': createToken(),
-                'folder': '/{}/'.format(f1)
+                'folder': f'/{f1}/'
             }
             view = DeleteActionView(self.portal, req)
             view()
@@ -395,22 +394,22 @@ class RearrangeDXTest(BaseTest):
         self.bf = self.portal.basefolder
         self.bf.reindexObject()
         for idx in range(0, 5):
-            newid = "f{0:}".format(idx)
+            newid = f"f{idx}"
             self.bf.invokeFactory(
                 'Folder',
                 id=newid,
                 # title in reverse order
-                title="Folder {0:}".format(4-idx)
+                title="Folder {}".format(4-idx)
             )
             self.bf[newid].reindexObject()
 
         # create 3 documents in plone root
         for idx in range(0, 3):
-            _id = "page_{}".format(idx)
+            _id = f"page_{idx}"
             self.portal.invokeFactory(
                 'Document',
                 id=_id,
-                title="Page {}".format(idx)
+                title=f"Page {idx}"
             )
             self.portal[_id].reindexObject()
 

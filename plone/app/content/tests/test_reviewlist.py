@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
@@ -53,7 +52,7 @@ class ReviewListTestCase(unittest.TestCase):
         the review list
         '''
         self.browser.addHeader('Authorization',
-                               'Basic %s:%s' % ('reviewer', 'secret'))
+                               'Basic {}:{}'.format('reviewer', 'secret'))
         self.browser.open('http://nohost/plone/full_review_list')
         self.assertTrue('Full review list:' in self.browser.contents)
 
@@ -68,7 +67,7 @@ class ReviewListTestCase(unittest.TestCase):
         transaction.commit()
 
         self.browser.addHeader('Authorization',
-                               'Basic %s:%s' % ('reviewer', 'secret'))
+                               'Basic {}:{}'.format('reviewer', 'secret'))
         self.browser.open('http://nohost/plone/full_review_list')
         self.assertTrue('Full review list:' in self.browser.contents)
         # test if the table with review items contains an entry for testdoc

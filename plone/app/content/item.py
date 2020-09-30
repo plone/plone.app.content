@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
 from plone.app.content.interfaces import IReindexOnModify

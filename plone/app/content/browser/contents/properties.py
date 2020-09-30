@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
@@ -19,7 +18,7 @@ import json
 
 
 @implementer(IStructureAction)
-class PropertiesAction(object):
+class PropertiesAction:
 
     template = ViewPageTemplateFile('templates/properties.pt')
     order = 8
@@ -47,8 +46,8 @@ class PropertiesAction(object):
         }
 
 class PropertiesActionView(ContentsBaseAction):
-    success_msg = _(u'Successfully updated metadata')
-    failure_msg = _(u'Failure updating metadata')
+    success_msg = _('Successfully updated metadata')
+    failure_msg = _('Failure updating metadata')
     required_obj_permission = 'Modify portal content'
 
     def __call__(self):
@@ -91,7 +90,7 @@ class PropertiesActionView(ContentsBaseAction):
         self.exclude = self.request.form.get('exclude-from-nav')
         self.language = self.request.form.get('language')
         self.recurse = self.request.form.get('recurse', 'no') == 'yes'
-        return super(PropertiesActionView, self).__call__()
+        return super().__call__()
 
     def dx_action(self, obj):
         if self.effectiveDate and hasattr(obj, 'effective_date'):

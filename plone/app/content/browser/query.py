@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.Five import BrowserView
 from plone.app.querystring.interfaces import IQuerystringRegistryReader
 from plone.registry.interfaces import IRegistry

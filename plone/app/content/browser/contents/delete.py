@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
@@ -15,7 +14,7 @@ import json
 
 
 @implementer(IStructureAction)
-class DeleteAction(object):
+class DeleteAction:
 
     template = ViewPageTemplateFile('templates/delete.pt')
     order = 4
@@ -62,7 +61,7 @@ class DeleteActionView(ContentsBaseAction):
                 'html': confirm_view(items)
             })
         else:
-            return super(DeleteActionView, self).__call__()
+            return super().__call__()
 
     def action(self, obj):
         parent = obj.aq_inner.aq_parent
@@ -74,13 +73,13 @@ class DeleteActionView(ContentsBaseAction):
             lock_info = None
 
         if lock_info is not None and lock_info.is_locked():
-            self.errors.append(_(u'${title} is locked and cannot be deleted.',
-                                 mapping={u'title': title}))
+            self.errors.append(_('${title} is locked and cannot be deleted.',
+                                 mapping={'title': title}))
             return
         else:
             try:
                 parent.manage_delObjects(obj.getId())
             except Unauthorized:
                 self.errors.append(
-                    _(u'You are not authorized to delete ${title}.',
-                        mapping={u'title': self.objectTitle(self.dest)}))
+                    _('You are not authorized to delete ${title}.',
+                        mapping={'title': self.objectTitle(self.dest)}))

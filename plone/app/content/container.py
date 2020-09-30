@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
@@ -12,7 +11,7 @@ import six
 
 
 @implementer(IContainer)
-class OFSContainer(object):
+class OFSContainer:
     """A folder that's also a container.
 
     Borrowed in part from megrok.five.
@@ -39,7 +38,7 @@ class OFSContainer(object):
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
-        if six.PY2 and isinstance(name, six.text_type):
+        if six.PY2 and isinstance(name, str):
             name = name.encode('ascii')  # may raise if there's a bugus id
         self._setObject(name, obj)
 

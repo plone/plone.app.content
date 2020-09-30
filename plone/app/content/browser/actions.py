@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -69,7 +68,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         })
         return len(results)
 
-    @button.buttonAndHandler(_(u'Delete'), name='Delete')
+    @button.buttonAndHandler(_('Delete'), name='Delete')
     def handle_delete(self, action):
         title = safe_unicode(self.context.Title())
         parent = aq_parent(aq_inner(self.context))
@@ -79,17 +78,17 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         if self.context.aq_chain == self.context.aq_inner.aq_chain:
             parent.manage_delObjects(self.context.getId())
             IStatusMessage(self.request).add(
-                _(u'${title} has been deleted.', mapping={u'title': title}))
+                _('${title} has been deleted.', mapping={'title': title}))
         else:
             IStatusMessage(self.request).add(
-                _(u'"${title}" has already been deleted',
-                  mapping={u'title': title})
+                _('"${title}" has already been deleted',
+                  mapping={'title': title})
             )
 
         self.request.response.redirect(parent.absolute_url())
 
     @button.buttonAndHandler(
-        _(u'label_cancel', default=u'Cancel'), name='Cancel')
+        _('label_cancel', default='Cancel'), name='Cancel')
     def handle_cancel(self, action):
         target = self.view_url()
         return self.request.response.redirect(target)
@@ -103,15 +102,15 @@ def valid_id(self):
 
 class IRenameForm(Interface):
     new_id = schema.ASCIILine(
-        title=_(u'label_new_short_name', default=u'New Short Name'),
-        description=_(u'help_short_name_url', default=
-                      u'Short name is the part that shows up in the URL ' +
-                      u'of the item.'),
+        title=_('label_new_short_name', default='New Short Name'),
+        description=_('help_short_name_url', default=
+                      'Short name is the part that shows up in the URL ' +
+                      'of the item.'),
         constraint=valid_id,
     )
 
     new_title = schema.TextLine(
-        title=_(u'label_new_title', default=u'New Title'),
+        title=_('label_new_title', default='New Title'),
     )
 
 default_new_id = ComputedWidgetAttribute(
@@ -128,17 +127,17 @@ class RenameForm(form.Form):
     enableCSRFProtection = True
     ignoreContext = True
 
-    label = _(u'heading_rename_item', default=u'Rename item')
-    description = _(u'description_rename_item', default=
-                    u'Each item has a Short Name and a Title, which you can ' +
-                    u'change by entering the new details below.')
+    label = _('heading_rename_item', default='Rename item')
+    description = _('description_rename_item', default=
+                    'Each item has a Short Name and a Title, which you can ' +
+                    'change by entering the new details below.')
 
     def view_url(self):
         context_state = getMultiAdapter(
             (self.context, self.request), name='plone_context_state')
         return context_state.view_url()
 
-    @button.buttonAndHandler(_(u'Rename'), name='Rename')
+    @button.buttonAndHandler(_('Rename'), name='Rename')
     def handle_rename(self, action):
         data, errors = self.extractData()
         if errors:
@@ -147,8 +146,8 @@ class RenameForm(form.Form):
         parent = aq_parent(aq_inner(self.context))
         sm = getSecurityManager()
         if not sm.checkPermission('Copy or Move', parent):
-            raise Unauthorized(_(u'Permission denied to rename ${title}.',
-                                 mapping={u'title': self.context.title}))
+            raise Unauthorized(_('Permission denied to rename ${title}.',
+                                 mapping={'title': self.context.title}))
 
         # Requires cmf.ModifyPortalContent permission
         self.context.title = data['new_title']
@@ -176,12 +175,12 @@ class RenameForm(form.Form):
         notify(ObjectModifiedEvent(self.context))
 
         IStatusMessage(self.request).add(
-            _(u"Renamed '${oldid}' to '${newid}'.", mapping={
-                u'oldid': oldid, u'newid': newid}))
+            _("Renamed '${oldid}' to '${newid}'.", mapping={
+                'oldid': oldid, 'newid': newid}))
 
         self.request.response.redirect(self.view_url())
 
-    @button.buttonAndHandler(_(u'label_cancel', default=u'Cancel'),
+    @button.buttonAndHandler(_('label_cancel', default='Cancel'),
                              name='Cancel')
     def handle_cancel(self, action):
         self.request.response.redirect(self.view_url())
@@ -223,14 +222,14 @@ class ObjectCutView(LockingBase):
     def do_action(self):
         if self.is_locked:
             return self.do_redirect(self.view_url,
-                                    _(u'${title} is locked and cannot be cut.',
+                                    _('${title} is locked and cannot be cut.',
                                         mapping={'title': self.title, }))
 
         try:
             cp = self.parent.manage_cutObjects(self.context.getId())
         except CopyError:
             return self.do_redirect(self.view_url,
-                                    _(u'${title} is not moveable.',
+                                    _('${title} is not moveable.',
                                         mapping={'title': self.title}))
         self.request.response.setCookie(
             '__cp', cp, path=self.request['BASEPATH1'] or '/')
@@ -238,7 +237,7 @@ class ObjectCutView(LockingBase):
 
         return self.do_redirect(
             self.view_url,
-            _(u'${title} cut.', mapping={'title': self.title}),
+            _('${title} cut.', mapping={'title': self.title}),
             'info'
         )
 
@@ -259,14 +258,14 @@ class ObjectCopyView(ObjectCutView):
             cp = self.parent.manage_copyObjects(self.context.getId())
         except CopyError:
             return self.do_redirect(self.view_url,
-                                    _(u'${title} is not copyable.',
+                                    _('${title} is not copyable.',
                                         mapping={'title': self.title}))
         self.request.response.setCookie(
             '__cp', cp, path=self.request['BASEPATH1'] or '/')
         self.request['__cp'] = cp
 
         return self.do_redirect(self.view_url,
-                                _(u'${title} copied.',
+                                _('${title} copied.',
                                     mapping={'title': self.title}))
 
 
@@ -287,7 +286,7 @@ class ObjectPasteView(ObjectCutView):
         if not self.context.cb_dataValid():
             return self.do_redirect(
                 self.canonical_object_url,
-                _(u'Copy or cut one or more items to paste.'),
+                _('Copy or cut one or more items to paste.'),
                 'error'
             )
         try:
@@ -297,7 +296,7 @@ class ObjectPasteView(ObjectCutView):
         except Unauthorized as e:
             self.do_redirect(
                 self.canonical_object_url,
-                _(u'You are not authorized to paste here.'),
+                _('You are not authorized to paste here.'),
                 e
             )
         except CopyError as e:
@@ -305,9 +304,9 @@ class ObjectPasteView(ObjectCutView):
             if 'Item Not Found' in error_string:
                 return self.do_redirect(
                     self.canonical_object_url,
-                    _(u'The item you are trying to paste could not be found. '
-                      u'It may have been moved or deleted after you copied or '
-                      u'cut it.'),
+                    _('The item you are trying to paste could not be found. '
+                      'It may have been moved or deleted after you copied or '
+                      'cut it.'),
                     'error',
                 )
         except Exception as e:
@@ -315,4 +314,4 @@ class ObjectPasteView(ObjectCutView):
                 self.do_redirect(self.canonical_object_url, e, 'error', e)
 
         return self.do_redirect(self.canonical_object_url,
-                                _(u'Item(s) pasted.'))
+                                _('Item(s) pasted.'))

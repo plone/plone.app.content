@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_get
 from plone.app.content.testing import PLONE_APP_CONTENT_INTEGRATION_TESTING
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.Five.browser import BrowserView
 from plone.memoize import ram
 from zope.component import queryUtility

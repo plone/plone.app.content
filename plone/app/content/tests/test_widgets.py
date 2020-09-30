@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.browser import vocabulary
 from plone.app.content.browser.file import FileUploadView
 from plone.app.content.browser.query import QueryStringIndexOptions
@@ -13,7 +12,6 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
-from six.moves import range
 from zope.component import getMultiAdapter
 from zope.component import provideAdapter
 from zope.component import provideUtility
@@ -38,7 +36,7 @@ except ImportError:
 try:
     from unittest import mock
 except ImportError:
-    import mock
+    from unittest import mock
 
 
 _dir = os.path.dirname(__file__)
@@ -50,7 +48,7 @@ except ImportError:  # pragma: nocover
     assert unittest  # pragma: nocover
 
 
-class PermissionChecker(object):
+class PermissionChecker:
     def __init__(self, context):
         pass
 
@@ -89,8 +87,8 @@ class BrowserTest(unittest.TestCase):
         self.portal = self.layer['portal']
         login(self.portal, TEST_USER_NAME)
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
-        provideUtility(ExampleVocabulary(), name=u'vocab_class')
-        provideUtility(ExampleFunctionVocabulary, name=u'vocab_function')
+        provideUtility(ExampleVocabulary(), name='vocab_class')
+        provideUtility(ExampleFunctionVocabulary, name='vocab_function')
         vocabulary.PERMISSIONS.update({
             'vocab_class': 'Modify portal content',
             'vocab_function': 'Modify portal content',
@@ -258,7 +256,7 @@ class BrowserTest(unittest.TestCase):
         set. Fixes an encoding problem. See:
         https://github.com/plone/Products.CMFPlone/issues/650
         """
-        test_val = u'Nåøï'
+        test_val = 'Nåøï'
 
         self.portal.invokeFactory('Document', id="page", title="page")
         self.portal.page.subject = (test_val,)
@@ -388,7 +386,7 @@ class BrowserTest(unittest.TestCase):
         from zope.schema.interfaces import ISource
 
         @implementer(ISource)
-        class DummyCatalogSource(object):
+        class DummyCatalogSource:
             def search_catalog(self, query):
                 querytext = query['SearchableText']['query']
                 return [mock.Mock(id=querytext)]
@@ -429,7 +427,7 @@ class BrowserTest(unittest.TestCase):
         from zope.schema.vocabulary import SimpleTerm
 
         @implementer(ISource)
-        class DummySource(object):
+        class DummySource:
             def search(self, query):
                 terms = [SimpleTerm(query, query)]
                 return iter(terms)
@@ -468,7 +466,7 @@ class BrowserTest(unittest.TestCase):
         from zope.schema.interfaces import ISource
 
         @implementer(ISource)
-        class DummyCatalogSource(object):
+        class DummyCatalogSource:
             def search_catalog(self, query):
                 querytext = query['SearchableText']['query']
                 return [mock.Mock(id=querytext)]
@@ -504,7 +502,7 @@ class BrowserTest(unittest.TestCase):
         from zope.schema.interfaces import ISource
 
         @implementer(ISource)
-        class DummyCatalogSource(object):
+        class DummyCatalogSource:
             def search(self, query):
                 return [mock.Mock(value=mock.Mock(id=query))]
 
@@ -563,10 +561,10 @@ class BrowserTest(unittest.TestCase):
         data = json.loads(view())
 
         # Type is translated
-        self.assertEqual(data['results'][0]['Type'], u'Seite')
+        self.assertEqual(data['results'][0]['Type'], 'Seite')
 
         # portal_type is never translated
-        self.assertEqual(data['results'][0]['portal_type'], u'Document')
+        self.assertEqual(data['results'][0]['portal_type'], 'Document')
 
     def testGetMimeIcon(self):
         """ Check if the returned icon is correct

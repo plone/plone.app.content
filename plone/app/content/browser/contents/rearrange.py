@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.interfaces import IOrderedContainer
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.utils import json_loads
@@ -69,7 +68,7 @@ class ItemOrderActionView(OrderContentsBaseAction):
 
 class RearrangeActionView(OrderContentsBaseAction):
     success_msg = _('Successfully rearranged folder')
-    failure_msg = _(u'Can not rearrange folder')
+    failure_msg = _('Can not rearrange folder')
 
     def __call__(self):
         self.protect()
@@ -91,5 +90,5 @@ class RearrangeActionView(OrderContentsBaseAction):
             for idx, brain in enumerate(brains):
                 ordering.moveObjectToPosition(brain.id, idx)
         else:
-            self.errors.append(_(u'Not explicit orderable'))
+            self.errors.append(_('Not explicit orderable'))
         return self.message()

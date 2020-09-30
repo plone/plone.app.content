@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from datetime import timedelta
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
@@ -24,7 +23,7 @@ import unittest
 try:
     from unittest import mock
 except ImportError:
-    import mock
+    from unittest import mock
 
 
 class ContentsCopyTests(unittest.TestCase):
@@ -481,12 +480,12 @@ class FCPropertiesTests(unittest.TestCase):
         req = self.request
         req.form['language'] = 'de'
         req.form['exclude-from-nav'] = 'no'
-        req.form['selection'] = '["{0}", "{1}"]'.format(
+        req.form['selection'] = '["{}", "{}"]'.format(
             IUUID(self.portal.main1),
             IUUID(self.portal.main2)
         )
 
-        view = getMultiAdapter((self.portal, req), name=u'fc-properties')
+        view = getMultiAdapter((self.portal, req), name='fc-properties')
 
         # Call the view and execute the actions
         view()
@@ -510,12 +509,12 @@ class FCPropertiesTests(unittest.TestCase):
         req.form['language'] = 'de'
         req.form['exclude-from-nav'] = 'no'
         req.form['recurse'] = 'yes'
-        req.form['selection'] = '["{0}", "{1}"]'.format(
+        req.form['selection'] = '["{}", "{}"]'.format(
             IUUID(self.portal.main1),
             IUUID(self.portal.main2)
         )
 
-        view = getMultiAdapter((self.portal, req), name=u'fc-properties')
+        view = getMultiAdapter((self.portal, req), name='fc-properties')
 
         # Call the view and execute the actions
         view()
@@ -555,7 +554,7 @@ class TestTitleEscape(unittest.TestCase):
         browser.handleErrors = False
         browser.addHeader(
             "Authorization",
-            "Basic {0}:{1}".format(SITE_OWNER_NAME, SITE_OWNER_PASSWORD),
+            f"Basic {SITE_OWNER_NAME}:{SITE_OWNER_PASSWORD}",
         )
         return browser
 
@@ -573,7 +572,7 @@ class TestTitleEscape(unittest.TestCase):
             index = body.index(hacked)
             start = max(0, index - 50)
             end = min(index + len(hacked) + 50, len(body))
-            assert False, "Hacked script found in body: ... {0} ...".format(
+            assert False, "Hacked script found in body: ... {} ...".format(
                 body[start:end]
             )
 

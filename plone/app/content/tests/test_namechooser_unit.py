@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from plone.app.content.namechooser import ATTEMPTS
 from plone.app.content.testing import PLONE_APP_CONTENT_INTEGRATION_TESTING

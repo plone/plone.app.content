@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.autoform.form import AutoExtensibleForm
 from Products.CMFPlone import PloneMessageFactory as  _
 from Products.CMFPlone.interfaces import ISelectableConstrainTypes
@@ -36,19 +35,19 @@ AMF = MessageFactory('atcontenttypes')
 
 possible_constrain_types = SimpleVocabulary([
     ST(ACQUIRE,
-       AMF(u'constraintypes_acquire_label',
-         default=u'Use parent folder settings')),
+       AMF('constraintypes_acquire_label',
+         default='Use parent folder settings')),
     ST(DISABLED,
-       AMF(u'constraintypes_disable_label',
-         default=u'Use portal default')),
+       AMF('constraintypes_disable_label',
+         default='Use portal default')),
     ST(ENABLED,
-       AMF(u'constraintypes_enable_label',
-         default=u'Select manually'))
+       AMF('constraintypes_enable_label',
+         default='Select manually'))
 ])
 
 
 @implementer(IVocabularyFactory)
-class ValidTypes(object):
+class ValidTypes:
 
     def __call__(self, context):
         constrain_aspect = context.context
@@ -112,7 +111,7 @@ class IConstrainForm(Interface):
 
 
 @implementer(IConstrainForm)
-class FormContentAdapter(object):
+class FormContentAdapter:
 
     def __init__(self, context):
         self.context = ISelectableConstrainTypes(context)
@@ -143,22 +142,22 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         return FormContentAdapter(self.context)
 
     def updateFields(self):
-        super(ConstrainsFormView, self).updateFields()
+        super().updateFields()
         self.fields['allowed_types'].widgetFactory = CheckBoxFieldWidget
         self.fields['secondary_types'].widgetFactory = CheckBoxFieldWidget
 
     def updateWidgets(self):
-        super(ConstrainsFormView, self).updateWidgets()
+        super().updateWidgets()
         self.widgets['allowed_types'].addClass('current_prefer_form')
         self.widgets['secondary_types'].addClass('current_allow_form')
         self.widgets['constrain_types_mode'].addClass(
             'constrain_types_mode_form')
 
     def updateActions(self):
-        super(ConstrainsFormView, self).updateActions()
+        super().updateActions()
         self.actions['save'].addClass('context')
 
-    @button.buttonAndHandler(_('label_save', default=u"Save"), name='save')
+    @button.buttonAndHandler(_('label_save', default="Save"), name='save')
     def handleSave(self, action):
         data, errors = self.extractData()
         if errors:
@@ -177,7 +176,7 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
         contextURL = self.context.absolute_url()
         self.request.response.redirect(contextURL)
 
-    @button.buttonAndHandler(_('label_cancel', default=u"Cancel"), name='cancel')
+    @button.buttonAndHandler(_('label_cancel', default="Cancel"), name='cancel')
     def handleCancel(self, action):
         contextURL = self.context.absolute_url()
         self.request.response.redirect(contextURL)

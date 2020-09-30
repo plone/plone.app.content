@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
@@ -37,7 +36,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
 
         self.browser = Browser(self.layer['app'])
         self.browser.addHeader('Authorization',
-                               'Basic %s:%s' % ('editor', 'secret'))
+                               'Basic {}:{}'.format('editor', 'secret'))
 
     def tearDown(self):
         self.portal.manage_delObjects(ids=FOLDER['id'])
@@ -126,7 +125,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         self.assertEqual(folder.getDefaultPage(), 'testdoc')
 
     def test_selectable_types_filter(self):
-        self.portal.portal_registry['plone.default_page_types'] = [u'News Item']
+        self.portal.portal_registry['plone.default_page_types'] = ['News Item']
         folder = self.portal.testfolder
         self._createNewsItem(folder)
 

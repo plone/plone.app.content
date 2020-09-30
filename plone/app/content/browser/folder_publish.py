@@ -32,12 +32,12 @@ class FolderPublishView(BrowserView):
         plone_utils = getToolByName(self.context, "plone_utils")
         if workflow_action is None:
             plone_utils.addPortalMessage(
-                _(u"You must select a publishing action."), "error"
+                _("You must select a publishing action."), "error"
             )
             return self.redirect()
         if not paths:
             plone_utils.addPortalMessage(
-                _(u"You must select content to change."), "error"
+                _("You must select content to change."), "error"
             )
             return self.redirect()
 
@@ -51,7 +51,7 @@ class FolderPublishView(BrowserView):
         )
 
         transaction_note(str(paths) + " transitioned " + workflow_action)
-        plone_utils.addPortalMessage(_(u"Item state changed."))
+        plone_utils.addPortalMessage(_("Item state changed."))
         return self.redirect()
 
     def transition_objects_by_paths(
@@ -90,7 +90,7 @@ class FolderPublishView(BrowserView):
                 sp.rollback()
                 failure[path] = e
             if getattr(obj, "isPrincipiaFolderish", None) and include_children:
-                subobject_paths = ["%s/%s" % (path, id) for id in obj]
+                subobject_paths = [f"{path}/{id}" for id in obj]
                 self.transition_objects_by_paths(
                     workflow_action,
                     subobject_paths,

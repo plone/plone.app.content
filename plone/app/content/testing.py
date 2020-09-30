@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
@@ -24,10 +23,10 @@ except ImportError:
 
 
 @implementer(IVocabularyFactory)
-class ExampleVocabulary(object):
+class ExampleVocabulary:
 
     def __call__(self, context, query=None):
-        items = [u'One', u'Two', u'Three']
+        items = ['One', 'Two', 'Three']
         tmp = SimpleVocabulary([
             SimpleTerm(it.lower(), it.lower(), it)
             for it in items
@@ -40,7 +39,7 @@ class ExampleVocabulary(object):
 
 @provider(IVocabularyFactory)
 def ExampleFunctionVocabulary(context, query=None):
-    items = [u'First', u'Second', u'Third']
+    items = ['First', 'Second', 'Third']
     tmp = SimpleVocabulary([
         SimpleTerm(it.lower(), it.lower(), it)
         for it in items
@@ -126,7 +125,7 @@ if HAS_AT:
     class PloneAppContentAT(PloneAppContent):
 
         def setUpZope(self, app, configurationContext):
-            super(PloneAppContentAT, self).setUpZope(app, configurationContext)
+            super().setUpZope(app, configurationContext)
             import Products.ATContentTypes
             xmlconfig.file('configure.zcml',
                            Products.ATContentTypes,
@@ -134,7 +133,7 @@ if HAS_AT:
             z2.installProduct(app, 'Products.ATContentTypes')
 
         def setUpPloneSite(self, portal):
-            super(PloneAppContentAT, self).setUpPloneSite(portal)
+            super().setUpPloneSite(portal)
             self.applyProfile(portal, 'Products.ATContentTypes:default')
 
 

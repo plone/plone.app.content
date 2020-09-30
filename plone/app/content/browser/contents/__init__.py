@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
 from plone.app.content.browser.file import TUS_ENABLED
@@ -151,9 +150,9 @@ class ContentsBaseAction(BrowserView):
             translated_errors = [
                 translate(error, context=self.request) for error in self.errors
             ]
-            translated_msg = u'{0:s}: {1:s}'.format(
+            translated_msg = '{:s}: {:s}'.format(
                 translated_msg,
-                u'\n'.join(translated_errors)
+                '\n'.join(translated_errors)
             )
 
         return self.json({
@@ -266,7 +265,7 @@ class FolderContentsView(BrowserView):
         }
         # Filter out ignored
         indexes = {
-            k: v for k, v in six.iteritems(indexes)
+            k: v for k, v in indexes.items()
             if k not in self.ignored_indexes
         }
         # Add in extra metadata indexes
@@ -317,7 +316,7 @@ class FolderContentsView(BrowserView):
 
     def __call__(self):
         self.options = json_dumps(self.get_options())
-        return super(FolderContentsView, self).__call__()
+        return super().__call__()
 
 
 class ContextInfo(BrowserView):

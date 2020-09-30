@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import Implicit
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.adding import ContentAdding
@@ -13,7 +12,7 @@ class CMFAdding(Implicit, ContentAdding):
     id = '+'
 
     def add(self, content):
-        content = super(CMFAdding, self).add(content)
+        content = super().add(content)
         # We need to ensure that we finish type construction, not at least
         # to set the correct permissions based on the workflow
         getToolByName(content, 'portal_types')
@@ -21,4 +20,4 @@ class CMFAdding(Implicit, ContentAdding):
         return content
 
     def nextURL(self):
-        return "%s/%s/view" % (self.context.absolute_url(), self.contentName)
+        return f"{self.context.absolute_url()}/{self.contentName}/view"

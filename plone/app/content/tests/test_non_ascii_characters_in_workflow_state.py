@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.testing import PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING
 from plone.app.testing import login
 from plone.app.testing import setRoles

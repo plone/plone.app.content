@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
 from OFS.Moniker import Moniker
@@ -10,7 +9,7 @@ from zope.interface import implementer
 
 
 @implementer(IStructureAction)
-class CutAction(object):
+class CutAction:
 
     order = 1
 
@@ -38,12 +37,12 @@ class CutActionView(ContentsBaseAction):
         oblist = []
         for ob in self.oblist:
             if ob.wl_isLocked():
-                self.errors.append(_(u'${title} is being edited and cannot be cut.',
-                                     mapping={u'title': self.objectTitle(ob)}))
+                self.errors.append(_('${title} is being edited and cannot be cut.',
+                                     mapping={'title': self.objectTitle(ob)}))
                 continue
             if not ob.cb_isMoveable():
-                self.errors.append(_(u'${title} is being edited and cannot be cut.',
-                                     mapping={u'title': self.objectTitle(ob)}))
+                self.errors.append(_('${title} is being edited and cannot be cut.',
+                                     mapping={'title': self.objectTitle(ob)}))
                 continue
             m = Moniker(ob)
             oblist.append(m.dump())
@@ -55,4 +54,4 @@ class CutActionView(ContentsBaseAction):
 
     def __call__(self):
         self.oblist = []
-        return super(CutActionView, self).__call__()
+        return super().__call__()

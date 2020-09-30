@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import Unauthorized
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
@@ -9,7 +8,7 @@ from zope.interface import implementer
 
 
 @implementer(IStructureAction)
-class PasteAction(object):
+class PasteAction:
 
     order = 3
 
@@ -48,14 +47,14 @@ class PasteActionView(ContentsBaseAction):
             # "You are not allowed to access 'manage_pasteObjects' in this
             # context"
             self.errors.append(
-                _(u'You are not authorized to paste ${title} here.',
-                    mapping={u'title': self.objectTitle(self.dest)}))
+                _('You are not authorized to paste ${title} here.',
+                    mapping={'title': self.objectTitle(self.dest)}))
         except ValueError as e:
             if 'Disallowed subobject type: ' in e.args[0]:
                 msg_parts = e.args[0].split(':')
                 self.errors.append(
-                    _(u'Disallowed subobject type "${type}"',
-                        mapping={u'type': msg_parts[1].strip()}))
+                    _('Disallowed subobject type "${type}"',
+                        mapping={'type': msg_parts[1].strip()}))
             else:
                 raise e
 

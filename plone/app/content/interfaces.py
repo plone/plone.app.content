@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from zope import schema
 from zope.interface import Interface, Attribute
 
@@ -8,8 +7,8 @@ class INameFromTitle(Interface):
     """
 
     title = schema.TextLine(
-        title=u"Title",
-        description=u"A title, which will be converted to a name",
+        title="Title",
+        description="A title, which will be converted to a name",
         required=True
     )
 

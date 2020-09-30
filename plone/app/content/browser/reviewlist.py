@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
@@ -7,7 +6,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import isExpired
 from Products.CMFPlone.utils import safe_unicode
-from six.moves import map
 from six.moves.urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import getUtility
@@ -33,7 +31,7 @@ class FullReviewListView(BrowserView):
         return table.render()
 
 
-class ReviewListTable(object):
+class ReviewListTable:
     """
     The review list table renders the table and its actions.
     """
@@ -55,9 +53,9 @@ class ReviewListTable(object):
         plone_utils = getToolByName(self.context, 'plone_utils')
         portal_url = getToolByName(self.context, 'portal_url')
         plone_view = getMultiAdapter((self.context, self.request),
-                                     name=u'plone')
+                                     name='plone')
         plone_layout = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_layout')
+                                       name='plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_types = getToolByName(self.context, 'portal_types')
         portal_membership = getToolByName(self.context, 'portal_membership')
@@ -91,7 +89,7 @@ class ReviewListTable(object):
             relative_url = portal_url.getRelativeContentURL(obj)
 
             type_title_msgid = portal_types[obj.portal_type].Title()
-            url_href_title = u'%s: %s' % (translate(type_title_msgid,
+            url_href_title = '{}: {}'.format(translate(type_title_msgid,
                                                     context=self.request),
                                           safe_unicode(obj.Description()))
             getMember = getToolByName(obj, 'portal_membership').getMemberById

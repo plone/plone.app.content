@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.testing import HAS_AT
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
@@ -35,13 +34,13 @@ class ActionsDXTestCase(unittest.TestCase):
 
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         self.portal.invokeFactory(
-            type_name='Folder', id='f1', title=u'A Tést Folder')
+            type_name='Folder', id='f1', title='A Tést Folder')
 
         transaction.commit()
         self.browser = Browser(self.layer['app'])
         self.browser.handleErrors = False
         self.browser.addHeader(
-            'Authorization', 'Basic {0}:{1}'.format(TEST_USER_NAME, 'secret'))
+            'Authorization', 'Basic {}:{}'.format(TEST_USER_NAME, 'secret'))
 
     def tearDown(self):
         if 'f1' in self.portal.objectIds():
@@ -130,7 +129,7 @@ class ActionsDXTestCase(unittest.TestCase):
         browser_2 = Browser(self.layer['app'])
         browser_2.handleErrors = False
         browser_2.addHeader(
-            'Authorization', 'Basic {0}:{1}'.format(TEST_USER_NAME, 'secret'))
+            'Authorization', 'Basic {}:{}'.format(TEST_USER_NAME, 'secret'))
 
         # return the id of the root page, the nested page itself, and the
         # alternate browser
@@ -177,9 +176,9 @@ class ActionsDXTestCase(unittest.TestCase):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
         registry = self.portal.portal_registry
-        registry['plone.types_use_view_action_in_listings'] = [u'Image',
-                                                               u'File',
-                                                               u'Document']
+        registry['plone.types_use_view_action_in_listings'] = ['Image',
+                                                               'File',
+                                                               'Document']
 
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
@@ -252,9 +251,9 @@ class ActionsDXTestCase(unittest.TestCase):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
         registry = self.portal.portal_registry
-        registry['plone.types_use_view_action_in_listings'] = [u'Image',
-                                                               u'File',
-                                                               u'Document']
+        registry['plone.types_use_view_action_in_listings'] = ['Image',
+                                                               'File',
+                                                               'Document']
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
         document1 = folder['document1']
@@ -284,24 +283,24 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_cut'.format(folder.absolute_url())
+            f'{folder.absolute_url():s}/object_cut'
         )
 
         # We need to have Copy or Move permission to cut an object
-        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_cut?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(folder)))
 
         self.assertIn('__cp', self.browser.cookies)
         self.assertIn(
-            '{0:s} cut.'.format(folder.Title()), self.browser.contents)
+            f'{folder.Title():s} cut.', self.browser.contents)
 
     def test_object_cut_view_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
         registry = self.portal.portal_registry
-        registry['plone.types_use_view_action_in_listings'] = [u'Image',
-                                                               u'File',
-                                                               u'Document']
+        registry['plone.types_use_view_action_in_listings'] = ['Image',
+                                                               'File',
+                                                               'Document']
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
         document1 = folder['document1']
@@ -311,16 +310,16 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_cut'.format(document1.absolute_url())
+            f'{document1.absolute_url():s}/object_cut'
         )
 
         # We need to have Copy or Move permission to cut an object
-        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_cut?_authenticator={:s}'.format(
             document1.absolute_url(), self._get_token(document1)))
 
         self.assertIn('__cp', self.browser.cookies)
         self.assertIn(
-            '{0:s} cut.'.format(document1.Title()), self.browser.contents)
+            f'{document1.Title():s} cut.', self.browser.contents)
         self.assertEqual(document1.absolute_url() + '/view', self.browser.url)
 
     def test_object_copy_view(self):
@@ -330,23 +329,23 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_copy'.format(folder.absolute_url())
+            f'{folder.absolute_url():s}/object_copy'
         )
 
-        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_copy?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(folder)))
 
         self.assertIn('__cp', self.browser.cookies)
         self.assertIn(
-            '{0:s} copied.'.format(folder.Title()), self.browser.contents)
+            f'{folder.Title():s} copied.', self.browser.contents)
 
     def test_object_copy_with_view_action(self):
         # can't be bothered to register blobs, instead we add documents to
         # typesUseViewActionInListings
         registry = self.portal.portal_registry
-        registry['plone.types_use_view_action_in_listings'] = [u'Image',
-                                                               u'File',
-                                                               u'Document']
+        registry['plone.types_use_view_action_in_listings'] = ['Image',
+                                                               'File',
+                                                               'Document']
 
         folder = self.portal['f1']
         folder.invokeFactory('Document', 'document1')
@@ -357,15 +356,15 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_copy'.format(document1.absolute_url())
+            f'{document1.absolute_url():s}/object_copy'
         )
 
-        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_copy?_authenticator={:s}'.format(
             document1.absolute_url(), self._get_token(document1)))
 
         self.assertIn('__cp', self.browser.cookies)
         self.assertIn(
-            '{0:s} copied.'.format(document1.Title()), self.browser.contents)
+            f'{document1.Title():s} copied.', self.browser.contents)
         self.assertEqual(document1.absolute_url() + '/view', self.browser.url)
 
     def test_object_cut_and_paste(self):
@@ -374,7 +373,7 @@ class ActionsDXTestCase(unittest.TestCase):
         doc = self.portal['d1']
         transaction.commit()
 
-        self.browser.open('{0:s}/object_cut?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_cut?_authenticator={:s}'.format(
             doc.absolute_url(), self._get_token(doc)))
 
         self.assertIn('__cp', self.browser.cookies)
@@ -385,10 +384,10 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_paste'.format(folder.absolute_url())
+            f'{folder.absolute_url():s}/object_paste'
         )
 
-        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_paste?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(doc)))
 
         self.assertIn('__cp', self.browser.cookies)
@@ -404,7 +403,7 @@ class ActionsDXTestCase(unittest.TestCase):
         doc = folder['d1']
         transaction.commit()
 
-        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_copy?_authenticator={:s}'.format(
             doc.absolute_url(), self._get_token(doc)))
 
         self.assertIn('__cp', self.browser.cookies)
@@ -413,10 +412,10 @@ class ActionsDXTestCase(unittest.TestCase):
         self.assertRaises(
             Unauthorized,
             self.browser.open,
-            '{0:s}/object_paste'.format(folder.absolute_url())
+            f'{folder.absolute_url():s}/object_paste'
         )
 
-        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_paste?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(folder)))
         transaction.commit()
 
@@ -431,13 +430,13 @@ class ActionsDXTestCase(unittest.TestCase):
         doc = folder['d1']
         transaction.commit()
 
-        self.browser.open('{0:s}/object_copy?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_copy?_authenticator={:s}'.format(
             doc.absolute_url(), self._get_token(doc)))
 
         self.assertIn('__cp', self.browser.cookies)
-        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_paste?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(folder)))
-        self.browser.open('{0:s}/object_paste?_authenticator={1:s}'.format(
+        self.browser.open('{:s}/object_paste?_authenticator={:s}'.format(
             folder.absolute_url(), self._get_token(folder)))
 
         # Cookie should persist, because you can paste the item multiple times

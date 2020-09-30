@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -25,7 +24,7 @@ logger = logging.getLogger('plone.app.content')
 
 
 @implementer(IStructureAction)
-class RenameAction(object):
+class RenameAction:
 
     template = ViewPageTemplateFile('templates/rename.pt')
     order = 5
@@ -71,8 +70,8 @@ class RenameActionView(ContentsBaseAction):
             obj = brains[0].getObject()
             title = self.objectTitle(obj)
             if not mtool.checkPermission('Copy or Move', obj):
-                self.errors.append(_(u'Permission denied to rename ${title}.',
-                              mapping={u'title': title}))
+                self.errors.append(_('Permission denied to rename ${title}.',
+                              mapping={'title': title}))
                 continue
 
             sp = transaction.savepoint(optimistic=True)
@@ -109,9 +108,9 @@ class RenameActionView(ContentsBaseAction):
                 sp.rollback()
                 if six.PY2:
                     title = title.decode('utf8')
-                logger.error(u'Error renaming "{title}": "{exception}"'
+                logger.error('Error renaming "{title}": "{exception}"'
                     .format(title=title, exception=e))
-                self.errors.append(_(u'Error renaming ${title}', mapping={
+                self.errors.append(_('Error renaming ${title}', mapping={
                     'title': title}))
 
         return self.message(missing)

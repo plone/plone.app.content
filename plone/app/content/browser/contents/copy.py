@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from OFS.CopySupport import _cb_encode
 from OFS.CopySupport import cookie_path
 from OFS.Moniker import Moniker
@@ -10,7 +9,7 @@ from zope.interface import implementer
 
 
 @implementer(IStructureAction)
-class CopyAction(object):
+class CopyAction:
 
     order = 2
 
@@ -38,8 +37,8 @@ class CopyActionView(ContentsBaseAction):
         oblist = []
         for ob in self.oblist:
             if not ob.cb_isCopyable():
-                self.errors.append(_(u'${title} cannot be copied.',
-                                     mapping={u'title': self.objectTitle(ob)}))
+                self.errors.append(_('${title} cannot be copied.',
+                                     mapping={'title': self.objectTitle(ob)}))
                 continue
             m = Moniker(ob)
             oblist.append(m.dump())
@@ -51,4 +50,4 @@ class CopyActionView(ContentsBaseAction):
 
     def __call__(self):
         self.oblist = []
-        return super(CopyActionView, self).__call__(keep_selection_order=True)
+        return super().__call__(keep_selection_order=True)

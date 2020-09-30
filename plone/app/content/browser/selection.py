@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
@@ -40,7 +39,7 @@ class DefaultViewSelectionView(BrowserView):
 
     @property
     def action_url(self):
-        return '{0:s}/select_default_view'.format(
+        return '{:s}/select_default_view'.format(
             self.context_state.object_url())
 
     def __call__(self):
@@ -55,9 +54,9 @@ class DefaultViewSelectionView(BrowserView):
             if self.isValidTemplate(templateId):
                 # Update the template
                 self.context.setLayout(templateId)
-                plone_utils.addPortalMessage(u'View changed.')
+                plone_utils.addPortalMessage('View changed.')
             else:
-                plone_utils.addPortalMessage(u'Invalid view.', type="error")
+                plone_utils.addPortalMessage('Invalid view.', type="error")
                 return self.index()
 
         if templateId or self.request.form.get('form.buttons.Cancel', False):
@@ -73,19 +72,19 @@ class DefaultPageSelectionView(BrowserView):
     def __call__(self):
         if 'form.buttons.Save' in self.request.form:
             if 'objectId' not in self.request.form:
-                message = _(u'Please select an item to use.')
+                message = _('Please select an item to use.')
                 msgtype = 'error'
             else:
                 objectId = self.request.form['objectId']
 
                 if objectId not in self.context.objectIds():
-                    message = _(u'There is no object with short name ${name} '
-                                u'in this folder.',
-                                mapping={u'name': objectId})
+                    message = _('There is no object with short name ${name} '
+                                'in this folder.',
+                                mapping={'name': objectId})
                     msgtype = 'error'
                 else:
                     self.context.setDefaultPage(objectId)
-                    message = _(u'View changed.')
+                    message = _('View changed.')
                     msgtype = 'info'
                     self.request.response.redirect(self.context.absolute_url())
             IStatusMessage(self.request).add(message, msgtype)

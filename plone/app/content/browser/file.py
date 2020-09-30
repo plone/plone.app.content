@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from OFS.interfaces import IFolder
 from plone.app.dexterity.interfaces import IDXFileFactory
@@ -214,8 +213,8 @@ class AllowUploadView(BrowserView):
         allow_files = False
         if IFolder.providedBy(context):
             allowed_types = [t.getId() for t in context.allowedContentTypes()]
-            allow_images = u'Image' in allowed_types
-            allow_files = u'File' in allowed_types
+            allow_images = 'Image' in allowed_types
+            allow_files = 'File' in allowed_types
 
         return json.dumps({
             'allowUpload': allow_images or allow_files,

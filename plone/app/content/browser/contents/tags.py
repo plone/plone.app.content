@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
@@ -9,7 +8,7 @@ from zope.interface import implementer
 
 
 @implementer(IStructureAction)
-class TagsAction(object):
+class TagsAction:
 
     template = ViewPageTemplateFile('templates/tags.pt')
     order = 6
@@ -44,12 +43,12 @@ class TagsActionView(ContentsBaseAction):
         if toadd:
             toadd = set(toadd.split(','))
         else:
-            toadd = set([])
+            toadd = set()
         toremove = self.request.get('toremove')
         if toremove:
             toremove = set(toremove.split(','))
         else:
-            toremove = set([])
+            toremove = set()
         tags = set(obj.Subject())
         tags = tags - toremove
         tags = tags | toadd

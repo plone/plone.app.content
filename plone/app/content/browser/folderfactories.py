@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.CMFCore.Expression import createExprContext
@@ -101,7 +100,7 @@ class FolderFactoriesView(BrowserView):
             check_condition=False,
             category='folder/add',
         )
-        addActionsById = dict([(a['id'], a) for a in actions])
+        addActionsById = {a['id']: a for a in actions}
 
         expr_context = createExprContext(
             aq_parent(addContext), portal_state.portal(), addContext)
@@ -117,7 +116,7 @@ class FolderFactoriesView(BrowserView):
                     url = addAction['url']
 
                 if not url:
-                    url = '%s/createObject?type_name=%s&_authenticator=%s' % (
+                    url = '{}/createObject?type_name={}&_authenticator={}'.format(
                         baseUrl, quote_plus(typeId), token)
 
                 icon = t.getIconExprObject()

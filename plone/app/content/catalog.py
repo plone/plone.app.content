@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 def reindexOnModify(content, event):
     """When an object is modified, re-index it in the catalog
     """

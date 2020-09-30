@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
@@ -13,7 +12,7 @@ from zope.interface import implementer
 
 
 @implementer(IStructureAction)
-class WorkflowAction(object):
+class WorkflowAction:
 
     template = ViewPageTemplateFile('templates/workflow.pt')
     order = 7
@@ -67,7 +66,7 @@ class WorkflowActionView(ContentsBaseAction):
                 'transitions': transitions
             })
         else:
-            return super(WorkflowActionView, self).__call__()
+            return super().__call__()
 
     def action(self, obj, bypass_recurse=False):
         transitions = self.pworkflow.getTransitionsFor(obj)
