@@ -59,7 +59,7 @@ class TestContentPublishing(unittest.TestCase):
         return view(**kwargs)
 
     def test_initial_state(self):
-        # Depending on Plone version, dexterity, archetypes,
+        # Depending on the Plone version,
         # the review state may be visible or private.  Check which one it is.
         for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, "review_state"), "private")
