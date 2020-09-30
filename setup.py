@@ -53,7 +53,6 @@ setup(
         'six',
         'zope.component',
         'zope.container',
-        'zope.deferredimport',
         'zope.event',
         'zope.i18n',
         'zope.i18nmessageid',
