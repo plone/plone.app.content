@@ -348,9 +348,9 @@ class VocabularyView(BaseVocabularyView):
         # which take the (unparsed) query as a parameter of the vocab
         # factory rather than as a separate search method.
         if isinstance(factory, FunctionType):
-            factory_spec = inspect.getargspec(factory)
+            factory_spec = inspect.getfullargspec(factory)
         else:
-            factory_spec = inspect.getargspec(factory.__call__)
+            factory_spec = inspect.getfullargspec(factory.__call__)
         query = _parseJSON(self.request.get('query', ''))
         if query and 'query' in factory_spec.args:
             vocabulary = factory(context, query=query)
