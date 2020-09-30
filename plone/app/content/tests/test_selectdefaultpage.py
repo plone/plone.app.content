@@ -1,7 +1,7 @@
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 import transaction
 import unittest
 

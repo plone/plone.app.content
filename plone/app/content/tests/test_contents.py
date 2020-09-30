@@ -11,7 +11,7 @@ from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from plone.uuid.interfaces import IUUID
 from unittest import mock
 from zope.component import getMultiAdapter

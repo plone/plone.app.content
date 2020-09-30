@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 
