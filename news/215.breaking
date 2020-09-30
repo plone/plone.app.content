@@ -1,0 +1,3 @@
+Remove compatibility code for Archetypes and older Python and Plone versions.
+This version is only for Plone 6.0.
+[maurits]
