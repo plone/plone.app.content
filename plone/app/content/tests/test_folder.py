@@ -10,7 +10,7 @@ from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 from Testing.makerequest import makerequest
 from transaction import commit
 from zope.annotation.interfaces import IAttributeAnnotatable

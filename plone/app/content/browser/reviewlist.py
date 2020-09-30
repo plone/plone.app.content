@@ -6,7 +6,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import human_readable_size
 from Products.CMFPlone.utils import isExpired
 from Products.CMFPlone.utils import safe_unicode
-from six.moves.urllib.parse import quote_plus
+from urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n import translate

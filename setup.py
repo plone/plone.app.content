@@ -50,7 +50,6 @@ setup(
         'plone.app.vocabularies>4.1.2',
         'setuptools',
         'simplejson',
-        'six',
         'zope.component',
         'zope.container',
         'zope.event',
