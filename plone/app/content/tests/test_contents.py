@@ -13,17 +13,13 @@ from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from plone.uuid.interfaces import IUUID
+from unittest import mock
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 
 import json
 import transaction
 import unittest
-
-try:
-    from unittest import mock
-except ImportError:
-    from unittest import mock
 
 
 class ContentsCopyTests(unittest.TestCase):
