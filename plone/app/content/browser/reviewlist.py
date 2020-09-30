@@ -54,8 +54,6 @@ class ReviewListTable:
         portal_url = getToolByName(self.context, 'portal_url')
         plone_view = getMultiAdapter((self.context, self.request),
                                      name='plone')
-        plone_layout = getMultiAdapter((self.context, self.request),
-                                       name='plone_layout')
         portal_workflow = getToolByName(self.context, 'portal_workflow')
         portal_types = getToolByName(self.context, 'portal_types')
         portal_membership = getToolByName(self.context, 'portal_membership')
