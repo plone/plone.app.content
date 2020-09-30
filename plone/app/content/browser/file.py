@@ -1,7 +1,6 @@
 from AccessControl import getSecurityManager
 from OFS.interfaces import IFolder
 from plone.app.dexterity.interfaces import IDXFileFactory
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.permissions import AddPortalContent
@@ -150,16 +149,7 @@ class FileUploadView(BrowserView):
                     "try another one"
                 )
 
-        # Determine if the default file/image types are DX or AT based
-        dx_based = False
-        pt = getToolByName(self.context, 'portal_types')
-        if IDexterityFTI.providedBy(getattr(pt, type_)):
-            factory = IDXFileFactory(self.context)
-            dx_based = True
-        else:
-            from Products.ATContentTypes.interfaces import IATCTFileFactory
-            factory = IATCTFileFactory(self.context)
-
+        factory = IDXFileFactory(self.context)
         obj = factory(filename, content_type, filedata)
 
         result = {
@@ -167,19 +157,12 @@ class FileUploadView(BrowserView):
             "size": 0
         }
 
-        if dx_based:
-            if 'File' in obj.portal_type:
-                result['size'] = obj.file.getSize()
-                result['type'] = obj.file.contentType
-            elif 'Image' in obj.portal_type:
-                result['size'] = obj.image.getSize()
-                result['type'] = obj.image.contentType
-        else:
-            result['type'] = obj.getContentType()
-            try:
-                result['size'] = obj.getSize()
-            except AttributeError:
-                result['size'] = obj.get_size()
+        if 'File' in obj.portal_type:
+            result['size'] = obj.file.getSize()
+            result['type'] = obj.file.contentType
+        elif 'Image' in obj.portal_type:
+            result['size'] = obj.image.getSize()
+            result['type'] = obj.image.contentType
 
         if tusrequest:
             tus.cleanup_file()
