@@ -44,6 +44,13 @@
         permission="cmf.ModifyPortalContent"
         />
 
+    <browser:page
+        for="*"
+        name="content_status_modify"
+        class=".content_status_modify.ContentStatusModifyView"
+        permission="cmf.ReviewPortalContent"
+        />
+
     <!-- Folder factories -->
     <browser:page
         for="*"
