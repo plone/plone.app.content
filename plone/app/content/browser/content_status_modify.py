@@ -31,10 +31,35 @@ class ContentStatusModifyView(BrowserView):
         comment="",
         effective_date=None,
         expiration_date=None,
-        *args,
+        **kwargs,
     ):
+        """Do a workflow action.
+
+        The status dropdown in the toolbar has links to for example:
+        content_status_modify?workflow_action=reject&_authenticator=secret
+        That is the main entry into this browser view.
+
+        When you right-click the status menu and open in a new tab,
+        you end up on the content_status_history page.
+        This page contains a form which posts to this view.
+
+        In the form you can select a workflow action.
+        When you select "no change" the workflow_action parameter actually contains
+        the current status.  This status is naturally not in the list of allowed transitions.
+        So we should be lenient here, and not complain much.
+
+        Also, when the view is called on a default page,
+        the code below tries to do the same transition on the parent folder,
+        by calling this view on the parent.  This may easily fail.
+        This is yet another reason to be lenient.
+        Otherwise you may see both a successful portal status message
+        and one with an error.
+
+        In the form you can also add a comment and set an effective and/or expiration date.
+        """
         context = aq_inner(self.context)
         self.plone_utils = getToolByName(context, "plone_utils")
+        portal_workflow = getToolByName(context, "portal_workflow")
         # First check if the main argument is given.
         if not workflow_action:
             self.plone_utils.addPortalMessage(
@@ -45,17 +70,23 @@ class ContentStatusModifyView(BrowserView):
         # If a workflow action was specified, there must be a plone.protect authenticator.
         CheckAuthenticator(self.request)
 
-        # Check that the transition is valid.
-        portal_workflow = getToolByName(context, "portal_workflow")
+        # Get effective and expiration dates from the form, if not set in the arguments.
+        form = self.request.form
+        if not effective_date:
+            effective_date = form.get("form.widgets.effective_date") or effective_date
+        if not expiration_date:
+            expiration_date = (
+                form.get("form.widgets.expiration_date") or expiration_date
+            )
+
+        # Make sure an effective date is always set when there is a valid workflow action.
         transitions = portal_workflow.getTransitionsFor(context)
         transition_ids = [t["id"] for t in transitions]
-
         if (
             workflow_action in transition_ids
             and not effective_date
             and context.EffectiveDate() == "None"
         ):
-            # TODO Check if effective date is really set
             effective_date = DateTime()
 
         # You can transition content but not have the permission to ModifyPortalContent.
@@ -116,7 +147,6 @@ class ContentStatusModifyView(BrowserView):
     def editContent(self, obj, effective, expiry):
         kwargs = {}
         # may contain the year
-        # TODO what about plain datetime?
         if effective and (isinstance(effective, DateTime) or len(effective) > 5):
             kwargs["effective_date"] = effective
         # may contain the year
