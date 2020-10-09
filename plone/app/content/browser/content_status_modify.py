@@ -1,10 +1,14 @@
 from AccessControl import Unauthorized
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from DateTime import DateTime
+from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import transaction_note
 from Products.Five import BrowserView
 from ZODB.POSException import ConflictError
+from zope.component import getMultiAdapter
 
 
 class ContentStatusModifyView(BrowserView):
@@ -27,18 +31,23 @@ class ContentStatusModifyView(BrowserView):
         comment="",
         effective_date=None,
         expiration_date=None,
-        *args
+        *args,
     ):
-        context = self.context
-        plone_utils = getToolByName(context, "plone_utils")
-        contentEditSuccess = 0
-        portal_factory = getattr(context, "portal_factory", None)
-        if portal_factory is not None:
-            new_context = context.portal_factory.doCreate(context)
-        else:
-            new_context = context
-        portal_workflow = new_context.portal_workflow
-        transitions = portal_workflow.getTransitionsFor(new_context)
+        context = aq_inner(self.context)
+        self.plone_utils = getToolByName(context, "plone_utils")
+        # First check if the main argument is given.
+        if not workflow_action:
+            self.plone_utils.addPortalMessage(
+                _("You must select a publishing action."), "error"
+            )
+            url = f"{context.absolute_url()}/content_status_history"
+            return self.request.response.redirect(url)
+        # If a workflow action was specified, there must be a plone.protect authenticator.
+        CheckAuthenticator(self.request)
+
+        # Check that the transition is valid.
+        portal_workflow = getToolByName(context, "portal_workflow")
+        transitions = portal_workflow.getTransitionsFor(context)
         transition_ids = [t["id"] for t in transitions]
 
         if (
@@ -46,45 +55,37 @@ class ContentStatusModifyView(BrowserView):
             and not effective_date
             and context.EffectiveDate() == "None"
         ):
+            # TODO Check if effective date is really set
             effective_date = DateTime()
 
-        def editContent(obj, effective, expiry):
-            kwargs = {}
-            # may contain the year
-            if effective and (isinstance(effective, DateTime) or len(effective) > 5):
-                kwargs["effective_date"] = effective
-            # may contain the year
-            if expiry and (isinstance(expiry, DateTime) or len(expiry) > 5):
-                kwargs["expiration_date"] = expiry
-            new_context.plone_utils.contentEdit(obj, **kwargs)
-
-        # You can transition content but not have the permission to ModifyPortalContent
+        # You can transition content but not have the permission to ModifyPortalContent.
+        contentEditSuccess = 0
         try:
-            editContent(new_context, effective_date, expiration_date)
+            self.editContent(context, effective_date, expiration_date)
             contentEditSuccess = 1
         except Unauthorized:
             pass
 
-        wfcontext = context
-
-        # Create the note while we still have access to wfcontext
+        # Create the note while we still have access to the original context
         note = "Changed status of %s at %s" % (
-            wfcontext.title_or_id(),
-            wfcontext.absolute_url(),
+            context.title_or_id(),
+            context.absolute_url(),
         )
 
         if workflow_action in transition_ids:
-            wfcontext = new_context.portal_workflow.doActionFor(
+            # The action could result in a move or delete.
+            # In that case we get a new context as answer.
+            context = portal_workflow.doActionFor(
                 context, workflow_action, comment=comment
             )
-
-        if not wfcontext:
-            wfcontext = new_context
+            if context is None:
+                # the normal case
+                context = aq_inner(self.context)
 
         # The object post-transition could now have ModifyPortalContent permission.
         if not contentEditSuccess:
             try:
-                editContent(wfcontext, effective_date, expiration_date)
+                self.editContent(context, effective_date, expiration_date)
             except Unauthorized:
                 pass
 
@@ -92,10 +93,13 @@ class ContentStatusModifyView(BrowserView):
 
         # If this item is the default page in its parent, attempt to publish that
         # too. It may not be possible, of course
-        if plone_utils.isDefaultPage(new_context):
-            parent = new_context.aq_inner.aq_parent
+        if self.plone_utils.isDefaultPage(context):
+            parent = aq_parent(context)
             try:
-                parent.content_status_modify(
+                parent_modify_view = getMultiAdapter(
+                    (parent, self.request), name="content_status_modify"
+                )
+                parent_modify_view(
                     workflow_action,
                     comment,
                     effective_date=effective_date,
@@ -106,28 +110,16 @@ class ContentStatusModifyView(BrowserView):
             except Exception:
                 pass
 
-        context.plone_utils.addPortalMessage(_(u"Item state changed."))
-        # TODO: handle state
-        return state.set(context=wfcontext)
+        self.plone_utils.addPortalMessage(_("Item state changed."))
+        return self.request.response.redirect(context.absolute_url())
 
-    def validate(self, workflow_action=""):
-        """Validates content publishing.
-
-        Former Validator Python Script validate_content_status_modify.vpy.
-        """
-        context = self.context
-        # TODO: handle state
-        if not workflow_action:
-            state.setError(
-                "workflow_action",
-                _(u"This field is required, please provide some " u"information."),
-                "workflow_missing",
-            )
-
-        if state.getErrors():
-            context.plone_utils.addPortalMessage(
-                _(u"Please correct the indicated " u"errors."), "error"
-            )
-            return state.set(status="failure")
-        else:
-            return state
+    def editContent(self, obj, effective, expiry):
+        kwargs = {}
+        # may contain the year
+        # TODO what about plain datetime?
+        if effective and (isinstance(effective, DateTime) or len(effective) > 5):
+            kwargs["effective_date"] = effective
+        # may contain the year
+        if expiry and (isinstance(expiry, DateTime) or len(expiry) > 5):
+            kwargs["expiration_date"] = expiry
+        self.plone_utils.contentEdit(obj, **kwargs)
