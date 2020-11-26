@@ -195,7 +195,7 @@
     </table>
     <div tal:replace="structure view/batching" tal:condition="not:view/show_all"/>
     <tal:buttons tal:repeat="button view/buttons">
-      <input class="context"
+      <input class="btn btn-primary"
              type="submit"
              name=""
              value=""

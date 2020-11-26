@@ -57,7 +57,7 @@
                 </ul>
 
                 <div class="formControls">
-                    <input class="context"
+                    <input class="btn btn-primary"
                           type="submit"
                           value="Add"
                           name="form.button.Add"

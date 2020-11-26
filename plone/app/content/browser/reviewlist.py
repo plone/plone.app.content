@@ -167,9 +167,9 @@ class ReviewListTable:
 
     def setbuttonclass(self, button):
         if button['id'] == 'paste':
-            button['cssclass'] = 'standalone'
+            button['cssclass'] = 'btn btn-secondary'
         else:
-            button['cssclass'] = 'context'
+            button['cssclass'] = 'btn btn-primary'
         return button
 
 

@@ -354,19 +354,19 @@
               </div>
 
               <div class="formControls">
-                <input class="context"
+                <input class="btn btn-primary"
                        type="submit"
                        name="form.button.Publish"
                        value="Save"
                        i18n:attributes="value label_save;"
                        tal:condition="not:request/paths|folders_in_publishing|nothing"/>
-                <input class="context"
+                <input class="btn btn-primary"
                        type="submit"
                        name="form.button.FolderPublish"
                        value="Save"
                        i18n:attributes="value label_save;"
                        tal:condition="request/paths|folders_in_publishing|nothing"/>
-                <input class="standalone"
+                <input class="btn btn-secondary"
                        type="submit"
                        name="form.button.Cancel"
                        value="Cancel"
