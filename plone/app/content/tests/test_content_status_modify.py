@@ -4,6 +4,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.utils import isExpired
+from zope.component import getMultiAdapter
 
 import unittest
 
@@ -28,19 +29,24 @@ class TestContentStatusModify(unittest.TestCase):
         self.portal.invokeFactory("Folder", id="folder")
         self.folder = self.portal.folder
         self.folder.invokeFactory("Document", id="d1", title="Doc 1")
-        self.setup_authenticator()
 
     def setup_authenticator(self):
         from plone.protect.authenticator import createToken
 
         self.request.form["_authenticator"] = createToken()
 
+    def get_content_status_modify_view(self, obj):
+        self.setup_authenticator()
+        view = getMultiAdapter((obj, self.request), name="content_status_modify")
+        return view
+
     # Test the recursive behaviour of content_status_modify:
 
     def testPublishingNonDefaultPageLeavesFolderAlone(self):
-        self.folder.d1.content_status_modify("publish")
+        view = self.get_content_status_modify_view(self.folder.d1)
+        view("publish")
         self.assertEqual(
-            self.workflow.getInfoFor(self.folder, "review_state"), "visible"
+            self.workflow.getInfoFor(self.folder, "review_state"), "private"
         )
         self.assertEqual(
             self.workflow.getInfoFor(self.folder.d1, "review_state"), "published"
@@ -48,7 +54,8 @@ class TestContentStatusModify(unittest.TestCase):
 
     def testPublishingDefaultPagePublishesFolder(self):
         self.folder.setDefaultPage("d1")
-        self.folder.d1.content_status_modify("publish")
+        view = self.get_content_status_modify_view(self.folder.d1)
+        view("publish")
         self.assertEqual(
             self.workflow.getInfoFor(self.folder, "review_state"), "published"
         )
@@ -60,11 +67,13 @@ class TestContentStatusModify(unittest.TestCase):
         self.folder.setDefaultPage("d1")
         # make parent be published already when publishing its default document
         # results in an attempt to do it again
-        self.folder.content_status_modify("publish")
+        view = self.get_content_status_modify_view(self.folder)
+        view("publish")
         self.assertEqual(
             self.workflow.getInfoFor(self.folder, "review_state"), "published"
         )
-        self.folder.d1.content_status_modify("publish")
+        view = self.get_content_status_modify_view(self.folder.d1)
+        view("publish")
         self.assertEqual(
             self.workflow.getInfoFor(self.folder, "review_state"), "published"
         )
@@ -75,7 +84,8 @@ class TestContentStatusModify(unittest.TestCase):
     # test setting effective/expiration date and isExpired method
 
     def testIsExpiredWithExplicitExpiredContent(self):
-        self.folder.d1.content_status_modify(
+        view = self.get_content_status_modify_view(self.folder.d1)
+        view(
             workflow_action="publish",
             effective_date="1/1/2001",
             expiration_date="1/2/2001",
@@ -83,5 +93,6 @@ class TestContentStatusModify(unittest.TestCase):
         self.assertTrue(isExpired(self.folder.d1))
 
     def testIsExpiredWithExplicitNonExpiredContent(self):
-        self.folder.d1.content_status_modify(workflow_action="publish")
+        view = self.get_content_status_modify_view(self.folder.d1)
+        view(workflow_action="publish")
         self.assertFalse(isExpired(self.folder.d1))
