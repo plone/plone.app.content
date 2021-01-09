@@ -1,28 +1,43 @@
-from Products.CMFPlone.tests.PloneTestCase import PloneTestCase
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from Products.CMFPlone.utils import isExpired
 
+import unittest
 
-class TestContentPublishing(PloneTestCase):
-    """ The instant publishing drop down UI.
 
-        This testcase was written to prevent collector/2914 regressions
+class TestContentStatusModify(unittest.TestCase):
+    """The the content_status_modify view.
 
-        In addition, some more general tests of content_status_modify
-        have been added, since this seems a logical place to keep them.
+    Until and including Plone 5.2, this was a skin script in Products.CMFPlone.
+    Tests adapted from CMFPlone/tests/testContentPublishing.py.
     """
 
-    def afterSetUp(self):
-        self.portal.acl_users._doAddUser("user1", "secret", ["Member"], [])
-        self.membership = self.portal.portal_membership
-        self.createMemberarea("user1")
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer["portal"]
+        self.request = self.layer["request"]
         self.workflow = self.portal.portal_workflow
-        self.setupAuthenticator()
+        # Make sure we can create and publish directly.
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+        # Prepare content.
+        self.portal.invokeFactory("Folder", id="folder")
+        self.folder = self.portal.folder
+        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
+        self.setup_authenticator()
+
+    def setup_authenticator(self):
+        from plone.protect.authenticator import createToken
+
+        self.request.form["_authenticator"] = createToken()
 
     # Test the recursive behaviour of content_status_modify:
 
     def testPublishingNonDefaultPageLeavesFolderAlone(self):
-        self.setRoles(["Manager"])  # Make sure we can publish directly
-        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
         self.folder.d1.content_status_modify("publish")
         self.assertEqual(
             self.workflow.getInfoFor(self.folder, "review_state"), "visible"
@@ -32,8 +47,6 @@ class TestContentPublishing(PloneTestCase):
         )
 
     def testPublishingDefaultPagePublishesFolder(self):
-        self.setRoles(["Manager"])  # Make sure we can publish directly
-        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
         self.folder.setDefaultPage("d1")
         self.folder.d1.content_status_modify("publish")
         self.assertEqual(
@@ -44,8 +57,6 @@ class TestContentPublishing(PloneTestCase):
         )
 
     def testPublishingDefaultPageWhenFolderCannotBePublished(self):
-        self.setRoles(["Manager"])  # Make sure we can publish directly
-        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
         self.folder.setDefaultPage("d1")
         # make parent be published already when publishing its default document
         # results in an attempt to do it again
@@ -64,8 +75,6 @@ class TestContentPublishing(PloneTestCase):
     # test setting effective/expiration date and isExpired method
 
     def testIsExpiredWithExplicitExpiredContent(self):
-        self.setRoles(["Manager"])
-        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
         self.folder.d1.content_status_modify(
             workflow_action="publish",
             effective_date="1/1/2001",
@@ -74,7 +83,5 @@ class TestContentPublishing(PloneTestCase):
         self.assertTrue(isExpired(self.folder.d1))
 
     def testIsExpiredWithExplicitNonExpiredContent(self):
-        self.setRoles(["Manager"])
-        self.folder.invokeFactory("Document", id="d1", title="Doc 1")
         self.folder.d1.content_status_modify(workflow_action="publish")
         self.assertFalse(isExpired(self.folder.d1))
