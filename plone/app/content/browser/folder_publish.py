@@ -4,6 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import transaction_note
 from ZODB.POSException import ConflictError
+from zope.component import getMultiAdapter
 from zope.publisher.browser import BrowserView
 
 import transaction
@@ -77,7 +78,8 @@ class FolderPublishView(BrowserView):
             try:
                 obj = traverse(path, None)
                 if obj is not None:
-                    obj.content_status_modify(
+                    view = getMultiAdapter((obj, self.request), name="content_status_modify")
+                    view(
                         workflow_action,
                         comment,
                         effective_date=effective_date,
