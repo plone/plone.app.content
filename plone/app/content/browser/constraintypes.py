@@ -157,7 +157,7 @@ class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
 
     def updateActions(self):
         super().updateActions()
-        self.actions['save'].addClass('context')
+        self.actions['save'].addClass('btn btn-primary')
 
     @button.buttonAndHandler(_('label_save', default="Save"), name='save')
     def handleSave(self, action):

@@ -92,6 +92,13 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         target = self.view_url()
         return self.request.response.redirect(target)
 
+    def updateActions(self):
+        super().updateActions()
+        if self.actions and 'Delete' in self.actions:
+            self.actions['Delete'].addClass('btn-danger')
+        if self.actions and 'Cancel' in self.actions:
+            self.actions['Cancel'].addClass('btn-secondary')
+
 
 def valid_id(self):
     # TODO: Do we need an validator here or use the same that's used in
@@ -183,6 +190,13 @@ class RenameForm(form.Form):
                              name='Cancel')
     def handle_cancel(self, action):
         self.request.response.redirect(self.view_url())
+
+    def updateActions(self):
+        super().updateActions()
+        if self.actions and 'Rename' in self.actions:
+            self.actions['Rename'].addClass('btn-primary')
+        if self.actions and 'Cancel' in self.actions:
+            self.actions['Cancel'].addClass('btn-secondary')
 
 
 class ObjectCutView(LockingBase):
