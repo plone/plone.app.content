@@ -54,6 +54,7 @@ setup(
         'setuptools',
         'simplejson',
         'six',
+        'z3c.form',
         'zope.component',
         'zope.container',
         'zope.deferredimport',
