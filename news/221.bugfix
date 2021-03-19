@@ -1,0 +1,1 @@
+Allow to use the @@getSource view when we are in an add form and we do not have the "Modify portal content" permission
