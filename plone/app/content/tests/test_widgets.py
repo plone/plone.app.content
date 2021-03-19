@@ -496,6 +496,25 @@ class BrowserTest(unittest.TestCase):
         data = json.loads(view())
         self.assertEqual(data['error'], 'Vocabulary lookup not allowed.')
 
+    def testSourceDefaultPermission(self):
+        from plone.app.content.browser.vocabulary import SourceView
+        from z3c.form.browser.text import TextWidget
+
+        widget = TextWidget(self.request)
+        view = SourceView(widget, self.request)
+        self.assertEqual(view.default_permission, "cmf.ModifyPortalContent")
+
+    def testSourceDefaultPermissionOnAddForm(self):
+        from plone.app.content.browser.vocabulary import SourceView
+        from z3c.form import form
+        from z3c.form.browser.text import TextWidget
+
+        widget = TextWidget(self.request)
+        widget.form = form.AddForm(self.portal, self.request)
+
+        view = SourceView(widget, self.request)
+        self.assertEqual(view.default_permission, "cmf.AddPortalContent")
+
     def testSourceTextQuery(self):
         from z3c.form.browser.text import TextWidget
         from zope.interface import implementer
