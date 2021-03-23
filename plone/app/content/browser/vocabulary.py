@@ -8,6 +8,7 @@ from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
+from plone.memoize.view import memoize
 from plone.supermodel.utils import mergedTaggedValueDict
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
@@ -16,6 +17,7 @@ from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from Products.MimetypesRegistry.MimeTypeItem import PREFIX
 from types import FunctionType
+from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import ISubForm
 from zope.component import getUtility
 from zope.component import queryAdapter
@@ -371,19 +373,23 @@ class SourceView(BaseVocabularyView):
             context = self.context.context
         return context
 
+    @property
+    @memoize
+    def default_permission(self):
+        if IAddForm.providedBy(self.context.form):
+            return "cmf.AddPortalContent"
+        return "cmf.ModifyPortalContent"
+
     def get_vocabulary(self):
         widget = self.context
         field = widget.field.bind(widget.context)
 
         # check field's write permission
         info = mergedTaggedValueDict(field.interface, WRITE_PERMISSIONS_KEY)
-        permission_name = info.get(field.__name__, 'cmf.ModifyPortalContent')
+        permission_name = info.get(field.__name__, self.default_permission)
         permission = queryUtility(IPermission, name=permission_name)
         if permission is None:
-            permission = getUtility(
-                IPermission,
-                name='cmf.ModifyPortalContent'
-            )
+            permission = getUtility(IPermission, name=self.default_permission)
         if not getSecurityManager().checkPermission(
             permission.title,
             self.get_context()
