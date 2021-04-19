@@ -58,12 +58,14 @@
                        type="submit"
                        name="form.buttons.Save"
                        value="Save"
-                       i18n:attributes="value label_save;">Save</button>
+                       i18n:attributes="value label_save;"
+                       i18n:translate="label_save">Save</button>
                 <button class="btn btn-secondary"
                        type="submit"
                        name="form.buttons.Cancel"
                        value="Cancel"
-                       i18n:attributes="value label_cancel;">Cancel</button>
+                       i18n:attributes="value label_cancel;"
+                       i18n:translate="label_cancel">Cancel</button>
               </div>
 
             </tal:hasItems>
@@ -77,7 +79,8 @@
                        type="submit"
                        name="form.button.Cancel"
                        value="Ok"
-                       i18n:attributes="value label_ok;">Ok</button>
+                       i18n:attributes="value label_ok;"
+                       i18n:translate="label_ok">Ok</button>
               </div>
             </tal:noitems>
             </tal:items>

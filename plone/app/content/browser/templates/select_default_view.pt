@@ -73,12 +73,14 @@
                        type="submit"
                        name="form.button.Save"
                        value="Save"
-                       i18n:attributes="value label_save;">Save</button>
+                       i18n:attributes="value label_save;"
+                       i18n:translate="label_save">Save</button>
                 <button class="standalone btn btn-secondary"
                        type="submit"
                        name="form.button.Cancel"
                        value="Cancel"
-                       i18n:attributes="value label_cancel;">Cancel</button>
+                       i18n:attributes="value label_cancel;"
+                       i18n:translate="label_cancel">Cancel</button>
               </div>
 
           </form>
