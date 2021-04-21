@@ -8,6 +8,31 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a1 (2021-04-20)
+--------------------
+
+Breaking changes:
+
+
+- Remove compatibility code for Archetypes and older Python and Plone versions.
+  This version is only for Plone 6.0.
+  [maurits] (#215)
+- Update for Plone 6 with Bootstrap markup
+  [agitator, jensens] (#220)
+- Added ``folder_publish`` browser view.
+  This replaces the ``folder_publish.cpy`` script from ``Products.CMFPlone``.
+  [maurits] (#3057)
+- Added ``content_status_modify`` browser view.
+  This replaces the ``content_status_modify.cpy`` script and its validator ``validate_content_status_modify.vpy`` from ``Products.CMFPlone``.
+  [maurits] (#3057)
+
+
+Bug fixes:
+
+
+- Allow to use the @@getSource view when we are in an add form and we do not have the "Modify portal content" permission (#221)
+
+
 3.8.7 (2020-09-26)
 ------------------
 
