@@ -306,7 +306,7 @@ class FolderContentsView(BrowserView):
             },
             'basePath': '/' + '/'.join(context_path[len(site_path):]),
             'upload': {
-                'relativePath': 'fileUpload',
+                'relativePath': '@@fileUpload',
                 'baseUrl': base_url,
                 'initialFolder': IUUID(self.context, None),
                 'useTus': TUS_ENABLED
