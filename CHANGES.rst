@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a2 (2021-06-14)
+--------------------
+
+Bug fixes:
+
+
+- Call fileUpload view explict with @@ to avoid possible plone.rest clashes.
+  [jensens] (#225)
+
+
 4.0.0a1 (2021-04-20)
 --------------------
 
