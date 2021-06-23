@@ -33,7 +33,7 @@ class PropertiesAction:
         return {
             "tooltip": translate(_("Properties"), context=self.request),
             "id": "properties",
-            "icon": "edit",
+            "icon": "plone-edit",
             "url": self.context.absolute_url() + "/@@fc-properties",
             "form": {
                 "title": translate(

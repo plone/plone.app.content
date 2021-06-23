@@ -21,7 +21,7 @@ class CutAction:
         return {
             "tooltip": translate(_("Cut"), context=self.request),
             "id": "cut",
-            "icon": "scissors",
+            "icon": "plone-cut",
             "url": self.context.absolute_url() + "/@@fc-cut",
         }
 

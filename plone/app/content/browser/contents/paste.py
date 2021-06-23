@@ -21,7 +21,7 @@ class PasteAction:
         return {
             "tooltip": translate(_("Paste"), context=self.request),
             "id": "paste",
-            "icon": "open-file",
+            "icon": "plone-paste",
             "url": self.context.absolute_url() + "/@@fc-paste",
         }
 
