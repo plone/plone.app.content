@@ -26,10 +26,11 @@ class TagsAction:
             "icon": "tags",
             "url": self.context.absolute_url() + "/@@fc-tags",
             "form": {
+                "title": translate(_("Tags"), context=self.request),
                 "template": self.template(
                     vocabulary_url="%splone.app.vocabularies.Keywords"
                     % (base_vocabulary)
-                )
+                ),
             },
         }
 

@@ -36,7 +36,10 @@ class RenameAction:
             "id": "rename",
             "icon": "plone-rename",
             "url": self.context.absolute_url() + "/@@fc-rename",
-            "form": {"template": self.template()},
+            "form": {
+                "title": translate(_("Rename"), context=self.request),
+                "template": self.template(),
+            },
         }
 
 
