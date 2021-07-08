@@ -1,0 +1,3 @@
+Fixed stored XSS in folder contents.
+From `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents>`_.
+[maurits]
