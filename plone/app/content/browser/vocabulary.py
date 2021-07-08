@@ -16,6 +16,7 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from Products.MimetypesRegistry.MimeTypeItem import PREFIX
+from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from types import FunctionType
 from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import ISubForm
@@ -209,6 +210,7 @@ class BaseVocabularyView(BrowserView):
             attributes = attributes.split(',')
 
         translate_ignored = self.get_translated_ignored()
+        transform = SafeHTML()
         if attributes:
             base_path = self.get_base_path(context)
             sm = getSecurityManager()
@@ -238,12 +240,13 @@ class BaseVocabularyView(BrowserView):
                         key not in translate_ignored and
                         isinstance(val, str)
                     ):
-                        item[key] = translate(
+                        val = translate(
                             _(safe_unicode(val)),
                             context=self.request
                         )
-                    else:
-                        item[key] = val
+                    if isinstance(val, (bytes, str)):
+                        val = transform.scrub_html(val)
+                    item[key] = val
                     if key == 'getMimeIcon':
                         item[key] = None
                         # get mime type icon url from mimetype registry'
@@ -265,8 +268,8 @@ class BaseVocabularyView(BrowserView):
                                 )
                 items.append(item)
         else:
-            items = [{'id': item.value,
-                      'text': item.title} for item in results]
+            items = [{'id': transform.scrub_html(item.value),
+                      'text': transform.scrub_html(item.title) if item.title else ""} for item in results]
 
         if total == 0:
             total = len(items)
