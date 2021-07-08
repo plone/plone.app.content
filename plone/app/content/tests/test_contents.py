@@ -528,22 +528,31 @@ class FCPropertiesTests(unittest.TestCase):
         self.assertEqual(self.portal.main1.sub2.exclude_from_nav, False)
 
 
-# Text for testing that the title is escaped.
-ESCAPED = "&lt;script&gt;"
-HACKED = '<script>alert("hacked")</script>'
+# We want to avoid hackers getting script tags inserted.
+# But for example an ampersand is okay as long as it is escaped,
+# although it should not be doubly escaped, because that looks wrong.
+NORMAL_TEXT = "Smith & Jones"
+ESCAPED_TEXT = "Smith &amp; Jones"
+DOUBLY_ESCAPED_TEXT = "Smith &amp;amp; Jones"
+# For script tags, safest is to filter them using the safe html filter.
+HACKED = 'The <script>alert("hacker")</script> was here.'
 
 
-class TestTitleEscape(unittest.TestCase):
-    """Test that the title in the folder contents is escaped.
+class TestSafeHtmlInFolderContents(unittest.TestCase):
+    """Test that the title in the folder contents is safe.
 
     From PloneHotfix20200121, see
     https://plone.org/security/hotfix/20200121/xss-in-the-title-field-on-plone-5-0-and-higher
+
+    Same for other fields, from PloneHotfix20210518, see
+    https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents
     """
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.portal = self.layer["portal"]
-        self.app = self.layer["app"]
+        self.portal = self.layer['portal']
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
 
     def get_browser(self):
         browser = Browser(self.layer["app"])
@@ -554,61 +563,100 @@ class TestTitleEscape(unittest.TestCase):
         )
         return browser
 
-    def assert_not_hacked(self, browser):
-        body = browser.contents
-        hacked = HACKED
-        if not browser.isHtml:
-            # Assume json.
-            hacked = json.dumps(HACKED)
-
-        # This gives a too verbose error message, showing the entire body:
-        # self.assertNotIn(HACKED, body)
-        # So we roll our own less verbose version.
-        if hacked in body:
-            index = body.index(hacked)
-            start = max(0, index - 50)
-            end = min(index + len(hacked) + 50, len(body))
-            assert False, "Hacked script found in body: ... {} ...".format(
-                body[start:end]
-            )
-
-        # The escaped version of the HACKED text should be in the response text.
-        self.assertIn(ESCAPED, body)
-
-    def test_normal_title(self):
-        # Create a folder and page with normal title.
-        normal = "'Normal title"
-        setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
-        self.portal.invokeFactory("Folder", id="folder1", title=normal)
+    def test_ampersand(self):
+        self.portal.invokeFactory(
+            "Folder",
+            id="folder1",
+            title=NORMAL_TEXT,
+            description=NORMAL_TEXT,
+            creators=(NORMAL_TEXT,),
+            contributors=(NORMAL_TEXT,),
+        )
         folder1 = self.portal.folder1
-        self.assertEqual(folder1.Title(), normal)
-        folder1.invokeFactory("Document", id="page1", title=normal)
+        self.assertEqual(folder1.Title(), NORMAL_TEXT)
+        self.assertEqual(folder1.Description(), NORMAL_TEXT)
+        folder1.invokeFactory(
+            "Document",
+            id="page1",
+            title=NORMAL_TEXT,
+            description=NORMAL_TEXT,
+            creators=(NORMAL_TEXT,),
+            contributors=(NORMAL_TEXT,),
+        )
         page1 = folder1.page1
-        self.assertEqual(page1.Title(), normal)
+        self.assertEqual(page1.Title(), NORMAL_TEXT)
+        self.assertEqual(page1.Description(), NORMAL_TEXT)
         transaction.commit()
 
-        # Check the output of the normal case for comparison.
+        # Check the output.
         browser = self.get_browser()
+        browser.open(folder1.absolute_url())
+        self.assert_only_escaped_text(browser)
+        browser.open(page1.absolute_url())
+        self.assert_only_escaped_text(browser)
+        browser.open(folder1.absolute_url() + "/folder_contents")
+        self.assert_only_escaped_text(browser)
+
         browser.open(folder1.absolute_url() + "/@@fc-contextInfo")
-        self.assertNotIn(ESCAPED, browser.contents)
+        self.assert_only_escaped_text(browser)
 
-    def test_xss_from_title(self):
-        # Does a script tag as title show up anywhere in the html?
-        # It might end up in the main menu.
-
-        # Create a folder and page with a hacked title.
-        setRoles(self.portal, TEST_USER_ID, ["Manager", "Member"])
-        self.portal.invokeFactory("Folder", id="folder2", title=HACKED)
-        folder2 = self.portal.folder2
-        self.assertEqual(folder2.Title(), HACKED)
-        folder2.invokeFactory("Document", id="page2", title=HACKED)
-        page2 = folder2.page2
-        self.assertEqual(page2.Title(), HACKED)
+    def test_xss(self):
+        self.portal.invokeFactory(
+            "Folder",
+            id="folder1",
+            title=HACKED,
+            description=HACKED,
+            creators=(HACKED,),
+            contributors=(HACKED,),
+        )
+        folder1 = self.portal.folder1
+        self.assertEqual(folder1.Title(), HACKED)
+        # With good old Archetypes the description gets cleaned up to
+        # 'The  alert("hacker")  was here.'
+        # self.assertEqual(folder1.Description(), HACKED)
+        folder1.invokeFactory(
+            "Document",
+            id="page1",
+            title=HACKED,
+            description=HACKED,
+            creators=(HACKED,),
+            contributors=(HACKED,),
+        )
+        page1 = folder1.page1
+        self.assertEqual(page1.Title(), HACKED)
+        # self.assertEqual(page1.Description(), HACKED)
         transaction.commit()
 
-        # Check the output of this hacked case.
+        # Check the output.
         browser = self.get_browser()
-        # Note: the content of the normal page, or /folder_contents
-        # is checked in the plone.app.layout tests.
-        browser.open(folder2.absolute_url() + "/@@fc-contextInfo")
-        self.assert_not_hacked(browser)
+        browser.open(folder1.absolute_url())
+        self.assert_not_in(HACKED, browser.contents)
+        browser.open(page1.absolute_url())
+        self.assert_not_in(HACKED, browser.contents)
+        browser.open(folder1.absolute_url() + "/folder_contents")
+        self.assert_not_in(HACKED, browser.contents)
+
+        browser.open(folder1.absolute_url() + "/@@fc-contextInfo")
+        self.assert_not_in(HACKED, browser.contents)
+
+    def assert_only_escaped_text(self, browser):
+        body = browser.contents
+        # The escaped version of the text text should be in the response text.
+        self.assertIn(ESCAPED_TEXT, body)
+        # The normal version should not.
+        self.assert_not_in(NORMAL_TEXT, body)
+        # We should avoid escaping twice.
+        self.assert_not_in(DOUBLY_ESCAPED_TEXT, body)
+
+    def assert_not_in(self, target, body):
+        # This gives a too verbose error message, showing the entire body:
+        # self.assertNotIn("x", body)
+        # So we roll our own less verbose version.
+        if target not in body:
+            return
+        index = body.index(target)
+        start = max(0, index - 50)
+        end = min(index + len(target) + 50, len(body))
+        assert False, "Text '{0}' unexpectedly found in body: ... {1} ...".format(
+            target, body[start:end]
+        )
