@@ -16,6 +16,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five import BrowserView
+from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from zope.browsermenu.interfaces import IBrowserMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
@@ -49,6 +50,14 @@ zope.deferredimport.deprecated(
     "Import from Products.CMFPlone.utils instead",
     get_top_site_from_url='Products.CMFPlone:utils.get_top_site_from_url',
 )
+
+
+# six has no char_types, but it should:
+# bytes + string + unicode, where defined.
+if six.PY3:
+    char_types = (bytes, str)
+else:
+    char_types = basestring
 
 
 class ContentsBaseAction(BrowserView):
@@ -363,12 +372,13 @@ class ContextInfo(BrowserView):
                 })
 
         context = aq_inner(self.context)
+        transform = SafeHTML()
         crumbs = []
         top_site = get_top_site_from_url(self.context, self.request)
         while not context == top_site:
             crumbs.append({
                 'id': context.getId(),
-                'title': escape(utils.pretty_title_or_id(context, context))
+                'title': transform.scrub_html(utils.pretty_title_or_id(context, context))
             })
             context = utils.parent(context)
 
@@ -392,8 +402,8 @@ class ContextInfo(BrowserView):
                     val = val()
                 if key == 'path':
                     val = val[len(base_path):]
-                if key == 'Title':
-                    val = escape(val)
+                if isinstance(val, char_types):
+                    val = transform.scrub_html(val)
                 item[key] = val
 
         self.request.response.setHeader(

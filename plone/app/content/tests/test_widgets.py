@@ -25,6 +25,7 @@ from zope.interface import noLongerProvides
 from zope.publisher.browser import TestRequest
 
 import json
+import operator
 import os
 import transaction
 
@@ -367,18 +368,30 @@ class BrowserTest(unittest.TestCase):
         acl_users = self.portal.acl_users
         membership = self.portal.portal_membership
         amount = 10
+        # Let's test that safe html is used on the fullname,
+        # as alternative to the workaround in PloneHotfix20210518.
         for i in range(amount):
             id = 'user' + str(i)
             acl_users.userFolderAddUser(id, 'secret', ['Member'], [])
             member = membership.getMemberById(id)
-            member.setMemberProperties(mapping={"fullname": id})
+            # Make user0 the hacker.
+            if i == 0:
+                fullname = "user <script>alert('tag')</script> hacker"
+            else:
+                fullname = id
+            member.setMemberProperties(mapping={"fullname": fullname})
         view = VocabularyView(self.portal, self.request)
         self.request.form.update({
             'name': 'plone.app.vocabularies.Users',
             'query': 'user'
         })
         data = json.loads(view())
+
         self.assertEqual(len(data['results']), amount)
+        # Let's sort, just to be sure.
+        results = sorted(data['results'], key=operator.itemgetter("id"))
+        # The first one is the hacker.  The hack should have failed.
+        self.assertDictEqual(results[0], {'id': 'user0', 'text': 'user  hacker'})
 
     def testSource(self):
         from z3c.form.browser.text import TextWidget
