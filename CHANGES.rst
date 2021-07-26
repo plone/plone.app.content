@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.8 (2021-07-26)
+------------------
+
+Bug fixes:
+
+
+- Allow to use the @@getSource view when we are in an add form and we do not have the "Modify portal content" permission (#221)
+- Call fileUpload view explict with @@ to avoid possible plone.rest clashes.
+  [jensens] (#225)
+- Fixed stored XSS in folder contents.
+  From `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents>`_.
+  [maurits] (#3274)
+- Fixed stored XSS from user fullname and possibly other places where ``getVocabulary`` is called.
+  This is an alternative to the ``plone.app.users`` workaround from `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-from-user-fullname>`_.
+  [maurits] (#3274)
+
+
 3.8.7 (2020-09-26)
 ------------------
 
