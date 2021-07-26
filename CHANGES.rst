@@ -8,6 +8,21 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a3 (2021-07-26)
+--------------------
+
+Bug fixes:
+
+
+- Fixed stored XSS in folder contents.
+  From `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents>`_.
+  [maurits] (#3274)
+- Fixed stored XSS from user fullname and possibly other places where ``getVocabulary`` is called.
+  This is an alternative to the ``plone.app.users`` workaround from `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-from-user-fullname>`_.
+  It looks like Plone 6 is not vulnerable, but this change makes sure.
+  [maurits] (#3274)
+
+
 4.0.0a2 (2021-06-14)
 --------------------
 
