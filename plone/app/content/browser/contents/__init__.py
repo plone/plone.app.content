@@ -15,6 +15,7 @@ from Products.CMFPlone import utils
 from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
 from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five import BrowserView
+from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from zope.browsermenu.interfaces import IBrowserMenu
 from zope.component import getMultiAdapter
 from zope.component import getUtilitiesFor
@@ -22,8 +23,6 @@ from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
-
-from html import escape
 
 
 class ContentsBaseAction(BrowserView):
@@ -338,12 +337,13 @@ class ContextInfo(BrowserView):
                 })
 
         context = aq_inner(self.context)
+        transform = SafeHTML()
         crumbs = []
         top_site = get_top_site_from_url(self.context, self.request)
         while not context == top_site:
             crumbs.append({
                 'id': context.getId(),
-                'title': escape(utils.pretty_title_or_id(context, context))
+                'title': transform.scrub_html(utils.pretty_title_or_id(context, context))
             })
             context = utils.parent(context)
 
@@ -367,8 +367,8 @@ class ContextInfo(BrowserView):
                     val = val()
                 if key == 'path':
                     val = val[len(base_path):]
-                if key == 'Title':
-                    val = escape(val)
+                if isinstance(val, (bytes, str)):
+                    val = transform.scrub_html(val)
                 item[key] = val
 
         self.request.response.setHeader(
