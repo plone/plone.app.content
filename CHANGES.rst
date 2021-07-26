@@ -18,10 +18,10 @@ Bug fixes:
 - Call fileUpload view explict with @@ to avoid possible plone.rest clashes.
   [jensens] (#225)
 - Fixed stored XSS in folder contents.
-  From `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents>`_.
+  From the `PloneHotfix20210518 contents fix <https://plone.org/security/hotfix/20210518/stored-xss-in-folder-contents>`_.
   [maurits] (#3274)
 - Fixed stored XSS from user fullname and possibly other places where ``getVocabulary`` is called.
-  This is an alternative to the ``plone.app.users`` workaround from `PloneHotfix20210518 <https://plone.org/security/hotfix/20210518/stored-xss-from-user-fullname>`_.
+  This is an alternative to the ``plone.app.users`` workaround from the `PloneHotfix20210518 fullname fix <https://plone.org/security/hotfix/20210518/stored-xss-from-user-fullname>`_.
   [maurits] (#3274)
 
 
@@ -107,7 +107,7 @@ Bug fixes:
 New features:
 
 
-- Switch the default index used for filtering in folder_contents from 
+- Switch the default index used for filtering in folder_contents from
   SearchableText to Title
   [frapell] (#189)
 
