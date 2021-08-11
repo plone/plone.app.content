@@ -1,7 +1,7 @@
+import json
+
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -10,13 +10,14 @@ from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 
-import json
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 
 
 @implementer(IStructureAction)
 class DeleteAction:
 
-    template = ViewPageTemplateFile('templates/delete.pt')
+    template = ViewPageTemplateFile("templates/delete.pt")
     order = 4
 
     def __init__(self, context, request):
@@ -25,41 +26,40 @@ class DeleteAction:
 
     def get_options(self):
         return {
-            'tooltip': translate(_('Delete'), context=self.request),
-            'id': 'delete',
-            'icon': 'trash',
-            'context': 'danger',
-            'url': self.context.absolute_url() + '/@@fc-delete',
-            'form': {
-                'title': translate(_('Delete selected items'), context=self.request),
-                'submitText': translate(_('Yes'), context=self.request),
-                'submitContext': 'danger',
-                'template': self.template(),
-                'closeText': translate(_('No'), context=self.request),
-                'dataUrl': self.context.absolute_url() + '/@@fc-delete'
-            }
+            "tooltip": translate(_("Delete"), context=self.request),
+            "id": "delete",
+            "icon": "trash",
+            "context": "danger",
+            "url": self.context.absolute_url() + "/@@fc-delete",
+            "form": {
+                "title": translate(_("Delete selected items"), context=self.request),
+                "submitText": translate(_("Yes"), context=self.request),
+                "submitContext": "danger",
+                "template": self.template(),
+                "closeText": translate(_("No"), context=self.request),
+                "dataUrl": self.context.absolute_url() + "/@@fc-delete",
+            },
         }
 
 
 class DeleteActionView(ContentsBaseAction):
     required_obj_permission = delete_objects
-    success_msg = _('Successfully delete items')
-    failure_msg = _('Failed to delete items')
+    success_msg = _("Successfully delete items")
+    failure_msg = _("Failed to delete items")
 
     def __call__(self):
-        if self.request.form.get('render') == 'yes':
-            confirm_view = getMultiAdapter((getSite(), self.request),
-                                           name='delete_confirmation_info')
+        if self.request.form.get("render") == "yes":
+            confirm_view = getMultiAdapter(
+                (getSite(), self.request), name="delete_confirmation_info"
+            )
             selection = self.get_selection()
-            catalog = getToolByName(self.context, 'portal_catalog')
+            catalog = getToolByName(self.context, "portal_catalog")
             brains = catalog(UID=selection, show_inactive=True)
             items = [i.getObject() for i in brains]
             self.request.response.setHeader(
-                'Content-Type', 'application/json; charset=utf-8'
+                "Content-Type", "application/json; charset=utf-8"
             )
-            return json.dumps({
-                'html': confirm_view(items)
-            })
+            return json.dumps({"html": confirm_view(items)})
         else:
             return super().__call__()
 
@@ -68,18 +68,22 @@ class DeleteActionView(ContentsBaseAction):
         title = self.objectTitle(obj)
 
         try:
-            lock_info = obj.restrictedTraverse('@@plone_lock_info')
+            lock_info = obj.restrictedTraverse("@@plone_lock_info")
         except AttributeError:
             lock_info = None
 
         if lock_info is not None and lock_info.is_locked():
-            self.errors.append(_('${title} is locked and cannot be deleted.',
-                                 mapping={'title': title}))
+            self.errors.append(
+                _("${title} is locked and cannot be deleted.", mapping={"title": title})
+            )
             return
         else:
             try:
                 parent.manage_delObjects(obj.getId())
             except Unauthorized:
                 self.errors.append(
-                    _('You are not authorized to delete ${title}.',
-                        mapping={'title': self.objectTitle(self.dest)}))
+                    _(
+                        "You are not authorized to delete ${title}.",
+                        mapping={"title": self.objectTitle(self.dest)},
+                    )
+                )

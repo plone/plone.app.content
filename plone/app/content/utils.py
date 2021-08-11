@@ -1,9 +1,10 @@
-from DateTime import DateTime
+import datetime
 
 import Missing
-import datetime
+
 # use simplejson because it's ahead of stdlib and supports more types
 import simplejson
+from DateTime import DateTime
 
 
 def custom_json_handler(obj):

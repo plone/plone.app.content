@@ -1,6 +1,4 @@
 from DateTime import DateTime
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from plone.dexterity.utils import safe_unicode
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
@@ -10,11 +8,14 @@ from ZODB.POSException import ConflictError
 from zope.i18n import translate
 from zope.interface import implementer
 
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+
 
 @implementer(IStructureAction)
 class WorkflowAction:
 
-    template = ViewPageTemplateFile('templates/workflow.pt')
+    template = ViewPageTemplateFile("templates/workflow.pt")
     order = 7
 
     def __init__(self, context, request):
@@ -23,61 +24,63 @@ class WorkflowAction:
 
     def get_options(self):
         return {
-            'tooltip': translate(_('State'), context=self.request),
-            'id': 'workflow',
-            'icon': 'lock',
-            'url': self.context.absolute_url() + '/@@fc-workflow',
-            'form': {
-                'title': translate(_('Change workflow of selected items'), context=self.request),
-                'template': self.template(),
-                'dataUrl': self.context.absolute_url() + '/@@fc-workflow'
-            }
+            "tooltip": translate(_("State"), context=self.request),
+            "id": "workflow",
+            "icon": "lock",
+            "url": self.context.absolute_url() + "/@@fc-workflow",
+            "form": {
+                "title": translate(
+                    _("Change workflow of selected items"), context=self.request
+                ),
+                "template": self.template(),
+                "dataUrl": self.context.absolute_url() + "/@@fc-workflow",
+            },
         }
 
 
 class WorkflowActionView(ContentsBaseAction):
-    required_obj_permission = 'Modify portal content'
-    success_msg = _('Successfully modified items')
-    failure_msg = _('Failed to modify items')
+    required_obj_permission = "Modify portal content"
+    success_msg = _("Successfully modified items")
+    failure_msg = _("Failed to modify items")
 
     def __call__(self):
-        self.pworkflow = getToolByName(self.context, 'portal_workflow')
-        self.putils = getToolByName(self.context, 'plone_utils')
-        self.transition_id = self.request.form.get('transition', None)
-        self.comments = self.request.form.get('comments', '')
-        self.recurse = self.request.form.get('recurse', 'no') == 'yes'
-        if self.request.form.get('render') == 'yes':
+        self.pworkflow = getToolByName(self.context, "portal_workflow")
+        self.putils = getToolByName(self.context, "plone_utils")
+        self.transition_id = self.request.form.get("transition", None)
+        self.comments = self.request.form.get("comments", "")
+        self.recurse = self.request.form.get("recurse", "no") == "yes"
+        if self.request.form.get("render") == "yes":
             # asking for render information
             selection = self.get_selection()
-            catalog = getToolByName(self.context, 'portal_catalog')
+            catalog = getToolByName(self.context, "portal_catalog")
             brains = catalog(UID=selection, show_inactive=True)
             transitions = []
             for brain in brains:
                 obj = brain.getObject()
                 for transition in self.pworkflow.getTransitionsFor(obj):
                     tdata = {
-                        'id': transition['id'],
-                        'title': self.context.translate(
-                            safe_unicode(transition['name']))
+                        "id": transition["id"],
+                        "title": self.context.translate(
+                            safe_unicode(transition["name"])
+                        ),
                     }
                     if tdata not in transitions:
                         transitions.append(tdata)
-            return self.json({
-                'transitions': transitions
-            })
+            return self.json({"transitions": transitions})
         else:
             return super().__call__()
 
     def action(self, obj, bypass_recurse=False):
         transitions = self.pworkflow.getTransitionsFor(obj)
-        if self.transition_id in [t['id'] for t in transitions]:
+        if self.transition_id in [t["id"] for t in transitions]:
             try:
                 # set effective date if not already set
-                if obj.EffectiveDate() == 'None':
+                if obj.EffectiveDate() == "None":
                     obj.setEffectiveDate(DateTime())
 
-                self.pworkflow.doActionFor(obj, self.transition_id,
-                                           comment=self.comments)
+                self.pworkflow.doActionFor(
+                    obj, self.transition_id, comment=self.comments
+                )
                 if self.putils.isDefaultPage(obj):
                     self.action(obj.aq_parent, bypass_recurse=True)
                 recurse = self.recurse and not bypass_recurse
@@ -89,5 +92,8 @@ class WorkflowActionView(ContentsBaseAction):
                 raise
             except Exception:
                 self.errors.append(
-                    _('Could not transition: ${title}',
-                      mapping={'title': self.objectTitle(obj)}))
+                    _(
+                        "Could not transition: ${title}",
+                        mapping={"title": self.objectTitle(obj)},
+                    )
+                )

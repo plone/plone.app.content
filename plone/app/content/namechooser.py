@@ -1,15 +1,13 @@
-from Acquisition import aq_base
-from Acquisition import aq_inner
-from plone.app.content.interfaces import INameFromTitle
+import time
+
+from Acquisition import aq_base, aq_inner
 from plone.i18n.normalizer import FILENAME_REGEX
-from plone.i18n.normalizer.interfaces import IURLNormalizer
-from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
+from plone.i18n.normalizer.interfaces import IURLNormalizer, IUserPreferredURLNormalizer
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
 
-import time
-
+from plone.app.content.interfaces import INameFromTitle
 
 ATTEMPTS = 100
 
@@ -35,17 +33,17 @@ class NormalizingNameChooser:
             if nameFromTitle is not None:
                 name = nameFromTitle.title
             if not name:
-                name = getattr(aq_base(obj), 'id', None)
+                name = getattr(aq_base(obj), "id", None)
             if not name:
-                name = getattr(aq_base(obj), 'portal_type', None)
+                name = getattr(aq_base(obj), "portal_type", None)
             if not name:
                 name = obj.__class__.__name__
 
         if not isinstance(name, str):
-            name = str(name, 'utf-8')
-            #name = name.encode('utf-8')
+            name = str(name, "utf-8")
+            # name = name.encode('utf-8')
 
-        request = getattr(obj.__of__(container), 'REQUEST', None)
+        request = getattr(obj.__of__(container), "REQUEST", None)
         if request is not None:
             name = IUserPreferredURLNormalizer(request).normalize(name)
         else:
@@ -63,11 +61,11 @@ class NormalizingNameChooser:
         if not check_id(name, required=1):
             return name
 
-        ext = ''
+        ext = ""
         m = FILENAME_REGEX.match(name)
         if m is not None:
             name = m.groups()[0]
-            ext = '.' + m.groups()[1]
+            ext = "." + m.groups()[1]
 
         idx = 1
         while idx <= ATTEMPTS:
@@ -82,31 +80,26 @@ class NormalizingNameChooser:
             return new_name
 
         raise ValueError(
-            "Cannot find a unique name based on %s after %d attemps." % (
+            "Cannot find a unique name based on %s after %d attemps."
+            % (
                 name,
                 ATTEMPTS,
             )
         )
 
     def _getCheckId(self, obj):
-        """Return a function that can act as the check_id script.
-        """
+        """Return a function that can act as the check_id script."""
         parent = aq_inner(self.context)
         # Check for a method or a skin script, like
         # Products/CMFPlone/skins/plone_scripts/check_id.py until Plone 5.1.
-        _check_id = getattr(obj, 'check_id', None)
+        _check_id = getattr(obj, "check_id", None)
 
         def do_Plone_check(newid, required):
             if _check_id is not None:
-                return _check_id(
-                    newid,
-                    required=required,
-                    contained_by=parent
-                )
+                return _check_id(newid, required=required, contained_by=parent)
 
             from Products.CMFPlone.utils import check_id
 
-            return check_id(
-                obj, newid, required=required, contained_by=parent)
+            return check_id(obj, newid, required=required, contained_by=parent)
 
         return do_Plone_check

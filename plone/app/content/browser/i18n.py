@@ -1,23 +1,26 @@
-from Products.Five.browser import BrowserView
+import json
+
 from plone.memoize import ram
+from Products.Five.browser import BrowserView
 from zope.component import queryUtility
 from zope.i18n.interfaces import ITranslationDomain
-import json
 
 
 def _cache_key(method, self, domain, language):
-    return (domain, language,)
+    return (
+        domain,
+        language,
+    )
 
 
 class i18njs(BrowserView):
-
     @ram.cache(_cache_key)
     def _gettext_catalog(self, domain, language):
         td = queryUtility(ITranslationDomain, domain)
         if td is None:
             return
         if language not in td._catalogs:
-            baselanguage = language.split('-')[0]
+            baselanguage = language.split("-")[0]
             if baselanguage not in td._catalogs:
                 return
             else:
@@ -37,10 +40,10 @@ class i18njs(BrowserView):
             catalog = {}
         else:
             if language is None:
-                language = self.request['LANGUAGE']
+                language = self.request["LANGUAGE"]
             catalog = self._gettext_catalog(domain, language)
 
         response = self.request.response
-        response.setHeader('Content-Type', 'application/json; charset=utf-8')
+        response.setHeader("Content-Type", "application/json; charset=utf-8")
         response.setBody(json.dumps(catalog))
         return response

@@ -1,6 +1,6 @@
+import json
+
 from DateTime import DateTime
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.app.widgets.utils import get_datetime_options
 from plone.dexterity.interfaces import IDexterityContent
@@ -14,13 +14,14 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-import json
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 
 
 @implementer(IStructureAction)
 class PropertiesAction:
 
-    template = ViewPageTemplateFile('templates/properties.pt')
+    template = ViewPageTemplateFile("templates/properties.pt")
     order = 8
 
     def __init__(self, context, request):
@@ -28,83 +29,85 @@ class PropertiesAction:
         self.request = request
 
     def get_options(self):
-        base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
+        base_vocabulary = "%s/@@getVocabulary?name=" % getSite().absolute_url()
         return {
-            'tooltip': translate(_('Properties'), context=self.request),
-            'id': 'properties',
-            'icon': 'edit',
-            'url': self.context.absolute_url() + '/@@fc-properties',
-            'form': {
-                'title': translate(_('Modify properties on items'), context=self.request),
-                'template': self.template(
-                    vocabulary_url='%splone.app.vocabularies.Users' % (
-                        base_vocabulary),
-                    pattern_options=json.dumps(get_datetime_options(self.request))
+            "tooltip": translate(_("Properties"), context=self.request),
+            "id": "properties",
+            "icon": "edit",
+            "url": self.context.absolute_url() + "/@@fc-properties",
+            "form": {
+                "title": translate(
+                    _("Modify properties on items"), context=self.request
                 ),
-                'dataUrl': self.context.absolute_url() + '/@@fc-properties',
-            }
+                "template": self.template(
+                    vocabulary_url="%splone.app.vocabularies.Users" % (base_vocabulary),
+                    pattern_options=json.dumps(get_datetime_options(self.request)),
+                ),
+                "dataUrl": self.context.absolute_url() + "/@@fc-properties",
+            },
         }
 
+
 class PropertiesActionView(ContentsBaseAction):
-    success_msg = _('Successfully updated metadata')
-    failure_msg = _('Failure updating metadata')
-    required_obj_permission = 'Modify portal content'
+    success_msg = _("Successfully updated metadata")
+    failure_msg = _("Failure updating metadata")
+    required_obj_permission = "Modify portal content"
 
     def __call__(self):
 
-        if self.request.form.get('render') == 'yes':
+        if self.request.form.get("render") == "yes":
             lang_factory = getUtility(
-                IVocabularyFactory,
-                'plone.app.vocabularies.SupportedContentLanguages'
+                IVocabularyFactory, "plone.app.vocabularies.SupportedContentLanguages"
             )
             lang_vocabulary = lang_factory(self.context)
             languages = [
-                {
-                    'title': term.title,
-                    'value': term.value
-                }
-                for term in lang_vocabulary
+                {"title": term.title, "value": term.value} for term in lang_vocabulary
             ]
-            return self.json({
-                'languages': [{
-                    'title': translate(
-                        _('label_no_change', default='No change'),
-                        context=self.request,
-                    ),
-                    'value': ''
-                }] + languages
-            })
+            return self.json(
+                {
+                    "languages": [
+                        {
+                            "title": translate(
+                                _("label_no_change", default="No change"),
+                                context=self.request,
+                            ),
+                            "value": "",
+                        }
+                    ]
+                    + languages
+                }
+            )
 
-        self.putils = getToolByName(self.context, 'plone_utils')
-        self.effectiveDate = self.request.form.get('effectiveDate')
-        self.expirationDate = self.request.form.get('expirationDate')
-        self.copyright = self.request.form.get('copyright')
-        self.contributors = self.request.form.get('contributors')
+        self.putils = getToolByName(self.context, "plone_utils")
+        self.effectiveDate = self.request.form.get("effectiveDate")
+        self.expirationDate = self.request.form.get("expirationDate")
+        self.copyright = self.request.form.get("copyright")
+        self.contributors = self.request.form.get("contributors")
         if self.contributors:
-            self.contributors = self.contributors.split(',')
+            self.contributors = self.contributors.split(",")
         else:
             self.contributors = []
-        self.creators = self.request.form.get('creators', '')
+        self.creators = self.request.form.get("creators", "")
         if self.creators:
-            self.creators = self.creators.split(',')
-        self.exclude = self.request.form.get('exclude-from-nav')
-        self.language = self.request.form.get('language')
-        self.recurse = self.request.form.get('recurse', 'no') == 'yes'
+            self.creators = self.creators.split(",")
+        self.exclude = self.request.form.get("exclude-from-nav")
+        self.language = self.request.form.get("language")
+        self.recurse = self.request.form.get("recurse", "no") == "yes"
         return super().__call__()
 
     def dx_action(self, obj):
-        if self.effectiveDate and hasattr(obj, 'effective_date'):
+        if self.effectiveDate and hasattr(obj, "effective_date"):
             obj.effective_date = DateTime(self.effectiveDate)
-        if self.expirationDate and hasattr(obj, 'expiration_date'):
+        if self.expirationDate and hasattr(obj, "expiration_date"):
             obj.expiration_date = DateTime(self.expirationDate)
-        if self.copyright and hasattr(obj, 'rights'):
+        if self.copyright and hasattr(obj, "rights"):
             obj.rights = self.copyright
-        if self.contributors and hasattr(obj, 'contributors'):
+        if self.contributors and hasattr(obj, "contributors"):
             obj.contributors = tuple(self.contributors)
-        if self.creators and hasattr(obj, 'creators'):
+        if self.creators and hasattr(obj, "creators"):
             obj.creators = tuple(self.creators)
-        if self.exclude and hasattr(obj, 'exclude_from_nav'):
-            obj.exclude_from_nav = self.exclude == 'yes'
+        if self.exclude and hasattr(obj, "exclude_from_nav"):
+            obj.exclude_from_nav = self.exclude == "yes"
 
         behavior_categorization = ICategorization(obj)
         if self.language and behavior_categorization:
@@ -138,7 +141,7 @@ class PropertiesActionView(ContentsBaseAction):
                 pass
         if self.exclude:
             try:
-                obj.setExcludeFromNav(self.exclude == 'yes')
+                obj.setExcludeFromNav(self.exclude == "yes")
             except AttributeError:
                 pass
         if self.language:

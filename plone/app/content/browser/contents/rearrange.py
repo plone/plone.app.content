@@ -1,14 +1,14 @@
 from OFS.interfaces import IOrderedContainer
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.utils import json_loads
 from plone.folder.interfaces import IExplicitOrdering
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.utils import json_loads
+
 
 class OrderContentsBaseAction(ContentsBaseAction):
-
     def getOrdering(self):
         if IPloneSiteRoot.providedBy(self.context):
             return self.context
@@ -28,38 +28,36 @@ class OrderContentsBaseAction(ContentsBaseAction):
 
 
 class ItemOrderActionView(OrderContentsBaseAction):
-    success_msg = _('Successfully moved item')
-    failure_msg = _('Error moving item')
+    success_msg = _("Successfully moved item")
+    failure_msg = _("Error moving item")
 
     def __call__(self):
         self.errors = []
         self.protect()
-        id = self.request.form.get('id')
+        id = self.request.form.get("id")
         ordering = self.getOrdering()
 
         if ordering is None:
-            self.errors.append(_('This folder does not support ordering'))
+            self.errors.append(_("This folder does not support ordering"))
             return self.message()
 
-        delta = self.request.form['delta']
+        delta = self.request.form["delta"]
 
-        if delta == 'top':
+        if delta == "top":
             ordering.moveObjectsToTop([id])
             return self.message()
 
-        if delta == 'bottom':
+        if delta == "bottom":
             ordering.moveObjectsToBottom([id])
             return self.message()
 
         delta = int(delta)
-        subset_ids = json_loads(self.request.form.get('subsetIds', 'null'))
+        subset_ids = json_loads(self.request.form.get("subsetIds", "null"))
         if subset_ids:
-            position_id = [
-                (ordering.getObjectPosition(i), i) for i in subset_ids
-            ]
+            position_id = [(ordering.getObjectPosition(i), i) for i in subset_ids]
             position_id.sort()
             if subset_ids != [i for position, i in position_id]:
-                self.errors.append(_('Client/server ordering mismatch'))
+                self.errors.append(_("Client/server ordering mismatch"))
                 return self.message()
 
         ordering.moveObjectsByDelta([id], delta, subset_ids)
@@ -67,28 +65,25 @@ class ItemOrderActionView(OrderContentsBaseAction):
 
 
 class RearrangeActionView(OrderContentsBaseAction):
-    success_msg = _('Successfully rearranged folder')
-    failure_msg = _('Can not rearrange folder')
+    success_msg = _("Successfully rearranged folder")
+    failure_msg = _("Can not rearrange folder")
 
     def __call__(self):
         self.protect()
         self.errors = []
         ordering = self.getOrdering()
         if ordering:
-            catalog = getToolByName(self.context, 'portal_catalog')
+            catalog = getToolByName(self.context, "portal_catalog")
             query = {
-                'path': {
-                    'query': '/'.join(self.context.getPhysicalPath()),
-                    'depth': 1
-                },
-                'sort_on': self.request.form.get('rearrange_on'),
-                'show_inactive': True
+                "path": {"query": "/".join(self.context.getPhysicalPath()), "depth": 1},
+                "sort_on": self.request.form.get("rearrange_on"),
+                "show_inactive": True,
             }
             brains = catalog(**query)
-            if self.request.form.get('reversed') == 'true':
+            if self.request.form.get("reversed") == "true":
                 brains = [b for b in reversed(brains)]
             for idx, brain in enumerate(brains):
                 ordering.moveObjectToPosition(brain.id, idx)
         else:
-            self.errors.append(_('Not explicit orderable'))
+            self.errors.append(_("Not explicit orderable"))
         return self.message()

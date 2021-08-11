@@ -1,6 +1,5 @@
 from AccessControl import Unauthorized
-from Acquisition import aq_inner
-from Acquisition import aq_parent
+from Acquisition import aq_inner, aq_parent
 from DateTime import DateTime
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
@@ -98,7 +97,7 @@ class ContentStatusModifyView(BrowserView):
             pass
 
         # Create the note while we still have access to the original context
-        note = "Changed status of %s at %s" % (
+        note = "Changed status of {} at {}".format(
             context.title_or_id(),
             context.absolute_url(),
         )
