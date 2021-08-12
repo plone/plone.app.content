@@ -1,16 +1,17 @@
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+
 
 @implementer(IStructureAction)
 class TagsAction:
 
-    template = ViewPageTemplateFile('templates/tags.pt')
+    template = ViewPageTemplateFile("templates/tags.pt")
     order = 6
 
     def __init__(self, context, request):
@@ -18,35 +19,35 @@ class TagsAction:
         self.request = request
 
     def get_options(self):
-        base_vocabulary = '%s/@@getVocabulary?name=' % getSite().absolute_url()
+        base_vocabulary = "%s/@@getVocabulary?name=" % getSite().absolute_url()
         return {
-            'tooltip': translate(_('Tags'), context=self.request),
-            'id': 'tags',
-            'icon': 'tags',
-            'url': self.context.absolute_url() + '/@@fc-tags',
-            'form': {
-                'template': self.template(
-                    vocabulary_url='%splone.app.vocabularies.Keywords' % (
-                        base_vocabulary)
+            "tooltip": translate(_("Tags"), context=self.request),
+            "id": "tags",
+            "icon": "tags",
+            "url": self.context.absolute_url() + "/@@fc-tags",
+            "form": {
+                "template": self.template(
+                    vocabulary_url="%splone.app.vocabularies.Keywords"
+                    % (base_vocabulary)
                 )
-            }
+            },
         }
 
 
 class TagsActionView(ContentsBaseAction):
-    required_obj_permission = 'Modify portal content'
-    success_msg = _('Successfully updated tags on items')
-    failure_msg = _('Failed to modify tags on items')
+    required_obj_permission = "Modify portal content"
+    success_msg = _("Successfully updated tags on items")
+    failure_msg = _("Failed to modify tags on items")
 
     def action(self, obj):
-        toadd = self.request.form.get('toadd')
+        toadd = self.request.form.get("toadd")
         if toadd:
-            toadd = set(toadd.split(','))
+            toadd = set(toadd.split(","))
         else:
             toadd = set()
-        toremove = self.request.get('toremove')
+        toremove = self.request.get("toremove")
         if toremove:
-            toremove = set(toremove.split(','))
+            toremove = set(toremove.split(","))
         else:
             toremove = set()
         tags = set(obj.Subject())

@@ -1,12 +1,10 @@
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
-from plone.app.testing import login
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
+import unittest
+
+from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
 from Products.CMFPlone.utils import isExpired
 from zope.component import getMultiAdapter
 
-import unittest
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
 
 class TestContentStatusModify(unittest.TestCase):

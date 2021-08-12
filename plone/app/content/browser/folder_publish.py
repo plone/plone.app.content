@@ -1,13 +1,11 @@
-from plone.protect import CheckAuthenticator
-from plone.protect import PostOnly
+import transaction
+from plone.protect import CheckAuthenticator, PostOnly
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import transaction_note
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.publisher.browser import BrowserView
-
-import transaction
 
 
 class FolderPublishView(BrowserView):
@@ -78,7 +76,9 @@ class FolderPublishView(BrowserView):
             try:
                 obj = traverse(path, None)
                 if obj is not None:
-                    view = getMultiAdapter((obj, self.request), name="content_status_modify")
+                    view = getMultiAdapter(
+                        (obj, self.request), name="content_status_modify"
+                    )
                     view(
                         workflow_action,
                         comment,
@@ -105,7 +105,9 @@ class FolderPublishView(BrowserView):
 
     def redirect(self):
         target = self.request.get("orig_template", "")
-        if target and not getToolByName(self.context, "portal_url").isURLInPortal(target):
+        if target and not getToolByName(self.context, "portal_url").isURLInPortal(
+            target
+        ):
             target = ""
         if not target:
             target = self.context.absolute_url()

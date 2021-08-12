@@ -1,13 +1,11 @@
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
-from plone.app.testing import login
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_NAME
+import unittest
+
+from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
 from Products.CMFPlone.utils import isExpired
 from zExceptions import Forbidden
 from zope.component import getMultiAdapter
 
-import unittest
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
 
 class TestContentPublishing(unittest.TestCase):
@@ -74,7 +72,9 @@ class TestContentPublishing(unittest.TestCase):
         for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, "review_state"), "published")
         self.assertEqual(self.request.response.getStatus(), 302)
-        self.assertEqual(self.request.response.getHeader("Location"), self.folder.absolute_url())
+        self.assertEqual(
+            self.request.response.getHeader("Location"), self.folder.absolute_url()
+        )
 
     def test_publishing_subobjects_and_expire_them(self):
         paths = []
@@ -121,4 +121,6 @@ class TestContentPublishing(unittest.TestCase):
 
         self.request.form["orig_template"] = "https://attacker.com"
         self.folder_publish(workflow_action="publish", paths=paths)
-        self.assertEqual(self.request.response.getHeader("Location"), self.folder.absolute_url())
+        self.assertEqual(
+            self.request.response.getHeader("Location"), self.folder.absolute_url()
+        )

@@ -1,30 +1,27 @@
+from urllib.parse import quote_plus
+
 from Acquisition import aq_inner
-from plone.app.content.browser.tableview import Table
-from plone.app.content.browser.tableview import TableBrowserView
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import human_readable_size
-from Products.CMFPlone.utils import isExpired
-from Products.CMFPlone.utils import safe_unicode
-from urllib.parse import quote_plus
-from zope.component import getMultiAdapter
-from zope.component import getUtility
+from Products.CMFPlone.utils import human_readable_size, isExpired, safe_unicode
+from zope.component import getMultiAdapter, getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
 
+from plone.app.content.browser.tableview import Table, TableBrowserView
+
 
 class FullReviewListView(BrowserView):
-
     def revlist(self):
-        portal_membership = getToolByName(self.context, 'portal_membership')
-        portal_workflow = getToolByName(self.context, 'portal_workflow')
+        portal_membership = getToolByName(self.context, "portal_membership")
+        portal_workflow = getToolByName(self.context, "portal_workflow")
         if portal_membership.isAnonymousUser():
             return []
 
         return portal_workflow.getWorklistsResults()
 
     def url(self):
-        return self.context.absolute_url() + '/full_review_list'
+        return self.context.absolute_url() + "/full_review_list"
 
     def review_table(self):
         table = ReviewListTable(self.context, self.request)
@@ -41,26 +38,23 @@ class ReviewListTable:
         self.request = request
 
         url = self.context.absolute_url()
-        view_url = url + '/full_review_list'
-        self.table = Table(request, url, view_url, self.items,
-                           buttons=self.buttons)
+        view_url = url + "/full_review_list"
+        self.table = Table(request, url, view_url, self.items, buttons=self.buttons)
 
     def render(self):
         return self.table.render()
 
     @property
     def items(self):
-        plone_utils = getToolByName(self.context, 'plone_utils')
-        portal_url = getToolByName(self.context, 'portal_url')
-        plone_view = getMultiAdapter((self.context, self.request),
-                                     name='plone')
-        portal_workflow = getToolByName(self.context, 'portal_workflow')
-        portal_types = getToolByName(self.context, 'portal_types')
-        portal_membership = getToolByName(self.context, 'portal_membership')
+        plone_utils = getToolByName(self.context, "plone_utils")
+        portal_url = getToolByName(self.context, "portal_url")
+        plone_view = getMultiAdapter((self.context, self.request), name="plone")
+        portal_workflow = getToolByName(self.context, "portal_workflow")
+        portal_types = getToolByName(self.context, "portal_types")
+        portal_membership = getToolByName(self.context, "portal_membership")
 
         registry = getUtility(IRegistry)
-        use_view_action = registry.get(
-            'plone.types_use_view_action_in_listings', ())
+        use_view_action = registry.get("plone.types_use_view_action_in_listings", ())
 
         browser_default = plone_utils.browserDefault(self.context)
 
@@ -77,66 +71,79 @@ class ReviewListTable:
                 table_row_class = "odd"
 
             url = obj.absolute_url()
-            path = '/'.join(obj.getPhysicalPath())
-            type_class = 'contenttype-' + plone_utils.normalizeString(
-                obj.portal_type)
+            path = "/".join(obj.getPhysicalPath())
+            type_class = "contenttype-" + plone_utils.normalizeString(obj.portal_type)
 
-            review_state = portal_workflow.getInfoFor(obj, 'review_state', '')
+            review_state = portal_workflow.getInfoFor(obj, "review_state", "")
 
-            state_class = 'state-' + plone_utils.normalizeString(review_state)
+            state_class = "state-" + plone_utils.normalizeString(review_state)
             relative_url = portal_url.getRelativeContentURL(obj)
 
             type_title_msgid = portal_types[obj.portal_type].Title()
-            url_href_title = '{}: {}'.format(translate(type_title_msgid,
-                                                    context=self.request),
-                                          safe_unicode(obj.Description()))
-            getMember = getToolByName(obj, 'portal_membership').getMemberById
+            url_href_title = "{}: {}".format(
+                translate(type_title_msgid, context=self.request),
+                safe_unicode(obj.Description()),
+            )
+            getMember = getToolByName(obj, "portal_membership").getMemberById
             creator_id = obj.Creator()
             creator = getMember(creator_id)
             if creator:
-                creator_name = creator.getProperty('fullname', '') or creator_id
+                creator_name = creator.getProperty("fullname", "") or creator_id
             else:
                 creator_name = creator_id
-            modified = ''.join(map(safe_unicode, [
-                creator_name, ' - ',
-                plone_view.toLocalizedTime(obj.ModificationDate(),
-                                           long_format=1)]))
+            modified = "".join(
+                map(
+                    safe_unicode,
+                    [
+                        creator_name,
+                        " - ",
+                        plone_view.toLocalizedTime(
+                            obj.ModificationDate(), long_format=1
+                        ),
+                    ],
+                )
+            )
             is_structural_folder = obj.restrictedTraverse(
-                '@@plone').isStructuralFolder()
+                "@@plone"
+            ).isStructuralFolder()
 
             if obj.portal_type in use_view_action:
-                view_url = url + '/view'
+                view_url = url + "/view"
             elif is_structural_folder:
                 view_url = url + "/folder_contents"
             else:
                 view_url = url
 
             is_browser_default = len(browser_default[1]) == 1 and (
-                obj.id == browser_default[1][0])
+                obj.id == browser_default[1][0]
+            )
 
-            results.append(dict(
-                url=url,
-                url_href_title=url_href_title,
-                id=obj.getId(),
-                quoted_id=quote_plus(obj.getId()),
-                path=path,
-                title_or_id=obj.pretty_title_or_id(),
-                description=obj.Description(),
-                obj_type=obj.Type,
-                size=human_readable_size(obj.get_size()),
-                modified=modified,
-                type_class=type_class,
-                wf_state=review_state,
-                state_title=portal_workflow.getTitleForStateOnType(
-                    review_state, obj.portal_type),
-                state_class=state_class,
-                is_browser_default=is_browser_default,
-                folderish=is_structural_folder,
-                relative_url=relative_url,
-                view_url=view_url,
-                table_row_class=table_row_class,
-                is_expired=isExpired(obj)
-            ))
+            results.append(
+                dict(
+                    url=url,
+                    url_href_title=url_href_title,
+                    id=obj.getId(),
+                    quoted_id=quote_plus(obj.getId()),
+                    path=path,
+                    title_or_id=obj.pretty_title_or_id(),
+                    description=obj.Description(),
+                    obj_type=obj.Type,
+                    size=human_readable_size(obj.get_size()),
+                    modified=modified,
+                    type_class=type_class,
+                    wf_state=review_state,
+                    state_title=portal_workflow.getTitleForStateOnType(
+                        review_state, obj.portal_type
+                    ),
+                    state_class=state_class,
+                    is_browser_default=is_browser_default,
+                    folderish=is_structural_folder,
+                    relative_url=relative_url,
+                    view_url=view_url,
+                    table_row_class=table_row_class,
+                    is_expired=isExpired(obj),
+                )
+            )
         return results
 
     @property
@@ -145,31 +152,32 @@ class ReviewListTable:
 
     def buttons(self):
         buttons = []
-        portal_actions = getToolByName(self.context, 'portal_actions')
+        portal_actions = getToolByName(self.context, "portal_actions")
         button_actions = portal_actions.listActionInfos(
-            object=aq_inner(self.context), categories=('folder_buttons', ))
+            object=aq_inner(self.context), categories=("folder_buttons",)
+        )
 
         # Do not show buttons if there is no data, unless there is data to be
         # pasted
         if False:  # not len(self.batch):
             if self.context.cb_dataValid():
                 for button in button_actions:
-                    if button['id'] == 'paste':
+                    if button["id"] == "paste":
                         return [self.setbuttonclass(button)]
             else:
                 return []
 
         for button in button_actions:
             # Make proper classes for our buttons
-            if button['id'] != 'paste' or self.context.cb_dataValid():
+            if button["id"] != "paste" or self.context.cb_dataValid():
                 buttons.append(self.setbuttonclass(button))
         return buttons
 
     def setbuttonclass(self, button):
-        if button['id'] == 'paste':
-            button['cssclass'] = 'btn btn-secondary'
+        if button["id"] == "paste":
+            button["cssclass"] = "btn btn-secondary"
         else:
-            button['cssclass'] = 'btn btn-primary'
+            button["cssclass"] = "btn btn-primary"
         return button
 
 

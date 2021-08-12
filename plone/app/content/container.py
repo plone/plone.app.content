@@ -2,10 +2,11 @@ from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.PortalContent import PortalContent
 from Products.CMFCore.PortalFolder import PortalFolderBase
 from Products.CMFPlone.DublinCore import DefaultDublinCoreImpl
-from plone.app.content.interfaces import IReindexOnModify
 from zope.container.contained import Contained
 from zope.container.interfaces import IContainer
 from zope.interface import implementer
+
+from plone.app.content.interfaces import IReindexOnModify
 
 
 @implementer(IContainer)
@@ -20,6 +21,7 @@ class OFSContainer:
     def __init__(self, id=None):
         if id is not None:
             self.id = id
+
     # fulfill IContainer interface
 
     def keys(self):
@@ -33,6 +35,7 @@ class OFSContainer:
 
     def get(self, name, default=None):
         return getattr(self, name, default)
+
     # __getitem__ is already implemented by ObjectManager
 
     def __setitem__(self, name, obj):
@@ -49,6 +52,7 @@ class OFSContainer:
 
     def __len__(self):
         return len(self.objectIds())
+
 
 # Notes on this insane mixing of classes:
 #
@@ -67,8 +71,14 @@ class OFSContainer:
 
 
 @implementer(IReindexOnModify)
-class Container(OFSContainer, CMFCatalogAware, PortalFolderBase, PortalContent,
-                DefaultDublinCoreImpl, Contained):
+class Container(
+    OFSContainer,
+    CMFCatalogAware,
+    PortalFolderBase,
+    PortalContent,
+    DefaultDublinCoreImpl,
+    Contained,
+):
     """A base class mixing in CMFish, contentish, containerish, containedish,
     dublincoreish behaviour.
     """
