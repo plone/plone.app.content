@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a4 (2021-09-01)
+--------------------
+
+Bug fixes:
+
+
+- isort, black bode style and pyupgrade [jensens] (#231)
+
+
 4.0.0a3 (2021-07-26)
 --------------------
 
