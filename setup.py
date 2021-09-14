@@ -50,7 +50,6 @@ setup(
         "plone.protect",
         "Products.CMFCore>=2.2.0dev",
         "Products.CMFDynamicViewFTI",  # required for cmf.ModifyViewTemplate
-        "Products.CMFPlone",
         "plone.app.vocabularies>4.1.2",
         "setuptools",
         "simplejson",
