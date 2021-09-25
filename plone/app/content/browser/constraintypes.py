@@ -27,16 +27,16 @@ def ST(key, title):
 
 
 # reuse the translations that we had in atcontenttypes
-AMF = MessageFactory("atcontenttypes")
+_ = MessageFactory("plone")
 
 possible_constrain_types = SimpleVocabulary(
     [
         ST(
             ACQUIRE,
-            AMF("constraintypes_acquire_label", default="Use parent folder settings"),
+            _("constraintypes_acquire_label", default="Use parent folder settings"),
         ),
-        ST(DISABLED, AMF("constraintypes_disable_label", default="Use portal default")),
-        ST(ENABLED, AMF("constraintypes_enable_label", default="Select manually")),
+        ST(DISABLED, _("constraintypes_disable_label", default="Use portal default")),
+        ST(ENABLED, _("constraintypes_enable_label", default="Select manually")),
     ]
 )
 
