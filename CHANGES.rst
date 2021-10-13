@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a6 (2021-10-13)
+--------------------
+
+Bug fixes:
+
+
+- Use plone as translation domain [erral] (#234)
+
+
 4.0.0a5 (2021-09-15)
 --------------------
 
