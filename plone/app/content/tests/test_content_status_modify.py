@@ -94,3 +94,21 @@ class TestContentStatusModify(unittest.TestCase):
         view = self.get_content_status_modify_view(self.folder.d1)
         view(workflow_action="publish")
         self.assertFalse(isExpired(self.folder.d1))
+
+    def testEditorCanSubmitButNotPublish(self):
+        setRoles(self.portal, TEST_USER_ID, ["Contributor"])
+        self.folder.invokeFactory("Document", id="d2", title="Doc 2")
+        view = self.get_content_status_modify_view(self.folder.d2)
+        view(workflow_action="submit")
+        self.assertEqual(
+            self.workflow.getInfoFor(self.folder.d2, "review_state"), "pending"
+        )
+
+        # Now try publishing.
+        # For various reasons, there are no complaints/errors when trying
+        # a transition that you are not allowed to do.
+        view = self.get_content_status_modify_view(self.folder.d2)
+        view(workflow_action="publish")
+        self.assertEqual(
+            self.workflow.getInfoFor(self.folder.d2, "review_state"), "pending"
+        )
