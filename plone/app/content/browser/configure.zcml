@@ -48,7 +48,7 @@
         for="*"
         name="content_status_modify"
         class=".content_status_modify.ContentStatusModifyView"
-        permission="cmf.ReviewPortalContent"
+        permission="zope2.View"
         />
 
     <!-- Folder factories -->
