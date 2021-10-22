@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a7 (2021-10-22)
+--------------------
+
+Bug fixes:
+
+
+- Allow access to content_status_modify page for all with View permission.
+  This was the case when it was still a skin script.
+  The internal logic of the page makes sure you can only *really* change anything when you have the proper permission.
+  Fixes `issue 3338 <https://github.com/plone/Products.CMFPlone/issues/3338>`_, where an Editor could no longer submit a page.
+  [maurits] (#3338)
+
+
 4.0.0a6 (2021-10-13)
 --------------------
 
