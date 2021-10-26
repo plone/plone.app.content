@@ -122,7 +122,12 @@ class BrowserTest(unittest.TestCase):
                     "i": "path",
                     "o": "plone.app.querystring.operation.string.path",
                     "v": "/plone",
-                }
+                },
+                {
+                    "i": "portal_type",
+                    "o": "plone.app.querystring.operation.selection.any",
+                    "v": "Document",
+                },
             ]
         }
         self.request.form.update(
@@ -216,7 +221,12 @@ class BrowserTest(unittest.TestCase):
                     "i": "path",
                     "o": "plone.app.querystring.operation.string.path",
                     "v": "/plone",
-                }
+                },
+                {
+                    "i": "portal_type",
+                    "o": "plone.app.querystring.operation.selection.any",
+                    "v": "Document",
+                },
             ]
         }
         # batch pages are 1-based
@@ -601,10 +611,20 @@ class BrowserTest(unittest.TestCase):
 
     def testGetMimeIcon(self):
         """Check if the returned icon is correct"""
+        query = {
+            "criteria": [
+                {
+                    "i": "portal_type",
+                    "o": "plone.app.querystring.operation.selection.any",
+                    "v": "File",
+                },
+            ]
+        }
         self.request.form.update(
             {
                 "name": "plone.app.vocabularies.Catalog",
                 "attributes": ["getMimeIcon"],
+                "query": json.dumps(query),
             }
         )
         view = VocabularyView(self.portal, self.request)
