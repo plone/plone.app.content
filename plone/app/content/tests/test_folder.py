@@ -162,7 +162,7 @@ class WorkflowTest(BaseTest):
         effective_index = self.convertDateTimeToIndexRepr(
             self.portal.page.effective_date
         )
-        self.assertEqual(pc.uniqueValuesFor("effective"), (effective_index,))
+        self.assertIn(effective_index, pc.uniqueValuesFor("effective"))
 
 
 class RenameTest(BaseTest):
