@@ -33,19 +33,33 @@ import inspect
 import itertools
 
 
+import zope.deferredimport
+
 logger = getLogger(__name__)
 
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
-DEFAULT_PERMISSION = "View"
-DEFAULT_PERMISSION_SECURE = "Modify portal content"
-PERMISSIONS = {
-    "plone.app.vocabularies.Catalog": "View",
-    "plone.app.vocabularies.Keywords": "Modify portal content",
-    "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
-    "plone.app.vocabularies.Users": "Modify portal content",
-    "plone.app.multilingual.RootCatalog": "View",
-}
+zope.deferredimport.defineFrom(
+    'plone.app.vocabularies.security',
+    'DEFAULT_PERMISSION', 'DEFAULT_PERMISSION_SECURE', 'PERMISSIONS',
+)
+if not 'PERMISSIONS' in globals():
+    DEFAULT_PERMISSION = "View"
+    DEFAULT_PERMISSION_SECURE = "Modify portal content"
+    PERMISSIONS = {
+        "plone.app.vocabularies.Catalog": "View",
+        "plone.app.vocabularies.Keywords": "Modify portal content",
+        "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
+        "plone.app.vocabularies.Users": "Modify portal content",
+        "plone.app.multilingual.RootCatalog": "View",
+    }
+    deprecated("DEFAULT_PERMISSION",
+            "Import from plone.app.vocabularies.security instead.")
+    deprecated("DEFAULT_PERMISSION_SECURE",
+            "Import from plone.app.vocabularies.security instead.")
+    deprecated("PERMISSIONS",
+            "Import from plone.app.vocabularies.security instead.")
+
 TRANSLATED_IGNORED = [
     "author_name",
     "cmf_uid",
