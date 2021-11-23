@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a8 (2021-11-23)
+--------------------
+
+Bug fixes:
+
+
+- Adapt the tests to cope with the fact the since Plone 6 the Plone site root is cataloged [ale-rt] (#236)
+
+
 4.0.0a7 (2021-10-22)
 --------------------
 
