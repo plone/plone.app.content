@@ -1,11 +1,8 @@
-import inspect
 import itertools
 from logging import getLogger
-from types import FunctionType
 
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
@@ -19,7 +16,7 @@ from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import PREFIX, guess_icon_path
 from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from z3c.form.interfaces import IAddForm, ISubForm
-from zope.component import getUtility, queryAdapter, queryUtility
+from zope.component import getUtility, queryUtility
 from zope.deprecation import deprecated
 from zope.i18n import translate
 from zope.schema.interfaces import ICollection, IVocabularyFactory
@@ -294,56 +291,34 @@ class VocabularyView(BaseVocabularyView):
     def get_vocabulary(self):
         # Look up named vocabulary and check permission.
 
-        context = self.context
         factory_name = self.request.get("name", None)
         field_name = self.request.get("field", None)
         if not factory_name:
             raise VocabLookupException("No factory provided.")
-        authorized = None
+
+        # check if access is allowed
         sm = getSecurityManager()
-        if factory_name not in PERMISSIONS or not INavigationRoot.providedBy(context):
-            # Check field specific permission
-            if field_name:
-                permission_checker = queryAdapter(context, IFieldPermissionChecker)
-                if permission_checker is not None:
-                    authorized = permission_checker.validate(field_name, factory_name)
-                elif sm.checkPermission(
-                    PERMISSIONS.get(factory_name, DEFAULT_PERMISSION), context
-                ):
-                    # If no checker, fall back to checking the global registry
-                    authorized = True
-
-            if not authorized:
-                raise VocabLookupException("Vocabulary lookup not allowed")
-
-        # Short circuit if we are on the site root and permission is
-        # in global registry
-        elif not sm.checkPermission(
-            PERMISSIONS.get(factory_name, DEFAULT_PERMISSION), context
-        ):
+        authorized = bool(
+            sm.checkPermission(
+                PERMISSIONS.get(factory_name, DEFAULT_PERMISSION),
+                self.context,
+            )
+        )
+        if authorized and field_name:
+            # a field permissions can only be 'stronger' than default permission
+            permission_checker = IFieldPermissionChecker(self.context, None)
+            if permission_checker is not None:
+                authorized = permission_checker.validate(field_name, factory_name)
+        if not authorized:
             raise VocabLookupException("Vocabulary lookup not allowed")
 
+        # lookup
         factory = queryUtility(IVocabularyFactory, factory_name)
         if not factory:
             raise VocabLookupException(
                 'No factory with name "%s" exists.' % factory_name
             )
-
-        # This part is for backwards-compatibility with the first
-        # generation of vocabularies created for plone.app.widgets,
-        # which take the (unparsed) query as a parameter of the vocab
-        # factory rather than as a separate search method.
-        if isinstance(factory, FunctionType):
-            factory_spec = inspect.getfullargspec(factory)
-        else:
-            factory_spec = inspect.getfullargspec(factory.__call__)
-        query = _parseJSON(self.request.get("query", ""))
-        if query and "query" in factory_spec.args:
-            vocabulary = factory(context, query=query)
-        else:
-            # This is what is reached for non-legacy vocabularies.
-            vocabulary = factory(context)
-
+        vocabulary = factory(self.context)
         return vocabulary
 
 
