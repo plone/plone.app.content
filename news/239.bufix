@@ -1,0 +1,4 @@
+Fix problem with DX site root and vocabularies with a permission.
+Simplify the code.
+Remove very old BBB code for an ancient plone.app.widgets version.
+[jensens]
