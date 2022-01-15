@@ -3,11 +3,11 @@ from Products.CMFPlone import PloneMessageFactory as _
 from Products.CMFPlone.utils import human_readable_size, isExpired
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import field, form
+from zope.deprecation.deprecation import deprecate
 from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 from zope.schema import Datetime
 from zope.schema.fieldproperty import FieldProperty
-
 
 class IContentStatusHistoryDates(Interface):
     """Interface for the two dates on content status history view"""
@@ -134,5 +134,9 @@ class ContentStatusHistoryView(BrowserView):
     def isExpired(self, content):
         return isExpired(content)
 
+    @deprecate(
+        "This method is deprecated since Plone 6, "
+        "use the @@plone/human_readable_size method instead"
+    )
     def human_readable_size(self, size):
         return human_readable_size(size)
