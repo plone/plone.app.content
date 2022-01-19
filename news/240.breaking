@@ -1,2 +1,0 @@
-Deprecate the human_readable_size method of the ContentStatusHistoryView class because the one from the @@plone view should be used
-[ale-rt]

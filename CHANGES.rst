@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a9 (2022-01-19)
+--------------------
+
+Breaking changes:
+
+
+- Deprecate the human_readable_size method of the ContentStatusHistoryView class because the one from the @@plone view should be used
+  [ale-rt] (#240)
+
+
 4.0.0a8 (2021-11-23)
 --------------------
 
