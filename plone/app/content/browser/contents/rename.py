@@ -34,9 +34,12 @@ class RenameAction:
         return {
             "tooltip": translate(_("Rename"), context=self.request),
             "id": "rename",
-            "icon": "random",
+            "icon": "plone-rename",
             "url": self.context.absolute_url() + "/@@fc-rename",
-            "form": {"template": self.template()},
+            "form": {
+                "title": translate(_("Rename"), context=self.request),
+                "template": self.template(),
+            },
         }
 
 

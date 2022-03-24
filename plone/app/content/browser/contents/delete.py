@@ -28,7 +28,7 @@ class DeleteAction:
         return {
             "tooltip": translate(_("Delete"), context=self.request),
             "id": "delete",
-            "icon": "trash",
+            "icon": "plone-delete",
             "context": "danger",
             "url": self.context.absolute_url() + "/@@fc-delete",
             "form": {

@@ -26,7 +26,7 @@ class WorkflowAction:
         return {
             "tooltip": translate(_("State"), context=self.request),
             "id": "workflow",
-            "icon": "lock",
+            "icon": "plone-lock",
             "url": self.context.absolute_url() + "/@@fc-workflow",
             "form": {
                 "title": translate(

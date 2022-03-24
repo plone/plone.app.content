@@ -21,7 +21,7 @@ class CopyAction:
         return {
             "tooltip": translate(_("Copy"), context=self.request),
             "id": "copy",
-            "icon": "duplicate",
+            "icon": "plone-copy",
             "url": self.context.absolute_url() + "/@@fc-copy",
         }
 
