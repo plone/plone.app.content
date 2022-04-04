@@ -8,6 +8,23 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a10 (2022-04-04)
+---------------------
+
+Breaking changes:
+
+
+- Switch to pat-date-picker (PLIP 2150 / 3211).
+  [thet] (#228)
+
+
+Bug fixes:
+
+
+- adjust icon names for actions to reflect new iconresolver system and add form titles for rename and tags action
+  [Thokas] (#228)
+
+
 4.0.0a9 (2022-01-19)
 --------------------
 
