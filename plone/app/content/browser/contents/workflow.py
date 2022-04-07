@@ -1,15 +1,14 @@
 from DateTime import DateTime
-from plone.dexterity.utils import safe_unicode
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import safe_text
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from zope.i18n import translate
 from zope.interface import implementer
-
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
 
 
 @implementer(IStructureAction)
@@ -45,7 +44,7 @@ class WorkflowActionView(ContentsBaseAction):
 
     def __call__(self):
         self.pworkflow = getToolByName(self.context, "portal_workflow")
-        self.putils = getToolByName(self.context, "plone_utils")
+        self.plone_utils = getToolByName(self.context, "plone_utils")
         self.transition_id = self.request.form.get("transition", None)
         self.comments = self.request.form.get("comments", "")
         self.recurse = self.request.form.get("recurse", "no") == "yes"
@@ -60,9 +59,7 @@ class WorkflowActionView(ContentsBaseAction):
                 for transition in self.pworkflow.getTransitionsFor(obj):
                     tdata = {
                         "id": transition["id"],
-                        "title": self.context.translate(
-                            safe_unicode(transition["name"])
-                        ),
+                        "title": self.context.translate(safe_text(transition["name"])),
                     }
                     if tdata not in transitions:
                         transitions.append(tdata)
@@ -81,7 +78,7 @@ class WorkflowActionView(ContentsBaseAction):
                 self.pworkflow.doActionFor(
                     obj, self.transition_id, comment=self.comments
                 )
-                if self.putils.isDefaultPage(obj):
+                if self.plone_utils.isDefaultPage(obj):
                     self.action(obj.aq_parent, bypass_recurse=True)
                 recurse = self.recurse and not bypass_recurse
                 if recurse and IFolderish.providedBy(obj):

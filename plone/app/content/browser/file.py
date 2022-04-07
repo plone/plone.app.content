@@ -1,15 +1,16 @@
+from AccessControl import getSecurityManager
+from OFS.interfaces import IFolder
+from plone.app.dexterity.interfaces import IDXFileFactory
+from plone.base.permissions import AddPortalContent
+from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView
+
 import json
 import logging
 import mimetypes
 import os
 
-from AccessControl import getSecurityManager
-from OFS.interfaces import IFolder
-from plone.app.dexterity.interfaces import IDXFileFactory
-from plone.uuid.interfaces import IUUID
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.permissions import AddPortalContent
-from Products.Five.browser import BrowserView
 
 logger = logging.getLogger("plone")
 
@@ -37,7 +38,8 @@ TUS_ENABLED = False
 if os.environ.get("TUS_ENABLED"):
     # tus resumable upload standard, see http://tus.io
     try:
-        from tus import Tus, Zope2RequestAdapter
+        from tus import Tus
+        from tus import Zope2RequestAdapter
 
         tus_settings = {}
         for option, converter in possible_tus_options.items():

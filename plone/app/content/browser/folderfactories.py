@@ -1,18 +1,18 @@
-from urllib.parse import quote_plus
-
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from plone.app.content.browser.interfaces import IFolderContentsView
+from plone.base.interfaces.constrains import ISelectableConstrainTypes
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.memoize.request import memoize_diy_request
 from plone.protect.authenticator import createToken
 from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
-from zope.component import getMultiAdapter, queryUtility
+from urllib.parse import quote_plus
+from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
-
-from plone.app.content.browser.interfaces import IFolderContentsView
 
 
 @memoize_diy_request(arg=0)

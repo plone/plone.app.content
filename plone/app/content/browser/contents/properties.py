@@ -1,12 +1,12 @@
-import json
-
 from DateTime import DateTime
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.app.widgets.utils import get_datetime_options
+from plone.base import PloneMessageFactory as _
 from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -14,8 +14,7 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
+import json
 
 
 @implementer(IStructureAction)
@@ -78,7 +77,7 @@ class PropertiesActionView(ContentsBaseAction):
                 }
             )
 
-        self.putils = getToolByName(self.context, "plone_utils")
+        self.plone_utils = getToolByName(self.context, "plone_utils")
         self.effectiveDate = self.request.form.get("effectiveDate")
         self.expirationDate = self.request.form.get("expirationDate")
         self.copyright = self.request.form.get("copyright")
@@ -152,7 +151,7 @@ class PropertiesActionView(ContentsBaseAction):
 
     def action(self, obj, bypass_recurse=False):
 
-        if self.putils.isDefaultPage(obj):
+        if self.plone_utils.isDefaultPage(obj):
             self.action(obj.aq_parent, bypass_recurse=True)
         recurse = self.recurse and not bypass_recurse
         if recurse and IFolderish.providedBy(obj):

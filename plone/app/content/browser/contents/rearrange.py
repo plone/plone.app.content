@@ -1,11 +1,10 @@
 from OFS.interfaces import IOrderedContainer
-from plone.folder.interfaces import IExplicitOrdering
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import IPloneSiteRoot
-
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.utils import json_loads
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces import IPloneSiteRoot
+from plone.folder.interfaces import IExplicitOrdering
+from Products.CMFCore.utils import getToolByName
 
 
 class OrderContentsBaseAction(ContentsBaseAction):

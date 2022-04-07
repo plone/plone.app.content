@@ -1,29 +1,35 @@
-import json
-import operator
-import os
-import unittest
-from unittest import mock
-
-import transaction
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, logout, setRoles
-from plone.app.z3cform.interfaces import IFieldPermissionChecker
-from Products.CMFCore.indexing import processQueue
-from zope.component import getMultiAdapter, provideAdapter, provideUtility
-from zope.component.globalregistry import base
-from zope.globalrequest import setRequest
-from zope.interface import Interface, alsoProvides, noLongerProvides
-from zope.publisher.browser import TestRequest
-
 from plone.app.content.browser import vocabulary
 from plone.app.content.browser.file import FileUploadView
 from plone.app.content.browser.query import QueryStringIndexOptions
 from plone.app.content.browser.vocabulary import VocabularyView
-from plone.app.content.testing import (
-    PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING,
-    PLONE_APP_CONTENT_DX_INTEGRATION_TESTING,
-    ExampleFunctionVocabulary,
-    ExampleVocabulary,
-)
+from plone.app.content.testing import ExampleFunctionVocabulary
+from plone.app.content.testing import ExampleVocabulary
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.app.z3cform.interfaces import IFieldPermissionChecker
+from Products.CMFCore.indexing import processQueue
+from unittest import mock
+from zope.component import getMultiAdapter
+from zope.component import provideAdapter
+from zope.component import provideUtility
+from zope.component.globalregistry import base
+from zope.globalrequest import setRequest
+from zope.interface import alsoProvides
+from zope.interface import Interface
+from zope.interface import noLongerProvides
+from zope.publisher.browser import TestRequest
+
+import json
+import operator
+import os
+import transaction
+import unittest
+
 
 _dir = os.path.dirname(__file__)
 
@@ -392,7 +398,8 @@ class BrowserTest(unittest.TestCase):
 
     def testSource(self):
         from z3c.form.browser.text import TextWidget
-        from zope.interface import Interface, implementer
+        from zope.interface import implementer
+        from zope.interface import Interface
         from zope.schema import Choice
         from zope.schema.interfaces import ISource
 
@@ -434,8 +441,10 @@ class BrowserTest(unittest.TestCase):
         # and a source providing the 'search' method
         # to help achieve coverage.
         from z3c.form.browser.text import TextWidget
-        from zope.interface import Interface, implementer
-        from zope.schema import Choice, List
+        from zope.interface import implementer
+        from zope.interface import Interface
+        from zope.schema import Choice
+        from zope.schema import List
         from zope.schema.interfaces import ISource
         from zope.schema.vocabulary import SimpleTerm
 
@@ -476,7 +485,8 @@ class BrowserTest(unittest.TestCase):
 
     def testSourcePermissionDenied(self):
         from z3c.form.browser.text import TextWidget
-        from zope.interface import Interface, implementer
+        from zope.interface import implementer
+        from zope.interface import Interface
         from zope.schema import Choice
         from zope.schema.interfaces import ISource
 
@@ -513,19 +523,17 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(data["error"], "Vocabulary lookup not allowed.")
 
     def testSourceDefaultPermission(self):
-        from z3c.form.browser.text import TextWidget
-
         from plone.app.content.browser.vocabulary import SourceView
+        from z3c.form.browser.text import TextWidget
 
         widget = TextWidget(self.request)
         view = SourceView(widget, self.request)
         self.assertEqual(view.default_permission, "cmf.ModifyPortalContent")
 
     def testSourceDefaultPermissionOnAddForm(self):
+        from plone.app.content.browser.vocabulary import SourceView
         from z3c.form import form
         from z3c.form.browser.text import TextWidget
-
-        from plone.app.content.browser.vocabulary import SourceView
 
         widget = TextWidget(self.request)
         widget.form = form.AddForm(self.portal, self.request)
@@ -535,7 +543,8 @@ class BrowserTest(unittest.TestCase):
 
     def testSourceTextQuery(self):
         from z3c.form.browser.text import TextWidget
-        from zope.interface import Interface, implementer
+        from zope.interface import implementer
+        from zope.interface import Interface
         from zope.schema import Choice
         from zope.schema.interfaces import ISource
 

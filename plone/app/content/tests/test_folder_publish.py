@@ -1,11 +1,13 @@
-import unittest
-
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
-from Products.CMFPlone.utils import isExpired
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.base.utils import is_expired
 from zExceptions import Forbidden
 from zope.component import getMultiAdapter
 
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+import unittest
 
 
 class TestContentPublishing(unittest.TestCase):
@@ -90,7 +92,7 @@ class TestContentPublishing(unittest.TestCase):
         )
         for o in (self.folder.d1, self.folder.f1, self.folder.f1.d2, self.folder.f1.f2):
             self.assertEqual(self.workflow.getInfoFor(o, "review_state"), "published")
-            self.assertTrue(isExpired(o))
+            self.assertTrue(is_expired(o))
 
     def test_publishing_without_subobjects(self):
         paths = []

@@ -1,14 +1,17 @@
-from urllib.parse import quote_plus
-
 from Acquisition import aq_inner
+from plone.app.content.browser.tableview import Table
+from plone.app.content.browser.tableview import TableBrowserView
+from plone.base.utils import human_readable_size
+from plone.base.utils import is_expired
+from plone.base.utils import safe_text
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import human_readable_size, isExpired, safe_unicode
-from zope.component import getMultiAdapter, getUtility
+from urllib.parse import quote_plus
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
-
-from plone.app.content.browser.tableview import Table, TableBrowserView
 
 
 class FullReviewListView(BrowserView):
@@ -46,7 +49,6 @@ class ReviewListTable:
 
     @property
     def items(self):
-        plone_utils = getToolByName(self.context, "plone_utils")
         portal_url = getToolByName(self.context, "portal_url")
         plone_view = getMultiAdapter((self.context, self.request), name="plone")
         portal_workflow = getToolByName(self.context, "portal_workflow")
@@ -56,6 +58,7 @@ class ReviewListTable:
         registry = getUtility(IRegistry)
         use_view_action = registry.get("plone.types_use_view_action_in_listings", ())
 
+        plone_utils = getToolByName(self.context, "plone_utils")
         browser_default = plone_utils.browserDefault(self.context)
 
         results = list()
@@ -72,17 +75,18 @@ class ReviewListTable:
 
             url = obj.absolute_url()
             path = "/".join(obj.getPhysicalPath())
-            type_class = "contenttype-" + plone_utils.normalizeString(obj.portal_type)
+            normalizer = getUtility(IIDNormalizer)
+            type_class = "contenttype-" + normalizer.normalize(obj.portal_type)
 
             review_state = portal_workflow.getInfoFor(obj, "review_state", "")
 
-            state_class = "state-" + plone_utils.normalizeString(review_state)
+            state_class = "state-" + normalizer.normalize(review_state)
             relative_url = portal_url.getRelativeContentURL(obj)
 
             type_title_msgid = portal_types[obj.portal_type].Title()
             url_href_title = "{}: {}".format(
                 translate(type_title_msgid, context=self.request),
-                safe_unicode(obj.Description()),
+                safe_text(obj.Description()),
             )
             getMember = getToolByName(obj, "portal_membership").getMemberById
             creator_id = obj.Creator()
@@ -93,7 +97,7 @@ class ReviewListTable:
                 creator_name = creator_id
             modified = "".join(
                 map(
-                    safe_unicode,
+                    safe_text,
                     [
                         creator_name,
                         " - ",
@@ -141,7 +145,7 @@ class ReviewListTable:
                     relative_url=relative_url,
                     view_url=view_url,
                     table_row_class=table_row_class,
-                    is_expired=isExpired(obj),
+                    is_expired=is_expired(obj),
                 )
             )
         return results
@@ -156,16 +160,6 @@ class ReviewListTable:
         button_actions = portal_actions.listActionInfos(
             object=aq_inner(self.context), categories=("folder_buttons",)
         )
-
-        # Do not show buttons if there is no data, unless there is data to be
-        # pasted
-        if False:  # not len(self.batch):
-            if self.context.cb_dataValid():
-                for button in button_actions:
-                    if button["id"] == "paste":
-                        return [self.setbuttonclass(button)]
-            else:
-                return []
 
         for button in button_actions:
             # Make proper classes for our buttons

@@ -1,11 +1,13 @@
 from AccessControl import Unauthorized
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from DateTime import DateTime
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import transaction_note
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import transaction_note
 from Products.Five import BrowserView
+from Products.statusmessages.interfaces import IStatusMessage
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 
@@ -57,12 +59,12 @@ class ContentStatusModifyView(BrowserView):
         In the form you can also add a comment and set an effective and/or expiration date.
         """
         context = aq_inner(self.context)
-        self.plone_utils = getToolByName(context, "plone_utils")
         portal_workflow = getToolByName(context, "portal_workflow")
+        self.plone_utils = getToolByName(context, "plone_utils")
         # First check if the main argument is given.
         if not workflow_action:
-            self.plone_utils.addPortalMessage(
-                _("You must select a publishing action."), "error"
+            IStatusMessage(self.request).add(
+                _("You must select a publishing action."), type="error"
             )
             url = f"{context.absolute_url()}/content_status_history"
             return self.request.response.redirect(url)
@@ -140,7 +142,7 @@ class ContentStatusModifyView(BrowserView):
             except Exception:
                 pass
 
-        self.plone_utils.addPortalMessage(_("Item state changed."))
+        IStatusMessage(self.request).add(_("Item state changed."))
         return self.request.response.redirect(context.absolute_url())
 
     def editContent(self, obj, effective, expiry):

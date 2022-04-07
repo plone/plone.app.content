@@ -1,9 +1,9 @@
-import json
-
 from plone.memoize import ram
 from Products.Five.browser import BrowserView
 from zope.component import queryUtility
 from zope.i18n.interfaces import ITranslationDomain
+
+import json
 
 
 def _cache_key(method, self, domain, language):

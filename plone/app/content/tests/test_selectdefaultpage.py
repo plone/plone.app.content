@@ -1,10 +1,11 @@
-import unittest
-
-import transaction
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
 from plone.testing.zope import Browser
 
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+import transaction
+import unittest
+
 
 FOLDER = {
     "id": "testfolder",

@@ -1,28 +1,25 @@
-import json
-import unittest
-from datetime import datetime, timedelta
-from unittest import mock
-
-import transaction
-from plone.app.testing import (
-    SITE_OWNER_NAME,
-    SITE_OWNER_PASSWORD,
-    TEST_USER_ID,
-    TEST_USER_NAME,
-    login,
-    setRoles,
-)
+from datetime import datetime
+from datetime import timedelta
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from plone.protect.authenticator import createToken
 from plone.registry.interfaces import IRegistry
 from plone.testing.zope import Browser
 from plone.uuid.interfaces import IUUID
-from zope.component import getMultiAdapter, getUtility
+from unittest import mock
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
-from plone.app.content.testing import (
-    PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING,
-    PLONE_APP_CONTENT_DX_INTEGRATION_TESTING,
-)
+import json
+import transaction
+import unittest
 
 
 class ContentsCopyTests(unittest.TestCase):

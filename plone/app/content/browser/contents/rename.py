@@ -1,10 +1,10 @@
-import logging
-
-import transaction
 from AccessControl import getSecurityManager
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner
+from Acquisition import aq_parent
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from plone.base import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
@@ -14,8 +14,9 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.lifecycleevent import ObjectModifiedEvent
 
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
+import logging
+import transaction
+
 
 logger = logging.getLogger("plone.app.content")
 
