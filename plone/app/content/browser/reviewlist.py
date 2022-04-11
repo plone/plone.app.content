@@ -1,7 +1,6 @@
 from Acquisition import aq_inner
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
-from plone.base.defaultpage import check_default_page_via_view
 from plone.base.utils import human_readable_size
 from plone.base.utils import is_expired
 from plone.base.utils import safe_text
@@ -55,10 +54,11 @@ class ReviewListTable:
         portal_workflow = getToolByName(self.context, "portal_workflow")
         portal_types = getToolByName(self.context, "portal_types")
         portal_membership = getToolByName(self.context, "portal_membership")
+        plone_utils = getToolByName(self.context, "plone_utils")
 
         registry = getUtility(IRegistry)
         use_view_action = registry.get("plone.types_use_view_action_in_listings", ())
-        browser_default = check_default_page_via_view(self.context, self.request)
+        browser_default = plone_utils.browserDefault(self.context)
 
         results = []
         if portal_membership.isAnonymousUser():
