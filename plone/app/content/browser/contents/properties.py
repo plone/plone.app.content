@@ -4,6 +4,7 @@ from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.app.widgets.utils import get_datetime_options
 from plone.base import PloneMessageFactory as _
+from plone.base.utils import check_default_page_via_view
 from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
@@ -77,7 +78,6 @@ class PropertiesActionView(ContentsBaseAction):
                 }
             )
 
-        self.plone_utils = getToolByName(self.context, "plone_utils")
         self.effectiveDate = self.request.form.get("effectiveDate")
         self.expirationDate = self.request.form.get("expirationDate")
         self.copyright = self.request.form.get("copyright")
@@ -151,7 +151,7 @@ class PropertiesActionView(ContentsBaseAction):
 
     def action(self, obj, bypass_recurse=False):
 
-        if self.plone_utils.isDefaultPage(obj):
+        if check_default_page_via_view(obj, self.request):
             self.action(obj.aq_parent, bypass_recurse=True)
         recurse = self.recurse and not bypass_recurse
         if recurse and IFolderish.providedBy(obj):

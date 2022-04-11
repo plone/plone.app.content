@@ -1,6 +1,7 @@
 from Acquisition import aq_inner
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
+from plone.base.utils import check_default_page_via_view
 from plone.base.utils import human_readable_size
 from plone.base.utils import is_expired
 from plone.base.utils import safe_text
@@ -12,7 +13,6 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
-
 
 class FullReviewListView(BrowserView):
     def revlist(self):
@@ -57,11 +57,9 @@ class ReviewListTable:
 
         registry = getUtility(IRegistry)
         use_view_action = registry.get("plone.types_use_view_action_in_listings", ())
+        browser_default = check_default_page_via_view(self.context, self.request)
 
-        plone_utils = getToolByName(self.context, "plone_utils")
-        browser_default = plone_utils.browserDefault(self.context)
-
-        results = list()
+        results = []
         if portal_membership.isAnonymousUser():
             worklist = []
         else:
