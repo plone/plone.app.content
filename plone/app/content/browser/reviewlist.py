@@ -14,6 +14,7 @@ from zope.component import getUtility
 from zope.i18n import translate
 from zope.publisher.browser import BrowserView
 
+
 class FullReviewListView(BrowserView):
     def revlist(self):
         portal_membership = getToolByName(self.context, "portal_membership")
