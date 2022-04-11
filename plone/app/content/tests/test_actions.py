@@ -1,7 +1,9 @@
-import unittest
-
-import transaction
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, logout, setRoles
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.testing import login
+from plone.app.testing import logout
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.locking.interfaces import ILockable
 from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
@@ -9,7 +11,8 @@ from zExceptions import Unauthorized
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+import transaction
+import unittest
 
 
 class ActionsDXTestCase(unittest.TestCase):

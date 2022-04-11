@@ -1,13 +1,17 @@
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import human_readable_size
+from plone.base.utils import is_expired
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import human_readable_size, isExpired
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from z3c.form import field, form
+from Products.statusmessages.interfaces import IStatusMessage
+from z3c.form import field
+from z3c.form import form
 from zope.deprecation.deprecation import deprecate
 from zope.interface import Interface
 from zope.publisher.browser import BrowserView
 from zope.schema import Datetime
 from zope.schema.fieldproperty import FieldProperty
+
 
 class IContentStatusHistoryDates(Interface):
     """Interface for the two dates on content status history view"""
@@ -52,7 +56,6 @@ class ContentStatusHistoryView(BrowserView):
 
         self.dates_form = ContentStatusHistoryDatesForm(context, request)
         self.dates_form.updateWidgets()
-        self.plone_utils = getToolByName(context, "plone_utils")
         self.errors = {}
 
     def __call__(
@@ -81,8 +84,8 @@ class ContentStatusHistoryView(BrowserView):
         if self.request.get("form.submitted", None):
             self.validate(workflow_action=workflow_action, paths=paths)
             if self.errors:
-                self.plone_utils.addPortalMessage(
-                    _("Please correct the indicated errors."), "error"
+                IStatusMessage(self.request).add(
+                    _("Please correct the indicated errors."), type="error"
                 )
                 return self.template()
 
@@ -132,7 +135,7 @@ class ContentStatusHistoryView(BrowserView):
         return self.request.RESPONSE.redirect(target_url)
 
     def isExpired(self, content):
-        return isExpired(content)
+        return is_expired(content)
 
     @deprecate(
         "This method is deprecated since Plone 6, "

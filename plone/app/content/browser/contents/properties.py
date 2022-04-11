@@ -1,12 +1,13 @@
-import json
-
 from DateTime import DateTime
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.app.widgets.utils import get_datetime_options
+from plone.base import PloneMessageFactory as _
+from plone.base.defaultpage import check_default_page_via_view
 from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -14,8 +15,7 @@ from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
+import json
 
 
 @implementer(IStructureAction)
@@ -78,7 +78,6 @@ class PropertiesActionView(ContentsBaseAction):
                 }
             )
 
-        self.putils = getToolByName(self.context, "plone_utils")
         self.effectiveDate = self.request.form.get("effectiveDate")
         self.expirationDate = self.request.form.get("expirationDate")
         self.copyright = self.request.form.get("copyright")
@@ -95,7 +94,15 @@ class PropertiesActionView(ContentsBaseAction):
         self.recurse = self.request.form.get("recurse", "no") == "yes"
         return super().__call__()
 
-    def dx_action(self, obj):
+    def action(self, obj, bypass_recurse=False):
+
+        if check_default_page_via_view(obj, self.request):
+            self.action(obj.aq_parent, bypass_recurse=True)
+        recurse = self.recurse and not bypass_recurse
+        if recurse and IFolderish.providedBy(obj):
+            for sub in obj.values():
+                self.action(sub)
+
         if self.effectiveDate and hasattr(obj, "effective_date"):
             obj.effective_date = DateTime(self.effectiveDate)
         if self.expirationDate and hasattr(obj, "expiration_date"):
@@ -112,56 +119,5 @@ class PropertiesActionView(ContentsBaseAction):
         behavior_categorization = ICategorization(obj)
         if self.language and behavior_categorization:
             behavior_categorization.language = self.language
-
-    def at_action(self, obj):
-        if self.effectiveDate:
-            try:
-                obj.setEffectiveDate(DateTime(self.effectiveDate))
-            except AttributeError:
-                pass
-        if self.expirationDate:
-            try:
-                obj.setExpirationDate(DateTime(self.expirationDate))
-            except AttributeError:
-                pass
-        if self.copyright:
-            try:
-                obj.setRights(self.copyright)
-            except AttributeError:
-                pass
-        if self.contributors:
-            try:
-                obj.setContributors(self.contributors)
-            except AttributeError:
-                pass
-        if self.creators:
-            try:
-                obj.setCreators(self.creators)
-            except AttributeError:
-                pass
-        if self.exclude:
-            try:
-                obj.setExcludeFromNav(self.exclude == "yes")
-            except AttributeError:
-                pass
-        if self.language:
-            try:
-                obj.setLanguage(self.language)
-            except AttributeError:
-                pass
-
-    def action(self, obj, bypass_recurse=False):
-
-        if self.putils.isDefaultPage(obj):
-            self.action(obj.aq_parent, bypass_recurse=True)
-        recurse = self.recurse and not bypass_recurse
-        if recurse and IFolderish.providedBy(obj):
-            for sub in obj.values():
-                self.action(sub)
-
-        if IDexterityContent.providedBy(obj):
-            self.dx_action(obj)
-        else:
-            self.at_action(obj)
 
         obj.reindexObject()

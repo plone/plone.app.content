@@ -1,4 +1,6 @@
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
+
 
 version = "4.0.0a11.dev0"
 
@@ -42,27 +44,16 @@ setup(
         ]
     ),
     install_requires=[
-        "Acquisition",
         "plone.app.widgets",
-        "plone.batching",
+        "plone.base",
         "plone.i18n",
         "plone.memoize",
         "plone.protect",
-        "Products.CMFCore>=2.2.0dev",
+        "Products.statusmessages",
         "Products.CMFDynamicViewFTI",  # required for cmf.ModifyViewTemplate
         "plone.app.vocabularies>4.1.2",
         "setuptools",
         "simplejson",
         "z3c.form",
-        "zope.component",
-        "zope.container",
-        "zope.event",
-        "zope.i18n",
-        "zope.i18nmessageid",
-        "zope.interface",
-        "zope.lifecycleevent",
-        "zope.publisher",
-        "zope.schema",
-        "Zope",
     ],
 )

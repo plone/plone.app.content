@@ -1,10 +1,11 @@
 from Acquisition import aq_inner
+from plone.base import PloneMessageFactory as _
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
-from zope.component import getMultiAdapter, getUtility
+from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 
 class DefaultViewSelectionView(BrowserView):
@@ -12,9 +13,7 @@ class DefaultViewSelectionView(BrowserView):
         return templateId in [a[0] for a in self.vocab]
 
     def canSelectDefaultPage(self):
-        if not self.context.isPrincipiaFolderish:
-            return False
-        return self.context.canSetDefaultPage()
+        return self.context.isPrincipiaFolderish and self.context.canSetDefaultPage()
 
     @property
     def vocab(self):
@@ -24,8 +23,7 @@ class DefaultViewSelectionView(BrowserView):
     def selectedLayout(self):
         if not self.context_state.is_default_page():
             return self.context.getLayout()
-        else:
-            return ""
+        return ""
 
     def selectViewTemplate(self):
         templateId = self.request.get("templateId")
@@ -37,25 +35,22 @@ class DefaultViewSelectionView(BrowserView):
 
     @property
     def action_url(self):
-        return "{:s}/select_default_view".format(self.context_state.object_url())
+        return f"{self.context_state.object_url():s}/select_default_view"
 
     def __call__(self):
-
         self.context_state = getMultiAdapter(
             (self.context, self.request), name="plone_context_state"
         )
 
         templateId = self.request.form.get("templateId", False)
         if templateId:
-            plone_utils = getToolByName(self.context, "plone_utils")
             # Make sure this is a valid template
-            if self.isValidTemplate(templateId):
-                # Update the template
-                self.context.setLayout(templateId)
-                plone_utils.addPortalMessage("View changed.")
-            else:
-                plone_utils.addPortalMessage("Invalid view.", type="error")
+            if not self.isValidTemplate(templateId):
+                IStatusMessage(self.request).add("Invalid view.", type="error")
                 return self.index()
+            # Update the template
+            self.context.setLayout(templateId)
+            IStatusMessage(self.request).add("View changed.")
 
         if templateId or self.request.form.get("form.buttons.Cancel", False):
             # Redirect to view

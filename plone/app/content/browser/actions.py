@@ -1,23 +1,29 @@
-import transaction
 from AccessControl import getSecurityManager
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_inner
+from Acquisition import aq_parent
 from OFS.CopySupport import CopyError
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import get_user_friendly_types
+from plone.base.utils import safe_text
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from z3c.form import button, field, form
+from z3c.form import button
+from z3c.form import field
+from z3c.form import form
 from z3c.form.widget import ComputedWidgetAttribute
 from zExceptions import Unauthorized
 from ZODB.POSException import ConflictError
 from zope import schema
-from zope.component import getMultiAdapter, queryMultiAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import Interface
 from zope.lifecycleevent import ObjectModifiedEvent
+
+import transaction
 
 
 class LockingBase(BrowserView):
@@ -54,18 +60,17 @@ class DeleteConfirmationForm(form.Form, LockingBase):
     @property
     def items_to_delete(self):
         catalog = getToolByName(self.context, "portal_catalog")
-        putils = getToolByName(self.context, "plone_utils")
         results = catalog(
             {
                 "path": "/".join(self.context.getPhysicalPath()),
-                "portal_type": putils.getUserFriendlyTypes(),
+                "portal_type": get_user_friendly_types(),
             }
         )
         return len(results)
 
     @button.buttonAndHandler(_("Delete"), name="Delete")
     def handle_delete(self, action):
-        title = safe_unicode(self.context.Title())
+        title = safe_text(self.context.Title())
         parent = aq_parent(aq_inner(self.context))
 
         # has the context object been acquired from a place it should not have

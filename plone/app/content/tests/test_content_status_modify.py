@@ -1,10 +1,12 @@
-import unittest
-
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
-from Products.CMFPlone.utils import isExpired
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
+from plone.base.utils import is_expired
 from zope.component import getMultiAdapter
 
-from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+import unittest
 
 
 class TestContentStatusModify(unittest.TestCase):
@@ -88,12 +90,12 @@ class TestContentStatusModify(unittest.TestCase):
             effective_date="1/1/2001",
             expiration_date="1/2/2001",
         )
-        self.assertTrue(isExpired(self.folder.d1))
+        self.assertTrue(is_expired(self.folder.d1))
 
     def testIsExpiredWithExplicitNonExpiredContent(self):
         view = self.get_content_status_modify_view(self.folder.d1)
         view(workflow_action="publish")
-        self.assertFalse(isExpired(self.folder.d1))
+        self.assertFalse(is_expired(self.folder.d1))
 
     def testEditorCanSubmitButNotPublish(self):
         setRoles(self.portal, TEST_USER_ID, ["Contributor"])

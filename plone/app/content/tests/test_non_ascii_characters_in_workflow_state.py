@@ -1,11 +1,13 @@
-import json
-import unittest
-
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
+from plone.app.content.testing import PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 
-from plone.app.content.testing import PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING
+import json
+import unittest
 
 
 class TestNonAsciiCharactersWorkflow(unittest.TestCase):

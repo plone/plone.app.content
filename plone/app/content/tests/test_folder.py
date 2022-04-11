@@ -1,9 +1,10 @@
-import json
-import unittest
-from urllib.parse import urlparse
-
 from DateTime import DateTime
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
+from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
@@ -11,14 +12,13 @@ from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Testing.makerequest import makerequest
 from transaction import commit
+from urllib.parse import urlparse
 from zope.annotation.interfaces import IAttributeAnnotatable
 from zope.interface import alsoProvides
 from zope.publisher.browser import TestRequest
 
-from plone.app.content.testing import (
-    PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING,
-    PLONE_APP_CONTENT_DX_INTEGRATION_TESTING,
-)
+import json
+import unittest
 
 
 class BaseTest(unittest.TestCase):
@@ -63,9 +63,9 @@ class DXBaseTest(BaseTest):
 
 class PropertiesDXTest(DXBaseTest):
     def testEffective(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["effectiveDate"] = "1999/01/01 09:00"
         view = PropertiesActionView(self.portal.page, self.request)
@@ -73,9 +73,9 @@ class PropertiesDXTest(DXBaseTest):
         self.assertEqual(self.portal.page.effective_date, DateTime("1999/01/01 09:00"))
 
     def testExpires(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["expirationDate"] = "1999/01/01 09:00"
         view = PropertiesActionView(self.portal.page, self.request)
@@ -83,9 +83,9 @@ class PropertiesDXTest(DXBaseTest):
         self.assertEqual(self.portal.page.expiration_date, DateTime("1999/01/01 09:00"))
 
     def testSetDexterityExcludeFromNav(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["exclude-from-nav"] = "yes"
         view = PropertiesActionView(self.portal.page, self.request)
@@ -93,9 +93,9 @@ class PropertiesDXTest(DXBaseTest):
         self.assertEqual(self.portal.page.exclude_from_nav, True)
 
     def testRights(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["copyright"] = "foobar"
         view = PropertiesActionView(self.portal.page, self.request)
@@ -103,9 +103,9 @@ class PropertiesDXTest(DXBaseTest):
         self.assertEqual(self.portal.page.rights, "foobar")
 
     def testContributors(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["contributors"] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
@@ -113,9 +113,9 @@ class PropertiesDXTest(DXBaseTest):
         self.assertEqual(self.portal.page.contributors, ("one", "two"))
 
     def testCreators(self):
-        from plone.app.content.browser.contents.properties import (
+        from plone.app.content.browser.contents.properties import (  # noqa
             PropertiesActionView,
-        )  # noqa
+        )
 
         self.request.form["creators"] = self.userList
         view = PropertiesActionView(self.portal.page, self.request)
@@ -138,14 +138,12 @@ class WorkflowTest(BaseTest):
         return (((yr * 12 + mo) * 31 + dy) * 24 + hr) * 60 + mn
 
     def testStateChange(self):
-        from plone.app.content.browser.contents.workflow import (
+        from plone.app.content.browser.contents.workflow import (  # noqa
             WorkflowActionView,
-        )  # noqa
+        )
 
         self.request.form["transition"] = "publish"
-        default_effective = DateTime(
-            "1969/12/31 00:00:00 {}".format(DateTime().timezone())
-        )
+        default_effective = DateTime(f"1969/12/31 00:00:00 {DateTime().timezone()}")
         default_effective_index = self.convertDateTimeToIndexRepr(default_effective)
         pc = getToolByName(self.portal, "portal_catalog")
         # i need to call it, to populate catalog indexes
@@ -382,9 +380,9 @@ class RearrangeDXTest(BaseTest):
         )
 
     def test_rearrange_by_title(self):
-        from plone.app.content.browser.contents.rearrange import (
+        from plone.app.content.browser.contents.rearrange import (  # noqa
             RearrangeActionView,
-        )  # noqa
+        )
 
         self.request.form.update(
             {
@@ -405,9 +403,9 @@ class RearrangeDXTest(BaseTest):
         )
 
     def test_item_order_move_to_top(self):
-        from plone.app.content.browser.contents.rearrange import (
+        from plone.app.content.browser.contents.rearrange import (  # noqa
             ItemOrderActionView,
-        )  # noqa
+        )
 
         self.request.form.update(
             {
@@ -429,9 +427,9 @@ class RearrangeDXTest(BaseTest):
         )
 
     def test_item_order_move_to_bottom(self):
-        from plone.app.content.browser.contents.rearrange import (
+        from plone.app.content.browser.contents.rearrange import (  # noqa
             ItemOrderActionView,
-        )  # noqa
+        )
 
         self.request.form.update(
             {
@@ -453,9 +451,9 @@ class RearrangeDXTest(BaseTest):
         )
 
     def test_item_order_move_by_delta(self):
-        from plone.app.content.browser.contents.rearrange import (
+        from plone.app.content.browser.contents.rearrange import (  # noqa
             ItemOrderActionView,
-        )  # noqa
+        )
 
         self.request.form.update(
             {
@@ -477,9 +475,9 @@ class RearrangeDXTest(BaseTest):
         )
 
     def test_item_order_move_by_delta_in_plone_root(self):
-        from plone.app.content.browser.contents.rearrange import (
+        from plone.app.content.browser.contents.rearrange import (  # noqa
             ItemOrderActionView,
-        )  # noqa
+        )
 
         # first move the 'basefolder' to the top
         self.request.form.update(

@@ -1,13 +1,15 @@
-import unittest
-
-import transaction
-from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, login, setRoles
+from plone.app.content.namechooser import ATTEMPTS
+from plone.app.content.testing import PLONE_APP_CONTENT_INTEGRATION_TESTING
+from plone.app.testing import login
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_NAME
 from plone.dexterity.fti import DexterityFTI
 from Products.CMFCore.utils import getToolByName
 from zope.container.interfaces import INameChooser
 
-from plone.app.content.namechooser import ATTEMPTS
-from plone.app.content.testing import PLONE_APP_CONTENT_INTEGRATION_TESTING
+import transaction
+import unittest
 
 
 class NameChooserTest(unittest.TestCase):

@@ -1,11 +1,11 @@
-from OFS.CopySupport import _cb_encode, cookie_path
+from OFS.CopySupport import _cb_encode
+from OFS.CopySupport import cookie_path
 from OFS.Moniker import Moniker
-from Products.CMFPlone import PloneMessageFactory as _
-from zope.i18n import translate
-from zope.interface import implementer
-
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from plone.base import PloneMessageFactory as _
+from zope.i18n import translate
+from zope.interface import implementer
 
 
 @implementer(IStructureAction)

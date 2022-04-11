@@ -1,17 +1,16 @@
-import json
-
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
+from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.interfaces import IStructureAction
+from plone.base import PloneMessageFactory as _
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
 
-from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.interfaces import IStructureAction
+import json
 
 
 @implementer(IStructureAction)

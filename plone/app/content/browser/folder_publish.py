@@ -1,11 +1,14 @@
-import transaction
-from plone.protect import CheckAuthenticator, PostOnly
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import transaction_note
+from plone.protect import CheckAuthenticator
+from plone.protect import PostOnly
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import transaction_note
+from Products.statusmessages.interfaces import IStatusMessage
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
 from zope.publisher.browser import BrowserView
+
+import transaction
 
 
 class FolderPublishView(BrowserView):
@@ -28,15 +31,14 @@ class FolderPublishView(BrowserView):
         PostOnly(self.request)
         CheckAuthenticator(self.request)
 
-        plone_utils = getToolByName(self.context, "plone_utils")
         if workflow_action is None:
-            plone_utils.addPortalMessage(
-                _("You must select a publishing action."), "error"
+            IStatusMessage(self.request).add(
+                _("You must select a publishing action."), type="error"
             )
             return self.redirect()
         if not paths:
-            plone_utils.addPortalMessage(
-                _("You must select content to change."), "error"
+            IStatusMessage(self.request).add(
+                _("You must select content to change."), type="error"
             )
             return self.redirect()
 
@@ -50,7 +52,8 @@ class FolderPublishView(BrowserView):
         )
 
         transaction_note(str(paths) + " transitioned " + workflow_action)
-        plone_utils.addPortalMessage(_("Item state changed."))
+
+        IStatusMessage(self.request).add(_("Item state changed."))
         return self.redirect()
 
     def transition_objects_by_paths(

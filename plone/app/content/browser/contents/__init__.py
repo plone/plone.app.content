@@ -1,26 +1,28 @@
 from AccessControl import Unauthorized
 from Acquisition import aq_inner
+from Acquisition import aq_parent
+from plone.app.content.browser.file import TUS_ENABLED
+from plone.app.content.browser.interfaces import IFolderContentsView
+from plone.app.content.interfaces import IStructureAction
+from plone.app.content.utils import json_dumps
+from plone.app.content.utils import json_loads
 from plone.app.uuid.utils import uuidToCatalogBrain
+from plone.base import PloneMessageFactory as _
+from plone.base import utils
+from plone.base.interfaces.controlpanel import ISiteSchema
 from plone.protect.postonly import check as checkpost
 from plone.registry.interfaces import IRegistry
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone import utils
-from Products.CMFPlone.interfaces.controlpanel import ISiteSchema
-from Products.CMFPlone.utils import get_top_site_from_url
 from Products.Five import BrowserView
 from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from zope.browsermenu.interfaces import IBrowserMenu
-from zope.component import getMultiAdapter, getUtilitiesFor, getUtility
+from zope.component import getMultiAdapter
+from zope.component import getUtilitiesFor
+from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
-
-from plone.app.content.browser.file import TUS_ENABLED
-from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.content.interfaces import IStructureAction
-from plone.app.content.utils import json_dumps, json_loads
 
 
 class ContentsBaseAction(BrowserView):
@@ -31,12 +33,12 @@ class ContentsBaseAction(BrowserView):
 
     @property
     def site(self):
-        return get_top_site_from_url(self.context, self.request)
+        return utils.get_top_site_from_url(self.context, self.request)
 
     def objectTitle(self, obj):
         context = aq_inner(obj)
         title = utils.pretty_title_or_id(context, context)
-        return utils.safe_unicode(title)
+        return utils.safe_text(title)
 
     def protect(self):
         authenticator = getMultiAdapter(
@@ -244,7 +246,7 @@ class FolderContentsView(BrowserView):
         return indexes
 
     def get_options(self):
-        site = get_top_site_from_url(self.context, self.request)
+        site = utils.get_top_site_from_url(self.context, self.request)
         base_url = site.absolute_url()
         base_vocabulary = "%s/@@getVocabulary?name=" % base_url
         site_path = site.getPhysicalPath()
@@ -339,7 +341,7 @@ class ContextInfo(BrowserView):
         context = aq_inner(self.context)
         transform = SafeHTML()
         crumbs = []
-        top_site = get_top_site_from_url(self.context, self.request)
+        top_site = utils.get_top_site_from_url(self.context, self.request)
         while not context == top_site:
             crumbs.append(
                 {
@@ -349,7 +351,7 @@ class ContextInfo(BrowserView):
                     ),
                 }
             )
-            context = utils.parent(context)
+            context = aq_parent(aq_inner(context))
 
         catalog = getToolByName(self.context, "portal_catalog")
         try:

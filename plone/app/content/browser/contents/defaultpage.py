@@ -1,6 +1,5 @@
-from Products.CMFPlone import PloneMessageFactory as _
-
 from plone.app.content.browser.contents import ContentsBaseAction
+from plone.base import PloneMessageFactory as _
 
 
 class SetDefaultPageActionView(ContentsBaseAction):

@@ -1,13 +1,16 @@
-import time
-
-from Acquisition import aq_base, aq_inner
+from Acquisition import aq_base
+from Acquisition import aq_inner
+from plone.app.content.interfaces import INameFromTitle
+from plone.base.utils import check_id
 from plone.i18n.normalizer import FILENAME_REGEX
-from plone.i18n.normalizer.interfaces import IURLNormalizer, IUserPreferredURLNormalizer
+from plone.i18n.normalizer.interfaces import IURLNormalizer
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.interface import implementer
 
-from plone.app.content.interfaces import INameFromTitle
+import time
+
 
 ATTEMPTS = 100
 
@@ -97,8 +100,6 @@ class NormalizingNameChooser:
         def do_Plone_check(newid, required):
             if _check_id is not None:
                 return _check_id(newid, required=required, contained_by=parent)
-
-            from Products.CMFPlone.utils import check_id
 
             return check_id(obj, newid, required=required, contained_by=parent)
 

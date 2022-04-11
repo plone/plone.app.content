@@ -1,15 +1,21 @@
 from plone.autoform.form import AutoExtensibleForm
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.interfaces import ISelectableConstrainTypes
+from plone.base import PloneMessageFactory as _
+from plone.base.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from z3c.form import button, form
+from z3c.form import button
+from z3c.form import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from zope.i18nmessageid import MessageFactory
-from zope.interface import Interface, implementer, invariant
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.interface import invariant
 from zope.interface.exceptions import Invalid
-from zope.schema import Choice, List
+from zope.schema import Choice
+from zope.schema import List
 from zope.schema.interfaces import IVocabularyFactory
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+
 
 # XXX
 # acquire locallyAllowedTypes from parent (default)

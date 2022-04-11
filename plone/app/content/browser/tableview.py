@@ -1,13 +1,13 @@
-from urllib.parse import quote_plus
-
+from plone.base.utils import safe_text
 from plone.batching import Batch
 from plone.batching.browser import BatchView
 from plone.memoize import instance
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from urllib.parse import quote_plus
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
+
 
 _ = MessageFactory("plone")
 
@@ -81,7 +81,7 @@ class Table:
         return _(
             "checkbox_select_item",
             default="Select ${title}",
-            mapping={"title": safe_unicode(title_or_id)},
+            mapping={"title": safe_text(title_or_id)},
         )
 
     @property

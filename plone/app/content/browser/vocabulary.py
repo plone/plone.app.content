@@ -1,31 +1,37 @@
-import inspect
-import itertools
-from logging import getLogger
-from types import FunctionType
-
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
+from logging import getLogger
+from plone.app.content.utils import json_dumps
+from plone.app.content.utils import json_loads
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
+from plone.base import PloneMessageFactory as _
+from plone.base.utils import safe_text
 from plone.memoize.view import memoize
 from plone.supermodel.utils import mergedTaggedValueDict
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone import PloneMessageFactory as _
-from Products.CMFPlone.utils import safe_unicode
 from Products.Five import BrowserView
-from Products.MimetypesRegistry.MimeTypeItem import PREFIX, guess_icon_path
+from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
+from Products.MimetypesRegistry.MimeTypeItem import PREFIX
 from Products.PortalTransforms.transforms.safe_html import SafeHTML
-from z3c.form.interfaces import IAddForm, ISubForm
-from zope.component import getUtility, queryAdapter, queryUtility
+from types import FunctionType
+from z3c.form.interfaces import IAddForm
+from z3c.form.interfaces import ISubForm
+from zope.component import getUtility
+from zope.component import queryAdapter
+from zope.component import queryUtility
 from zope.deprecation import deprecated
 from zope.i18n import translate
-from zope.schema.interfaces import ICollection, IVocabularyFactory
+from zope.schema.interfaces import ICollection
+from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
 
-from plone.app.content.utils import json_dumps, json_loads
+import inspect
+import itertools
+
 
 logger = getLogger(__name__)
 
@@ -230,7 +236,7 @@ class BaseVocabularyView(BrowserView):
                     if key == "path":
                         val = val[len(base_path) :]
                     if key not in translate_ignored and isinstance(val, str):
-                        val = translate(_(safe_unicode(val)), context=self.request)
+                        val = translate(_(safe_text(val)), context=self.request)
                     if isinstance(val, (bytes, str)):
                         val = transform.scrub_html(val)
                     item[key] = val
