@@ -3,6 +3,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from DateTime import DateTime
 from plone.base import PloneMessageFactory as _
+from plone.base.utils import check_default_page_via_view
 from plone.base.utils import transaction_note
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
@@ -125,7 +126,7 @@ class ContentStatusModifyView(BrowserView):
 
         # If this item is the default page in its parent, attempt to publish that
         # too. It may not be possible, of course
-        if self.plone_utils.isDefaultPage(context):
+        if check_default_page_via_view(context, self.request):
             parent = aq_parent(context)
             try:
                 parent_modify_view = getMultiAdapter(
