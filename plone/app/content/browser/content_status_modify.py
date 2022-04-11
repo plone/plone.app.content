@@ -3,7 +3,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from DateTime import DateTime
 from plone.base import PloneMessageFactory as _
-from plone.base.utils import check_default_page_via_view
+from plone.base.defaultpage import check_default_page_via_view
 from plone.base.utils import transaction_note
 from plone.protect import CheckAuthenticator
 from Products.CMFCore.utils import getToolByName
