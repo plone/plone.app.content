@@ -8,6 +8,28 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a11 (2022-05-09)
+---------------------
+
+Breaking changes:
+
+
+- Remove unused `container` and `item` modules.
+  Remove unused `IReindexOnModify`
+  [jensens] (cleanup)
+
+
+Bug fixes:
+
+
+- Code style: isort and black.
+  [jensens] (cleanup-1)
+- Use `plone.base`, drop circular dependency to `Products.CMFPlone`.
+  [jensens] (cleanup-2)
+- Remove Archetypes specific code.
+  [jensens] (cleanup-3)
+
+
 4.0.0a10 (2022-04-04)
 ---------------------
 
