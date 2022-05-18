@@ -1,0 +1,2 @@
+Fix ValueError: Circular reference detected for PersistentMapping.
+[maurits]
