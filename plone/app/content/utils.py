@@ -14,8 +14,7 @@ def custom_json_handler(obj):
     if obj_type in (datetime.datetime, datetime.date):
         return obj.isoformat()
     if obj_type == DateTime:
-        dt = DateTime(obj)
-        return dt.ISO()
+        return obj.ISO()
     if obj_type == set:
         return list(obj)
     return obj
