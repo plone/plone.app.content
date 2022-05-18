@@ -8,6 +8,11 @@ import Missing
 # use simplejson because it's ahead of stdlib and supports more types
 import simplejson
 
+try:
+    from z3c.relationfield.relation import RelationValue
+except ImportError:
+    RelationValue = None
+
 
 def custom_json_handler(obj):
     if obj == Missing.Value:
@@ -23,6 +28,8 @@ def custom_json_handler(obj):
         return dict(obj)
     if obj_type == PersistentList:
         return list(obj)
+    if RelationValue is not None and obj_type == RelationValue:
+        return obj.to_id
     return obj
 
 
