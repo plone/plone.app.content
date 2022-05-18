@@ -1,4 +1,6 @@
 from DateTime import DateTime
+from persistent.list import PersistentList
+from persistent.mapping import PersistentMapping
 
 import datetime
 import Missing
@@ -16,6 +18,10 @@ def custom_json_handler(obj):
     if obj_type == DateTime:
         return obj.ISO()
     if obj_type == set:
+        return list(obj)
+    if obj_type == PersistentMapping:
+        return dict(obj)
+    if obj_type == PersistentList:
         return list(obj)
     return obj
 
