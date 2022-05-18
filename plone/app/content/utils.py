@@ -10,12 +10,13 @@ import simplejson
 def custom_json_handler(obj):
     if obj == Missing.Value:
         return None
-    if type(obj) in (datetime.datetime, datetime.date):
+    obj_type = type(obj)
+    if obj_type in (datetime.datetime, datetime.date):
         return obj.isoformat()
-    if type(obj) == DateTime:
+    if obj_type == DateTime:
         dt = DateTime(obj)
         return dt.ISO()
-    if type(obj) == set:
+    if obj_type == set:
         return list(obj)
     return obj
 
