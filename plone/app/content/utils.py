@@ -1,4 +1,6 @@
 from DateTime import DateTime
+from persistent.list import PersistentList
+from persistent.mapping import PersistentMapping
 
 import datetime
 import Missing
@@ -6,17 +8,28 @@ import Missing
 # use simplejson because it's ahead of stdlib and supports more types
 import simplejson
 
+try:
+    from z3c.relationfield.relation import RelationValue
+except ImportError:
+    RelationValue = None
+
 
 def custom_json_handler(obj):
     if obj == Missing.Value:
         return None
-    if type(obj) in (datetime.datetime, datetime.date):
+    obj_type = type(obj)
+    if obj_type in (datetime.datetime, datetime.date):
         return obj.isoformat()
-    if type(obj) == DateTime:
-        dt = DateTime(obj)
-        return dt.ISO()
-    if type(obj) == set:
+    if obj_type == DateTime:
+        return obj.ISO()
+    if obj_type == set:
         return list(obj)
+    if obj_type == PersistentMapping:
+        return dict(obj)
+    if obj_type == PersistentList:
+        return list(obj)
+    if RelationValue is not None and obj_type == RelationValue:
+        return obj.to_id
     return obj
 
 
