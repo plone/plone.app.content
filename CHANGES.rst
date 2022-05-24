@@ -8,6 +8,20 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a12 (2022-05-24)
+---------------------
+
+Bug fixes:
+
+
+- Update table.pt Template, make table BS5 ready
+  [1letter] (bs5)
+- Fix ValueError: Circular reference detected for RelationValue.
+  [maurits] (#128)
+- Fix ValueError: Circular reference detected for PersistentMapping.
+  [maurits] (#246)
+
+
 4.0.0a11 (2022-05-09)
 ---------------------
 
