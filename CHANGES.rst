@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0a13 (2022-06-07)
+---------------------
+
+Bug fixes:
+
+
+- folder_contents popover BS5 styling
+  [petschki] (#248)
+
+
 4.0.0a12 (2022-05-24)
 ---------------------
 
