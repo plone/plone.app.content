@@ -237,8 +237,6 @@ class BaseVocabularyView(BrowserView):
                         val = val[len(base_path) :]
                     if key not in translate_ignored and isinstance(val, str):
                         val = translate(_(safe_text(val)), context=self.request)
-                    if isinstance(val, (bytes, str)):
-                        val = transform.scrub_html(val)
                     item[key] = val
                     if key == "getMimeIcon":
                         item[key] = None
