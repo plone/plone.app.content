@@ -1,0 +1,2 @@
+Fix TypeError: 'NoneType' object is not subscriptable in reference browser widget.
+[maurits]

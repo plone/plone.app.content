@@ -233,7 +233,7 @@ class BaseVocabularyView(BrowserView):
                             val = val()
                         else:
                             continue
-                    if key == "path":
+                    if key == "path" and val is not None:
                         val = val[len(base_path) :]
                     if key not in translate_ignored and isinstance(val, str):
                         val = translate(_(safe_text(val)), context=self.request)
