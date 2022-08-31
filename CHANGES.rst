@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0b1 (2022-08-31)
+--------------------
+
+Bug fixes:
+
+
+- Do not modify the original value in a vocabulary
+  [frapell] (#244)
+- Fix TypeError: 'NoneType' object is not subscriptable in reference browser widget.
+  [maurits] (#2921)
+
+
 4.0.0a14 (2022-07-20)
 ---------------------
 
