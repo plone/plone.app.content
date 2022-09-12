@@ -1,13 +1,12 @@
-from DateTime import DateTime
+from datetime import datetime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
+from plone.app.dexterity.behaviors.metadata import IPublication
 from plone.app.widgets.utils import get_datetime_options
 from plone.base import PloneMessageFactory as _
 from plone.base.defaultpage import check_default_page_via_view
-from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -102,11 +101,14 @@ class PropertiesActionView(ContentsBaseAction):
         if recurse and IFolderish.providedBy(obj):
             for sub in obj.values():
                 self.action(sub)
-
-        if self.effectiveDate and hasattr(obj, "effective_date"):
-            obj.effective_date = DateTime(self.effectiveDate)
-        if self.expirationDate and hasattr(obj, "expiration_date"):
-            obj.expiration_date = DateTime(self.expirationDate)
+        
+        publication   = IPublication(obj, None)
+        if publication:
+            if self.effectiveDate:
+                publication.effective = datetime.strptime(self.effectiveDate, "%Y-%m-%dT%H:%M")
+            if self.expirationDate:
+                publication.expiration = datetime.strptime(self.expirationDate, "%Y-%m-%dT%H:%M")
+        
         if self.copyright and hasattr(obj, "rights"):
             obj.rights = self.copyright
         if self.contributors and hasattr(obj, "contributors"):
