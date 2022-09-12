@@ -1,0 +1,7 @@
+Fix datetime settings in fc-properties view
+
+- used via ajax call in folder_content view
+- use the IPublication Adapter for settings correct datetime
+- respect the portal timezone settings
+- remove unused imports
+[1letter]
