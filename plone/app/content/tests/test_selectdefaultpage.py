@@ -1,6 +1,7 @@
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 
 import transaction
@@ -32,14 +33,14 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer["portal"]
-        self.portal.acl_users.userFolderAddUser("editor", "secret", ["Editor"], [])
+        self.portal.acl_users.userFolderAddUser("editor", TEST_USER_PASSWORD, ["Editor"], [])
 
         self._create_structure()
         transaction.commit()
 
         self.browser = Browser(self.layer["app"])
         self.browser.addHeader(
-            "Authorization", "Basic {}:{}".format("editor", "secret")
+            "Authorization", "Basic {}:{}".format("editor", TEST_USER_PASSWORD)
         )
 
     def tearDown(self):

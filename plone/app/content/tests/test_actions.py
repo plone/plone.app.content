@@ -4,6 +4,7 @@ from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.locking.interfaces import ILockable
 from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
@@ -23,7 +24,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
 
-        self.portal.acl_users.userFolderAddUser("editor", "secret", ["Editor"], [])
+        self.portal.acl_users.userFolderAddUser("editor", TEST_USER_PASSWORD, ["Editor"], [])
 
         # For z3c.forms request must provide IFormLayer
         alsoProvides(self.request, IFormLayer)
@@ -35,7 +36,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser = Browser(self.layer["app"])
         self.browser.handleErrors = False
         self.browser.addHeader(
-            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, "secret")
+            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, TEST_USER_PASSWORD)
         )
 
     def tearDown(self):
@@ -122,7 +123,7 @@ class ActionsDXTestCase(unittest.TestCase):
         browser_2 = Browser(self.layer["app"])
         browser_2.handleErrors = False
         browser_2.addHeader(
-            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, "secret")
+            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, TEST_USER_PASSWORD)
         )
 
         # return the id of the root page, the nested page itself, and the

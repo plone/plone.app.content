@@ -4,6 +4,7 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
+from plone.app.testing import TEST_USER_PASSWORD
 from Products.CMFCore.utils import getToolByName
 from zope.configuration import xmlconfig
 from zope.interface import implementer
@@ -48,14 +49,14 @@ class PloneAppContent(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
     USER_NAME = "johndoe"
-    USER_PASSWORD = "secret"
+    USER_PASSWORD = TEST_USER_PASSWORD
     MEMBER_NAME = "janedoe"
-    MEMBER_PASSWORD = "secret"
+    MEMBER_PASSWORD = TEST_USER_PASSWORD
     USER_WITH_FULLNAME_NAME = "jim"
     USER_WITH_FULLNAME_FULLNAME = "Jim Fulton"
-    USER_WITH_FULLNAME_PASSWORD = "secret"
+    USER_WITH_FULLNAME_PASSWORD = TEST_USER_PASSWORD
     MANAGER_USER_NAME = "manager"
-    MANAGER_USER_PASSWORD = "secret"
+    MANAGER_USER_PASSWORD = TEST_USER_PASSWORD
 
     def setUpZope(self, app, configurationContext):
         # Load ZCML
