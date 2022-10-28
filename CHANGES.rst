@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.9 (2022-10-28)
+------------------
+
+Bug fixes:
+
+
+- Fix TypeError: 'NoneType' object is not subscriptable in reference browser widget.
+  [maurits] (#2921)
+
+
 3.8.8 (2021-07-26)
 ------------------
 
