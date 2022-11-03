@@ -42,19 +42,25 @@ class DefaultViewSelectionView(BrowserView):
             (self.context, self.request), name="plone_context_state"
         )
 
-        templateId = self.request.form.get("templateId", False)
-        if templateId:
+        template_id = self.request.form.get("templateId")
+        context_view_url = self.context_state.object_url() + "/view"
+
+        if self.request.form.get("form.button.Cancel"):
+            self.request.response.redirect(context_view_url)
+
+        if self.request.form.get("form.button.Save") and not template_id:
+            IStatusMessage(self.request).add("Please select a template.", type="warning")
+
+        if self.request.form.get("form.button.Save") and template_id:
             # Make sure this is a valid template
-            if not self.isValidTemplate(templateId):
+            if not self.isValidTemplate(template_id):
                 IStatusMessage(self.request).add("Invalid view.", type="error")
                 return self.index()
             # Update the template
-            self.context.setLayout(templateId)
+            self.context.setLayout(template_id)
             IStatusMessage(self.request).add("View changed.")
-
-        if templateId or self.request.form.get("form.buttons.Cancel", False):
-            # Redirect to view
-            self.request.response.redirect("%s/view" % self.context_state.object_url())
+            # Redirect to context view
+            self.request.response.redirect(context_view_url)
 
         return self.index()
 
