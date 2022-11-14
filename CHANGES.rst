@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0 (2022-11-14)
+------------------
+
+Bug fixes:
+
+
+- Fix cancel button on @@select_default_view [sverbois] (#256)
+
+
 4.0.0b2 (2022-10-03)
 --------------------
 
