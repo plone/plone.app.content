@@ -6,11 +6,13 @@ from plone.base import PloneMessageFactory as _
 from plone.base.defaultpage import check_default_page_via_view
 from plone.base.utils import transaction_note
 from plone.protect import CheckAuthenticator
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from Products.statusmessages.interfaces import IStatusMessage
 from ZODB.POSException import ConflictError
 from zope.component import getMultiAdapter
+from zope.component import getUtility
 
 
 class ContentStatusModifyView(BrowserView):
@@ -144,7 +146,13 @@ class ContentStatusModifyView(BrowserView):
                 pass
 
         IStatusMessage(self.request).add(_("Item state changed."))
-        return self.request.response.redirect(context.absolute_url())
+        registry = getUtility(IRegistry)
+        url = context.absolute_url()
+        if context.portal_type in registry.get(
+            "plone.types_use_view_action_in_listings", ()
+        ):
+            url += "/view"
+        return self.request.response.redirect(url)
 
     def editContent(self, obj, effective, expiry):
         kwargs = {}
