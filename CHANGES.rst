@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.1 (2022-11-18)
+------------------
+
+Bug fixes:
+
+
+- Redirect to ``/view`` after publishing File or Image when they have a workflow.  [maurits] (#3676)
+
+
 4.0.0 (2022-11-14)
 ------------------
 
