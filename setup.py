@@ -55,7 +55,6 @@ setup(
         "plone.app.querystring",
         "plone.app.uuid",
         "plone.app.vocabularies>4.1.2",
-        "plone.app.widgets",
         "plone.app.z3cform",
         "plone.autoform",
         "plone.base",
