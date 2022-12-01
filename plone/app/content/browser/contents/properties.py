@@ -38,7 +38,7 @@ class PropertiesAction:
                 ),
                 "template": self.template(
                     vocabulary_url="%splone.app.vocabularies.Users" % (base_vocabulary),
-                    pattern_options=json.dumps(get_datetime_options(self.request)),
+                    pattern_options=json.dumps(get_date_options(self.request)),
                 ),
                 "dataUrl": self.context.absolute_url() + "/@@fc-properties",
             },
