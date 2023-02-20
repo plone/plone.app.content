@@ -40,7 +40,7 @@ MAX_BATCH_SIZE = 500  # prevent overloading server
 DEFAULT_PERMISSION = "View"
 DEFAULT_PERMISSION_SECURE = "Modify portal content"
 PERMISSIONS = {
-    "plone.app.vocabularies.Catalog": "View",
+    "plone.app.vocabularies.Catalog": "List folder contents",
     "plone.app.vocabularies.Keywords": "Modify portal content",
     "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
     "plone.app.vocabularies.Users": "Modify portal content",

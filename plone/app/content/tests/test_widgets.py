@@ -147,6 +147,38 @@ class BrowserTest(unittest.TestCase):
         data = json.loads(view())
         self.assertEqual(len(data["results"]), 1)
 
+    def testVocabularyCatalogDisallowed(self):
+        # You need 'List folder contents' permission.
+        self.portal.invokeFactory("Document", id="page", title="page")
+        self.portal.page.reindexObject()
+        # Downgrade permissions
+        setRoles(self.portal, TEST_USER_ID, [])
+        view = VocabularyView(self.portal, self.request)
+        query = {
+            "criteria": [
+                {
+                    "i": "path",
+                    "o": "plone.app.querystring.operation.string.path",
+                    "v": "/plone",
+                },
+                {
+                    "i": "portal_type",
+                    "o": "plone.app.querystring.operation.selection.any",
+                    "v": "Document",
+                },
+            ]
+        }
+        self.request.form.update(
+            {
+                "name": "plone.app.vocabularies.Catalog",
+                "query": json.dumps(query),
+                "attributes": ["UID", "id", "title", "path"],
+            }
+        )
+        data = json.loads(view())
+        self.assertEqual(data["error"], "Vocabulary lookup not allowed")
+        self.assertNotIn("results", data.keys())
+
     def testVocabularyCatalogUnsafeMetadataAllowed(self):
         """Users with permission "Modify portal content" are allowed to see
         ``_unsafe_metadata``.
@@ -184,8 +216,10 @@ class BrowserTest(unittest.TestCase):
         """
         self.portal.invokeFactory("Document", id="page", title="page")
         self.portal.page.reindexObject()
-        # Downgrade permissions
-        setRoles(self.portal, TEST_USER_ID, [])
+        # Downgrade permissions.  Since Plone 6.0.2, without "List folder contents"
+        # users are no longer allowed to use the catalog vocabulary at all.
+        # So give the Contributor role.
+        setRoles(self.portal, TEST_USER_ID, ["Contributor"])
         view = VocabularyView(self.portal, self.request)
         query = {
             "criteria": [
