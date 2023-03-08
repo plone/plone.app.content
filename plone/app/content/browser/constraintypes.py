@@ -61,7 +61,6 @@ ValidTypesFactory = ValidTypes()
 
 
 class IConstrainForm(Interface):
-
     constrain_types_mode = Choice(
         title=_("label_type_restrictions", default="Type restrictions"),
         description=_(
@@ -140,7 +139,6 @@ class FormContentAdapter:
 
 
 class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
-
     schema = IConstrainForm
     label = _(
         "heading_set_content_type_restrictions",

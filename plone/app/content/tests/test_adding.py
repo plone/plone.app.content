@@ -5,7 +5,6 @@ import unittest
 
 
 class AddingTests(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_INTEGRATION_TESTING
 
     def setUp(self):

@@ -10,7 +10,6 @@ from zope.interface import implementer
 
 @implementer(IStructureAction)
 class CopyAction:
-
     order = 2
 
     def __init__(self, context, request):

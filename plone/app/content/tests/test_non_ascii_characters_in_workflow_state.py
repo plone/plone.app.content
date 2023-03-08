@@ -11,7 +11,6 @@ import unittest
 
 
 class TestNonAsciiCharactersWorkflow(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_NON_ASCII_INTEGRATION_TESTING
 
     def setUp(self):

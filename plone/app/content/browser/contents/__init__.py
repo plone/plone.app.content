@@ -26,7 +26,6 @@ from zope.schema.interfaces import IVocabularyFactory
 
 
 class ContentsBaseAction(BrowserView):
-
     success_msg = _("Success")
     failure_msg = _("Failure")
     required_obj_permission = None
@@ -293,7 +292,6 @@ class FolderContentsView(BrowserView):
 
 
 class ContextInfo(BrowserView):
-
     attributes = [
         "CreationDate",
         "Creator",

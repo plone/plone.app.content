@@ -35,7 +35,6 @@ class i18njs(BrowserView):
         return _catalog
 
     def __call__(self, domain=None, language=None):
-
         if domain is None:
             catalog = {}
         else:
