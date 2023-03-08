@@ -11,10 +11,10 @@
               (function($){
                 // Custom form constraints for constrain form
                 $(document).ready(function(){
-                  var prefered = $(".current_prefer_form"),
+                  var preferred = $(".current_prefer_form"),
                       allowed = $(".current_allow_form"),
                       constrain_mode = $(".constrain_types_mode_form"),
-                      prefered_field = prefered.parents('.field'),
+                      preferred_field = preferred.parents('.field'),
                       allowed_field = allowed.parents('.field'),
                       ACQUIRE = -1,
                       DISABLED = 0,
@@ -22,15 +22,15 @@
                   function updateVisibility(){
                     var mode = constrain_mode.val();
                     if(mode == ENABLED){
-                      prefered_field.show();
+                      preferred_field.show();
                       allowed_field.show();
                     }else{
-                      prefered_field.hide();
+                      preferred_field.hide();
                       allowed_field.hide();
                     }
                   }
                   function updateSelectable(){
-                    prefered.each(function(){
+                    preferred.each(function(){
                       var allowed_id = this.id.replace('allowed', 'secondary'),
                           allowed_item = allowed_field.find("#" + allowed_id);
                       if (this.checked){
@@ -43,7 +43,7 @@
                   }
                   constrain_mode.change(updateVisibility);
                   updateVisibility();
-                  prefered_field.change(updateSelectable);
+                  preferred_field.change(updateSelectable);
                   updateSelectable();
                 })
               }(jQuery));

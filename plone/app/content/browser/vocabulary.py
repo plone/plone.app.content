@@ -139,7 +139,7 @@ class BaseVocabularyView(BrowserView):
                     sort_on: index,
                     sort_order: (asc|reversed)
                 }
-        attributes: comma seperated, or json object list
+        attributes: comma separated, or json object list
         batch: {
             page: 1-based page of results,
             size: size of paged results
@@ -183,7 +183,7 @@ class BaseVocabularyView(BrowserView):
         if batch and ("size" not in batch or "page" not in batch):
             batch = None  # batching not providing correct options
         if batch:
-            # must be slicable for batching support
+            # must be sliceable for batching support
             page = int(batch["page"])
             size = int(batch["size"])
             if size > MAX_BATCH_SIZE:

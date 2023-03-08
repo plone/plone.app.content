@@ -182,7 +182,7 @@ class FolderContentsView(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ISiteSchema, prefix="plone", check=False)
         if settings.no_thumbs_tables:
-            # thumbs to be supressed
+            # thumbs to be suppressed
             return None
         thumb_scale_table = settings.thumb_scale_table
         return thumb_scale_table

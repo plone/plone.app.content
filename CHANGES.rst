@@ -210,7 +210,7 @@ Bug fixes:
 Bug fixes:
 
 
-- Call fileUpload view explict with @@ to avoid possible plone.rest clashes.
+- Call fileUpload view explicit with @@ to avoid possible plone.rest clashes.
   [jensens] (#225)
 
 
@@ -552,7 +552,7 @@ Bug fixes:
   [thet]
 
 - Fix issue where some actions (copy, delete, paste) on contents view did not
-  work if there were any private (innaccessible for the current user) levels the
+  work if there were any private (inaccessible for the current user) levels the
   current path
   [datakurre]
 
@@ -908,7 +908,7 @@ Fixes:
 - When clicking cancel on the delete_confirmation got to the view_url.
   [ale-rt]
 
-- Fix deletion of objects with unicode charaters in the title.
+- Fix deletion of objects with unicode characters in the title.
   [cillianderoiste]
 
 
@@ -988,7 +988,7 @@ Fixes:
 - Translate folder contents add menu
   [vangheem]
 
-- use same columns title in results and in displayed colums configuration
+- use same columns title in results and in displayed columns configuration
   [vincent]
 
 
