@@ -1,5 +1,4 @@
 from plone.autoform.form import AutoExtensibleForm
-from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
