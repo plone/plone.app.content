@@ -8,7 +8,8 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.locking.interfaces import ILockable
 from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
-from zExceptions import Unauthorized, NotFound
+from zExceptions import NotFound
+from zExceptions import Unauthorized
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
