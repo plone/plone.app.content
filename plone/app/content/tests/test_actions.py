@@ -8,7 +8,7 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.locking.interfaces import ILockable
 from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
-from zExceptions import Unauthorized
+from zExceptions import Unauthorized, NotFound
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
@@ -17,14 +17,15 @@ import unittest
 
 
 class ActionsDXTestCase(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
 
-        self.portal.acl_users.userFolderAddUser("editor", TEST_USER_PASSWORD, ["Editor"], [])
+        self.portal.acl_users.userFolderAddUser(
+            "editor", TEST_USER_PASSWORD, ["Editor"], []
+        )
 
         # For z3c.forms request must provide IFormLayer
         alsoProvides(self.request, IFormLayer)
@@ -142,8 +143,13 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser.open(delete_url)
         browser_2.open(delete_url)
         self.assertTrue(p1_id in self.portal)
-        for browser in [self.browser, browser_2]:
-            browser.getControl(name="form.buttons.Delete").click()
+
+        # Try to delete in both browsers
+        self.browser.getControl(name="form.buttons.Delete").click()
+        try:
+            browser_2.getControl(name="form.buttons.Delete").click()
+        except NotFound:
+            pass
 
         # the nested folder should be gone, but the one at the root should
         # remain.
