@@ -8,6 +8,79 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.1 (2022-11-18)
+------------------
+
+Bug fixes:
+
+
+- Redirect to ``/view`` after publishing File or Image when they have a workflow.  [maurits] (#3676)
+
+
+4.0.0 (2022-11-14)
+------------------
+
+Bug fixes:
+
+
+- Fix cancel button on @@select_default_view [sverbois] (#256)
+
+
+4.0.0b2 (2022-10-03)
+--------------------
+
+Bug fixes:
+
+
+- Use longer password in tests. [davisagli] (#255)
+
+
+4.0.0b1 (2022-08-31)
+--------------------
+
+Bug fixes:
+
+
+- Do not modify the original value in a vocabulary
+  [frapell] (#244)
+- Fix TypeError: 'NoneType' object is not subscriptable in reference browser widget.
+  [maurits] (#2921)
+
+
+4.0.0a14 (2022-07-20)
+---------------------
+
+Bug fixes:
+
+
+- Change some msgids, we have similar ones but are slightly different default values
+  [erral] (#249)
+
+
+4.0.0a13 (2022-06-07)
+---------------------
+
+Bug fixes:
+
+
+- folder_contents popover BS5 styling
+  [petschki] (#248)
+
+
+4.0.0a12 (2022-05-24)
+---------------------
+
+Bug fixes:
+
+
+- Update table.pt Template, make table BS5 ready
+  [1letter] (bs5)
+- Fix ValueError: Circular reference detected for RelationValue.
+  [maurits] (#128)
+- Fix ValueError: Circular reference detected for PersistentMapping.
+  [maurits] (#246)
+
+
 4.0.0a11 (2022-05-09)
 ---------------------
 

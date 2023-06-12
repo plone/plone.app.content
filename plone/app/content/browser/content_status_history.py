@@ -19,7 +19,7 @@ class IContentStatusHistoryDates(Interface):
     effective_date = Datetime(
         title=_("label_effective_date", default="Publishing Date"),
         description=_(
-            "help_effective_date",
+            "help_effective_date_content_status_history",
             default="The date when the item will be published. If no "
             "date is selected the item will be published immediately.",
         ),
@@ -29,7 +29,7 @@ class IContentStatusHistoryDates(Interface):
     expiration_date = Datetime(
         title=_("label_expiration_date", default="Expiration Date"),
         description=_(
-            "help_expiration_date",
+            "help_expiration_date_content_status_history",
             default="The date when the item expires. This will automatically "
             "make the item invisible for others at the given date. "
             "If no date is chosen, it will never expire.",

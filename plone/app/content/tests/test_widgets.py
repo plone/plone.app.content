@@ -11,6 +11,7 @@ from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
 from Products.CMFCore.indexing import processQueue
 from unittest import mock
@@ -376,7 +377,7 @@ class BrowserTest(unittest.TestCase):
         # as alternative to the workaround in PloneHotfix20210518.
         for i in range(amount):
             id = "user" + str(i)
-            acl_users.userFolderAddUser(id, "secret", ["Member"], [])
+            acl_users.userFolderAddUser(id, TEST_USER_PASSWORD, ["Member"], [])
             member = membership.getMemberById(id)
             # Make user0 the hacker.
             if i == 0:

@@ -1,6 +1,7 @@
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.testing.zope import Browser
 from Products.CMFCore.utils import getToolByName
 
@@ -16,7 +17,7 @@ class ReviewListTestCase(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer["portal"]
         self.uf = self.portal.acl_users
-        self.uf.userFolderAddUser("reviewer", "secret", ["Reviewer"], [])
+        self.uf.userFolderAddUser("reviewer", TEST_USER_PASSWORD, ["Reviewer"], [])
         transaction.commit()
         self.browser = Browser(self.layer["app"])
         self.browser.handleErrors = True
@@ -58,7 +59,7 @@ class ReviewListTestCase(unittest.TestCase):
         the review list
         """
         self.browser.addHeader(
-            "Authorization", "Basic {}:{}".format("reviewer", "secret")
+            "Authorization", "Basic {}:{}".format("reviewer", TEST_USER_PASSWORD)
         )
         self.browser.open("http://nohost/plone/full_review_list")
         self.assertTrue("Full review list:" in self.browser.contents)
@@ -73,7 +74,7 @@ class ReviewListTestCase(unittest.TestCase):
         transaction.commit()
 
         self.browser.addHeader(
-            "Authorization", "Basic {}:{}".format("reviewer", "secret")
+            "Authorization", "Basic {}:{}".format("reviewer", TEST_USER_PASSWORD)
         )
         self.browser.open("http://nohost/plone/full_review_list")
         self.assertTrue("Full review list:" in self.browser.contents)
