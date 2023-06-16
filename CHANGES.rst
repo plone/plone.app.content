@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.2 (2023-06-16)
+------------------
+
+Bug fixes:
+
+
+- Fixup test_delete_wrong_object_by_acquisition_with_action. We don't publish acquired content items anymore.  [jaroel] (explicitacquisition)
+
+
 4.0.1 (2022-11-18)
 ------------------
 
