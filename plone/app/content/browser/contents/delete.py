@@ -3,6 +3,7 @@ from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.base import PloneMessageFactory as _
+from plone.locking.interfaces import ILockable
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
@@ -70,19 +71,25 @@ class DeleteActionView(ContentsBaseAction):
             lock_info = obj.restrictedTraverse("@@plone_lock_info")
         except AttributeError:
             lock_info = None
-
-        if lock_info is not None and lock_info.is_locked():
-            self.errors.append(
-                _("${title} is locked and cannot be deleted.", mapping={"title": title})
-            )
-            return
-        else:
-            try:
-                parent.manage_delObjects(obj.getId())
-            except Unauthorized:
+        if lock_info is not None:
+            if lock_info.is_locked_for_current_user():
                 self.errors.append(
                     _(
-                        "You are not authorized to delete ${title}.",
-                        mapping={"title": self.objectTitle(self.dest)},
+                        "${title} is locked and cannot be deleted.",
+                        mapping={"title": title},
                     )
                 )
+                return
+            elif lock_info.is_locked():
+                # unlock object as it is locked by current user
+                ILockable(obj).unlock()
+
+        try:
+            parent.manage_delObjects(obj.getId())
+        except Unauthorized:
+            self.errors.append(
+                _(
+                    "You are not authorized to delete ${title}.",
+                    mapping={"title": self.objectTitle(self.dest)},
+                )
+            )

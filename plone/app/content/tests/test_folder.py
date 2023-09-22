@@ -2,9 +2,11 @@ from DateTime import DateTime
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 from plone.app.content.testing import PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 from plone.app.testing import login
+from plone.app.testing import logout
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 from plone.dexterity.fti import DexterityFTI
 from plone.locking.interfaces import IRefreshableLockable
 from plone.protect.authenticator import createToken
@@ -224,6 +226,10 @@ class CutCopyLockedTest(BaseTest):
         login(self.portal, TEST_USER_NAME)
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
+        self.portal.acl_users.userFolderAddUser(
+            "editor", TEST_USER_PASSWORD, ["Editor"], []
+        )
+
         self.portal.invokeFactory("Document", id="page", title="page")
         self.portal.page.reindexObject()
 
@@ -237,14 +243,33 @@ class CutCopyLockedTest(BaseTest):
         }
         self.request.REQUEST_METHOD = "POST"
 
-    def test_cut_object_when_locked(self):
+    def test_cut_object_when_locked_by_current_user(self):
         from plone.app.content.browser.contents.cut import CutActionView
 
+        plone_lock_info = self.portal.page.restrictedTraverse("@@plone_lock_info")
         lockable = IRefreshableLockable(self.portal.page)
         lockable.lock()
+        self.assertTrue(plone_lock_info.is_locked())
+        view = CutActionView(self.portal, self.request)
+        view()
+        self.assertEqual(len(view.errors), 0)
+        self.assertFalse(plone_lock_info.is_locked())
+
+    def test_cut_object_when_locked_by_other_user(self):
+        from plone.app.content.browser.contents.cut import CutActionView
+
+        plone_lock_info = self.portal.page.restrictedTraverse("@@plone_lock_info")
+        lockable = IRefreshableLockable(self.portal.page)
+        lockable.lock()
+        logout()
+
+        login(self.portal, "editor")
+        self.assertTrue(plone_lock_info.is_locked())
+        self.request.form["_authenticator"] = createToken()
         view = CutActionView(self.portal, self.request)
         view()
         self.assertEqual(len(view.errors), 1)
+        self.assertTrue(plone_lock_info.is_locked())
 
 
 class DeleteDXTest(BaseTest):
@@ -256,6 +281,10 @@ class DeleteDXTest(BaseTest):
         self.portal = self.layer["portal"]
         login(self.portal, TEST_USER_NAME)
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
+
+        self.portal.acl_users.userFolderAddUser(
+            "editor", TEST_USER_PASSWORD, ["Editor"], []
+        )
 
         self.portal.invokeFactory("Document", id="page", title="page")
         self.portal.page.reindexObject()
@@ -285,14 +314,32 @@ class DeleteDXTest(BaseTest):
         view()
         self.assertTrue(page_id not in self.portal)
 
-    def test_delete_object_when_locked(self):
+    def test_delete_object_when_locked_by_current_user(self):
         from plone.app.content.browser.contents.delete import DeleteActionView
 
+        page_id = self.portal.page.id
         lockable = IRefreshableLockable(self.portal.page)
         lockable.lock()
         view = DeleteActionView(self.portal, self.request)
         view()
+        self.assertEqual(len(view.errors), 0)
+        self.assertTrue(page_id not in self.portal)
+
+    def test_delete_object_when_locked_by_other_user(self):
+        from plone.app.content.browser.contents.delete import DeleteActionView
+
+        plone_lock_info = self.portal.page.restrictedTraverse("@@plone_lock_info")
+        lockable = IRefreshableLockable(self.portal.page)
+        lockable.lock()
+        logout()
+
+        login(self.portal, "editor")
+        self.assertTrue(plone_lock_info.is_locked())
+        self.request.form["_authenticator"] = createToken()
+        view = DeleteActionView(self.portal, self.request)
+        view()
         self.assertEqual(len(view.errors), 1)
+        self.assertTrue(plone_lock_info.is_locked())
 
     def test_delete_wrong_object_by_acquisition(self):
         page_id = self.portal.page.id
