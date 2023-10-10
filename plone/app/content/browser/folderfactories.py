@@ -141,7 +141,7 @@ class FolderFactoriesView(BrowserView):
         results = [
             (translate(ctype["title"], context=request), ctype) for ctype in results
         ]
-        results.sort()
+        results = sorted(results, key=lambda tp: tp[0])
         results = [ctype[-1] for ctype in results]
 
         return results
