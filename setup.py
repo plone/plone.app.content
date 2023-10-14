@@ -52,7 +52,6 @@ setup(
     ),
     install_requires=[
         "plone.app.dexterity",
-        "plone.app.layout",
         "plone.app.querystring",
         "plone.app.uuid",
         "plone.app.vocabularies>4.1.2",

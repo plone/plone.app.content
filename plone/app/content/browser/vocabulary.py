@@ -3,12 +3,12 @@ from Acquisition import aq_base
 from logging import getLogger
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
-from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.querystring import queryparser
 from plone.app.z3cform.interfaces import IFieldPermissionChecker
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.base import PloneMessageFactory as _
+from plone.base.interfaces.siteroot import INavigationRoot
+from plone.base.navigationroot import get_navigation_root
 from plone.base.utils import safe_text
 from plone.memoize.view import memoize
 from plone.supermodel.utils import mergedTaggedValueDict
@@ -125,7 +125,7 @@ class BaseVocabularyView(BrowserView):
         return TRANSLATED_IGNORED
 
     def get_base_path(self, context):
-        return getNavigationRoot(context)
+        return get_navigation_root(context)
 
     def __call__(self):
         """

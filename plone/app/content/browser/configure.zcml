@@ -182,13 +182,13 @@
 
     <browser:page
         name="qsOptions"
-        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        for="plone.base.interfaces.siteroot.INavigationRoot"
         class=".query.QueryStringIndexOptions"
         permission="zope2.View"
         />
 
     <browser:view
-        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        for="plone.base.interfaces.siteroot.INavigationRoot"
         name="plonejsi18n"
         class=".i18n.i18njs"
         permission="zope2.View"
