@@ -5,6 +5,7 @@ from OFS.CopySupport import CopyError
 from plone.base import PloneMessageFactory as _
 from plone.base.utils import get_user_friendly_types
 from plone.base.utils import safe_text
+from plone.locking.interfaces import ILockable
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -76,6 +77,14 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         # has the context object been acquired from a place it should not have
         # been?
         if self.context.aq_chain == self.context.aq_inner.aq_chain:
+            try:
+                lock_info = self.context.restrictedTraverse("@@plone_lock_info")
+            except AttributeError:
+                lock_info = None
+            if lock_info is not None:
+                if lock_info.is_locked() and not lock_info.is_locked_for_current_user():
+                    # unlock object as it is locked by current user
+                    ILockable(self.context).unlock()
             parent.manage_delObjects(self.context.getId())
             IStatusMessage(self.request).add(
                 _("${title} has been deleted.", mapping={"title": title})
@@ -219,7 +228,7 @@ class RenameForm(form.Form):
             self.actions["Cancel"].addClass("btn-secondary")
 
 
-class ObjectCutView(LockingBase):
+class ObjectCutView(BrowserView):
     @property
     def title(self):
         return self.context.Title()
@@ -251,16 +260,24 @@ class ObjectCutView(LockingBase):
         raise raise_exception
 
     def do_action(self):
-        if self.is_locked:
-            return self.do_redirect(
-                self.view_url,
-                _(
-                    "${title} is locked and cannot be cut.",
-                    mapping={
-                        "title": self.title,
-                    },
-                ),
-            )
+        try:
+            lock_info = self.context.restrictedTraverse("@@plone_lock_info")
+        except AttributeError:
+            lock_info = None
+        if lock_info is not None:
+            if lock_info.is_locked_for_current_user():
+                return self.do_redirect(
+                    self.view_url,
+                    _(
+                        "${title} is locked and cannot be cut.",
+                        mapping={
+                            "title": self.title,
+                        },
+                    ),
+                )
+            elif lock_info.is_locked():
+                # unlock object as it is locked by current user
+                ILockable(self.context).unlock()
 
         try:
             cp = self.parent.manage_cutObjects(self.context.getId())

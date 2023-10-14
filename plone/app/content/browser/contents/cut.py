@@ -4,6 +4,7 @@ from OFS.Moniker import Moniker
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.base import PloneMessageFactory as _
+from plone.locking.interfaces import ILockable
 from zope.i18n import translate
 from zope.interface import implementer
 
@@ -36,14 +37,23 @@ class CutActionView(ContentsBaseAction):
     def finish(self):
         oblist = []
         for ob in self.oblist:
-            if ob.wl_isLocked():
-                self.errors.append(
-                    _(
-                        "${title} is being edited and cannot be cut.",
-                        mapping={"title": self.objectTitle(ob)},
+            try:
+                lock_info = ob.restrictedTraverse("@@plone_lock_info")
+            except AttributeError:
+                lock_info = None
+            if lock_info is not None:
+                if lock_info.is_locked_for_current_user():
+                    self.errors.append(
+                        _(
+                            "${title} is being edited and cannot be cut.",
+                            mapping={"title": self.objectTitle(ob)},
+                        )
                     )
-                )
-                continue
+                    continue
+                elif lock_info.is_locked():
+                    # unlock object as it is locked by current user
+                    ILockable(ob).unlock()
+
             if not ob.cb_isMoveable():
                 self.errors.append(
                     _(
