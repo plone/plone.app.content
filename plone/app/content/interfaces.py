@@ -1,16 +1,14 @@
-from zope import schema
 from zope.interface import Attribute
 from zope.interface import Interface
 
+import zope.deferredimport
 
-class INameFromTitle(Interface):
-    """An object that supports gettings it name from its title."""
 
-    title = schema.TextLine(
-        title="Title",
-        description="A title, which will be converted to a name",
-        required=True,
-    )
+zope.deferredimport.deprecated(
+    "It has been moved to plone.base.interfaces. "
+    "This alias will be removed in Plone 7.0",
+    INameFromTitle="plone.base.interfaces:INameFromTitle",
+)
 
 
 class IReindexOnModify(Interface):
