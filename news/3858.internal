@@ -1,0 +1,3 @@
+chore: move tests from `plone.app.dexterity`
+
+To avoid a circular dependency between the two of them.
