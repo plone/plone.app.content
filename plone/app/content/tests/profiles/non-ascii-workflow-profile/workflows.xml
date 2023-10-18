@@ -1,6 +1,10 @@
-<?xml version="1.0"?>
-<object name="portal_workflow" meta_type="Plone Workflow Tool">
+<?xml version="1.0" encoding="utf-8"?>
+<object meta_type="Plone Workflow Tool"
+        name="portal_workflow"
+>
 
-    <object name="non-ascii-workflow" meta_type="Workflow" />
+  <object meta_type="Workflow"
+          name="non-ascii-workflow"
+  />
 
 </object>
