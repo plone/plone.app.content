@@ -90,8 +90,8 @@ class ContentsDeleteTests(unittest.TestCase):
     @mock.patch(
         "plone.app.content.browser.contents.ContentsBaseAction.protect", lambda x: True
     )  # noqa
-    def test_delete_success_with_private_anchestor(self):
-        """Delete content item from a folder with private anchestor"""
+    def test_delete_success_with_private_ancestor(self):
+        """Delete content item from a folder with private ancestor"""
         # Create test content /it1/it2/it3
         self.portal.invokeFactory("type1", id="it1", title="Item 1")
         self.portal.it1.invokeFactory("type1", id="it2", title="Item 2")
@@ -222,8 +222,8 @@ class ContentsPasteTests(unittest.TestCase):
     @mock.patch(
         "plone.app.content.browser.contents.ContentsBaseAction.protect", lambda x: True
     )  # noqa
-    def test_paste_success_with_private_anchestor(self):
-        """Copy content item and paste into a folder with private anchestor"""
+    def test_paste_success_with_private_ancestor(self):
+        """Copy content item and paste into a folder with private ancestor"""
         # Create test content /it2/it3
         self.portal.invokeFactory("type1", id="it2", title="Item 2")
         self.portal.it2.invokeFactory("type1", id="it3", title="Item 3")
@@ -274,8 +274,8 @@ class ContentsRenameTests(unittest.TestCase):
     @mock.patch(
         "plone.app.content.browser.contents.ContentsBaseAction.protect", lambda x: True
     )  # noqa
-    def test_rename_success_with_private_anchestor(self):
-        """Rename content item from a folder with private anchestor"""
+    def test_rename_success_with_private_ancestor(self):
+        """Rename content item from a folder with private ancestor"""
         # Create test content /it1/it2/it3
         self.portal.invokeFactory("type1", id="it1", title="Item 1")
         self.portal.it1.invokeFactory("type1", id="it2", title="Item 2")

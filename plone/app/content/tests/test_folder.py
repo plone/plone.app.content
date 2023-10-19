@@ -51,7 +51,6 @@ class BaseTest(unittest.TestCase):
 
 
 class DXBaseTest(BaseTest):
-
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def setUp(self):
@@ -126,7 +125,6 @@ class PropertiesDXTest(DXBaseTest):
 
 
 class WorkflowTest(BaseTest):
-
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def convertDateTimeToIndexRepr(self, date):
@@ -166,7 +164,6 @@ class WorkflowTest(BaseTest):
 
 
 class RenameTest(BaseTest):
-
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def test_folder_rename_objects(self):
@@ -204,7 +201,6 @@ class RenameTest(BaseTest):
 
 
 class ContextInfoTest(BaseTest):
-
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def testStateChange(self):

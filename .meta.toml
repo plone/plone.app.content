@@ -1,0 +1,26 @@
+# Generated from:
+# https://github.com/plone/meta/tree/master/config/default
+# See the inline comments on how to expand/tweak this configuration file
+[meta]
+template = "default"
+commit-id = "68cda6e4"
+
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "dependencies",
+    "release_ready",
+    ]
+
+[pre_commit]
+zpretty_extra_lines = """
+        exclude: plone/app/content/browser/contents/templates
+"""
+i18ndude_extra_lines = """
+        exclude: plone/app/content/browser/contents
+"""
+
+[pyproject]
+dependencies_ignores = "['tus', ]"

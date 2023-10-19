@@ -69,7 +69,6 @@ def _disable_permission_checker(context):
 
 
 class BrowserTest(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
 
     def setUp(self):
@@ -664,7 +663,6 @@ class BrowserTest(unittest.TestCase):
 
 
 class FunctionalBrowserTest(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):

@@ -14,7 +14,6 @@ from zope.interface import implementer
 
 @implementer(IStructureAction)
 class WorkflowAction:
-
     template = ViewPageTemplateFile("templates/workflow.pt")
     order = 7
 

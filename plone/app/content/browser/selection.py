@@ -49,7 +49,9 @@ class DefaultViewSelectionView(BrowserView):
             self.request.response.redirect(context_view_url)
 
         if self.request.form.get("form.button.Save") and not template_id:
-            IStatusMessage(self.request).add("Please select a template.", type="warning")
+            IStatusMessage(self.request).add(
+                "Please select a template.", type="warning"
+            )
 
         if self.request.form.get("form.button.Save") and template_id:
             # Make sure this is a valid template

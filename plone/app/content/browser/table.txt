@@ -3,7 +3,7 @@ Table
 =====
 
 The table class can render a table like used in the folder contents view. It is
-abstracted into a seperate class for reuse with other views like the review
+abstracted into a separate class for reuse with other views like the review
 list.
 
 A table can be parameterized at creation time.
@@ -31,11 +31,11 @@ One of the table's main virtues is that it batches. A template can use the
   True
 
 The table automatically adds keys for making layout easier. One of these is
-indication wheter an item is `checked`.
+indication whether an item is `checked`.
 
   >>> list(table.batch)[0]['checked']
 
-Wheter or not an item is checked depends on request variables. If either the
+Whether or not an item is checked depends on request variables. If either the
 whole batch or the current screen is selected the item we be marked as checked.
 Below we will demonstrate this by selecting the items on screen.
 
@@ -129,8 +129,8 @@ The same goes for selecting the screen and the whole batch.
   'http://plone/view?pagenumber=1&pagesize=20&select=all'
 
 A template may want to display only one of these urls at the same time.
-Therefore the table has a boolean property to query wheter or not to show the
-select all option. The display of this depends on wheter the whole batch is
+Therefore the table has a boolean property to query whether or not to show the
+select all option. The display of this depends on whether the whole batch is
 selected (don't show) or the screen has not been selected (don't show then).
 
   >>> table = Table({}, base_url, view_url, items=items)

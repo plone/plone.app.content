@@ -28,12 +28,13 @@ NEWSITEM = {
 
 
 class SelectDefaultPageDXTestCase(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
         self.portal = self.layer["portal"]
-        self.portal.acl_users.userFolderAddUser("editor", TEST_USER_PASSWORD, ["Editor"], [])
+        self.portal.acl_users.userFolderAddUser(
+            "editor", TEST_USER_PASSWORD, ["Editor"], []
+        )
 
         self._create_structure()
         transaction.commit()

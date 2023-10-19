@@ -9,7 +9,6 @@ from zope.interface import implementer
 
 @implementer(IStructureAction)
 class PasteAction:
-
     order = 3
 
     def __init__(self, context, request):

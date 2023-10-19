@@ -48,7 +48,6 @@ class ContentStatusHistoryDatesForm(form.Form):
 
 
 class ContentStatusHistoryView(BrowserView):
-
     template = ViewPageTemplateFile("templates/content_status_history.pt")
 
     def __init__(self, context, request):
@@ -66,9 +65,8 @@ class ContentStatusHistoryView(BrowserView):
         effective_date=None,
         expiration_date=None,
         include_children=False,
-        *args
+        *args,
     ):
-
         data = self.dates_form.extractData()
         if self.request.get("form.widgets.effective_date-calendar", None) and data:
             effective_date = data[0]["effective_date"].strftime("%Y-%m-%d %H:%M")

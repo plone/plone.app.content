@@ -9,7 +9,6 @@ from zope.interface import implementer
 
 @implementer(IStructureAction)
 class TagsAction:
-
     template = ViewPageTemplateFile("templates/tags.pt")
     order = 6
 

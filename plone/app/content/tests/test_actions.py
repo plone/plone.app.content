@@ -8,7 +8,8 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.locking.interfaces import ILockable
 from plone.testing.zope import Browser
 from z3c.form.interfaces import IFormLayer
-from zExceptions import Unauthorized, NotFound
+from zExceptions import NotFound
+from zExceptions import Unauthorized
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
@@ -37,7 +38,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser = Browser(self.layer["app"])
         self.browser.handleErrors = False
         self.browser.addHeader(
-            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, TEST_USER_PASSWORD)
+            "Authorization", f"Basic {TEST_USER_NAME}:{TEST_USER_PASSWORD}"
         )
 
     def tearDown(self):
@@ -124,7 +125,7 @@ class ActionsDXTestCase(unittest.TestCase):
         browser_2 = Browser(self.layer["app"])
         browser_2.handleErrors = False
         browser_2.addHeader(
-            "Authorization", "Basic {}:{}".format(TEST_USER_NAME, TEST_USER_PASSWORD)
+            "Authorization", f"Basic {TEST_USER_NAME}:{TEST_USER_PASSWORD}"
         )
 
         # return the id of the root page, the nested page itself, and the
