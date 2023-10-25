@@ -8,6 +8,26 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.3 (2023-10-25)
+------------------
+
+Bug fixes:
+
+
+- Fix cut / delete for content with lock created by current user.  [laulaz] (#266)
+- Fixed inapproriate ``sort()`` in ``folderfactories.py``. [ajung] (#268)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs] (5cdbd962)
+- chore: move tests from `plone.app.dexterity`
+
+  To avoid a circular dependency between the two of them. (#3858)
+
+
 4.0.2 (2023-06-16)
 ------------------
 
