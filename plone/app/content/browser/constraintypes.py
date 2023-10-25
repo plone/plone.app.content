@@ -1,5 +1,4 @@
 from plone.autoform.form import AutoExtensibleForm
-from plone.base import PloneMessageFactory as _
 from plone.base.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
@@ -61,7 +60,6 @@ ValidTypesFactory = ValidTypes()
 
 
 class IConstrainForm(Interface):
-
     constrain_types_mode = Choice(
         title=_("label_type_restrictions", default="Type restrictions"),
         description=_(
@@ -140,7 +138,6 @@ class FormContentAdapter:
 
 
 class ConstrainsFormView(AutoExtensibleForm, form.EditForm):
-
     schema = IConstrainForm
     label = _(
         "heading_set_content_type_restrictions",

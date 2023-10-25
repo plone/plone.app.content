@@ -45,7 +45,6 @@ def ExampleFunctionVocabulary(context, query=None):
 
 
 class PloneAppContent(PloneSandboxLayer):
-
     defaultBases = (PLONE_FIXTURE,)
 
     USER_NAME = "johndoe"

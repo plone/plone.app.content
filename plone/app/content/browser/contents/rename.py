@@ -23,7 +23,6 @@ logger = logging.getLogger("plone.app.content")
 
 @implementer(IStructureAction)
 class RenameAction:
-
     template = ViewPageTemplateFile("templates/rename.pt")
     order = 5
 

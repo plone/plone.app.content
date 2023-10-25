@@ -124,7 +124,6 @@ class TestContentStatusModifyIntegration(unittest.TestCase):
 
 
 class TestContentStatusModifyFunctional(unittest.TestCase):
-
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):

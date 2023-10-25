@@ -38,7 +38,6 @@ class LockingBase(BrowserView):
 
 
 class DeleteConfirmationForm(form.Form, LockingBase):
-
     fields = field.Fields()
     template = ViewPageTemplateFile("templates/delete_confirmation.pt")
     enableCSRFProtection = True
@@ -140,7 +139,6 @@ default_new_title = ComputedWidgetAttribute(
 
 
 class RenameForm(form.Form):
-
     fields = field.Fields(IRenameForm)
     template = ViewPageTemplateFile("templates/object_rename.pt")
     enableCSRFProtection = True

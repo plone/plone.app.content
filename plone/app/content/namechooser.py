@@ -83,7 +83,7 @@ class NormalizingNameChooser:
             return new_name
 
         raise ValueError(
-            "Cannot find a unique name based on %s after %d attemps."
+            "Cannot find a unique name based on %s after %d attempts."
             % (
                 name,
                 ATTEMPTS,

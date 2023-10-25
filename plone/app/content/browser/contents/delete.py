@@ -16,7 +16,6 @@ import json
 
 @implementer(IStructureAction)
 class DeleteAction:
-
     template = ViewPageTemplateFile("templates/delete.pt")
     order = 4
 

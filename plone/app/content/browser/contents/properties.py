@@ -5,9 +5,7 @@ from plone.app.dexterity.behaviors.metadata import ICategorization
 from plone.app.widgets.utils import get_datetime_options
 from plone.base import PloneMessageFactory as _
 from plone.base.defaultpage import check_default_page_via_view
-from plone.dexterity.interfaces import IDexterityContent
 from Products.CMFCore.interfaces._content import IFolderish
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.hooks import getSite
@@ -20,7 +18,6 @@ import json
 
 @implementer(IStructureAction)
 class PropertiesAction:
-
     template = ViewPageTemplateFile("templates/properties.pt")
     order = 8
 
@@ -54,7 +51,6 @@ class PropertiesActionView(ContentsBaseAction):
     required_obj_permission = "Modify portal content"
 
     def __call__(self):
-
         if self.request.form.get("render") == "yes":
             lang_factory = getUtility(
                 IVocabularyFactory, "plone.app.vocabularies.SupportedContentLanguages"
@@ -95,7 +91,6 @@ class PropertiesActionView(ContentsBaseAction):
         return super().__call__()
 
     def action(self, obj, bypass_recurse=False):
-
         if check_default_page_via_view(obj, self.request):
             self.action(obj.aq_parent, bypass_recurse=True)
         recurse = self.recurse and not bypass_recurse

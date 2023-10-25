@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "4.0.3.dev0"
+version = "4.0.4.dev0"
 
 setup(
     name="plone.app.content",
@@ -38,23 +38,41 @@ setup(
     namespace_packages=["plone", "plone.app"],
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=3.8",
     extras_require=dict(
         test=[
-            "plone.app.contenttypes",
+            "plone.app.contenttypes[test]",
             "plone.app.testing",
+            "plone.dexterity",
+            "plone.namedfile",
+            "plone.testing",
+            "zope.annotation",
+            "Products.GenericSetup",
         ]
     ),
     install_requires=[
+        "plone.app.dexterity",
+        "plone.app.querystring",
+        "plone.app.uuid",
+        "plone.app.vocabularies>4.1.2",
         "plone.app.widgets",
+        "plone.app.z3cform",
+        "plone.autoform",
         "plone.base",
         "plone.i18n",
+        "plone.folder",
+        "plone.locking",
         "plone.memoize",
         "plone.protect",
+        "plone.supermodel",
+        "plone.uuid",
+        "Missing",
+        "Products.MimetypesRegistry",
+        "Products.PortalTransforms",
         "Products.statusmessages",
-        "Products.CMFDynamicViewFTI",  # required for cmf.ModifyViewTemplate
-        "plone.app.vocabularies>4.1.2",
-        "setuptools",
         "simplejson",
+        "z3c.relationfield",
         "z3c.form",
+        "zope.browsermenu",
     ],
 )
