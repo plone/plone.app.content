@@ -135,7 +135,7 @@ Title-based name chooser
 An object can also gain a name based on its title. To do so, the object
 must implement or be adaptable to INameFromTitle.
 
-    >>> from plone.app.content.interfaces import INameFromTitle
+    >>> from plone.base.interfaces import INameFromTitle
 
     >>> @implementer(INameFromTitle)
     ... @adapter(IMyType)

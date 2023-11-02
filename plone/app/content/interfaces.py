@@ -1,16 +1,30 @@
-from zope import schema
+from plone.base.interfaces import INameFromTitle as FutureINameFromTitle
 from zope.interface import Attribute
 from zope.interface import Interface
 
 
-class INameFromTitle(Interface):
-    """An object that supports gettings it name from its title."""
+class INameFromTitle(FutureINameFromTitle):
+    """An object that supports getting its name (id) from its title.
 
-    title = schema.TextLine(
-        title="Title",
-        description="A title, which will be converted to a name",
-        required=True,
-    )
+    This interface has been moved to plone.base.interfaces.
+    This alias will be removed in Plone 7.0.
+    We tried deprecating it like this:
+
+        zope.deferredimport.deprecated(
+            INameFromTitle="plone.base.interfaces:INameFromTitle",
+        )
+
+    Unfortunately this does not completely work: if your site has a content
+    type with behavior `plone.app.content.interfaces.INameFromTitle` this would
+    no longer work because the behavior is not found.
+    If you use `plone.namefromtitle` then it works.
+
+    So as long as we want to support the old spelling, we must keep the
+    interface here, and also use this interface as the `provides` in the
+    definition of the behavior in `plone.app.dexterity`.
+
+    See https://github.com/plone/plone.app.dexterity/pull/379
+    """
 
 
 class IReindexOnModify(Interface):
