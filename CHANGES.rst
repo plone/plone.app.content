@@ -8,6 +8,19 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.0 (2023-11-03)
+------------------
+
+Internal:
+
+
+- Mark ``INameFromTitle`` deprecated, in this distribution, as it has been moved to ``plone.base``.
+  It will be removed in Plone 7.0.
+  We do not show a deprecation warning, because doing so would break content types with this interface name in the behaviors list.
+  Recommended is to use ``plone.namefromtitle`` as behavior name, then it works in all supported Plone versions.
+  [gforcada] (#3858)
+
+
 4.0.3 (2023-10-25)
 ------------------
 
