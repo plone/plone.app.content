@@ -270,7 +270,7 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(result["id"], test_val)
 
     def testVocabularyHtmlEntity(self):
-        """ The vocabulary token should not convert to htmlentities.
+        """The vocabulary token should not convert to htmlentities.
         See https://github.com/plone/Products.CMFPlone/issues/3874
         """
         test_val = "Question & Answer"
