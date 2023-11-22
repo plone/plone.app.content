@@ -260,8 +260,8 @@ class BaseVocabularyView(BrowserView):
         else:
             items = [
                 {
-                    "id": transform.scrub_html(item.value),
-                    "text": transform.scrub_html(item.title) if item.title else "",
+                    "id": transform.scrub_html(item.value).replace("&amp;", "&"),
+                    "text": transform.scrub_html(item.title).replace("&amp;", "&") if item.title else "",
                 }
                 for item in results
             ]
