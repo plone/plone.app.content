@@ -2,7 +2,7 @@ from DateTime import DateTime
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.app.dexterity.behaviors.metadata import ICategorization
-from plone.app.widgets.utils import get_datetime_options
+from plone.app.z3cform.widgets.datetime import get_date_options
 from plone.base import PloneMessageFactory as _
 from plone.base.defaultpage import check_default_page_via_view
 from Products.CMFCore.interfaces._content import IFolderish
@@ -38,7 +38,7 @@ class PropertiesAction:
                 ),
                 "template": self.template(
                     vocabulary_url="%splone.app.vocabularies.Users" % (base_vocabulary),
-                    pattern_options=json.dumps(get_datetime_options(self.request)),
+                    pattern_options=json.dumps(get_date_options(self.request)),
                 ),
                 "dataUrl": self.context.absolute_url() + "/@@fc-properties",
             },
