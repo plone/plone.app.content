@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.1 (2024-01-18)
+------------------
+
+New features:
+
+
+- Change import from deprecated ``plone.app.widgets`` to ``plone.app.z3cform``
+  [petschki] (#259)
+
+
 4.1.0 (2023-11-03)
 ------------------
 
