@@ -1,5 +1,6 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_base
+from html import unescape
 from logging import getLogger
 from plone.app.content.utils import json_dumps
 from plone.app.content.utils import json_loads
@@ -260,8 +261,10 @@ class BaseVocabularyView(BrowserView):
         else:
             items = [
                 {
-                    "id": transform.scrub_html(item.value),
-                    "text": transform.scrub_html(item.title) if item.title else "",
+                    "id": unescape(transform.scrub_html(item.value)),
+                    "text": unescape(transform.scrub_html(item.title))
+                    if item.title
+                    else "",
                 }
                 for item in results
             ]

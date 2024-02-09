@@ -269,6 +269,25 @@ class BrowserTest(unittest.TestCase):
         self.assertEqual(result["text"], test_val)
         self.assertEqual(result["id"], test_val)
 
+    def testVocabularyHtmlEntity(self):
+        """The vocabulary token should not convert to htmlentities.
+        See https://github.com/plone/Products.CMFPlone/issues/3874
+        """
+        test_val = "Question & Answer"
+
+        self.portal.invokeFactory("Document", id="page", title="page")
+        self.portal.page.subject = (test_val,)
+        self.portal.page.reindexObject(idxs=["Subject"])
+        processQueue()
+
+        self.request.form["name"] = "plone.app.vocabularies.Keywords"
+        results = getMultiAdapter((self.portal, self.request), name="getVocabulary")()
+        results = json.loads(results)
+        result = results["results"][0]
+
+        self.assertEqual(result["text"], test_val)
+        self.assertEqual(result["id"], test_val)
+
     def testVocabularyUnauthorized(self):
         setRoles(self.portal, TEST_USER_ID, [])
         view = VocabularyView(self.portal, self.request)
