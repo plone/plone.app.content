@@ -262,9 +262,9 @@ class BaseVocabularyView(BrowserView):
             items = [
                 {
                     "id": unescape(transform.scrub_html(item.value)),
-                    "text": unescape(transform.scrub_html(item.title))
-                    if item.title
-                    else "",
+                    "text": (
+                        unescape(transform.scrub_html(item.title)) if item.title else ""
+                    ),
                 }
                 for item in results
             ]

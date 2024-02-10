@@ -386,7 +386,7 @@ class RearrangeDXTest(BaseTest):
                 "Folder",
                 id=newid,
                 # title in reverse order
-                title=f"Folder {4-idx}",
+                title=f"Folder {4 - idx}",
             )
             self.bf[newid].reindexObject()
 
