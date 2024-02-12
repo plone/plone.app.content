@@ -7,7 +7,7 @@
         _.each(item.Subject, function(tag) {
           if(tags.indexOf(tag) === -1){
             tags.push(tag);
-            %><option value="<%= tag %>"><%= tag %></option>
+            %><option value="<%- tag %>"><%- tag %></option>
             <%
           }
         });
