@@ -8,6 +8,25 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.2 (2024-02-12)
+------------------
+
+Bug fixes:
+
+
+- Fix escaping HTML in ``tags`` popover.
+  [petschki] (#278)
+- Fix html escaped entities in vocabulary items.
+  [petschki] (#3874)
+
+
+Internal:
+
+
+- Fix errors reported by pre-commit.
+  [maurits] (#3874)
+
+
 4.1.1 (2024-01-18)
 ------------------
 
