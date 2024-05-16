@@ -104,7 +104,8 @@ class DefaultPageSelectionView(BrowserView):
 
         results = []
         for brain in portal_catalog(
-            path={"query": "/".join(context.getPhysicalPath()), "depth": 1}
+            path={"query": context.absolute_url_path(), "depth": 1},
+            sort_on="getObjPositionInParent",
         ):
             portal_type = brain.portal_type
             if portal_type in view_types:
