@@ -100,9 +100,13 @@ class DefaultPageSelectionView(BrowserView):
         view_types = registry.get("plone.types_use_view_action_in_listings", [])
         default_page_types = registry.get("plone.default_page_types", [])
         portal_types = getToolByName(self.context, "portal_types")
+        portal_catalog = getToolByName(self.context, "portal_catalog")
 
         results = []
-        for brain in context.getFolderContents():
+        for brain in portal_catalog(
+            path={"query": context.absolute_url_path(), "depth": 1},
+            sort_on="getObjPositionInParent",
+        ):
             portal_type = brain.portal_type
             if portal_type in view_types:
                 # Skip files and images

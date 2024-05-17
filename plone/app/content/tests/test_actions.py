@@ -234,7 +234,7 @@ class ActionsDXTestCase(unittest.TestCase):
         self.browser.getControl(name="form.widgets.new_id").value = " ?renamed"
         self.browser.getControl(name="form.widgets.new_title").value = "Doc"
         self.browser.getControl(name="form.buttons.Rename").click()
-        self.assertEqual(folder.getFolderContents()[0].id, "renamed")
+        self.assertEqual(folder.contentIds()[0], "renamed")
         self.assertEqual(folder.getDefaultPage(), "renamed")
 
     def test_rename_form_cancel(self):
