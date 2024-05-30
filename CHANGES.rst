@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.3 (2024-05-30)
+------------------
+
+Bug fixes:
+
+
+- Remove usage of CMFPlone skins script [@jensens] (#281)
+
+
 4.1.2 (2024-02-12)
 ------------------
 
