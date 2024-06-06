@@ -70,6 +70,7 @@ setup(
         "Products.PortalTransforms",
         "Products.statusmessages",
         "simplejson",
+        "Zope",
         "z3c.relationfield",
         "z3c.form",
         "zope.browsermenu",
