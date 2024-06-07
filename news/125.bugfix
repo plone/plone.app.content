@@ -1,4 +1,0 @@
-No longer check ``visible_ids`` on the 'select default page' form.
-Usage of ``visible_ids`` was largely removed in Plone 5.0 already, and you cannot change the setting on the portal or the member.
-This was using the deprecated ``portal_properties`` tool.
-[maurits]

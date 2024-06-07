@@ -8,6 +8,18 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.4 (2024-06-07)
+------------------
+
+Bug fixes:
+
+
+- No longer check ``visible_ids`` on the 'select default page' form.
+  Usage of ``visible_ids`` was largely removed in Plone 5.0 already, and you cannot change the setting on the portal or the member.
+  This was using the deprecated ``portal_properties`` tool.
+  [maurits] (#125)
+
+
 4.1.3 (2024-05-30)
 ------------------
 
