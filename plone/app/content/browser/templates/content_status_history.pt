@@ -357,7 +357,7 @@
 
           </div>
 
-          <div class="field"
+          <div class="field mb-3"
                tal:define="
                  error errors/expiration_date | nothing;
                "
