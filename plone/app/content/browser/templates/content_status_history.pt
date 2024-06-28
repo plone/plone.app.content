@@ -102,7 +102,9 @@
                  class python:error and 'field error' or 'field';
                "
           >
-            <label class="form-label" i18n:translate="label_affected_content">Affected content</label>
+            <label class="form-label"
+                   i18n:translate="label_affected_content"
+            >Affected content</label>
 
             <div tal:define="
                    dummy python:request.set('ids_checked', 1);
@@ -125,20 +127,16 @@
                                i18n:attributes="title label_select_all_items; alt label_select_all_items;"
                         />
                       </th>
-                      <th i18n:translate="listingheader_title"
-                      >
+                      <th i18n:translate="listingheader_title">
                             Title
                       </th>
-                      <th i18n:translate="listingheader_size"
-                      >
+                      <th i18n:translate="listingheader_size">
                               Size
                       </th>
-                      <th i18n:translate="listingheader_modified"
-                      >
+                      <th i18n:translate="listingheader_modified">
                               Modified
                       </th>
-                      <th i18n:translate="listingheader_status"
-                      >
+                      <th i18n:translate="listingheader_status">
                               State
                       </th>
                     </tr>
@@ -290,7 +288,9 @@
               </table>
             </div>
 
-            <div class="invalid-feedback" tal:content="error">Validation error output</div>
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
           </div>
 
           <div class="field mb-3"
@@ -325,7 +325,9 @@
                  error errors/effective_date | nothing;
                "
           >
-            <label class="form-label" i18n:translate="label_effective_date">Publishing Date</label>
+            <label class="form-label"
+                   i18n:translate="label_effective_date"
+            >Publishing Date</label>
 
             <div tal:define="
                    inputname  string:effective_date;
@@ -349,7 +351,9 @@
                   The date when the item will be published. If no date is selected the
                   item will be published immediately.
             </div>
-            <div class="invalid-feedback" tal:content="error">Validation error output</div>
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
 
           </div>
 
@@ -361,14 +365,14 @@
             <label i18n:translate="label_expiration_date">Expiration Date</label>
 
             <div tal:define="
-                    inputname  string:expiration_date;
-                    formname   string:edit_form;
-                    expiration context/ExpirationDate;
-                    inputvalue python:(expiration and expiration!='None') and expiration or request.get('expiration_date', '');
-                  "
-                  tal:attributes="
-                    class python:error and 'field error' or 'field';
-                  "
+                   inputname  string:expiration_date;
+                   formname   string:edit_form;
+                   expiration context/ExpirationDate;
+                   inputvalue python:(expiration and expiration!='None') and expiration or request.get('expiration_date', '');
+                 "
+                 tal:attributes="
+                   class python:error and 'field error' or 'field';
+                 "
             >
 
               <div tal:replace="structure python: view.dates_form.widgets['expiration_date'].render()">
@@ -384,13 +388,15 @@
                   If no date is chosen, it will never expire.
             </div>
 
-            <div class="invalid-feedback" tal:content="error">Validation error output</div>
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
 
           </div>
 
           <div class="field mb-3">
             <label class="form-label"
-                    for="comment"
+                   for="comment"
                    i18n:translate="label_comments"
             >Comments</label>
 
@@ -411,7 +417,9 @@
           </div>
 
           <div class="field mb-3">
-            <label class="form-label" i18n:translate="label_change_status">Change State</label>
+            <label class="form-label"
+                   i18n:translate="label_change_status"
+            >Change State</label>
 
             <div tal:define="
                    error_workflow_action errors/workflow_action|nothing;
@@ -423,7 +431,9 @@
                  "
             >
 
-              <div class="invalid-feedback" tal:condition="error_workflow_action">
+              <div class="invalid-feedback"
+                   tal:condition="error_workflow_action"
+              >
                 <tal:block content="error_workflow_action">Error</tal:block>
                 <br />
               </div>
@@ -456,7 +466,7 @@
 
               <div class="form-check"
                    tal:define="
-                           transitions python:context.portal_workflow.getTransitionsFor(target, context);
+                     transitions python:context.portal_workflow.getTransitionsFor(target, context);
                    "
                    tal:repeat="transition transitions"
               >
