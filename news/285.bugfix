@@ -1,0 +1,2 @@
+Fix BS styling in ``content_status_history`` template and replace deprecated ``toggleSelect()`` with ``pat-checklist``
+[petschki]

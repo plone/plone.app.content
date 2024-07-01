@@ -69,7 +69,7 @@
           i18n:translate="heading_publishing_process"
       >Publishing process</h1>
 
-      <div class="documentDescription"
+      <div class="lead"
            i18n:translate="description_publishing_process_short"
       >
         An item's status (also called its review state) determines who
@@ -93,7 +93,7 @@
               "
         >
 
-          <div class="field"
+          <div class="field mb-3"
                tal:define="
                  error errors/paths | nothing;
                "
@@ -102,13 +102,15 @@
                  class python:error and 'field error' or 'field';
                "
           >
-            <label i18n:translate="label_affected_content">Affected content</label>
-            <div tal:content="error">Validation error output</div>
+            <label class="form-label"
+                   i18n:translate="label_affected_content"
+            >Affected content</label>
+
             <div tal:define="
                    dummy python:request.set('ids_checked', 1);
                    use_view_action python:context.portal_registry.get('plone.types_use_view_action_in_listings', ());
                  ">
-              <table class="listing"
+              <table class="table table-sm pat-checklist"
                      id="sortable"
                      summary="Affected content"
                      i18n:attributes="summary summary_affected_content;"
@@ -116,34 +118,25 @@
                 <thead>
                   <metal:block tal:condition="batch|nothing">
                     <tr>
-                      <th class="nosort">
-                        <input class="noborder"
+                      <th>
+                        <input class="form-check-input toggle-all"
                                alt="Select all items"
                                name="selectButton"
-                               onclick="toggleSelect(this,'paths:list');"
                                title="Select all items"
                                type="checkbox"
                                i18n:attributes="title label_select_all_items; alt label_select_all_items;"
                         />
                       </th>
-                      <th class="nosort"
-                          i18n:translate="listingheader_title"
-                      >
+                      <th i18n:translate="listingheader_title">
                             Title
                       </th>
-                      <th class="nosort"
-                          i18n:translate="listingheader_size"
-                      >
+                      <th i18n:translate="listingheader_size">
                               Size
                       </th>
-                      <th class="nosort"
-                          i18n:translate="listingheader_modified"
-                      >
+                      <th i18n:translate="listingheader_modified">
                               Modified
                       </th>
-                      <th class="nosort"
-                          i18n:translate="listingheader_status"
-                      >
+                      <th i18n:translate="listingheader_status">
                               State
                       </th>
                     </tr>
@@ -187,8 +180,8 @@
                           "
                       >
 
-                        <td class="notDraggable">
-                          <input class="noborder"
+                        <td>
+                          <input class="form-check-input"
                                  id="#"
                                  name="paths:list"
                                  type="checkbox"
@@ -294,46 +287,47 @@
 
               </table>
             </div>
+
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
           </div>
 
-          <div class="field formSingleCheckbox"
+          <div class="field mb-3"
                tal:condition="folders_in_publishing|nothing"
           >
+            <div class="form-check">
+              <input class="form-check-input"
+                     id="include_children"
+                     name="include_children"
+                     type="checkbox"
+              />
+              <label class="form-check-label"
+                     for="include_children"
+                     i18n:translate="label_include_contained_objects"
+              >
+                    Include contained items
+              </label>
 
-            <input class="formElement"
-                   id="include_children"
-                   name="include_children"
-                   type="checkbox"
-            />
-            <label for="include_children"
-                   i18n:translate="label_include_contained_objects"
-            >
-                  Include contained items
-            </label>
+              <div class="form-text"
+                   i18n:translate="help_include_contained_objects"
+              >
+                    If checked, this will attempt to modify the status of all content
+                    in any selected folders and their subfolders.
+              </div>
 
-            <div class="formHelp"
-                 i18n:translate="help_include_contained_objects"
-            >
-                  If checked, this will attempt to modify the status of all content
-                  in any selected folders and their subfolders.
             </div>
 
           </div>
 
-          <div class="field"
+          <div class="field mb-3"
                tal:define="
                  error errors/effective_date | nothing;
                "
           >
-            <label i18n:translate="label_effective_date">Publishing Date</label>
-            <div class="formHelp"
-                 i18n:translate="help_effective_date_content_status_history"
-            >
-                  The date when the item will be published. If no date is selected the
-                  item will be published immediately.
-            </div>
-
-            <div tal:content="error">Validation error output</div>
+            <label class="form-label"
+                   i18n:translate="label_effective_date"
+            >Publishing Date</label>
 
             <div tal:define="
                    inputname  string:effective_date;
@@ -351,15 +345,42 @@
               </div>
 
             </div>
+            <div class="form-text"
+                 i18n:translate="help_effective_date_content_status_history"
+            >
+                  The date when the item will be published. If no date is selected the
+                  item will be published immediately.
+            </div>
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
+
           </div>
 
-          <div class="field"
+          <div class="field mb-3"
                tal:define="
                  error errors/expiration_date | nothing;
                "
           >
             <label i18n:translate="label_expiration_date">Expiration Date</label>
-            <div class="formHelp"
+
+            <div tal:define="
+                   inputname  string:expiration_date;
+                   formname   string:edit_form;
+                   expiration context/ExpirationDate;
+                   inputvalue python:(expiration and expiration!='None') and expiration or request.get('expiration_date', '');
+                 "
+                 tal:attributes="
+                   class python:error and 'field error' or 'field';
+                 "
+            >
+
+              <div tal:replace="structure python: view.dates_form.widgets['expiration_date'].render()">
+                    calendar pop-up
+              </div>
+            </div>
+
+            <div class="form-text"
                  i18n:translate="help_expiration_date_content_status_history"
             >
                   The date when the item expires. This will automatically
@@ -367,54 +388,38 @@
                   If no date is chosen, it will never expire.
             </div>
 
-            <div tal:content="error">Validation error output</div>
+            <div class="invalid-feedback"
+                 tal:content="error"
+            >Validation error output</div>
 
-            <div class="field">
-              <div tal:define="
-                     inputname  string:expiration_date;
-                     formname   string:edit_form;
-                     expiration context/ExpirationDate;
-                     inputvalue python:(expiration and expiration!='None') and expiration or request.get('expiration_date', '');
-                   "
-                   tal:attributes="
-                     class python:error and 'field error' or 'field';
-                   "
-              >
-
-                <div tal:replace="structure python: view.dates_form.widgets['expiration_date'].render()">
-                      calendar pop-up
-                </div>
-              </div>
-            </div>
           </div>
 
-          <div class="field">
-            <label for="comment"
+          <div class="field mb-3">
+            <label class="form-label"
+                   for="comment"
                    i18n:translate="label_comments"
             >Comments</label>
 
-            <div class="formHelp"
+            <textarea class="form-control"
+                      id="comment"
+                      cols="60"
+                      name="comment"
+                      rows="5"
+                      tal:content="request/comment|nothing"
+            ></textarea>
+            <div class="form-text"
                  i18n:translate="help_publishing_comments"
             >
                   Will be added to the publishing history. If multiple
                   items are selected, this comment will be attached to all
                   of them.
             </div>
-            <textarea id="comment"
-                      cols="60"
-                      name="comment"
-                      rows="5"
-                      tal:content="request/comment|nothing"
-            ></textarea>
           </div>
 
-          <div class="field">
-            <label i18n:translate="label_change_status">Change State</label>
-            <div class="formHelp"
-                 i18n:translate="help_change_status_action"
-            >
-                  Select the transition to be used for modifying the items state.
-            </div>
+          <div class="field mb-3">
+            <label class="form-label"
+                   i18n:translate="label_change_status"
+            >Change State</label>
 
             <div tal:define="
                    error_workflow_action errors/workflow_action|nothing;
@@ -426,7 +431,9 @@
                  "
             >
 
-              <div tal:condition="error_workflow_action">
+              <div class="invalid-feedback"
+                   tal:condition="error_workflow_action"
+              >
                 <tal:block content="error_workflow_action">Error</tal:block>
                 <br />
               </div>
@@ -438,52 +445,55 @@
                     are currently in along with possible transitions.
               </span>
 
-              <input class="noborder"
-                     id="workflow_action"
-                     name="workflow_action"
-                     title=""
-                     type="radio"
-                     value=""
-                     tal:attributes="
-                       value review_state;
-                       title review_state;
-                       checked python:request.get('workflow_action', review_state)==review_state and 1 or 0;
-                     "
-              />
-              <label for="workflow_action"
-                     i18n:translate="label_no_change"
-              >No change</label>
-              <br />
-
-              <tal:block define="
-                           transitions python:context.portal_workflow.getTransitionsFor(target, context);
-                         "
-                         repeat="transition transitions"
-              >
-                <input class="noborder"
-                       id=""
+              <div class="form-check">
+                <input class="form-check-input"
+                       id="workflow_action"
                        name="workflow_action"
                        title=""
                        type="radio"
                        value=""
                        tal:attributes="
-                         value transition/id;
-                         id    transition/id;
-                         title transition/name;
+                         value review_state;
+                         title review_state;
+                         checked python:request.get('workflow_action', review_state)==review_state and 1 or 0;
+                       "
+                />
+                <label class="form-check-label"
+                       for="workflow_action"
+                       i18n:translate="label_no_change"
+                >No change</label>
+              </div>
+
+              <div class="form-check"
+                   tal:define="
+                     transitions python:context.portal_workflow.getTransitionsFor(target, context);
+                   "
+                   tal:repeat="transition transitions"
+              >
+                <input class="form-check-input"
+                       id="${transition/id}"
+                       name="workflow_action"
+                       title="${transition/name}"
+                       type="radio"
+                       value="${transition/id}"
+                       tal:attributes="
                          checked python:transition.get('id') == request.get('workflow_action', '') and 'checked' or None;
                        "
                        i18n:attributes="title"
                 />
-                <label for=""
+                <label class="form-check-label"
+                       for="${transition/id}"
                        tal:content="transition/name"
-                       tal:attributes="
-                         for transition/id;
-                       "
                        i18n:translate=""
                 >Transition Name</label>
-                <br />
-              </tal:block>
+              </div>
 
+            </div>
+
+            <div class="form-text"
+                 i18n:translate="help_change_status_action"
+            >
+                  Select the transition to be used for modifying the items state.
             </div>
 
           </div>
