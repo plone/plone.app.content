@@ -8,6 +8,17 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.5 (2024-07-30)
+------------------
+
+Bug fixes:
+
+
+- Fix BS styling in ``content_status_history`` template and replace deprecated ``toggleSelect()`` with ``pat-checklist``
+  [petschki] (#285)
+- getVocabulary: Speed improvement for large vocabularies (#287)
+
+
 4.1.4 (2024-06-07)
 ------------------
 
