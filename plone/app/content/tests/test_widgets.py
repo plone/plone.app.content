@@ -680,6 +680,24 @@ class BrowserTest(unittest.TestCase):
             [{"getMimeIcon": "/plone/++resource++mimetype.icons/unknown.png"}],
         )
 
+    def testScrubHtml(self):
+        from zope.schema.vocabulary import SimpleTerm
+        from zope.schema.vocabulary import SimpleVocabulary
+
+        view = VocabularyView(self.portal, self.request)
+        vocab = SimpleVocabulary(
+            [
+                SimpleTerm(
+                    token=f"term {idx} <b>",
+                    value=f"term {idx} <b>",
+                    title=f"term {idx} <b>",
+                )
+                for idx in range(3)
+            ]
+        )
+        with mock.patch.object(view, "get_vocabulary", return_value=vocab):
+            json.loads(view())
+
 
 class FunctionalBrowserTest(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
