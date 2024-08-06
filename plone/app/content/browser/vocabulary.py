@@ -17,7 +17,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from Products.MimetypesRegistry.MimeTypeItem import PREFIX
-from Products.PortalTransforms.transforms.safe_html import hasScript
 from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from types import FunctionType
 from z3c.form.interfaces import IAddForm
@@ -129,12 +128,6 @@ class BaseVocabularyView(BrowserView):
     def get_base_path(self, context):
         return get_navigation_root(context)
 
-    def maybe_scrub(self, value):
-        if value and (hasScript(value) or "<" in value):
-            transform = SafeHTML()
-            return transform.scrub_html(value)
-        return value
-
     def __call__(self):
         """
         Accepts GET parameters of:
@@ -217,6 +210,7 @@ class BaseVocabularyView(BrowserView):
             attributes = attributes.split(",")
 
         translate_ignored = self.get_translated_ignored()
+        transform = SafeHTML()
         if attributes:
             base_path = self.get_base_path(context)
             sm = getSecurityManager()
@@ -267,9 +261,9 @@ class BaseVocabularyView(BrowserView):
         else:
             items = [
                 {
-                    "id": unescape(self.maybe_scrub(item.value)),
+                    "id": unescape(transform.scrub_html(item.value)),
                     "text": (
-                        unescape(self.maybe_scrub(item.title)) if item.title else ""
+                        unescape(transform.scrub_html(item.title)) if item.title else ""
                     ),
                 }
                 for item in results
