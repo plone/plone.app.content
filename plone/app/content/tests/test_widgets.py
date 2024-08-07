@@ -680,7 +680,7 @@ class BrowserTest(unittest.TestCase):
             [{"getMimeIcon": "/plone/++resource++mimetype.icons/unknown.png"}],
         )
 
-    def testScrubHtml(self):
+    def testGeneratesValidJson(self):
         from zope.schema.vocabulary import SimpleTerm
         from zope.schema.vocabulary import SimpleVocabulary
 
