@@ -696,7 +696,12 @@ class BrowserTest(unittest.TestCase):
             ]
         )
         with mock.patch.object(view, "get_vocabulary", return_value=vocab):
-            json.loads(view())
+            result = view()
+        # The above values could result in invalid json if there is an error in
+        # the code: the following call would give a json.decoder.JSONDecodeError.
+        # See https://github.com/plone/plone.app.content/pull/288
+        parsed = json.loads(result)
+        self.assertEqual(parsed["results"][0]["text"], "term 0 <b></b>")
 
 
 class FunctionalBrowserTest(unittest.TestCase):
