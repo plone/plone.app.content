@@ -1,0 +1,3 @@
+Require ``List folder contents`` permission to use the catalog vocabulary.
+Until now ``View`` was enough, but that is not strictly correct.
+[maurits]
