@@ -261,8 +261,10 @@ class BaseVocabularyView(BrowserView):
         else:
             items = [
                 {
-                    "id": item.value,
-                    "text": (item.title if item.title else ""),
+                    "id": unescape(transform.scrub_html(item.value)),
+                    "text": (
+                        unescape(transform.scrub_html(item.title)) if item.title else ""
+                    ),
                 }
                 for item in results
             ]
@@ -270,9 +272,7 @@ class BaseVocabularyView(BrowserView):
         if total == 0:
             total = len(items)
 
-        return unescape(
-            transform.scrub_html(json_dumps({"results": items, "total": total}))
-        )
+        return json_dumps({"results": items, "total": total})
 
     def parsed_query(
         self,

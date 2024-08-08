@@ -680,6 +680,29 @@ class BrowserTest(unittest.TestCase):
             [{"getMimeIcon": "/plone/++resource++mimetype.icons/unknown.png"}],
         )
 
+    def testGeneratesValidJson(self):
+        from zope.schema.vocabulary import SimpleTerm
+        from zope.schema.vocabulary import SimpleVocabulary
+
+        view = VocabularyView(self.portal, self.request)
+        vocab = SimpleVocabulary(
+            [
+                SimpleTerm(
+                    token=f"term {idx} <b>",
+                    value=f"term {idx} <b>",
+                    title=f"term {idx} <b>",
+                )
+                for idx in range(3)
+            ]
+        )
+        with mock.patch.object(view, "get_vocabulary", return_value=vocab):
+            result = view()
+        # The above values could result in invalid json if there is an error in
+        # the code: the following call would give a json.decoder.JSONDecodeError.
+        # See https://github.com/plone/plone.app.content/pull/288
+        parsed = json.loads(result)
+        self.assertEqual(parsed["results"][0]["text"], "term 0 <b></b>")
+
 
 class FunctionalBrowserTest(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
