@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.6 (2024-08-09)
+------------------
+
+Bug fixes:
+
+
+- getVocabulary: Fix for terms with incomplete HTML (#288)
+
+
 4.1.5 (2024-07-30)
 ------------------
 
