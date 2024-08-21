@@ -31,6 +31,7 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
     layer = PLONE_APP_CONTENT_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
+        self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.portal.acl_users.userFolderAddUser(
             "editor", TEST_USER_PASSWORD, ["Editor"], []
@@ -89,6 +90,32 @@ class SelectDefaultPageDXTestCase(unittest.TestCase):
         folder = self.portal.testfolder
 
         self.browser.open("%s/@@select_default_page" % folder.absolute_url())
+
+        self.assertTrue("Select default page" in self.browser.contents)
+        self.assertTrue('id="testdoc"' in self.browser.contents)
+
+    def test_select_default_page_vhm_hosted(self):
+        # Install a Virtual Host Monster
+        if "virtual_hosting" not in self.app.objectIds():
+            # If ZopeLite was imported, we have no default virtual
+            # host monster
+            from Products.SiteAccess.VirtualHostMonster import (
+                manage_addVirtualHostMonster,
+            )
+
+            manage_addVirtualHostMonster(self.app, "virtual_hosting")
+        transaction.commit()
+
+        folder = self.portal.testfolder
+        folder_vhm_url = (
+            "{}/VirtualHostBase/http/plone.org/{}/VirtualHostRoot/{}".format(
+                self.app.absolute_url(),
+                self.portal.id,
+                folder.id,
+            )
+        )
+
+        self.browser.open(f"{folder_vhm_url}/@@select_default_page")
 
         self.assertTrue("Select default page" in self.browser.contents)
         self.assertTrue('id="testdoc"' in self.browser.contents)
