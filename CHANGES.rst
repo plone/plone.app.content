@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.7 (2024-08-21)
+------------------
+
+Bug fixes:
+
+
+- Fix `select_default_page` in VHM hosted sites
+  [petschki] (#292)
+
+
 4.1.6 (2024-08-09)
 ------------------
 
