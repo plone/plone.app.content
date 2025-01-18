@@ -35,7 +35,7 @@ def add_mock_fti(portal):
 
 
 def _custom_field_widget(field, request):
-    from plone.app.z3cform.widget import AjaxSelectWidget
+    from plone.app.z3cform.widgets.select import AjaxSelectWidget
 
     widget = FieldWidget(field, AjaxSelectWidget(request))
     widget.vocabulary = "plone.app.vocabularies.PortalTypes"

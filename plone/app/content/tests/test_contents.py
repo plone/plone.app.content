@@ -35,8 +35,8 @@ class ContentsCopyTests(unittest.TestCase):
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = ["type1"]
         type1_fti.behaviors = (
-            "Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes",  # noqa
-            "plone.app.dexterity.behaviors.metadata.IBasic",
+            "plone.constraintypes",
+            "plone.basic",
         )
         self.portal.portal_types._setObject("type1", type1_fti)
         self.type1_fti = type1_fti
@@ -78,8 +78,8 @@ class ContentsDeleteTests(unittest.TestCase):
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = ["type1"]
         type1_fti.behaviors = (
-            "Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes",  # noqa
-            "plone.app.dexterity.behaviors.metadata.IBasic",
+            "plone.constraintypes",
+            "plone.basic",
         )
         self.portal.portal_types._setObject("type1", type1_fti)
         self.type1_fti = type1_fti
@@ -161,8 +161,8 @@ class ContentsPasteTests(unittest.TestCase):
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = ["type1"]
         type1_fti.behaviors = (
-            "Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes",  # noqa
-            "plone.app.dexterity.behaviors.metadata.IBasic",
+            "plone.constraintypes",
+            "plone.basic",
         )
         self.portal.portal_types._setObject("type1", type1_fti)
         self.type1_fti = type1_fti
@@ -262,8 +262,8 @@ class ContentsRenameTests(unittest.TestCase):
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = ["type1"]
         type1_fti.behaviors = (
-            "Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes",  # noqa
-            "plone.app.dexterity.behaviors.metadata.IBasic",
+            "plone.constraintypes",
+            "plone.basic",
         )
         self.portal.portal_types._setObject("type1", type1_fti)
         self.type1_fti = type1_fti
@@ -346,7 +346,7 @@ class AllowUploadViewTests(unittest.TestCase):
         type1_fti.klass = "plone.dexterity.content.Container"
         type1_fti.filter_content_types = True
         type1_fti.allowed_content_types = []
-        type1_fti.behaviors = ("plone.app.dexterity.behaviors.metadata.IBasic",)
+        type1_fti.behaviors = ("plone.basic",)
         self.portal.portal_types._setObject("type1", type1_fti)
         self.type1_fti = type1_fti
 
@@ -355,7 +355,7 @@ class AllowUploadViewTests(unittest.TestCase):
         type2_fti.klass = "plone.dexterity.content.Item"
         type2_fti.filter_content_types = True
         type2_fti.allowed_content_types = []
-        type2_fti.behaviors = ("plone.app.dexterity.behaviors.metadata.IBasic",)
+        type2_fti.behaviors = ("plone.basic",)
         self.portal.portal_types._setObject("type2", type2_fti)
         self.type2_fti = type2_fti
 
