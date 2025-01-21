@@ -107,8 +107,8 @@ class ReviewListTable:
                 )
             )
             is_structural_folder = obj.restrictedTraverse(
-                "@@plone"
-            ).isStructuralFolder()
+                "@@plone_context_state"
+            ).is_structural_folder()
 
             if obj.portal_type in use_view_action:
                 view_url = url + "/view"
