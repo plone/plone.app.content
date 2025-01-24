@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+3.8.11 (2025-01-24)
+-------------------
+
+Bug fixes:
+
+
+- Fixed inapproriate sort() in ``folderfactories.py``. [ajung] (#268)
+
+
 3.8.10 (2022-12-14)
 -------------------
 
