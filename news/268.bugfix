@@ -1,1 +1,1 @@
-- fixed inapproriate sort() in folderfactories.py [ajung]
+Fixed inapproriate sort() in ``folderfactories.py``. [ajung]
