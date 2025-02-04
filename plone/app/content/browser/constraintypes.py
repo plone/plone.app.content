@@ -68,7 +68,7 @@ class IConstrainForm(Interface):
         ),
         vocabulary=possible_constrain_types,
         required=True,
-        default = ACQUIRE
+        default=ACQUIRE,
     )
 
     allowed_types = List(
