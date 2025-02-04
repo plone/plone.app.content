@@ -67,7 +67,8 @@ class IConstrainForm(Interface):
             default="Select the restriction policy " "in this location",
         ),
         vocabulary=possible_constrain_types,
-        required=False,
+        required=True,
+        default=ACQUIRE,
     )
 
     allowed_types = List(
