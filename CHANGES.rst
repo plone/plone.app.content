@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.9 (2025-02-06)
+------------------
+
+Bug fixes:
+
+
+- Fix error when folder content type restrictions were set to `No value`. @rohnsha0 (#3654)
+
+
 4.1.8 (2025-01-24)
 ------------------
 
