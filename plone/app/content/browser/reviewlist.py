@@ -1,6 +1,5 @@
 from Acquisition import aq_inner
 from plone.app.content.browser.tableview import Table
-from plone.app.content.browser.tableview import TableBrowserView
 from plone.base.utils import human_readable_size
 from plone.base.utils import is_expired
 from plone.base.utils import safe_text
@@ -11,24 +10,17 @@ from urllib.parse import quote_plus
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.i18n import translate
-from zope.publisher.browser import BrowserView
+
+import zope.deferredimport
 
 
-class FullReviewListView(BrowserView):
-    def revlist(self):
-        portal_membership = getToolByName(self.context, "portal_membership")
-        portal_workflow = getToolByName(self.context, "portal_workflow")
-        if portal_membership.isAnonymousUser():
-            return []
+zope.deferredimport.initialize()
 
-        return portal_workflow.getWorklistsResults()
-
-    def url(self):
-        return self.context.absolute_url() + "/full_review_list"
-
-    def review_table(self):
-        table = ReviewListTable(self.context, self.request)
-        return table.render()
+zope.deferredimport.deprecated(
+    "Please use from plone.app.layout.browser.reviewlist for this import",
+    FullReviewListView="plone.app.layout:browser.reviewlist.FullReviewListView",
+    ReviewListBrowserView="plone.app.layout:browser.reviewlist.ReviewListBrowserView",
+)
 
 
 class ReviewListTable:
@@ -172,7 +164,3 @@ class ReviewListTable:
         else:
             button["cssclass"] = "btn btn-primary"
         return button
-
-
-class ReviewListBrowserView(TableBrowserView):
-    table = ReviewListTable
