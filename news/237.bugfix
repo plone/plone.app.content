@@ -1,0 +1,1 @@
+Move 'DEFAULT_PERMISSION', 'DEFAULT_PERMISSION_SECURE', 'PERMISSIONS' to plone.app.vocabularies.security [ksuess]
