@@ -19,6 +19,7 @@ from Products.MimetypesRegistry.MimeTypeItem import guess_icon_path
 from Products.MimetypesRegistry.MimeTypeItem import PREFIX
 from Products.PortalTransforms.transforms.safe_html import SafeHTML
 from types import FunctionType
+from z3c.form.browser.object import ObjectWidget
 from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import ISubForm
 from zope.component import getUtility
@@ -360,6 +361,8 @@ class SourceView(BaseVocabularyView):
     def get_context(self):
         if ISubForm.providedBy(self.context.form):
             context = self.context.form.parentForm.context
+        elif isinstance(self.context.form, ObjectWidget):
+            context = self.context.form.form.context
         else:
             context = self.context.context
         return context
