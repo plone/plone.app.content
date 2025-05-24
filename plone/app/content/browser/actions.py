@@ -73,9 +73,10 @@ class DeleteConfirmationForm(form.Form, LockingBase):
         title = safe_text(self.context.Title())
         parent = aq_parent(aq_inner(self.context))
 
-        # has the context object been acquired from a place it should not have
-        # been?
-        if self.context.aq_chain == self.context.aq_inner.aq_chain:
+        # Check if object ID exists in parent rather than comparing acquisition chains
+        # This avoids issues with objects restored from the recycle bin
+        context_id = self.context.getId()
+        if context_id in parent.objectIds():
             try:
                 lock_info = self.context.restrictedTraverse("@@plone_lock_info")
             except AttributeError:
@@ -84,7 +85,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                 if lock_info.is_locked() and not lock_info.is_locked_for_current_user():
                     # unlock object as it is locked by current user
                     ILockable(self.context).unlock()
-            parent.manage_delObjects(self.context.getId())
+            parent.manage_delObjects(context_id)
             IStatusMessage(self.request).add(
                 _("${title} has been deleted.", mapping={"title": title})
             )
