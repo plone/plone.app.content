@@ -8,6 +8,22 @@ Changelog
 
 .. towncrier release notes start
 
+4.1.10 (2025-06-05)
+-------------------
+
+Bug fixes:
+
+
+- @@getSource supports object widgets [ale-rt] (#303)
+
+
+Internal:
+
+
+- Remove support for obsolete check_id Plone scripts.
+  [thet]
+
+
 4.1.9 (2025-02-06)
 ------------------
 

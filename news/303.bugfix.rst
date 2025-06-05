@@ -1,1 +1,0 @@
-@@getSource supports object widgets [ale-rt]
