@@ -1,4 +1,5 @@
 from plone.base import PloneMessageFactory as _
+from plone.base.defaultpage import is_default_page
 from plone.base.utils import human_readable_size
 from plone.base.utils import is_expired
 from Products.CMFCore.utils import getToolByName
@@ -134,6 +135,9 @@ class ContentStatusHistoryView(BrowserView):
 
     def isExpired(self, content):
         return is_expired(content)
+
+    def is_default_page(self, obj):
+        return is_default_page(self.context.__parent__, obj)
 
     @deprecate(
         "This method is deprecated since Plone 6, "

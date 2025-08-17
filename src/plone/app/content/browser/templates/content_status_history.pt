@@ -169,8 +169,7 @@
                             item_use_view        python:item_type in use_view_action;
                             hasGetUrl            python:hasattr(item.aq_explicit, 'getURL');
                             item_rel_url         python:hasGetUrl and item.getURL(relative=1) or getRelativeContentURL(item);
-                            browserDefaultResult context/browserDefault;
-                            isBrowserDefault     python:len(browserDefaultResult[1]) == 1 and item.id == context.browserDefault()[1][0];
+                            isBrowserDefault     python:view.is_default_page(item);
                             item_folderish       item/is_folderish|nothing;
                             item_has_image       python:item.getIcon;
                           "
