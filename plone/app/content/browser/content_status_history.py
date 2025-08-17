@@ -135,6 +135,11 @@ class ContentStatusHistoryView(BrowserView):
     def isExpired(self, content):
         return is_expired(content)
 
+    def is_default_page(self, obj):
+        from plone.base.defaultpage import is_default_page
+
+        return is_default_page(self.context.__parent__, obj)
+
     @deprecate(
         "This method is deprecated since Plone 6, "
         "use the @@plone/human_readable_size method instead"
