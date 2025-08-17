@@ -1,0 +1,1 @@
+Use `plone.base`'s `is_default_page` rather than a plone skin @gforcada
