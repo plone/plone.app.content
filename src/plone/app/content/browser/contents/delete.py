@@ -4,9 +4,11 @@ from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
 from plone.base import PloneMessageFactory as _
 from plone.locking.interfaces import ILockable
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
+from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
@@ -43,8 +45,36 @@ class DeleteAction:
 
 class DeleteActionView(ContentsBaseAction):
     required_obj_permission = delete_objects
-    success_msg = _("Successfully delete items")
     failure_msg = _("Failed to delete items")
+
+    @property
+    def success_msg(self):
+        """Dynamic success message that includes recycle bin information."""
+        # Check if recycle bin is enabled
+        try:
+            recyclebin_enabled_view = getMultiAdapter(
+                (getSite(), self.request), name="recyclebin-enabled"
+            )
+            recycling_enabled = recyclebin_enabled_view()
+        except Exception:
+            recycling_enabled = False
+
+        if not recycling_enabled:
+            return _("Successfully deleted items")
+
+        # Get retention period from registry (default to 30 days if not found)
+        registry = queryUtility(IRegistry)
+        retention_period = 30  # default
+        if registry is not None:
+            try:
+                retention_period = registry.get("plone-recyclebin.retention_period", 30)
+            except Exception:
+                retention_period = 30
+
+        return _(
+            "Successfully moved items to recycle bin. Items can be restored by administrators and will be permanently deleted after ${days} days.",
+            mapping={"days": retention_period},
+        )
 
     def __call__(self):
         if self.request.form.get("render") == "yes":

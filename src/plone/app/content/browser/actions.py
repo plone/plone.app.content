@@ -6,6 +6,7 @@ from plone.base import PloneMessageFactory as _
 from plone.base.utils import get_user_friendly_types
 from plone.base.utils import safe_text
 from plone.locking.interfaces import ILockable
+from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -19,6 +20,8 @@ from ZODB.POSException import ConflictError
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
+from zope.component import queryUtility
+from zope.component.hooks import getSite
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import Interface
@@ -85,9 +88,38 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                     # unlock object as it is locked by current user
                     ILockable(self.context).unlock()
             parent.manage_delObjects(self.context.getId())
-            IStatusMessage(self.request).add(
-                _("${title} has been deleted.", mapping={"title": title})
-            )
+
+            # Check if recycle bin is enabled and show appropriate message
+            try:
+                recyclebin_enabled_view = getMultiAdapter(
+                    (getSite(), self.request), name="recyclebin-enabled"
+                )
+                recycling_enabled = recyclebin_enabled_view()
+            except Exception:
+                recycling_enabled = False
+
+            if recycling_enabled:
+                # Get retention period from registry (default to 30 days if not found)
+                registry = queryUtility(IRegistry)
+                retention_period = 30  # default
+                if registry is not None:
+                    try:
+                        retention_period = registry.get(
+                            "plone-recyclebin.retention_period", 30
+                        )
+                    except Exception:
+                        retention_period = 30
+
+                IStatusMessage(self.request).add(
+                    _(
+                        "${title} has been moved to the recycle bin. It can be restored by administrators and will be permanently deleted after ${days} days.",
+                        mapping={"title": title, "days": retention_period},
+                    )
+                )
+            else:
+                IStatusMessage(self.request).add(
+                    _("${title} has been deleted.", mapping={"title": title})
+                )
         else:
             IStatusMessage(self.request).add(
                 _('"${title}" has already been deleted', mapping={"title": title})
