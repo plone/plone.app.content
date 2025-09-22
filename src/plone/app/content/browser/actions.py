@@ -105,7 +105,7 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                 if registry is not None:
                     try:
                         retention_period = registry.get(
-                            "plone-recyclebin.retention_period", 30
+                            "recyclebin-controlpanel.retention_period", 30
                         )
                     except Exception:
                         retention_period = 30
