@@ -1,8 +1,8 @@
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
-from plone.app.content.utils import get_recycle_bin_message
 from plone.app.content.interfaces import IStructureAction
+from plone.app.content.utils import get_recycle_bin_message
 from plone.base import PloneMessageFactory as _
 from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.locking.interfaces import ILockable

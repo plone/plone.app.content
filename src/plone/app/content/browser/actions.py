@@ -99,7 +99,9 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                 registry = queryUtility(IRegistry)
                 retention_period = registry["recyclebin-controlpanel.retention_period"]
 
-                message = get_recycle_bin_message(title=title, retention_period=retention_period)
+                message = get_recycle_bin_message(
+                    title=title, retention_period=retention_period
+                )
                 IStatusMessage(self.request).add(message)
             else:
                 IStatusMessage(self.request).add(

@@ -44,16 +44,16 @@ json_loads = simplejson.loads
 
 def get_recycle_bin_message(title=None, retention_period=0):
     """Generate appropriate message for recycled items based on retention period.
-    
+
     Args:
         title: The title of the deleted item (optional, for single item messages)
         retention_period: Number of days to retain items (0 = indefinite)
-    
+
     Returns:
         Translated message string
     """
     from plone.base import PloneMessageFactory as _
-    
+
     if title:
         # Single item message
         if retention_period == 0:
@@ -69,7 +69,9 @@ def get_recycle_bin_message(title=None, retention_period=0):
     else:
         # Multiple items message
         if retention_period == 0:
-            return _("Successfully moved items to recycle bin. Items can be restored by administrators.")
+            return _(
+                "Successfully moved items to recycle bin. Items can be restored by administrators."
+            )
         else:
             return _(
                 "Successfully moved items to recycle bin. Items can be restored by administrators and will be permanently deleted after ${days} days.",
