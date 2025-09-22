@@ -1,8 +1,10 @@
 from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
+from plone.app.content.utils import get_recycle_bin_message
 from plone.app.content.interfaces import IStructureAction
 from plone.base import PloneMessageFactory as _
+from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.locking.interfaces import ILockable
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
@@ -51,30 +53,17 @@ class DeleteActionView(ContentsBaseAction):
     def success_msg(self):
         """Dynamic success message that includes recycle bin information."""
         # Check if recycle bin is enabled
-        try:
-            recyclebin_enabled_view = getMultiAdapter(
-                (getSite(), self.request), name="recyclebin-enabled"
-            )
-            recycling_enabled = recyclebin_enabled_view()
-        except Exception:
-            recycling_enabled = False
+        recycle_bin = queryUtility(IRecycleBin)
+        recycling_enabled = recycle_bin.is_enabled() if recycle_bin else False
 
         if not recycling_enabled:
             return _("Successfully deleted items")
 
-        # Get retention period from registry (default to 30 days if not found)
+        # Get retention period from registry
         registry = queryUtility(IRegistry)
-        retention_period = 30  # default
-        if registry is not None:
-            try:
-                retention_period = registry.get("recyclebin-controlpanel.retention_period", 30)
-            except Exception:
-                retention_period = 30
+        retention_period = registry["recyclebin-controlpanel.retention_period"]
 
-        return _(
-            "Successfully moved items to recycle bin. Items can be restored by administrators and will be permanently deleted after ${days} days.",
-            mapping={"days": retention_period},
-        )
+        return get_recycle_bin_message(retention_period=retention_period)
 
     def __call__(self):
         if self.request.form.get("render") == "yes":
