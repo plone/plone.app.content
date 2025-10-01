@@ -2,13 +2,11 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from OFS.CopySupport import CopyError
-from plone.app.content.utils import get_recycle_bin_message
+from plone.app.content.utils import get_deleted_success_message
 from plone.base import PloneMessageFactory as _
-from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.base.utils import get_user_friendly_types
 from plone.base.utils import safe_text
 from plone.locking.interfaces import ILockable
-from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -22,7 +20,6 @@ from ZODB.POSException import ConflictError
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
-from zope.component import queryUtility
 from zope.container.interfaces import INameChooser
 from zope.event import notify
 from zope.interface import Interface
@@ -90,23 +87,9 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                     ILockable(self.context).unlock()
             parent.manage_delObjects(self.context.getId())
 
-            # Check if recycle bin is enabled and show appropriate message
-            recycle_bin = queryUtility(IRecycleBin)
-            recycling_enabled = recycle_bin.is_enabled() if recycle_bin else False
-
-            if recycling_enabled:
-                # Get retention period from registry
-                registry = queryUtility(IRegistry)
-                retention_period = registry["recyclebin-controlpanel.retention_period"]
-
-                message = get_recycle_bin_message(
-                    title=title, retention_period=retention_period
-                )
-                IStatusMessage(self.request).add(message)
-            else:
-                IStatusMessage(self.request).add(
-                    _("${title} has been deleted.", mapping={"title": title})
-                )
+            # Show appropriate message (automatically handles recycle bin checks)
+            message = get_deleted_success_message(title=title)
+            IStatusMessage(self.request).add(message)
         else:
             IStatusMessage(self.request).add(
                 _('"${title}" has already been deleted', mapping={"title": title})

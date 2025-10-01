@@ -2,15 +2,12 @@ from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
-from plone.app.content.utils import get_recycle_bin_message
+from plone.app.content.utils import get_deleted_success_message
 from plone.base import PloneMessageFactory as _
-from plone.base.interfaces.recyclebin import IRecycleBin
 from plone.locking.interfaces import ILockable
-from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import getMultiAdapter
-from zope.component import queryUtility
 from zope.component.hooks import getSite
 from zope.i18n import translate
 from zope.interface import implementer
@@ -52,18 +49,7 @@ class DeleteActionView(ContentsBaseAction):
     @property
     def success_msg(self):
         """Dynamic success message that includes recycle bin information."""
-        # Check if recycle bin is enabled
-        recycle_bin = queryUtility(IRecycleBin)
-        recycling_enabled = recycle_bin.is_enabled() if recycle_bin else False
-
-        if not recycling_enabled:
-            return _("Successfully deleted items")
-
-        # Get retention period from registry
-        registry = queryUtility(IRegistry)
-        retention_period = registry["recyclebin-controlpanel.retention_period"]
-
-        return get_recycle_bin_message(retention_period=retention_period)
+        return get_deleted_success_message()
 
     def __call__(self):
         if self.request.form.get("render") == "yes":
