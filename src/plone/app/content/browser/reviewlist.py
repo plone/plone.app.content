@@ -1,6 +1,8 @@
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from plone.app.content.browser.tableview import Table
 from plone.app.content.browser.tableview import TableBrowserView
+from plone.base.defaultpage import is_default_page
 from plone.base.utils import human_readable_size
 from plone.base.utils import is_expired
 from plone.base.utils import safe_text
@@ -54,11 +56,8 @@ class ReviewListTable:
         portal_workflow = getToolByName(self.context, "portal_workflow")
         portal_types = getToolByName(self.context, "portal_types")
         portal_membership = getToolByName(self.context, "portal_membership")
-        plone_utils = getToolByName(self.context, "plone_utils")
-
         registry = getUtility(IRegistry)
         use_view_action = registry.get("plone.types_use_view_action_in_listings", ())
-        browser_default = plone_utils.browserDefault(self.context)
 
         results = []
         if portal_membership.isAnonymousUser():
@@ -117,9 +116,8 @@ class ReviewListTable:
             else:
                 view_url = url
 
-            is_browser_default = len(browser_default[1]) == 1 and (
-                obj.id == browser_default[1][0]
-            )
+            # Is this object the default page of its container?
+            is_browser_default = is_default_page(aq_parent(aq_inner(obj)), obj)
 
             results.append(
                 dict(
