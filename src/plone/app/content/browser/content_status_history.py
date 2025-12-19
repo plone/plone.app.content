@@ -1,3 +1,4 @@
+from Acquisition import aq_parent
 from plone.base import PloneMessageFactory as _
 from plone.base.defaultpage import is_default_page
 from plone.base.utils import human_readable_size
@@ -137,7 +138,7 @@ class ContentStatusHistoryView(BrowserView):
         return is_expired(content)
 
     def is_default_page(self, obj):
-        return is_default_page(self.context.__parent__, obj)
+        return is_default_page(aq_parent(self.context), obj)
 
     @deprecate(
         "This method is deprecated since Plone 6, "
