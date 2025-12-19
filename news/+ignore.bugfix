@@ -1,1 +1,1 @@
-Use `plone.base`'s `is_default_page` rather than a plone skin @gforcada
+Update content status history viewlet to use `plone.base`'s `is_default_page` rather than a plone skin. @gforcada
