@@ -4,8 +4,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form
 from z3c.form.browser.checkbox import CheckBoxFieldWidget
-from zope.globalrequest import getRequest
-from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
 from zope.interface import Interface
@@ -55,12 +53,7 @@ class ValidTypes:
         items = []
         for type_ in constrain_aspect.getDefaultAddableTypes():
             items.append(SimpleTerm(value=type_.getId(), title=type_.Title()))
-        # return SimpleVocabulary(items)
-        return SimpleVocabulary(
-            sorted(
-                items, key=lambda x: translate(x.title, context=getRequest()).lower()
-            )
-        )
+        return SimpleVocabulary(items)
 
 
 ValidTypesFactory = ValidTypes()
