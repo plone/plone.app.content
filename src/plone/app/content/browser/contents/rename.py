@@ -17,7 +17,6 @@ from zope.lifecycleevent import ObjectModifiedEvent
 import logging
 import transaction
 
-
 logger = logging.getLogger("plone.app.content")
 
 

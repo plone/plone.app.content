@@ -17,7 +17,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-
 # XXX
 # acquire locallyAllowedTypes from parent (default)
 ACQUIRE = -1

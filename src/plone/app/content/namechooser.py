@@ -11,7 +11,6 @@ from zope.interface import implementer
 
 import time
 
-
 ATTEMPTS = 100
 
 
