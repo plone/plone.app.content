@@ -11,7 +11,6 @@ import logging
 import mimetypes
 import os
 
-
 logger = logging.getLogger("plone")
 
 

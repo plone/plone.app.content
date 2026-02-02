@@ -8,7 +8,6 @@ from zope.i18nmessageid import MessageFactory
 from zope.publisher.browser import BrowserView
 from ZTUtils import make_query
 
-
 _ = MessageFactory("plone")
 
 
