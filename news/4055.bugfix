@@ -1,0 +1,2 @@
+Fix @@allow_upload failing with a 302 redirect when parent folders
+are restricted but the target folder is accessible.
