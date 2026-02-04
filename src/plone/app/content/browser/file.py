@@ -1,4 +1,3 @@
-from zope.traversing.api import unrestrictedTraverse
 from AccessControl import getSecurityManager
 from OFS.interfaces import IFolder
 from plone.app.dexterity.interfaces import IDXFileFactory
@@ -6,7 +5,7 @@ from plone.base.permissions import AddPortalContent
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
-
+from zope.traversing.api import unrestrictedTraverse
 
 import json
 import logging
