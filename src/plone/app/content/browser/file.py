@@ -5,7 +5,6 @@ from plone.base.permissions import AddPortalContent
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
-from zope.traversing.api import unrestrictedTraverse
 
 import json
 import logging
@@ -191,7 +190,7 @@ class AllowUploadView(BrowserView):
         )
         context = self.context
         if self.request.form.get("path"):
-            context = unrestrictedTraverse(context, self.request.form.get("path"))
+            context = context.unrestrictedTraverse(self.request.form.get("path"))
 
         allow_images = False
         allow_files = False
