@@ -190,7 +190,7 @@ class AllowUploadView(BrowserView):
         )
         context = self.context
         if self.request.form.get("path"):
-            context = context.restrictedTraverse(self.request.form.get("path"))
+            context = context.unrestrictedTraverse(self.request.form.get("path"))
 
         allow_images = False
         allow_files = False
