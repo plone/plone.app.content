@@ -8,6 +8,25 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0a2 (2026-02-23)
+--------------------
+
+New features:
+
+
+- Alphabetically sort the list of portal types in the constraints configuration form @erral (#320)
+
+
+Bug fixes:
+
+
+- Fix @@allow_upload failing with a 302 redirect when parent folders are restricted but the target folder is accessible. @shivaansh0610-LUFFY (#4055)
+- Update content status history page to use ``is_default_page`` from ``plone.base`` rather than a plone skin. @gforcada
+- Update reviewlist to use ``is_default_page`` from ``plone.base`` rather than the ``plone_utils`` tool.
+  Also, check if an item is a default page in its own container, instead of on the context where we see the reviewlist.
+  @mauritsvanrees
+
+
 5.0.0a1 (2025-11-19)
 --------------------
 

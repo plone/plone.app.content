@@ -1,1 +1,0 @@
-Update content status history page to use ``is_default_page`` from ``plone.base`` rather than a plone skin. @gforcada

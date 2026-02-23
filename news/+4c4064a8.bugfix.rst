@@ -1,3 +1,0 @@
-Update reviewlist to use ``is_default_page`` from ``plone.base`` rather than the ``plone_utils`` tool.
-Also, check if an item is a default page in its own container, instead of on the context where we see the reviewlist.
-@mauritsvanrees
