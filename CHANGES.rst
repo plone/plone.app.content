@@ -8,6 +8,28 @@ Changelog
 
 .. towncrier release notes start
 
+4.2.0 (2026-02-26)
+------------------
+
+New features:
+
+
+- Alphabetically sort the list of portal types in the constraints configuration form @erral (#320)
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
+Tests:
+
+
+- Do not test in Plone 6.2.x @erral (#323)
+
+
 4.1.11 (2025-09-11)
 -------------------
 
