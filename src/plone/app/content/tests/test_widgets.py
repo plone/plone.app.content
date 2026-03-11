@@ -31,7 +31,6 @@ import os
 import transaction
 import unittest
 
-
 _dir = os.path.dirname(__file__)
 
 

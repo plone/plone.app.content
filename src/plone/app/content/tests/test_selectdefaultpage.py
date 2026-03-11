@@ -7,7 +7,6 @@ from plone.testing.zope import Browser
 import transaction
 import unittest
 
-
 FOLDER = {
     "id": "testfolder",
     "title": "Test Folder",
