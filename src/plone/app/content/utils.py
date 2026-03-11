@@ -8,7 +8,6 @@ import Missing
 # use simplejson because it's ahead of stdlib and supports more types
 import simplejson
 
-
 try:
     from z3c.relationfield.relation import RelationValue
 except ImportError:
