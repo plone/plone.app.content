@@ -84,7 +84,8 @@ TRANSLATED_IGNORED = [
     "Subject",
     "sync_uid",
     "Title",
-    "total_comments" "UID",
+    "total_comments",
+    "UID",
 ]
 
 _permissions = PERMISSIONS
