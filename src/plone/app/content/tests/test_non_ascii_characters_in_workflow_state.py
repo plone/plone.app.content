@@ -49,7 +49,5 @@ class TestNonAsciiCharactersWorkflow(unittest.TestCase):
             # the workflow state title containing non-ascii characters.
             self.portal.unrestrictedTraverse("@@fc-workflow")()
         except UnicodeDecodeError:
-            self.fail(
-                "Calling @@fc-workflow raised UnicodeDecodeError \
-                       unexpectedly."
-            )
+            self.fail("Calling @@fc-workflow raised UnicodeDecodeError \
+                       unexpectedly.")

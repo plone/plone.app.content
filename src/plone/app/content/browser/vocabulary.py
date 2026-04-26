@@ -34,7 +34,6 @@ from zope.security.interfaces import IPermission
 import inspect
 import itertools
 
-
 logger = getLogger(__name__)
 
 MAX_BATCH_SIZE = 500  # prevent overloading server
@@ -85,7 +84,8 @@ TRANSLATED_IGNORED = [
     "Subject",
     "sync_uid",
     "Title",
-    "total_comments" "UID",
+    "total_comments",
+    "UID",
 ]
 
 _permissions = PERMISSIONS
