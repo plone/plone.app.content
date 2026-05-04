@@ -687,30 +687,30 @@ class ContentsTagsTests(unittest.TestCase):
 
         # Add initial tags to folder1
         self.folder1.setSubject(["tag1", "tag2"])
-        self.folder1.reindexObject()
+        self.folder1.reindexObject(idxs=["Subject"])
 
         # Create subfolder
         self.folder1.invokeFactory("type1", id="subfolder1", title="SubFolder 1")
         self.subfolder1 = self.folder1.subfolder1
         self.subfolder1.setSubject(["subtag1", "tag2"])
-        self.subfolder1.reindexObject()
+        self.subfolder1.reindexObject(idxs=["Subject"])
 
         # Create document in subfolder
         self.subfolder1.invokeFactory("Document", id="doc1", title="Document 1")
         self.doc1 = self.subfolder1.doc1
         self.doc1.setSubject(["doctag1", "tag2"])
-        self.doc1.reindexObject()
+        self.doc1.reindexObject(idxs=["Subject"])
 
         # Create deep nested structure
         self.subfolder1.invokeFactory("type1", id="deepfolder", title="Deep Folder")
         self.deepfolder = self.subfolder1.deepfolder
         self.deepfolder.setSubject(["deeptag"])
-        self.deepfolder.reindexObject()
+        self.deepfolder.reindexObject(idxs=["Subject"])
 
         self.deepfolder.invokeFactory("Document", id="deepdoc", title="Deep Document")
         self.deepdoc = self.deepfolder.deepdoc
         self.deepdoc.setSubject(["deepdoctag"])
-        self.deepdoc.reindexObject()
+        self.deepdoc.reindexObject(idxs=["Subject"])
 
     @mock.patch(
         "plone.app.content.browser.contents.ContentsBaseAction.protect", lambda x: True
@@ -977,7 +977,7 @@ class ContentsTagsTests(unittest.TestCase):
         self.folder1.invokeFactory("Document", id="default_page", title="Default Page")
         default_page = self.folder1.default_page
         default_page.setSubject(["default_page_tag"])
-        default_page.reindexObject()
+        default_page.reindexObject(idxs=["Subject"])
 
         # Try to set it as default page - skip if this causes issues
         try:
