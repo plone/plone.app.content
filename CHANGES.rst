@@ -8,6 +8,22 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.0 (2026-05-07)
+------------------
+
+Bug fixes:
+
+
+- @@getVocabulary: Fix list of metadata attributes which should not be translated.
+
+
+Internal:
+
+
+- Update configuration files.
+  [plone devs]
+
+
 5.0.0a2 (2026-02-23)
 --------------------
 
