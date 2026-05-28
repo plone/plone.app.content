@@ -15,13 +15,11 @@
   </head>
 <body>
 
-<metal:content-core fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+<metal:main fill-slot="main">
         <span tal:replace="structure context/@@authenticator/authenticator"/>
-        <div class="pat-structure"
-          tal:attributes="data-pat-structure view/options" />
-    </metal:content-core>
-</metal:content-core>
+        <div class="pat-filemanager"
+          tal:attributes="data-pat-filemanager view/options" />
+</metal:main>
 
 </body>
 </html>
