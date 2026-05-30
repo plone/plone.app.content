@@ -60,6 +60,7 @@ dependencies = [
     "z3c.form",
     "z3c.relationfield",
     "zope.browsermenu",
+    "zope.deferredimport",
 ]
 keywords = ["plone", "content", "views", "viewlet"]
 
@@ -199,7 +200,6 @@ Zope = [
 ]
 python-dateutil = ['dateutil']
 pytest-plone = ['pytest', 'zope.pytestlayer', 'plone.testing', 'plone.app.testing']
-ignore-packages = ['tus', ]
 
 ##
 # Add extra configuration options in .meta.toml:
