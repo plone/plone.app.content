@@ -44,6 +44,7 @@ PERMISSIONS = {
     "plone.app.vocabularies.Catalog": "View",
     "plone.app.vocabularies.Keywords": "Modify portal content",
     "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
+    "plone.app.vocabularies.Timezones": "View",
     "plone.app.vocabularies.Users": "Modify portal content",
     "plone.app.multilingual.RootCatalog": "View",
 }
