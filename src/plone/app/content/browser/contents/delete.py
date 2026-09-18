@@ -2,6 +2,7 @@ from AccessControl import Unauthorized
 from AccessControl.Permissions import delete_objects
 from plone.app.content.browser.contents import ContentsBaseAction
 from plone.app.content.interfaces import IStructureAction
+from plone.app.content.utils import get_deleted_success_message
 from plone.base import PloneMessageFactory as _
 from plone.locking.interfaces import ILockable
 from Products.CMFCore.utils import getToolByName
@@ -43,8 +44,12 @@ class DeleteAction:
 
 class DeleteActionView(ContentsBaseAction):
     required_obj_permission = delete_objects
-    success_msg = _("Successfully delete items")
     failure_msg = _("Failed to delete items")
+
+    @property
+    def success_msg(self):
+        """Dynamic success message that includes recycle bin information."""
+        return get_deleted_success_message()
 
     def __call__(self):
         if self.request.form.get("render") == "yes":
