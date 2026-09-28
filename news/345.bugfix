@@ -1,2 +1,2 @@
-Fixes the querystring vocabulary permissions check for local editor users by checking permission against the browsed context. The ``@@qsOptions`` is registered for any content object now and accepts the context as a ``path`` parameter.
+Fix the querystring vocabulary permission check for users with local roles by checking the permissions against the browsed context. ``@@qsOptions`` is now registered for any content object and takes the context as a ``path`` parameter.
 [szakitibi]
