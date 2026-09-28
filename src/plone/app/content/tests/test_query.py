@@ -9,7 +9,6 @@ from Products.CMFCore.utils import getToolByName
 import json
 import unittest
 
-
 TAG = "sometag"
 MEMBER = "member"
 
@@ -35,9 +34,7 @@ class QueryStringIndexOptionsTests(unittest.TestCase):
 
         mtool = getToolByName(self.portal, "portal_membership")
         mtool.addMember(MEMBER, "secret", ["Member"], [])
-        mtool.getMemberById(MEMBER).setMemberProperties(
-            {"fullname": "Local Editor"}
-        )
+        mtool.getMemberById(MEMBER).setMemberProperties({"fullname": "Local Editor"})
 
     def _get_options(self, context):
         return json.loads(context.restrictedTraverse("@@qsOptions")())

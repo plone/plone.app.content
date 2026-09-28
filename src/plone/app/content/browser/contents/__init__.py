@@ -257,7 +257,9 @@ class FolderContentsView(BrowserView):
             "vocabularyUrl": "%splone.app.vocabularies.Catalog" % (base_vocabulary),
             "urlStructure": {"base": base_url, "appended": "/folder_contents"},
             "moveUrl": "%s{path}/fc-itemOrder" % base_url,
-            "indexOptionsUrl": "%s/@@qsOptions?path=%s" % (base_url, quote(base_path)),
+            "indexOptionsUrl": "{}/@@qsOptions?path={}".format(
+                base_url, quote(base_path)
+            ),
             "contextInfoUrl": "%s{path}/@@fc-contextInfo" % base_url,
             "setDefaultPageUrl": "%s{path}/@@fc-setDefaultPage" % base_url,
             "defaultPageTypes": self.default_page_types(),
