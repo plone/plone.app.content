@@ -120,12 +120,10 @@ class ContentsBaseAction(BrowserView):
 
         translated_msg = translate(msg, context=self.request)
         if self.errors:
-            translated_errors = [
+            translated_errors = "\n".join(
                 translate(error, context=self.request) for error in self.errors
-            ]
-            translated_msg = "{:s}: {:s}".format(
-                translated_msg, "\n".join(translated_errors)
             )
+            translated_msg = f"{translated_msg}: {translated_errors}"
 
         return self.json(
             {"status": "warning" if self.errors else "success", "msg": translated_msg}
@@ -248,20 +246,18 @@ class FolderContentsView(BrowserView):
     def get_options(self):
         site = utils.get_top_site_from_url(self.context, self.request)
         base_url = site.absolute_url()
-        base_vocabulary = "%s/@@getVocabulary?name=" % base_url
+        base_vocabulary = f"{base_url}/@@getVocabulary?name="
         site_path = site.getPhysicalPath()
         context_path = self.context.getPhysicalPath()
         base_path = "/" + "/".join(context_path[len(site_path) :])
         columns = self.get_columns()
         options = {
-            "vocabularyUrl": "%splone.app.vocabularies.Catalog" % (base_vocabulary),
+            "vocabularyUrl": f"{base_vocabulary}plone.app.vocabularies.Catalog",
             "urlStructure": {"base": base_url, "appended": "/folder_contents"},
-            "moveUrl": "%s{path}/fc-itemOrder" % base_url,
-            "indexOptionsUrl": "{}/@@qsOptions?path={}".format(
-                base_url, quote(base_path)
-            ),
-            "contextInfoUrl": "%s{path}/@@fc-contextInfo" % base_url,
-            "setDefaultPageUrl": "%s{path}/@@fc-setDefaultPage" % base_url,
+            "moveUrl": f"{base_url}{{path}}/fc-itemOrder",
+            "indexOptionsUrl": f"{base_url}/@@qsOptions?path={quote(base_path)}",
+            "contextInfoUrl": f"{base_url}{{path}}/@@fc-contextInfo",
+            "setDefaultPageUrl": f"{base_url}{{path}}/@@fc-setDefaultPage",
             "defaultPageTypes": self.default_page_types(),
             "searchParam": "Title",
             "availableColumns": columns,
@@ -277,7 +273,7 @@ class FolderContentsView(BrowserView):
             "buttons": self.get_actions(),
             "rearrange": {
                 "properties": self.get_indexes(),
-                "url": "%s{path}/@@fc-rearrange" % base_url,
+                "url": f"{base_url}{{path}}/@@fc-rearrange",
             },
             "basePath": base_path,
             "upload": {

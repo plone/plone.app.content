@@ -691,3 +691,20 @@ class FolderContentsOptionsTests(unittest.TestCase):
             options["indexOptionsUrl"],
             f"{self.portal.absolute_url()}/@@qsOptions?path=/",
         )
+
+    def test_urls_keep_the_path_placeholder(self):
+        """The structure pattern substitutes {path} client side."""
+        base_url = self.portal.absolute_url()
+
+        options = self._get_options(self.folder)
+
+        self.assertEqual(options["moveUrl"], base_url + "{path}/fc-itemOrder")
+        self.assertEqual(
+            options["contextInfoUrl"], base_url + "{path}/@@fc-contextInfo"
+        )
+        self.assertEqual(
+            options["setDefaultPageUrl"], base_url + "{path}/@@fc-setDefaultPage"
+        )
+        self.assertEqual(
+            options["rearrange"]["url"], base_url + "{path}/@@fc-rearrange"
+        )
