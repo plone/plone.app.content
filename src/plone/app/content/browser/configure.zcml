@@ -196,6 +196,13 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      name="qsOptions"
+      for="Products.CMFCore.interfaces.IContentish"
+      class=".query.QueryStringIndexOptions"
+      permission="zope2.View"
+      />
+
   <browser:view
       name="plonejsi18n"
       for="plone.base.interfaces.siteroot.INavigationRoot"
