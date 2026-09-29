@@ -34,17 +34,16 @@ from zope.security.interfaces import IPermission
 import inspect
 import itertools
 
-import zope.deferredimport
-
 logger = getLogger(__name__)
 
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
-zope.deferredimport.defineFrom(
-    'plone.app.vocabularies.security',
-    'DEFAULT_PERMISSION', 'DEFAULT_PERMISSION_SECURE', 'PERMISSIONS',
-)
-if not 'PERMISSIONS' in globals():
+try:
+    from plone.app.vocabularies.security import DEFAULT_PERMISSION
+    from plone.app.vocabularies.security import DEFAULT_PERMISSION_SECURE
+    from plone.app.vocabularies.security import PERMISSIONS
+except ImportError:
+    # BBB: plone.app.vocabularies versions without the permission constants
     DEFAULT_PERMISSION = "View"
     DEFAULT_PERMISSION_SECURE = "Modify portal content"
     PERMISSIONS = {
@@ -54,12 +53,11 @@ if not 'PERMISSIONS' in globals():
         "plone.app.vocabularies.Users": "Modify portal content",
         "plone.app.multilingual.RootCatalog": "View",
     }
-    deprecated("DEFAULT_PERMISSION",
-            "Import from plone.app.vocabularies.security instead.")
-    deprecated("DEFAULT_PERMISSION_SECURE",
-            "Import from plone.app.vocabularies.security instead.")
-    deprecated("PERMISSIONS",
-            "Import from plone.app.vocabularies.security instead.")
+
+deprecated(
+    ("DEFAULT_PERMISSION", "DEFAULT_PERMISSION_SECURE", "PERMISSIONS"),
+    "Import from plone.app.vocabularies.security instead.",
+)
 
 TRANSLATED_IGNORED = [
     "author_name",
