@@ -5,6 +5,12 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     >
 
+  <!-- The folder-contents views below have been moved to
+       plone.app.layout.content.browser.contents (see
+       plone/app/layout/content/browser/contents/configure.zcml). They are
+       kept here commented out for reference; the Python classes remain
+       importable from this package via zope.deferredimport shims.
+
   <browser:page
       name="folder_contents"
       for="Products.CMFCore.interfaces._content.IFolderish"
@@ -41,7 +47,7 @@
       permission="cmf.ModifyPortalContent"
       />
 
-  <!-- buttons -->
+  buttons
   <browser:page
       name="fc-rename"
       for="Products.CMFCore.interfaces._content.IFolderish"
@@ -137,4 +143,5 @@
       name="paste"
       component=".paste.PasteAction"
       />
+  -->
 </configure>

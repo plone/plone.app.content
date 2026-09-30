@@ -1,16 +1,8 @@
-from plone.app.querystring.interfaces import IQuerystringRegistryReader
-from plone.registry.interfaces import IRegistry
-from Products.Five import BrowserView
-from zope.component import getUtility
+import zope.deferredimport
 
-import json
+zope.deferredimport.initialize()
 
-
-class QueryStringIndexOptions(BrowserView):
-    def __call__(self):
-        registry = getUtility(IRegistry)
-        config = IQuerystringRegistryReader(registry)()
-        self.request.response.setHeader(
-            "Content-Type", "application/json; charset=utf-8"
-        )
-        return json.dumps(config)
+zope.deferredimport.deprecated(
+    "Please use from plone.app.layout.content.browser.query import QueryStringIndexOptions instead.",
+    QueryStringIndexOptions="plone.app.layout.content.browser.query:QueryStringIndexOptions",
+)
