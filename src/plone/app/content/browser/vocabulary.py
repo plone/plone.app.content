@@ -38,15 +38,27 @@ logger = getLogger(__name__)
 
 MAX_BATCH_SIZE = 500  # prevent overloading server
 
-DEFAULT_PERMISSION = "View"
-DEFAULT_PERMISSION_SECURE = "Modify portal content"
-PERMISSIONS = {
-    "plone.app.vocabularies.Catalog": "View",
-    "plone.app.vocabularies.Keywords": "Modify portal content",
-    "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
-    "plone.app.vocabularies.Users": "Modify portal content",
-    "plone.app.multilingual.RootCatalog": "View",
-}
+try:
+    from plone.app.vocabularies.security import DEFAULT_PERMISSION
+    from plone.app.vocabularies.security import DEFAULT_PERMISSION_SECURE
+    from plone.app.vocabularies.security import PERMISSIONS
+except ImportError:
+    # BBB: plone.app.vocabularies versions without the permission constants
+    DEFAULT_PERMISSION = "View"
+    DEFAULT_PERMISSION_SECURE = "Modify portal content"
+    PERMISSIONS = {
+        "plone.app.vocabularies.Catalog": "View",
+        "plone.app.vocabularies.Keywords": "Modify portal content",
+        "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
+        "plone.app.vocabularies.Users": "Modify portal content",
+        "plone.app.multilingual.RootCatalog": "View",
+    }
+
+deprecated(
+    ("DEFAULT_PERMISSION", "DEFAULT_PERMISSION_SECURE", "PERMISSIONS"),
+    "Import from plone.app.vocabularies.security instead.",
+)
+
 TRANSLATED_IGNORED = [
     "author_name",
     "cmf_uid",
