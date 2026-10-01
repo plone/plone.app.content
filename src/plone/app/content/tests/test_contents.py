@@ -656,3 +656,55 @@ class TestSafeHtmlInFolderContents(unittest.TestCase):
         assert False, "Text '{}' unexpectedly found in body: ... {} ...".format(
             target, body[start:end]
         )
+
+
+class FolderContentsOptionsTests(unittest.TestCase):
+    layer = PLONE_APP_CONTENT_DX_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer["portal"]
+
+        login(self.portal, TEST_USER_NAME)
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
+
+        self.portal.invokeFactory("Folder", "folder", title="Folder")
+        self.folder = self.portal.folder
+
+    def _get_options(self, context):
+        return context.restrictedTraverse("@@folder_contents").get_options()
+
+    def test_index_options_url_carries_the_current_path(self):
+        """The path travels as a query parameter, because the structure pattern
+        derives its vocabulary base url by stripping everything from @@ onwards.
+        """
+        options = self._get_options(self.folder)
+
+        self.assertEqual(
+            options["indexOptionsUrl"],
+            f"{self.portal.absolute_url()}/@@qsOptions?path=/folder",
+        )
+
+    def test_index_options_url_on_the_navigation_root(self):
+        options = self._get_options(self.portal)
+
+        self.assertEqual(
+            options["indexOptionsUrl"],
+            f"{self.portal.absolute_url()}/@@qsOptions?path=/",
+        )
+
+    def test_urls_keep_the_path_placeholder(self):
+        """The structure pattern substitutes {path} client side."""
+        base_url = self.portal.absolute_url()
+
+        options = self._get_options(self.folder)
+
+        self.assertEqual(options["moveUrl"], base_url + "{path}/fc-itemOrder")
+        self.assertEqual(
+            options["contextInfoUrl"], base_url + "{path}/@@fc-contextInfo"
+        )
+        self.assertEqual(
+            options["setDefaultPageUrl"], base_url + "{path}/@@fc-setDefaultPage"
+        )
+        self.assertEqual(
+            options["rearrange"]["url"], base_url + "{path}/@@fc-rearrange"
+        )

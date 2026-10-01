@@ -1,0 +1,2 @@
+Build the folder contents options with f-strings, keeping the ``{path}`` placeholders the structure pattern substitutes client side.
+[szakitibi]
