@@ -1,0 +1,2 @@
+Fix the querystring vocabulary permission check for users with local roles by checking the permissions against the browsed context. ``@@qsOptions`` is now registered for any content object and takes the context as a ``path`` parameter.
+[szakitibi]
