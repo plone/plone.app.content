@@ -41,11 +41,13 @@ MAX_BATCH_SIZE = 500  # prevent overloading server
 DEFAULT_PERMISSION = "View"
 DEFAULT_PERMISSION_SECURE = "Modify portal content"
 PERMISSIONS = {
+    "plone.app.multilingual.RootCatalog": "View",
     "plone.app.vocabularies.Catalog": "View",
     "plone.app.vocabularies.Keywords": "Modify portal content",
     "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
+    "plone.app.vocabularies.Groups": "Modify portal content",
+    "plone.app.vocabularies.Principals": "Modify portal content",
     "plone.app.vocabularies.Users": "Modify portal content",
-    "plone.app.multilingual.RootCatalog": "View",
 }
 TRANSLATED_IGNORED = [
     "author_name",
