@@ -1,1 +1,1 @@
-Add permissions guarding access to the Groups and Principals vocabularies. @davisagli
+Protect the Users, Groups, and Principals vocabularies using the "List portal members" permission. @davisagli
