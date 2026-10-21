@@ -45,9 +45,9 @@ PERMISSIONS = {
     "plone.app.vocabularies.Catalog": "View",
     "plone.app.vocabularies.Keywords": "Modify portal content",
     "plone.app.vocabularies.SyndicatableFeedItems": "Modify portal content",
-    "plone.app.vocabularies.Groups": "Modify portal content",
-    "plone.app.vocabularies.Principals": "Modify portal content",
-    "plone.app.vocabularies.Users": "Modify portal content",
+    "plone.app.vocabularies.Groups": "List portal members",
+    "plone.app.vocabularies.Principals": "List portal members",
+    "plone.app.vocabularies.Users": "List portal members",
 }
 TRANSLATED_IGNORED = [
     "author_name",
