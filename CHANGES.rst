@@ -8,6 +8,22 @@ Changelog
 
 .. towncrier release notes start
 
+5.0.1 (2026-10-22)
+------------------
+
+Bug fixes:
+
+
+- Protect the Users, Groups, and Principals vocabularies using the "List portal members" permission. @davisagli
+
+
+Internal:
+
+
+- Move package metadata from ``setup.py`` to ``pyproject.toml``.
+  [plone devs]
+
+
 5.0.0 (2026-05-07)
 ------------------
 
