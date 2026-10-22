@@ -4,7 +4,12 @@
     xmlns:five="http://namespaces.zope.org/five"
     >
 
-  <!-- Adding view -->
+  <!-- The views below have been moved to plone.app.layout.content.browser
+       (see plone/app/layout/content/browser/configure.zcml). They are kept
+       here commented out for reference; the Python classes remain importable
+       from this package via zope.deferredimport shims.
+
+  Adding view
   <browser:view
       name="+"
       for="Products.CMFCore.interfaces.IFolderish"
@@ -12,10 +17,10 @@
       permission="cmf.AddPortalContent"
       />
 
-  <!-- Folder contents -->
+  Folder contents
   <include package=".contents" />
 
-  <!-- Review list -->
+  Review list
   <browser:page
       name="full_review_list"
       for="*"
@@ -32,7 +37,7 @@
       permission="cmf.ReviewPortalContent"
       />
 
-  <!-- Content status history -->
+  Content status history
   <browser:page
       name="content_status_history"
       for="*"
@@ -54,7 +59,7 @@
       permission="zope2.View"
       />
 
-  <!-- Folder factories -->
+  Folder factories
   <browser:page
       name="folder_factories"
       for="*"
@@ -63,7 +68,7 @@
       permission="cmf.AddPortalContent"
       />
 
-  <!-- Constrain container allowed content types -->
+  Constrain container allowed content types
   <permission
       id="plone.ModifyConstrainTypes"
       title="Modify constrain types"
@@ -79,10 +84,10 @@
       component=".constraintypes.ValidTypesFactory"
       />
 
-  <!-- Required for cmf.ModifyViewTemplate -->
+  Required for cmf.ModifyViewTemplate
   <include package="Products.CMFDynamicViewFTI" />
 
-  <!-- Select default view -->
+  Select default view
   <browser:page
       name="select_default_view"
       for="*"
@@ -99,7 +104,7 @@
       permission="cmf.ModifyViewTemplate"
       />
 
-  <!-- Select default page view -->
+  Select default page view
   <browser:page
       name="select_default_page"
       for="*"
@@ -108,7 +113,7 @@
       permission="cmf.ModifyViewTemplate"
       />
 
-  <!-- Actions -->
+  Actions
   <browser:page
       name="delete_confirmation"
       for="*"
@@ -209,5 +214,6 @@
       class=".file.AllowUploadView"
       permission="cmf.AddPortalContent"
       />
+  -->
 
 </configure>

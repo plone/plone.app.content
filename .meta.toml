@@ -16,13 +16,3 @@ jobs = [
     "release_ready",
     ]
 
-[pre_commit]
-zpretty_extra_lines = """
-        exclude: plone/app/content/browser/contents/templates
-"""
-i18ndude_extra_lines = """
-        exclude: plone/app/content/browser/contents
-"""
-
-[pyproject]
-dependencies_ignores = "['tus', ]"
