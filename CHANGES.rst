@@ -8,6 +8,15 @@ Changelog
 
 .. towncrier release notes start
 
+4.2.1 (2026-10-22)
+------------------
+
+Bug fixes:
+
+
+- Protect the Users, Groups, and Principals vocabularies using the "List portal members" permission. @davisagli
+
+
 4.2.0 (2026-02-26)
 ------------------
 
