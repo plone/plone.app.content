@@ -238,7 +238,7 @@ class FolderContentsView(BrowserView):
         indexes = {k: v for k, v in indexes.items() if k not in self.ignored_indexes}
         # Add in extra metadata indexes
         catalog = getToolByName(self.context, "portal_catalog")
-        cat_indexes = [idx for idx in catalog.indexes()]
+        cat_indexes = [*catalog.indexes()]
         for index in cat_indexes:
             if index not in indexes and index not in self.ignored_indexes:
                 indexes[index] = translate(_(index), context=self.request)
@@ -382,7 +382,7 @@ class ContextInfo(BrowserView):
             {
                 "addButtons": factories,
                 "defaultPage": self.context.getDefaultPage(),
-                "breadcrumbs": [c for c in reversed(crumbs)],
+                "breadcrumbs": [*reversed(crumbs)],
                 "object": item,
             }
         )

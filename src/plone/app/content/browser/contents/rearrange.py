@@ -80,7 +80,7 @@ class RearrangeActionView(OrderContentsBaseAction):
             }
             brains = catalog(**query)
             if self.request.form.get("reversed") == "true":
-                brains = [b for b in reversed(brains)]
+                brains = [*reversed(brains)]
             for idx, brain in enumerate(brains):
                 ordering.moveObjectToPosition(brain.id, idx)
         else:
