@@ -2,6 +2,7 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from OFS.CopySupport import CopyError
+from plone.app.content.utils import get_deleted_success_message
 from plone.base import PloneMessageFactory as _
 from plone.base.utils import get_user_friendly_types
 from plone.base.utils import safe_text
@@ -85,9 +86,10 @@ class DeleteConfirmationForm(form.Form, LockingBase):
                     # unlock object as it is locked by current user
                     ILockable(self.context).unlock()
             parent.manage_delObjects(self.context.getId())
-            IStatusMessage(self.request).add(
-                _("${title} has been deleted.", mapping={"title": title})
-            )
+
+            # Show appropriate message (automatically handles recycle bin checks)
+            message = get_deleted_success_message(title=title)
+            IStatusMessage(self.request).add(message)
         else:
             IStatusMessage(self.request).add(
                 _('"${title}" has already been deleted', mapping={"title": title})
